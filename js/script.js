@@ -6,6 +6,8 @@ if (window.screen.width <= 1130) {
         removeall();
         $("#sec").css("border", "2px solid whitesmoke");
         $("#sec").css("border-radius", "20px");
+        // Navigate to events page
+        window.location.href = "events.html";
     });
     $("#pri").on("click", function () {
         removeall();
