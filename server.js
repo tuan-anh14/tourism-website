@@ -4,7 +4,7 @@ const http = require("http");
 require("dotenv").config();
 
 const database = require("./config/database");
-// const route = require("./routes/client/index.route");
+const route = require("./routes/client/index.route");
 // const routeAdmin = require("./routes/admin/index.route");
 
 const app = express();
@@ -18,7 +18,7 @@ app.set("view engine", "ejs");
 
 database.connect();
 
-// route(app);
+route(app);
 // routeAdmin(app);
 
 // app.get("*", (req, res) => {

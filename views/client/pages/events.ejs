@@ -6,34 +6,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Events - ADVENTURE</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-        <link rel="stylesheet" href="css/style.css" />
-        <link rel="stylesheet" href="css/responsive.css" />
-        <link rel="stylesheet" href="css/harmony.css" />
+        <link rel="stylesheet" href="/client/css/style.css" />
+        <link rel="stylesheet" href="/client/css/responsive.css" />
+        <link rel="stylesheet" href="/client/css/harmony.css" />
         <link
             rel="apple-touch-icon"
             sizes="180x180"
-            href="img/apple-touch-icon.png"
+            href="/client/img/apple-touch-icon.png"
         />
         <link
             rel="icon"
             type="image/png"
             sizes="32x32"
-            href="img/favicon-32x32.png"
+            href="/client/img/favicon-32x32.png"
         />
         <link
             rel="icon"
             type="image/png"
             sizes="16x16"
-            href="img/favicon-16x16.png"
+            href="/client/img/favicon-16x16.png"
         />
-        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="manifest" href="/client/site.webmanifest" />
     </head>
     <body>
-        <!-- Header Component Placeholder -->
-        <div id="header-placeholder"></div>
+        <%- include('../partials/header') %>
 
         <!-- Page Header -->
-        <header class="page-header" style="background-image: url('./img/carousel-img1.jpg');">
+        <header class="page-header" style="background-image: url('/client/img/carousel-img1.jpg');">
             <div class="header-content">
                 <h2 id="quote">Upcoming Adventures</h2>
                 <div class="line"></div>
@@ -52,7 +51,7 @@
             </div>
             <div class="standard-row">
                 <article class="standard-card col">
-                    <img src="./img/img1.jfif" alt="Everest Camp Trek" />
+                    <img src="/client/img/img1.jfif" alt="Everest Camp Trek" />
                     <div class="card-content">
                         <h4 class="dark">Everest Camp Trek</h4>
                         <p class="font-color">
@@ -70,7 +69,7 @@
                     </div>
                 </article>
                 <article class="standard-card col">
-                    <img src="./img/img2.jfif" alt="Walking Holidays" />
+                    <img src="/client/img/img2.jfif" alt="Walking Holidays" />
                     <div class="card-content">
                         <h4 class="dark">Walking Holidays</h4>
                         <p class="font-color">
@@ -88,7 +87,7 @@
                     </div>
                 </article>
                 <article class="standard-card col">
-                    <img src="./img/img2.jfif" alt="Andaman Beaches" />
+                    <img src="/client/img/img2.jfif" alt="Andaman Beaches" />
                     <div class="card-content">
                         <h4 class="dark">Andaman Beaches</h4>
                         <p class="font-color">
@@ -110,7 +109,7 @@
             <!-- Additional Events Row -->
             <div class="standard-row" style="margin-top: 60px;">
                 <article class="standard-card col">
-                    <img src="./img/carousel-img2.jpg" alt="Alpine Adventures" />
+                    <img src="/client/img/carousel-img2.jpg" alt="Alpine Adventures" />
                     <div class="card-content">
                         <h4 class="dark">Alpine Adventures</h4>
                         <p class="font-color">
@@ -128,7 +127,7 @@
                     </div>
                 </article>
                 <article class="standard-card col">
-                    <img src="./img/carousel-img3.jpg" alt="Desert Safari" />
+                    <img src="/client/img/carousel-img3.jpg" alt="Desert Safari" />
                     <div class="card-content">
                         <h4 class="dark">Desert Safari</h4>
                         <p class="font-color">
@@ -146,7 +145,7 @@
                     </div>
                 </article>
                 <article class="standard-card col">
-                    <img src="./img/carousel-img4.jpg" alt="Amazon Expedition" />
+                    <img src="/client/img/carousel-img4.jpg" alt="Amazon Expedition" />
                     <div class="card-content">
                         <h4 class="dark">Amazon Expedition</h4>
                         <p class="font-color">
@@ -194,11 +193,9 @@
         <!-- up scroll -->
         <i class="arrow" onclick="topFunction()" id="upbtn"></i>
 
-        <!-- Footer Component Placeholder -->
-        <div id="footer-placeholder"></div>
+        <%- include('../partials/footer') %>
 
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="js/components.js"></script>
-        <script src="js/events.js"></script>
+        <script src="/client/js/events.js"></script>
     </body>
 </html>
