@@ -9,7 +9,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 70px;
+    /* Let the image extend behind the fixed navbar */
+    margin-top: 0;
+    padding-top: 70px;
     position: relative;
 }
 
@@ -23,6 +25,8 @@
     background: rgba(0, 0, 0, 0.3);
     border-radius: 15px;
     backdrop-filter: blur(5px);
+    /* create a subtle glass effect without blocking the hero */
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
 }
 
 .page-header .header-content h2 {
@@ -115,11 +119,15 @@ body.dark .page-section .title h1.dark {
     line-height: 1.6;
     margin-bottom: 1rem;
     flex: 1;
+    padding: 0; /* override global .col p padding */
 }
 
+.card-content h4,
+.card-content p { text-align: left; margin-left: 0; }
+
 .card-content .ctn {
-    align-self: flex-start;
-    margin-top: auto;
+    align-self: center;
+    margin-top: 16px;
 }
 
 /* Event Details Styles */

@@ -1,0 +1,54 @@
+/* Cuisine Page (namespaced) */
+
+.cuisine .navbar.glass { background: transparent !important; box-shadow: none !important; }
+.cuisine .navbar .nav-links li a { color: #fff; }
+body.dark .cuisine .navbar .nav-links li a { color: #fff; }
+.cuisine .navbar .nav-links li a.active,
+.cuisine .navbar .nav-links li a:hover { border-color: rgba(255,255,255,0.85) !important; }
+
+/* Banner */
+.cuisine-banner.page-header { background-size: cover; background-position: center; min-height: 320px; display:flex; align-items:center; justify-content:center; text-align:center; padding:60px 20px; }
+.cuisine-banner .header-content h1 { color:#fff; }
+
+/* Overview section */
+.cuisine-overview { max-width: 1100px; margin: 28px auto; padding: 0 16px; text-align: center; }
+.cuisine-overview p { line-height: 1.7; }
+
+/* Filters */
+.cuisine-filters { max-width: 1200px; margin: 20px auto 16px; padding: 0 16px; }
+.cuisine-filters .filter-row { display: grid; grid-template-columns: 1fr 180px 180px 180px; gap: 12px; }
+.cuisine-filters .box { background: rgba(255,255,255,0.92); border-radius: 12px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); padding: 10px 12px; display: flex; align-items: center; }
+.cuisine-filters .box input,
+.cuisine-filters .box select { width: 100%; background: transparent; border: none; outline: none; color: inherit; height: 40px; font-size: 15px; }
+body.dark .cuisine-filters .box input,
+body.dark .cuisine-filters .box select { color: #111; }
+
+/* Pills */
+.cuisine-pills { max-width: 1200px; margin: 10px auto 24px; padding: 0 16px; display:flex; gap:10px; overflow-x:auto; }
+.cuisine-pills .pill { white-space: nowrap; border: 1px solid rgba(255,255,255,0.4); color:#fff; border-radius:999px; padding:8px 14px; background: rgba(255,255,255,0.08); cursor:pointer; transition: all .2s ease; }
+body.dark .cuisine-pills .pill { border-color: rgba(255,255,255,0.2); }
+.cuisine-pills .pill.active, .cuisine-pills .pill:hover { background:#fff; color:#111; }
+
+/* Grid */
+.cuisine-grid { max-width: 1200px; margin: 0 auto 80px; padding: 0 16px; display:grid; grid-template-columns: repeat(3, 1fr); gap:24px; }
+@media (max-width: 1024px) { .cuisine-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .cuisine-filters .filter-row { grid-template-columns: 1fr 1fr; } .cuisine-grid { grid-template-columns: 1fr; } }
+
+/* Card */
+.cuisine-card { background: rgba(255,255,255,0.95); border-radius: 16px; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: transform .2s ease, box-shadow .2s ease; display:flex; flex-direction:column; }
+body.dark .cuisine-card { background: rgba(20,20,22,0.92); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+.cuisine-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.12); }
+.cuisine-card .thumb { position: relative; width: 100%; padding-top: 62%; overflow:hidden; }
+.cuisine-card .thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition: transform .5s ease; }
+.cuisine-card:hover .thumb img { transform: scale(1.06); }
+.cuisine-card .content { padding:16px; display:flex; flex-direction:column; gap:10px; }
+.cuisine-card .title { font-size: 18px; }
+.cuisine-card .desc { color: var(--clr-gray-200, #666); line-height: 1.5; }
+.cuisine-card .meta { display:grid; grid-template-columns: 1fr auto; gap:10px; align-items:center; }
+.cuisine-card .address, .cuisine-card .hours { font-size: 14px; color: #555; }
+body.dark .cuisine-card .address, body.dark .cuisine-card .hours { color: #cbd5e1; }
+.cuisine-card .rating { color: #f59e0b; font-weight: 700; }
+.cuisine-card .actions { margin-top:auto; display:flex; justify-content:flex-end; }
+
+/* Visibility helper */
+.cuisine-card.is-hidden { display: none !important; }

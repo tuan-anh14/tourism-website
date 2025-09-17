@@ -5,7 +5,7 @@ const homeController = require("../../controller/client/home.controller")
 
 route.get('/', homeController.index)
 route.get('/events', homeController.events)
-route.get('/attractions', homeController.attractions)
+route.get('/attraction', homeController.attractions)
 route.get('/accommodation', homeController.accommodation)
 route.get('/cuisine', homeController.cuisine)
 route.get('/transportation', homeController.transportation)

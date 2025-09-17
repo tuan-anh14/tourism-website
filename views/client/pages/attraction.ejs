@@ -1,201 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Events - HÀ NỘI</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <title>Điểm tham quan Hà Nội | HÀ NỘI</title>
+        <meta name="description" content="Khám phá các điểm tham quan nổi bật ở Hà Nội: di tích lịch sử, bảo tàng, phố cổ, làng nghề, khu vui chơi, lễ hội. Lọc theo nhóm hoặc tìm kiếm nhanh." />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
         <link rel="stylesheet" href="/client/css/style.css" />
         <link rel="stylesheet" href="/client/css/responsive.css" />
         <link rel="stylesheet" href="/client/css/harmony.css" />
-        <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/client/img/apple-touch-icon.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/client/img/favicon-32x32.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/client/img/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/client/site.webmanifest" />
+        <link rel="stylesheet" href="/client/css/attraction.css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
     </head>
     <body>
         <%- include('../partials/header') %>
 
-        <!-- Page Header -->
-        <header class="page-header" style="background-image: url('/client/img/carousel-img1.jpg');">
+        <!-- Banner -->
+        <header class="page-header attraction-banner" style="background-image: url('/client/img/header-bg.jfif');">
             <div class="header-content">
-                <h2 id="quote">Upcoming HÀ NỘIs</h2>
+                <h2 id="quote">Khám phá Hà Nội – Di sản và nhịp sống</h2>
                 <div class="line"></div>
-                <h1>DISCOVER EVENTS</h1>
-                <p>
-                    Join us for incredible HÀ NỘIs and unforgettable experiences around the world
-                </p>
+                <h1>Điểm tham quan</h1>
+                <p class="font-color">Chọn lọc địa điểm đặc sắc cho hành trình Hà Nội trọn vẹn</p>
             </div>
         </header>
 
-        <!--Events Section-->
-        <section class="page-section" id="events">
-            <div class="title">
-                <h1 class="dark">Upcoming Events</h1>
-                <div class="line"></div>
-            </div>
-            <div class="standard-row">
-                <article class="standard-card col">
-                    <img src="/client/img/img1.jfif" alt="Everest Camp Trek" />
-                    <div class="card-content">
-                        <h4 class="dark">Everest Camp Trek</h4>
-                        <p class="font-color">
-                            Everest base camp trek is without a doubt, one of
-                            the most renowned travel destinations in the world.
-                            Experience the breathtaking views and challenge yourself.
-                        </p>
-                        <div class="event-details">
-                            <p><strong>Date:</strong> March 15-30, 2024</p>
-                            <p><strong>Duration:</strong> 16 days</p>
-                            <p><strong>Difficulty:</strong> Challenging</p>
-                            <p><strong>Price:</strong> $2,499</p>
-                        </div>
-                        <a href="#" class="ctn">Book Now</a>
+        <!-- Filters -->
+        <section class="attraction-page">
+            <div class="attraction-filters" aria-label="Bộ lọc điểm tham quan">
+                <div class="filter-row">
+                    <div class="search-input" role="search">
+                        <i class="fa fa-search" aria-hidden="true" style="margin-right: 8px"></i>
+                        <input id="attraction-search" type="text" placeholder="Tìm theo tên điểm tham quan..." aria-label="Tìm theo tên" />
                     </div>
-                </article>
-                <article class="standard-card col">
-                    <img src="/client/img/img2.jfif" alt="Walking Holidays" />
-                    <div class="card-content">
-                        <h4 class="dark">Walking Holidays</h4>
-                        <p class="font-color">
-                            Join small guided group walks, enjoy a challenging
-                            trek, or a luxury private guided walk which can be
-                            made especially for you.
-                        </p>
-                        <div class="event-details">
-                            <p><strong>Date:</strong> April 5-12, 2024</p>
-                            <p><strong>Duration:</strong> 8 days</p>
-                            <p><strong>Difficulty:</strong> Moderate</p>
-                            <p><strong>Price:</strong> $899</p>
-                        </div>
-                        <a href="#" class="ctn">Book Now</a>
+                    <div class="category-select">
+                        <select id="attraction-category" aria-label="Chọn nhóm điểm tham quan">
+                            <option value="all">Tất cả thể loại</option>
+                            <option value="historic">Di tích lịch sử</option>
+                            <option value="museum">Bảo tàng</option>
+                            <option value="oldquarter">Phố cổ</option>
+                            <option value="craft">Làng nghề truyền thống</option>
+                            <option value="park">Khu vui chơi</option>
+                            <option value="festival">Lễ hội</option>
+                        </select>
                     </div>
-                </article>
-                <article class="standard-card col">
-                    <img src="/client/img/img2.jfif" alt="Andaman Beaches" />
-                    <div class="card-content">
-                        <h4 class="dark">Andaman Beaches</h4>
-                        <p class="font-color">
-                            Diving in Andaman Beaches is exceptional. The coastal
-                            belt surroundings is one of the richest coral reef
-                            ecosystems in the world.
-                        </p>
-                        <div class="event-details">
-                            <p><strong>Date:</strong> May 10-17, 2024</p>
-                            <p><strong>Duration:</strong> 8 days</p>
-                            <p><strong>Difficulty:</strong> Easy</p>
-                            <p><strong>Price:</strong> $1,299</p>
-                        </div>
-                        <a href="#" class="ctn">Book Now</a>
-                    </div>
-                </article>
+                </div>
             </div>
 
-            <!-- Additional Events Row -->
-            <div class="standard-row" style="margin-top: 60px;">
-                <article class="standard-card col">
-                    <img src="/client/img/carousel-img2.jpg" alt="Alpine HÀ NỘIs" />
-                    <div class="card-content">
-                        <h4 class="dark">Alpine HÀ NỘIs</h4>
-                        <p class="font-color">
-                            Discover the majestic Alps with our guided mountain
-                            climbing and skiing HÀ NỘIs. Perfect for thrill
-                            seekers and nature lovers.
-                        </p>
-                        <div class="event-details">
-                            <p><strong>Date:</strong> June 20-30, 2024</p>
-                            <p><strong>Duration:</strong> 11 days</p>
-                            <p><strong>Difficulty:</strong> Challenging</p>
-                            <p><strong>Price:</strong> $1,899</p>
-                        </div>
-                        <a href="#" class="ctn">Book Now</a>
-                    </div>
-                </article>
-                <article class="standard-card col">
-                    <img src="/client/img/carousel-img3.jpg" alt="Desert Safari" />
-                    <div class="card-content">
-                        <h4 class="dark">Desert Safari</h4>
-                        <p class="font-color">
-                            Experience the magic of the desert with camel rides,
-                            star gazing, and traditional bedouin culture in the
-                            heart of the Sahara.
-                        </p>
-                        <div class="event-details">
-                            <p><strong>Date:</strong> July 8-15, 2024</p>
-                            <p><strong>Duration:</strong> 8 days</p>
-                            <p><strong>Difficulty:</strong> Moderate</p>
-                            <p><strong>Price:</strong> $1,599</p>
-                        </div>
-                        <a href="#" class="ctn">Book Now</a>
-                    </div>
-                </article>
-                <article class="standard-card col">
-                    <img src="/client/img/carousel-img4.jpg" alt="Amazon Expedition" />
-                    <div class="card-content">
-                        <h4 class="dark">Amazon Expedition</h4>
-                        <p class="font-color">
-                            Journey deep into the Amazon rainforest to discover
-                            unique wildlife, indigenous cultures, and pristine
-                            natural beauty.
-                        </p>
-                        <div class="event-details">
-                            <p><strong>Date:</strong> August 12-22, 2024</p>
-                            <p><strong>Duration:</strong> 11 days</p>
-                            <p><strong>Difficulty:</strong> Moderate</p>
-                            <p><strong>Price:</strong> $2,199</p>
-                        </div>
-                        <a href="#" class="ctn">Book Now</a>
-                    </div>
-                </article>
+            <div class="attraction-pills" aria-label="Chọn nhanh theo nhóm">
+                <div class="pill active" data-category="all">Tất cả</div>
+                <div class="pill" data-category="historic">Di tích lịch sử</div>
+                <div class="pill" data-category="museum">Bảo tàng</div>
+                <div class="pill" data-category="oldquarter">Phố cổ</div>
+                <div class="pill" data-category="craft">Làng nghề</div>
+                <div class="pill" data-category="park">Khu vui chơi</div>
+                <div class="pill" data-category="festival">Lễ hội</div>
             </div>
+
+            <!-- Grid -->
+            <section class="attraction-grid" aria-label="Danh sách điểm tham quan">
+                <!-- Historic -->
+                <article class="attraction-card" data-title="Hoàng thành Thăng Long" data-category="historic">
+                    <div class="thumb">
+                        <img src="/client/img/carousel-img4.jpg" alt="Hoàng thành Thăng Long" loading="lazy" />
+                    </div>
+                    <div class="content">
+                        <h3 class="title dark">Hoàng thành Thăng Long</h3>
+                        <p class="desc font-color">Di sản văn hóa thế giới, dấu ấn nghìn năm của kinh thành Thăng Long.
+                        </p>
+                        <div class="actions">
+                            <a class="ctn" href="#">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="attraction-card" data-title="Văn Miếu - Quốc Tử Giám" data-category="historic">
+                    <div class="thumb">
+                        <img src="/client/img/carousel-img5.jpg" alt="Văn Miếu - Quốc Tử Giám" loading="lazy" />
+                    </div>
+                    <div class="content">
+                        <h3 class="title dark">Văn Miếu - Quốc Tử Giám</h3>
+                        <p class="desc font-color">Trường đại học đầu tiên của Việt Nam, nơi tôn vinh truyền thống hiếu học.</p>
+                        <div class="actions">
+                            <a class="ctn" href="#">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Museum -->
+                <article class="attraction-card" data-title="Bảo tàng Dân tộc học Việt Nam" data-category="museum">
+                    <div class="thumb">
+                        <img src="/client/img/carousel-img6.jpg" alt="Bảo tàng Dân tộc học Việt Nam" loading="lazy" />
+                    </div>
+                    <div class="content">
+                        <h3 class="title dark">Bảo tàng Dân tộc học Việt Nam</h3>
+                        <p class="desc font-color">Không gian khám phá văn hóa 54 dân tộc Việt Nam sống động, đa dạng.</p>
+                        <div class="actions">
+                            <a class="ctn" href="#">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Old Quarter -->
+                <article class="attraction-card" data-title="Phố cổ Hà Nội" data-category="oldquarter">
+                    <div class="thumb">
+                        <img src="/client/img/img3.png" alt="Phố cổ Hà Nội" loading="lazy" />
+                    </div>
+                    <div class="content">
+                        <h3 class="title dark">Phố cổ Hà Nội</h3>
+                        <p class="desc font-color">Không gian 36 phố phường đặc trưng, đậm nét văn hóa và ẩm thực.</p>
+                        <div class="actions">
+                            <a class="ctn" href="#">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Craft Villages -->
+                <article class="attraction-card" data-title="Làng gốm Bát Tràng" data-category="craft">
+                    <div class="thumb">
+                        <img src="/client/img/img4.png" alt="Làng gốm Bát Tràng" loading="lazy" />
+                    </div>
+                    <div class="content">
+                        <h3 class="title dark">Làng gốm Bát Tràng</h3>
+                        <p class="desc font-color">Làng nghề lâu đời, nổi tiếng với sản phẩm gốm sứ tinh xảo, trải nghiệm tự tay nặn gốm.</p>
+                        <div class="actions">
+                            <a class="ctn" href="#">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Parks / Entertainment -->
+                <article class="attraction-card" data-title="Công viên Thống Nhất" data-category="park">
+                    <div class="thumb">
+                        <img src="/client/img/img5.png" alt="Công viên Thống Nhất" loading="lazy" />
+                    </div>
+                    <div class="content">
+                        <h3 class="title dark">Công viên Thống Nhất</h3>
+                        <p class="desc font-color">Không gian xanh giữa lòng thành phố, phù hợp nghỉ ngơi, đi dạo.</p>
+                        <div class="actions">
+                            <a class="ctn" href="#">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Festivals -->
+                <article class="attraction-card" data-title="Lễ hội Gióng" data-category="festival">
+                    <div class="thumb">
+                        <img src="/client/img/img6.png" alt="Lễ hội Gióng" loading="lazy" />
+                    </div>
+                    <div class="content">
+                        <h3 class="title dark">Lễ hội Gióng</h3>
+                        <p class="desc font-color">Di sản văn hóa phi vật thể đại diện của nhân loại, đậm bản sắc Hà Nội.</p>
+                        <div class="actions">
+                            <a class="ctn" href="#">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </article>
+            </section>
         </section>
-
-        <!-- Event Categories -->
-        <section class="page-section event-categories">
-            <div class="title">
-                <h1 class="dark">Event Categories</h1>
-                <div class="line"></div>
-            </div>
-            <div class="standard-row">
-                <div class="feature-card">
-                    <i class="fa fa-mountain"></i>
-                    <h3>Mountain HÀ NỘIs</h3>
-                    <p>Challenging treks and climbs in the world's most beautiful mountain ranges.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fa fa-ship"></i>
-                    <h3>Ocean Expeditions</h3>
-                    <p>Dive into crystal clear waters and explore marine life in exotic locations.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fa fa-tree"></i>
-                    <h3>Wildlife Safaris</h3>
-                    <p>Get up close with nature's most magnificent creatures in their natural habitats.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- up scroll -->
-        <i class="arrow" onclick="topFunction()" id="upbtn"></i>
 
         <%- include('../partials/footer') %>
 
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="/client/js/events.js"></script>
+        <script src="/client/js/includes.js"></script>
+        <script src="/client/js/script.js"></script>
+        <script src="/client/js/attraction.js"></script>
     </body>
 </html>

@@ -5,7 +5,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>HÀ NỘI</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
         <link rel="stylesheet" href="/client/css/style.css" />
         <link rel="stylesheet" href="/client/css/responsive.css" />
         <link
@@ -25,12 +28,13 @@
             sizes="16x16"
             href="/client/img/favicon-16x16.png"
         />
-        <link rel="manifest" href="/client/site.webmanifest" />
+        <link rel="manifest" href="/site.webmanifest" />
     </head>
     <body
         onload='if (window.location.href.substr(window.location.href.length - 6) == "#about") { introAboutLogoTransition(); }'
     >
         <%- include('../partials/header') %>
+
 
         <header id="home">
             <div class="header-content">
@@ -46,63 +50,89 @@
             </div>
         </header>
 
-        <!--Events (repurposed as Project Overview) -->
-        <section class="events" id="events">
-            <div class="container">
-                <div class="title">
-                    <h1 class="dark">Tổng quan dự án</h1>
-                    <div class="line"></div>
-                </div>
-                <div class="row">
-                    <article class="card col">
-                        <img class="card-img" src="/client/img/img1.jfif" />
-                        <h4 class="dark">Hà Nội Vibes – Cẩm nang du lịch điện tử</h4>
-                        <p class="font-color">
-                            Cổng thông tin du lịch số về Hà Nội: nội dung chuẩn xác, đa ngôn ngữ; bản đồ tương tác và gợi ý hành trình 1–3 ngày theo chủ đề. Kết nối du khách với doanh nghiệp dịch vụ, nâng cao trải nghiệm và quảng bá hình ảnh Hà Nội thông minh, thân thiện.
-                        </p>
-                    </article>
-                </div>
-            </div>
-        </section>
-        <!--Events-->
-
         <!--Explore-->
         <section class="explore" id="explore">
             <div class="explore-content">
-                <h1>Tổng quan Hà Nội</h1>
+                <h1>TỔNG QUAN HÀ NỘI</h1>
                 <div class="line"></div>
                 <p>
-                    Hà Nội – thủ đô ngàn năm – hòa quyện vẻ đẹp cổ kính và hơi thở hiện đại: Hoàng thành Thăng Long, Văn Miếu, chùa Một Cột, phố cổ 36 phố phường; Hồ Gươm, Hồ Tây và các làng cổ ven đô như Đường Lâm. Ẩm thực tinh tế với phở, bún chả, chả cá Lã Vọng, cốm; đời sống lễ hội – nghệ thuật truyền thống đan xen sự kiện đương đại. Sự giao thoa quá khứ – hiện tại tạo nên một điểm đến nhiều lần được vinh danh, để lại ấn tượng khó quên.
+                    Hà Nội – thủ đô nghìn năm văn hiến – là điểm đến du lịch độc đáo với sự hòa quyện giữa vẻ đẹp cổ kính và hơi thở hiện đại. Thành phố gây ấn tượng với du khách bởi di tích lịch sử phong phú như Hoàng thành Thăng Long, Văn Miếu – Quốc Tử Giám, chùa Một Cột và khu phố cổ 36 phố phường vẫn giữ được nhịp sống truyền thống đặc trưng. Hà Nội còn sở hữu nhiều không gian xanh, cảnh quan thiên nhiên lãng mạn như Hồ Hoàn Kiếm với Tháp Rùa, Hồ Tây bốn mùa và các làng cổ ven đô như Đường Lâm.
+
+                    Ẩm thực Hà Nội là hành trình khám phá hấp dẫn với những món đặc sản nổi tiếng như phở, bún chả, chả cá Lã Vọng, và cốm xanh mùa thu. Thành phố còn là trung tâm của các lễ hội truyền thống, nghệ thuật dân gian và các sự kiện văn hóa hiện đại, tạo nên một bức tranh sống động và đa sắc màu.
+
+                    Dù nhịp sống sôi động, Hà Nội vẫn giữ được nét thanh lịch duyên dáng của con người Tràng An cùng với diện mạo hiện đại với các khu đô thị mới, trung tâm thương mại và dịch vụ du lịch cao cấp. Sự hòa quyện giữa quá khứ và hiện tại đã giúp Hà Nội nhiều lần được vinh danh là “Điểm đến hàng đầu châu Á”, để lại trải nghiệm khó quên trong lòng du khách.
                 </p>
                 <a href="#events" class="ctn">Khám phá tour</a>
             </div>
         </section>
         <!--Explore-->
 
+        <!--Explore-->
+        <section class="explore" id="explore">
+            <div class="explore-content">
+                <h1>TỔNG QUAN DỰ ÁN</h1>
+                <div class="line"></div>
+                <p>
+                    Hà Nội, thủ đô nghìn năm văn hiến, vừa giữ gìn giá trị di sản độc đáo vừa hòa nhập hiện đại, trở thành điểm đến phong phú về lịch sử, văn hóa, ẩm thực và trải nghiệm sống động. Trong thời đại chuyển đổi số, nhu cầu du khách mong muốn tiếp cận thông tin nhanh, chính xác và đa dạng ngày càng tăng, trong khi các nguồn hiện tại còn phân mảnh và chưa tối ưu trải nghiệm.
+
+                    Hà Nội Vibes hình thành nhằm cung cấp nền tảng số thân thiện, đa ngôn ngữ, tổng hợp toàn diện thông tin về du lịch Hà Nội. Nền tảng tích hợp bản đồ du lịch thông minh, gợi ý hành trình cá nhân hóa, kết nối khách hàng với doanh nghiệp dịch vụ (khách sạn, nhà hàng, tour, di chuyển) và quảng bá hình ảnh Hà Nội ra quốc tế.
+
+                    Nền tảng giới thiệu chi tiết cẩm nang điểm tham quan, di tích, ẩm thực đặc sắc, các tour theo chủ đề văn hóa, lịch sử và vui chơi giải trí. Hướng đến hỗ trợ du khách tối ưu trải nghiệm, giảm thiểu thời gian và chi phí tìm kiếm, đồng thời thúc đẩy phát triển du lịch bền vững và hiện đại.
+
+                    Dự án lấy du khách làm trung tâm, hướng tới mở rộng thành cẩm nang điện tử toàn quốc với tầm nhìn trở thành cổng thông tin du lịch số hàng đầu Việt Nam, góp phần nâng cao vị thế ngành du lịch trong xu thế toàn cầu hóa và chuyển đổi số.
+            </div>
+        </section>
+        <!--Explore-->
+
+         <!--Events-->
+         <section class="events" id="events">
+            <div class="container">
+                <div class="title">
+                    <h1 class="dark">Tour nổi bật</h1>
+                    <div class="line"></div>
+                </div>
+                <div class="row">
+                    <article class="card col">
+                        <img class="card-img" src="/client/img/img1.jfif" />
+                        <h4 class="dark">Chinh phục Fansipan</h4>
+                        <p class="font-color">
+                            Trải nghiệm leo núi, săn mây và ngắm toàn cảnh dãy Hoàng Liên Sơn.
+                        </p>
+                        <a href="#" class="ctn">Xem chi tiết</a>
+                    </article>
+                    <article class="card col">
+                        <img src="/client/img/img2.jfif" />
+                        <h4 class="dark">Phố cổ Hà Nội</h4>
+                        <p class="font-color">
+                            Khám phá 36 phố phường, thưởng thức cà phê, quà vặt và tìm hiểu văn hóa bản địa.
+                        </p>
+                        <a href="#" class="ctn">Xem chi tiết</a>
+                    </article>
+                    <article class="card col">
+                        <img src="/client/img/img2.jfif" />
+                        <h4 class="dark">Hồ Tây & Làng cổ</h4>
+                        <p class="font-color">
+                            Dạo quanh Hồ Tây, ghé chùa Trấn Quốc và trải nghiệm làng cổ ven đô.
+                        </p>
+                        <a href="#" class="ctn">Xem chi tiết</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <!--Events-->
+
         <!--tours-->
         <section class="tours" id="tours">
             <div class="container row">
                 <div class="col content-col">
-                    <h1 class="font-color">Các tour nổi bật</h1>
+                    <h1 class="font-color">Tour sắp diễn ra & Điểm đến</h1>
                     <div class="line"></div>
                     <p>
-                        A. City Tour
+                        Thứ Tư, 28/09: City tour Hà Nội – Hồ Gươm, Phố cổ, chùa Trấn Quốc. <br />
+                        Thứ Bảy, 01/10: Khám phá Hoàng thành Thăng Long và Văn Miếu.<br />
+                        Thứ Ba, 04/10: Trải nghiệm ẩm thực – phở, bún chả, chả cá Lã Vọng.
                     </p>
-                    <ul class="font-color" style="padding-left: 1rem; list-style: disc;">
-                        <li>Lăng Bác – Chùa Một Cột – Văn Miếu – Hồ Gươm – Xích lô phố cổ</li>
-                        <li>Chùa Trấn Quốc – Lăng Bác – Bảo tàng Dân tộc học – Văn Miếu – Nhà tù Hỏa Lò</li>
-                        <li>Nhà tù Hỏa Lò – Lăng Chủ tịch Hồ Chí Minh – Phố Cafe Đường Tàu – Văn Miếu – Làng gốm Bát Tràng</li>
-                        <li>Chùa Hương trong ngày</li>
-                    </ul>
-                    <p>
-                        B. Tour xuất phát từ Hà Nội
-                    </p>
-                    <ul class="font-color" style="padding-left: 1rem; list-style: disc;">
-                        <li>Tour Ẩm thực Hà Nội – Hải Phòng</li>
-                        <li>Tour Hà Nội – Ninh Bình</li>
-                        <li>Tour Hà Nội – Hạ Long</li>
-                    </ul>
-                    <a href="#events" class="ctn">Xem chi tiết</a>
+                    <a href="#" class="ctn">Tìm hiểu thêm</a>
                 </div>
                 <div class="image-col">
                     <div class="image-gallery">
@@ -120,7 +150,7 @@
         <!-- About -->
         <section id="about">
             <div class="title">
-                <h1 class="font-color">Về chúng tôi</h1>
+                <h1 class="font-color">HÌNH ẢNH</h1>
                 <div class="line"></div>
             </div>
             <br />
@@ -132,7 +162,7 @@
                         <input type="radio" name="slider" id="item-3" />
                         <div class="cards">
                             <label class="cardt" for="item-1" id="col-img-1">
-                                <img src="/client/img/carousel-img4.jpg" />   
+                                <img src="/client/img/carousel-img4.jpg" />
                             </label>
                             <label class="cardt" for="item-2" id="col-img-2">
                                 <img src="/client/img/carousel-img5.jpg" />
@@ -175,13 +205,13 @@
 
         <!-- Contributions -->
         <div class="title">
-            <h1 class="font-color">Người đóng góp</h1>
+            <h1 class="font-color">THÀNH VIÊN ĐÓNG GÓP</h1>
             <div class="line"></div>
         </div>
         <section class="contributors" id="contribution">
             <div class="concard">
                 <img
-                    src="https://github.com/PritamSarbajna.png"
+                    src="/client/img/avatar.png"
                     alt="profile-picture"
                     class="pfp"
                 />
@@ -189,9 +219,9 @@
                     <h1>Nguyễn Văn A</h1>
                 </div>
                 <div class="logolink">
-                    <a href="https://github.com/PritamSarbajna" target="_blank"
+                    <a href="https://www.facebook.com/" target="_blank"
                         ><img
-                            src="/client/img/GitHub120px.png"
+                            src="/client/img/facebook.png"
                             alt="Github-Logo"
                             class="github-logo"
                     /></a>
@@ -201,17 +231,17 @@
 
             <div class="concard">
                 <img
-                    src="https://github.com/athar-ansari.png"
+                    src="/client/img/avatar.png"
                     alt="profile-picture"
                     class="pfp"
                 />
                 <div class="text">
-                    <h1>ATHAR ANSARI</h1>
+                    <h1>Nguyễn Văn B</h1>
                 </div>
                 <div class="logolink">
-                    <a href="https://github.com/athar-ansari" target="_blank"
+                    <a href="https://www.facebook.com/" target="_blank"
                         ><img
-                            src="public/client/img/GitHub120px.png"
+                            src="/client/img/facebook.png"
                             alt="Github-Logo"
                             class="github-logo"
                     /></a>
@@ -220,17 +250,17 @@
 
             <div class="concard">
                 <img
-                    src="https://github.com/prakhartiwari0.png"
+                    src="/client/img/avatar.png"
                     alt="profile-picture"
                     class="pfp"
                 />
                 <div class="text">
-                    <h1>Prakhar Tiwari</h1>
+                    <h1>Nguyễn Văn C</h1>
                 </div>
                 <div class="logolink">
-                    <a href="https://github.com/prakhartiwari0" target="_blank"
+                    <a href="https://www.facebook.com/" target="_blank"
                         ><img
-                            src="public/client/img/GitHub120px.png"
+                            src="/client/img/facebook.png"
                             alt="Github-Logo"
                             class="github-logo"
                     /></a>
@@ -239,17 +269,17 @@
 
             <div class="concard">
                 <img
-                    src="https://github.com/hassana123.png"
+                    src="/client/img/avatar.png"
                     alt="profile-picture"
                     class="pfp"
                 />
                 <div class="text">
-                    <h1>Hassana Abdullahi</h1>
+                    <h1>Nguyễn Văn D</h1>
                 </div>
                 <div class="logolink">
-                    <a href="https://github.com/hassana123" target="_blank"
+                    <a href="https://www.facebook.com/" target="_blank"
                         ><img
-                            src="public/client/img/GitHub120px.png"
+                            src="/client/img/facebook.png"
                             alt="Github-Logo"
                             class="github-logo"
                     /></a>
@@ -258,17 +288,17 @@
 
             <div class="concard">
                 <img
-                    src="https://github.com/JumaCodes.png"
+                    src="img/avatar.png"
                     alt="profile-picture"
                     class="pfp"
                 />
                 <div class="text">
-                    <h1>Olumese Steve-John</h1>
+                    <h1>Nguyễn Văn E</h1>
                 </div>
                 <div class="logolink">
-                    <a href="https://github.com/JumaCodes" target="_blank"
+                    <a href="https://www.facebook.com/" target="_blank"
                         ><img
-                            src="public/client/img/GitHub120px.png"
+                            src="/client/img/facebook.png"
                             alt="Github-Logo"
                             class="github-logo"
                     /></a>
@@ -277,17 +307,17 @@
 
             <div class="concard">
                 <img
-                    src="https://github.com/lubnafathima.png"
+                    src="/client/img/avatar.png"
                     alt="profile-picture"
                     class="pfp"
                 />
                 <div class="text">
-                    <h1>Lubna Fathima N</h1>
+                    <h1>Nguyễn Văn F</h1>
                 </div>
                 <div class="logolink">
-                    <a href="https://github.com/lubnafathima" target="_blank"
+                    <a href="https://www.facebook.com/" target="_blank"
                         ><img
-                            src="public/client/img/GitHub120px.png"
+                            src="/client/img/facebook.png"
                             alt="Github-Logo"
                             class="github-logo"
                     /></a>
@@ -296,17 +326,17 @@
 
             <div class="concard">
                 <img
-                    src="https://github.com/allanlalangan.png"
+                    src="/client/img/avatar.png"
                     alt="profile-picture"
                     class="pfp"
                 />
                 <div class="text">
-                    <h1>Allan</h1>
+                    <h1>Nguyễn Văn G</h1>
                 </div>
                 <div class="logolink">
-                    <a href="https://github.com/allanlalangan" target="_blank"
+                    <a href="https://www.facebook.com/" target="_blank"
                         ><img
-                            src="public/client/img/GitHub120px.png"
+                            src="img/facebook.png"
                             alt="Github-Logo"
                             class="github-logo"
                     /></a>
@@ -315,17 +345,17 @@
 
             <div class="concard">
                 <img
-                    src="https://github.com/Seyi-Ojo.png"
+                    src="/client/img/avatar.png"
                     alt="profile-picture"
                     class="pfp"
                 />
                 <div class="text">
-                    <h1>Mayowa Ojo</h1>
+                    <h1>Nguyễn Văn H</h1>
                 </div>
                 <div class="logolink">
-                    <a href="https://github.com/Seyi-Ojo" target="_blank"
+                    <a href="https://www.facebook.com/" target="_blank"
                         ><img
-                            src="public/client/img/GitHub120px.png"
+                            src="/client/img/facebook.png"
                             alt="Github-Logo"
                             class="github-logo"
                     /></a>
@@ -334,17 +364,17 @@
 
             <div class="concard">
                 <img
-                    src="https://github.com/AmitBarman99.png"
+                    src="img/avatar.png"
                     alt="profile-picture"
                     class="pfp"
                 />
                 <div class="text">
-                    <h1>Amit Barman</h1>
+                    <h1>Nguyễn Văn I</h1>
                 </div>
                 <div class="logolink">
-                    <a href="https://github.com/AmitBarman99" target="_blank"
+                    <a href="https://www.facebook.com/" target="_blank"
                         ><img
-                            src="public/client/img/GitHub120px.png"
+                            src="img/facebook.png"
                             alt="Github-Logo"
                             class="github-logo"
                     /></a>
@@ -353,73 +383,36 @@
 
             <div class="concard">
                 <img
-                    src="https://github.com/ppdTurja.png"
+                    src="/client/img/avatar.png"
                     alt="profile-picture"
                     class="pfp"
                 />
                 <div class="text">
-                    <h1>Partha Turja</h1>
+                    <h1>Nguyễn Văn J</h1>
                 </div>
                 <div class="logolink">
-                    <a href="https://github.com/ppdTurja" target="_blank"
+                    <a href="https://www.facebook.com/" target="_blank"
                         ><img
-                            src="public/client/img/GitHub120px.png"
+                            src="/client/img/facebook.png"
                             alt="Github-Logo"
                             class="github-logo"
                     /></a>
                 </div>
             </div>
 
-            <div class="concard">
-                <img
-                    src="https://github.com/Brainiac-M.png"
-                    alt="profile-picture"
-                    class="pfp"
-                />
-                <div class="text">
-                    <h1>Mahmood Ademoye</h1>
-                </div>
-                <div class="logolink">
-                    <a href="https://github.com/Brainiac-M" target="_blank"
-                        ><img
-                            src="public/client/img/GitHub120px.png"
-                            alt="Github-Logo"
-                            class="github-logo"
-                    /></a>
-                </div>
-            </div>
-
-            <div class="concard">
-                <img
-                    src="https://github.com/abitsalihu.png"
-                    alt="profile-picture"
-                    class="pfp"
-                />
-                <div class="text">
-                    <h1>Abit Salihu</h1>
-                </div>
-                <div class="logolink">
-                    <a href="https://github.com/abitsalihu" target="_blank"
-                        ><img
-                            src="public/client/img/GitHub120px.png"
-                            alt="Github-Logo"
-                            class="github-logo"
-                    /></a>
-                </div>
-            </div>
         </section>
         <!-- Contributions -->
 
         <!-- contact -->
         <section id="contact">
             <div class="title">
-                <h1 class="font-color">Liên hệ</h1>
+                <h1 class="font-color">LIÊN HỆ</h1>
                 <div class="line"></div>
             </div>
             <div class="contact_us">
                 <form class="cform" action="" method="post">
                     <div class="crow-message">
-                        <h1 class="color">Send us a message</h1>
+                        <h1 class="color">Gửi tin nhắn cho chúng tôi</h1>
                         <div></div>
                     </div>
                     <div class="crow-in">
@@ -439,11 +432,11 @@
                     <div class="crow">
                         <div class="ccol-left">
                             <select name="country" id="country">
-                                <option value="India">India</option>
-                                <option value="Russia">Russia</option>
-                                <option value="usa">USA</option>
-                                <option value="Japan">Japan</option>
-                                <option value="France">France</option>
+                                <option value="India">Việt Nam</option>
+                                <option value="Russia">Nga</option>
+                                <option value="usa">Mỹ</option>
+                                <option value="Japan">Nhật Bản</option>
+                                <option value="France">Pháp</option>
                                 <option value="Brazil">Brazil</option>
                             </select>
                         </div>
@@ -464,27 +457,27 @@
                 <div class="cbox">
                     <div>
                         <p class="cbox-message">
-                            Prefer some other way ?<br />Reach us by using the
-                            details given below
+                            Bạn muốn cách nào khác?<br />
+                            Hãy liên hệ với chúng tôi theo thông tin bên dưới
                         </p>
                         <div class="cbox-line"></div>
                     </div>
                     <div class="c_boxx">
                         <a href="mailto:abc@gmail.com"
                             ><i class="fa fa-envelope"></i>
-                            Mail: tourism@HÀ NỘI.com
+                            Mail: tourism@hanoi.com
                         </a>
                     </div>
                     <div class="c_boxx">
                         <a href="tel:+91-12345-67890"
                             ><i class="fa fa-phone"></i>
-                            Phone: (+91) 12345-67890
+                            Phone: (+84) 12345-67890
                         </a>
                     </div>
                     <div class="c_boxx">
                         <a href="#"
                             ><i class="fa fa-map-marker"></i>
-                            Location: VietNam
+                            Location: Hà Nội, Việt Nam
                         </a>
                     </div>
                 </div>
@@ -494,9 +487,12 @@
         <!-- up scroll -->
         <i class="arrow"  onclick="topFunction()" id="upbtn"></i>
         <!-- end -->
+        <!--footer-->
         <%- include('../partials/footer') %>
+        <!--footer-->
 
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="/client/js/includes.js"></script>
         <script src="/client/js/script.js"></script>
     </body>
 </html>

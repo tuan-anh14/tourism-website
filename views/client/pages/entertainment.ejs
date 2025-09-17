@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>HÀ NỘI</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+        <link rel="stylesheet" href="/client/css/style.css" />
+        <link rel="stylesheet" href="/client/css/responsive.css" />
+        <link rel="stylesheet" href="/client/css/harmony.css" />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/client/img/apple-touch-icon.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/client/img/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/client/img/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+    </head>
+    <body
+        onload='if (window.location.href.substr(window.location.href.length - 6) == "#about") { introAboutLogoTransition(); }'
+    >
+        <!--navbar-->
+        <%- include('../partials/header') %>
+        <!--navbar-->
+
+        <!-- Page Header -->
+        <header class="page-header" style="background-image: url('/client/img/carousel-img1.jpg');">
+            <div class="header-content">
+                <h2 id="quote">Sự kiện & Giải trí</h2>
+                <div class="line"></div>
+                <h1>KHÁM PHÁ NIỀM VUI HÀ NỘI</h1>
+                <p>
+                    Lên lịch vui chơi, xem biểu diễn nghệ thuật và trải nghiệm đêm Hà Nội theo gu của bạn.
+                </p>
+            </div>
+        </header>
+
+        <!--Events Section-->
+        <section class="page-section" id="events">
+            <div class="title">
+                <h1 class="dark">Sự kiện nổi bật</h1>
+                <div class="line"></div>
+            </div>
+            <div class="standard-row">
+                <article class="standard-card col">
+                    <img src="/client/img/img1.jfif" alt="Rối nước Thăng Long" />
+                    <div class="card-content">
+                        <h4 class="dark">Rối nước Thăng Long</h4>
+                        <p class="font-color">Màn trình diễn nghệ thuật dân gian đặc sắc, kể chuyện quê hương qua con rối trên mặt nước.</p>
+                        <div class="event-details">
+                            <p><strong>Thời gian:</strong> Hàng ngày 17:00 – 20:00</p>
+                            <p><strong>Địa điểm:</strong> Nhà hát Múa rối Thăng Long</p>
+                            <p><strong>Ngôn ngữ:</strong> Việt/Anh</p>
+                            <p><strong>Giá vé:</strong> từ 120.000đ</p>
+                        </div>
+                        <a href="#" class="ctn">Đặt vé</a>
+                    </div>
+                </article>
+                <article class="standard-card col">
+                    <img src="/client/img/img2.jfif" alt="Phố đi bộ Hồ Gươm" />
+                    <div class="card-content">
+                        <h4 class="dark">Phố đi bộ Hồ Gươm</h4>
+                        <p class="font-color">Âm nhạc đường phố, trò chơi dân gian và không khí sôi động cuối tuần quanh hồ Hoàn Kiếm.</p>
+                        <div class="event-details">
+                            <p><strong>Thời gian:</strong> Tối thứ 6 – Chủ nhật</p>
+                            <p><strong>Khu vực:</strong> Quanh hồ Hoàn Kiếm</p>
+                            <p><strong>Phí:</strong> Miễn phí</p>
+                        </div>
+                        <a href="#" class="ctn">Xem lịch</a>
+                    </div>
+                </article>
+                <article class="standard-card col">
+                    <img src="/client/img/img2.jfif" alt="Đêm nhạc Trịnh" />
+                    <div class="card-content">
+                        <h4 class="dark">Đêm nhạc Trịnh</h4>
+                        <p class="font-color">Không gian âm nhạc trữ tình với những bản tình ca bất hủ, phù hợp cho một tối thư thái.</p>
+                        <div class="event-details">
+                            <p><strong>Thời gian:</strong> Thứ 7 hàng tuần</p>
+                            <p><strong>Địa điểm:</strong> Nhà hát Lớn Hà Nội</p>
+                            <p><strong>Giá vé:</strong> từ 300.000đ</p>
+                        </div>
+                        <a href="#" class="ctn">Đặt vé</a>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Additional Events Row -->
+            <div class="standard-row" style="margin-top: 60px;">
+                <article class="standard-card col">
+                    <img src="/client/img/carousel-img2.jpg" alt="Triển lãm nghệ thuật" />
+                    <div class="card-content">
+                        <h4 class="dark">Triển lãm nghệ thuật</h4>
+                        <p class="font-color">Khám phá tác phẩm hội họa, nhiếp ảnh đương đại tại các không gian sáng tạo trong thành phố.</p>
+                        <div class="event-details">
+                            <p><strong>Thời gian:</strong> Theo tuần</p>
+                            <p><strong>Địa điểm:</strong> VCCA, Manzi, AGOhub...</p>
+                            <p><strong>Vé:</strong> Tuỳ chương trình</p>
+                        </div>
+                        <a href="#" class="ctn">Xem chi tiết</a>
+                    </div>
+                </article>
+                <article class="standard-card col">
+                    <img src="/client/img/carousel-img3.jpg" alt="Bar/Pub Acoustic" />
+                    <div class="card-content">
+                        <h4 class="dark">Bar & Pub Acoustic</h4>
+                        <p class="font-color">Không gian chill cùng âm nhạc acoustic và đồ uống, phù hợp hội bạn trẻ.</p>
+                        <div class="event-details">
+                            <p><strong>Thời gian:</strong> Tối hàng ngày</p>
+                            <p><strong>Khu vực:</strong> Phố cổ, Tạ Hiện, Tràng Tiền...</p>
+                            <p><strong>Giá:</strong> Tuỳ menu</p>
+                        </div>
+                        <a href="#" class="ctn">Đặt bàn</a>
+                    </div>
+                </article>
+                <article class="standard-card col">
+                    <img src="/client/img/carousel-img4.jpg" alt="Cine Art House" />
+                    <div class="card-content">
+                        <h4 class="dark">Rạp chiếu phim nghệ thuật</h4>
+                        <p class="font-color">Thưởng thức phim độc lập, chiếu lại kinh điển và tọa đàm cùng đạo diễn.</p>
+                        <div class="event-details">
+                            <p><strong>Lịch chiếu:</strong> Cập nhật hàng tuần</p>
+                            <p><strong>Địa điểm:</strong> Trung tâm văn hoá, rạp chuyên đề</p>
+                            <p><strong>Vé:</strong> từ 70.000đ</p>
+                        </div>
+                        <a href="#" class="ctn">Mua vé</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Event Categories -->
+        <section class="page-section event-categories">
+            <div class="title">
+                <h1 class="dark">Chủ đề giải trí</h1>
+                <div class="line"></div>
+            </div>
+            <div class="standard-row">
+                <div class="feature-card">
+                    <i class="fa fa-tree"></i>
+                    <h3>Nghệ thuật & biểu diễn</h3>
+                    <p>Nhà hát, rối nước, hoà nhạc, ballet – điểm nhấn văn hoá của Thủ đô.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa fa-ship"></i>
+                    <h3>Đêm Hà Nội</h3>
+                    <p>Phố đi bộ, bar/pub acoustic, rooftop view – sôi động và đầy cảm hứng.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa fa-tree"></i>
+                    <h3>Không gian sáng tạo</h3>
+                    <p>Triển lãm, workshop, chiếu phim độc lập dành cho tín đồ nghệ thuật.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- up scroll -->
+        <i class="arrow" onclick="topFunction()" id="upbtn"></i>
+
+        <!--footer-->
+        <%- include('../partials/footer') %>
+        <!--footer-->
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="/client/js/includes.js"></script>
+        <script src="/client/js/script.js"></script>
+    </body>
+</html>

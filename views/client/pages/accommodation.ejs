@@ -1,201 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Events - HÀ NỘI</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <title>Lưu trú Hà Nội | HÀ NỘI</title>
+        <meta name="description" content="Tìm khách sạn, homestay, nhà nghỉ, căn hộ dịch vụ tại Hà Nội. Lọc nhanh theo loại hình, mức giá, khu vực, tiện ích." />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
         <link rel="stylesheet" href="/client/css/style.css" />
         <link rel="stylesheet" href="/client/css/responsive.css" />
         <link rel="stylesheet" href="/client/css/harmony.css" />
-        <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/client/img/apple-touch-icon.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/client/img/favicon-32x32.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/client/img/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/client/site.webmanifest" />
+        <link rel="stylesheet" href="/client/css/accommodation.css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
     </head>
-    <body>
+    <body class="accommodation">
         <%- include('../partials/header') %>
 
-        <!-- Page Header -->
-        <header class="page-header" style="background-image: url('/client/img/carousel-img1.jpg');">
+        <!-- Banner -->
+        <header class="page-header accommodation-banner" style="background-image: url('/client/img/carousel-img2.jpg');">
             <div class="header-content">
-                <h2 id="quote">Upcoming HÀ NỘIs</h2>
+                <h2 id="quote">Nghỉ ngơi thoải mái – tận hưởng Hà Nội</h2>
                 <div class="line"></div>
-                <h1>DISCOVER EVENTS</h1>
-                <p>
-                    Join us for incredible HÀ NỘIs and unforgettable experiences around the world
-                </p>
+                <h1>Lưu trú Hà Nội</h1>
+                <p class="font-color">Chọn chỗ ở phù hợp về vị trí, tiện nghi và ngân sách</p>
             </div>
         </header>
 
-        <!--Events Section-->
-        <section class="page-section" id="events">
-            <div class="title">
-                <h1 class="dark">Upcoming Events</h1>
-                <div class="line"></div>
-            </div>
-            <div class="standard-row">
-                <article class="standard-card col">
-                    <img src="/client/img/img1.jfif" alt="Everest Camp Trek" />
-                    <div class="card-content">
-                        <h4 class="dark">Everest Camp Trek</h4>
-                        <p class="font-color">
-                            Everest base camp trek is without a doubt, one of
-                            the most renowned travel destinations in the world.
-                            Experience the breathtaking views and challenge yourself.
-                        </p>
-                        <div class="event-details">
-                            <p><strong>Date:</strong> March 15-30, 2024</p>
-                            <p><strong>Duration:</strong> 16 days</p>
-                            <p><strong>Difficulty:</strong> Challenging</p>
-                            <p><strong>Price:</strong> $2,499</p>
-                        </div>
-                        <a href="#" class="ctn">Book Now</a>
+        <!-- Filters -->
+        <section>
+            <div class="accommodation-filters" aria-label="Bộ lọc lưu trú">
+                <div class="filter-row">
+                    <div class="box" role="search">
+                        <i class="fa fa-search" aria-hidden="true" style="margin-right:8px"></i>
+                        <input id="acc-search" type="text" placeholder="Tìm theo tên cơ sở lưu trú..." aria-label="Tìm theo tên" />
                     </div>
-                </article>
-                <article class="standard-card col">
-                    <img src="/client/img/img2.jfif" alt="Walking Holidays" />
-                    <div class="card-content">
-                        <h4 class="dark">Walking Holidays</h4>
-                        <p class="font-color">
-                            Join small guided group walks, enjoy a challenging
-                            trek, or a luxury private guided walk which can be
-                            made especially for you.
-                        </p>
-                        <div class="event-details">
-                            <p><strong>Date:</strong> April 5-12, 2024</p>
-                            <p><strong>Duration:</strong> 8 days</p>
-                            <p><strong>Difficulty:</strong> Moderate</p>
-                            <p><strong>Price:</strong> $899</p>
-                        </div>
-                        <a href="#" class="ctn">Book Now</a>
+                    <div class="box">
+                        <select id="acc-type" aria-label="Chọn loại hình">
+                            <option value="all">Tất cả loại hình</option>
+                            <option value="hotel">Khách sạn</option>
+                            <option value="homestay">Homestay</option>
+                            <option value="guesthouse">Nhà nghỉ</option>
+                            <option value="apartment">Căn hộ dịch vụ</option>
+                        </select>
                     </div>
-                </article>
-                <article class="standard-card col">
-                    <img src="/client/img/img2.jfif" alt="Andaman Beaches" />
-                    <div class="card-content">
-                        <h4 class="dark">Andaman Beaches</h4>
-                        <p class="font-color">
-                            Diving in Andaman Beaches is exceptional. The coastal
-                            belt surroundings is one of the richest coral reef
-                            ecosystems in the world.
-                        </p>
-                        <div class="event-details">
-                            <p><strong>Date:</strong> May 10-17, 2024</p>
-                            <p><strong>Duration:</strong> 8 days</p>
-                            <p><strong>Difficulty:</strong> Easy</p>
-                            <p><strong>Price:</strong> $1,299</p>
-                        </div>
-                        <a href="#" class="ctn">Book Now</a>
+                    <div class="box">
+                        <select id="acc-price" aria-label="Chọn mức giá">
+                            <option value="all">Tất cả mức giá</option>
+                            <option value="lt1m">Dưới 1.000.000đ</option>
+                            <option value="1to2m">1.000.000đ - 2.000.000đ</option>
+                            <option value="2to3m">2.000.000đ - 3.000.000đ</option>
+                            <option value="gt3m">Trên 3.000.000đ</option>
+                        </select>
                     </div>
-                </article>
+                    <div class="box">
+                        <select id="acc-area" aria-label="Chọn khu vực">
+                            <option value="all">Tất cả khu vực</option>
+                            <option value="center">Quận Hoàn Kiếm</option>
+                            <option value="tayho">Quận Tây Hồ</option>
+                            <option value="caugiay">Quận Cầu Giấy</option>
+                            <option value="haibatrung">Quận Hai Bà Trưng</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
-            <!-- Additional Events Row -->
-            <div class="standard-row" style="margin-top: 60px;">
-                <article class="standard-card col">
-                    <img src="/client/img/carousel-img2.jpg" alt="Alpine HÀ NỘIs" />
-                    <div class="card-content">
-                        <h4 class="dark">Alpine HÀ NỘIs</h4>
-                        <p class="font-color">
-                            Discover the majestic Alps with our guided mountain
-                            climbing and skiing HÀ NỘIs. Perfect for thrill
-                            seekers and nature lovers.
-                        </p>
-                        <div class="event-details">
-                            <p><strong>Date:</strong> June 20-30, 2024</p>
-                            <p><strong>Duration:</strong> 11 days</p>
-                            <p><strong>Difficulty:</strong> Challenging</p>
-                            <p><strong>Price:</strong> $1,899</p>
-                        </div>
-                        <a href="#" class="ctn">Book Now</a>
-                    </div>
-                </article>
-                <article class="standard-card col">
-                    <img src="/client/img/carousel-img3.jpg" alt="Desert Safari" />
-                    <div class="card-content">
-                        <h4 class="dark">Desert Safari</h4>
-                        <p class="font-color">
-                            Experience the magic of the desert with camel rides,
-                            star gazing, and traditional bedouin culture in the
-                            heart of the Sahara.
-                        </p>
-                        <div class="event-details">
-                            <p><strong>Date:</strong> July 8-15, 2024</p>
-                            <p><strong>Duration:</strong> 8 days</p>
-                            <p><strong>Difficulty:</strong> Moderate</p>
-                            <p><strong>Price:</strong> $1,599</p>
-                        </div>
-                        <a href="#" class="ctn">Book Now</a>
-                    </div>
-                </article>
-                <article class="standard-card col">
-                    <img src="/client/img/carousel-img4.jpg" alt="Amazon Expedition" />
-                    <div class="card-content">
-                        <h4 class="dark">Amazon Expedition</h4>
-                        <p class="font-color">
-                            Journey deep into the Amazon rainforest to discover
-                            unique wildlife, indigenous cultures, and pristine
-                            natural beauty.
-                        </p>
-                        <div class="event-details">
-                            <p><strong>Date:</strong> August 12-22, 2024</p>
-                            <p><strong>Duration:</strong> 11 days</p>
-                            <p><strong>Difficulty:</strong> Moderate</p>
-                            <p><strong>Price:</strong> $2,199</p>
-                        </div>
-                        <a href="#" class="ctn">Book Now</a>
-                    </div>
-                </article>
+            <div class="accommodation-pills" aria-label="Chọn nhanh theo loại hình">
+                <div class="pill active" data-type="all">Tất cả</div>
+                <div class="pill" data-type="hotel">Khách sạn</div>
+                <div class="pill" data-type="homestay">Homestay</div>
+                <div class="pill" data-type="guesthouse">Nhà nghỉ</div>
+                <div class="pill" data-type="apartment">Căn hộ</div>
             </div>
+
+            <!-- Grid -->
+            <section class="accommodation-grid" aria-label="Danh sách cơ sở lưu trú">
+                <article class="accommodation-card" data-title="Hanoi Old Quarter Hotel" data-type="hotel" data-area="center" data-price="1800000" data-amenities="wifi,breakfast,parking">
+                    <div class="thumb">
+                        <img src="/client/img/carousel-img2.jpg" alt="Hanoi Old Quarter Hotel" loading="lazy" />
+                    </div>
+                    <div class="content">
+                        <h3 class="title dark">Hanoi Old Quarter Hotel</h3>
+                        <p class="desc font-color">Vị trí trung tâm phố cổ, phòng ốc hiện đại, gần hồ Hoàn Kiếm.</p>
+                        <div class="meta">
+                            <span class="price">~ 1.800.000đ/đêm</span>
+                            <div class="amenities">
+                                <span class="tag">Wi‑Fi</span>
+                                <span class="tag">Bữa sáng</span>
+                                <span class="tag">Đỗ xe</span>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <a class="ctn" href="#">Đặt phòng</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="accommodation-card" data-title="Lakeside Homestay" data-type="homestay" data-area="tayho" data-price="900000" data-amenities="wifi,kitchen,lakeview">
+                    <div class="thumb">
+                        <img src="/client/img/carousel-img3.jpg" alt="Lakeside Homestay" loading="lazy" />
+                    </div>
+                    <div class="content">
+                        <h3 class="title dark">Lakeside Homestay</h3>
+                        <p class="desc font-color">Không gian ấm cúng ven Hồ Tây, có bếp và ban công hướng hồ.</p>
+                        <div class="meta">
+                            <span class="price">~ 900.000đ/đêm</span>
+                            <div class="amenities">
+                                <span class="tag">Wi‑Fi</span>
+                                <span class="tag">Bếp</span>
+                                <span class="tag">View hồ</span>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <a class="ctn" href="#">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="accommodation-card" data-title="Budget Guesthouse" data-type="guesthouse" data-area="caugiay" data-price="600000" data-amenities="wifi,parking,aircon">
+                    <div class="thumb">
+                        <img src="/client/img/img1.jfif" alt="Budget Guesthouse" loading="lazy" />
+                    </div>
+                    <div class="content">
+                        <h3 class="title dark">Budget Guesthouse</h3>
+                        <p class="desc font-color">Giải pháp tiết kiệm, phòng sạch, đầy đủ điều hòa, chỗ đỗ xe.</p>
+                        <div class="meta">
+                            <span class="price">~ 600.000đ/đêm</span>
+                            <div class="amenities">
+                                <span class="tag">Wi‑Fi</span>
+                                <span class="tag">Đỗ xe</span>
+                                <span class="tag">Điều hòa</span>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <a class="ctn" href="#">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="accommodation-card" data-title="Serviced Apartment Center" data-type="apartment" data-area="haibatrung" data-price="2500000" data-amenities="wifi,kitchen,washing">
+                    <div class="thumb">
+                        <img src="/client/img/img2.jfif" alt="Serviced Apartment Center" loading="lazy" />
+                    </div>
+                    <div class="content">
+                        <h3 class="title dark">Serviced Apartment Center</h3>
+                        <p class="desc font-color">Căn hộ dịch vụ đầy đủ nội thất, bếp và máy giặt, phù hợp lưu trú dài ngày.</p>
+                        <div class="meta">
+                            <span class="price">~ 2.500.000đ/đêm</span>
+                            <div class="amenities">
+                                <span class="tag">Wi‑Fi</span>
+                                <span class="tag">Bếp</span>
+                                <span class="tag">Máy giặt</span>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <a class="ctn" href="#">Đặt phòng</a>
+                        </div>
+                    </div>
+                </article>
+            </section>
         </section>
-
-        <!-- Event Categories -->
-        <section class="page-section event-categories">
-            <div class="title">
-                <h1 class="dark">Event Categories</h1>
-                <div class="line"></div>
-            </div>
-            <div class="standard-row">
-                <div class="feature-card">
-                    <i class="fa fa-mountain"></i>
-                    <h3>Mountain HÀ NỘIs</h3>
-                    <p>Challenging treks and climbs in the world's most beautiful mountain ranges.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fa fa-ship"></i>
-                    <h3>Ocean Expeditions</h3>
-                    <p>Dive into crystal clear waters and explore marine life in exotic locations.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fa fa-tree"></i>
-                    <h3>Wildlife Safaris</h3>
-                    <p>Get up close with nature's most magnificent creatures in their natural habitats.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- up scroll -->
-        <i class="arrow" onclick="topFunction()" id="upbtn"></i>
 
         <%- include('../partials/footer') %>
 
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="/client/js/events.js"></script>
+        <script src="/client/js/includes.js"></script>
+        <script src="/client/js/script.js"></script>
+        <script src="/client/js/accommodation.js"></script>
     </body>
 </html>
