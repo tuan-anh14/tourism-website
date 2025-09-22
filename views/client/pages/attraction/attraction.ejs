@@ -17,7 +17,7 @@
         <link rel="manifest" href="/site.webmanifest" />
     </head>
     <body>
-        <%- include('../partials/header') %>
+        <%- include('../../partials/header') %>
 
         <!-- Banner -->
         <header class="page-header attraction-banner" style="background-image: url('/client/img/header-bg.jfif');">
@@ -26,6 +26,47 @@
                 <div class="line"></div>
                 <h1>Điểm tham quan</h1>
                 <p class="font-color">Chọn lọc địa điểm đặc sắc cho hành trình Hà Nội trọn vẹn</p>
+                
+                <!-- Search Bar Component -->
+                <div class="hero-search-container">
+                    <form class="hero-search-form" role="search" aria-label="Tìm kiếm điểm tham quan">
+                        <div class="search-field">
+                            <i class="fa fa-search search-icon" aria-hidden="true"></i>
+                            <input 
+                                type="text" 
+                                id="hero-search-input" 
+                                class="search-input" 
+                                placeholder="Bạn muốn đi đâu?" 
+                                aria-label="Nhập tên điểm tham quan"
+                                autocomplete="off"
+                            />
+                            <button type="button" class="search-clear" aria-label="Xóa tìm kiếm">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="search-divider"></div>
+                        
+                        <div class="popular-now-section">
+                            <p class="popular-now-label">Phổ biến</p>
+                            <div class="popular-suggestions">
+                                <button type="button" class="popular-suggestion" data-category="historic">
+                                    <span>Di tích lịch sử</span>
+                                </button>
+                                <button type="button" class="popular-suggestion" data-category="museum">
+                                    <span>Bảo tàng</span>
+                                </button>
+                                <button type="button" class="popular-suggestion" data-category="oldquarter">
+                                    <span>Phố cổ</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="search-suggestions" id="search-suggestions" role="listbox" aria-label="Gợi ý tìm kiếm">
+                            <!-- Suggestions will be populated by JavaScript -->
+                        </div>
+                    </form>
+                </div>
             </div>
         </header>
 
@@ -33,10 +74,6 @@
         <section class="attraction-page">
             <div class="attraction-filters" aria-label="Bộ lọc điểm tham quan">
                 <div class="filter-row">
-                    <div class="search-input" role="search">
-                        <i class="fa fa-search" aria-hidden="true" style="margin-right: 8px"></i>
-                        <input id="attraction-search" type="text" placeholder="Tìm theo tên điểm tham quan..." aria-label="Tìm theo tên" />
-                    </div>
                     <div class="category-select">
                         <select id="attraction-category" aria-label="Chọn nhóm điểm tham quan">
                             <option value="all">Tất cả thể loại</option>
@@ -163,7 +200,7 @@
             </section>
         </section>
 
-        <%- include('../partials/footer') %>
+        <%- include('../../partials/footer') %>
 
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="/client/js/includes.js"></script>
