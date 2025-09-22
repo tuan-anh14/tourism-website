@@ -3,5 +3,5 @@ const route = express.Router()
 
 const cuisineController = require("../../controller/client/cuisine.controller") 
 
-route.get('/cuisine', cuisineController.cuisine)
+route.get('/', cuisineController.cuisine)
 module.exports = route; 
