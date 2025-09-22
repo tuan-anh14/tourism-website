@@ -11,7 +11,5 @@ module.exports.connect = async () => {
     console.log("✅ MongoDB connected successfully!");
   } catch (error) {
     console.log("❌ MongoDB connection error:", error.message);
-    console.log("⚠️  Server will continue without database connection");
-    console.log("🔧 Please check your MongoDB configuration in .env file");
   }
 };
