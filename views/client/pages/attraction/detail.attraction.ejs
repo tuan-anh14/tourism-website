@@ -20,7 +20,7 @@
         <%- include('../../partials/header') %>
 
         <!-- Hero -->
-        <header class="attraction-detail hero" style="--hero:url('<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0]))) || '/client/img/header-bg.jfif' %>')">
+        <header class="attraction-detail hero" style="--hero:url('<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0]))) || '/client/img/header-bg.jfif' %>')" aria-label="Ảnh và tiêu đề điểm tham quan">
             <div class="hero-overlay"></div>
             <div class="hero-content">
                 <a href="/attraction" class="back-link" aria-label="Quay lại danh sách">
@@ -42,7 +42,7 @@
             </div>
         </header>
 
-        <main class="attraction-detail main">
+        <main class="attraction-detail main" aria-label="Nội dung chi tiết điểm tham quan">
             <div class="container">
                 <div class="layout">
                     <!-- Left column -->
