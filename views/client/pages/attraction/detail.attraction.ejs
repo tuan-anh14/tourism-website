@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= (attraction && attraction.title) || 'Chi tiết điểm tham quan' %> | HÀ NỘI</title>
+        <meta name="description" content="<%= (attraction && attraction.seoDescription) || 'Chi tiết điểm tham quan Hà Nội' %>" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="/client/css/style.css" />
+        <link rel="stylesheet" href="/client/css/responsive.css" />
+        <link rel="stylesheet" href="/client/css/harmony.css" />
+        <link rel="stylesheet" href="/client/css/attraction-detail.css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
+        <link rel="manifest" href="/client/img/site.webmanifest" />
+    </head>
+    <body>
+        <%- include('../../partials/header') %>
+
+        <!-- Hero -->
+        <header class="attraction-detail hero" style="--hero:url('<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0]))) || '/client/img/header-bg.jfif' %>')">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <a href="/attraction" class="back-link" aria-label="Quay lại danh sách">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại
+                </a>
+                <h1 class="title"><%= (attraction && attraction.title) || 'Điểm tham quan' %></h1>
+                <p class="location">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <span><%= (attraction && attraction.address) || '' %></span>
+                </p>
+                <% if (attraction && attraction.shortDescription) { %>
+                <p class="short-desc"><%= attraction.shortDescription %></p>
+                <% } %>
+                <div class="hero-actions">
+                    <button class="btn-share" type="button" aria-label="Chia sẻ">
+                        <i class="fa fa-share-alt" aria-hidden="true"></i> Chia sẻ
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="attraction-detail main">
+            <div class="container">
+                <div class="layout">
+                    <!-- Left column -->
+                    <section class="column primary">
+                        <!-- Overview Cards -->
+                        <div class="card info">
+                            <h2>Thông tin</h2>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="label">Địa chỉ</span>
+                                    <p class="value"><%= (attraction && attraction.address) || '—' %></p>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Giờ mở cửa</span>
+                                    <div class="value">
+                                        <% if (attraction && attraction.openHours) { %>
+                                            <ul class="hours">
+                                                <% (attraction.openHours || []).forEach(function(h){ %>
+                                                    <li><%= h %></li>
+                                                <% }) %>
+                                            </ul>
+                                        <% } else { %>
+                                            <ul class="hours">
+                                                <li>Mùa hè (15/4 - 15/10): 7:30 - 18:00</li>
+                                                <li>Mùa đông (còn lại): 8:00 - 18:00</li>
+                                            </ul>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Bản đồ</span>
+                                    <div class="map">
+                                        <iframe
+                                            title="Bản đồ"
+                                            loading="lazy"
+                                            referrerpolicy="no-referrer-when-downgrade"
+                                            src="<%= (attraction && attraction.mapEmbedUrl) || 'https://www.google.com/maps?q=58+Qu%E1%BB%91c+T%E1%BB%AD+Gi%C3%A1m,+H%C3%A0+N%E1%BB%99i&output=embed' %>">
+                                        </iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tickets -->
+                        <div class="card tickets">
+                            <h2>Giá vé tham quan</h2>
+                            <table class="ticket-table" aria-label="Giá vé">
+                                <thead>
+                                    <tr>
+                                        <th>Đối tượng</th>
+                                        <th>Giá vé</th>
+                                        <th>Ghi chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% (attraction && attraction.tickets && attraction.tickets.length ? attraction.tickets : [
+                                        { type: 'Người lớn', price: '70.000 VNĐ' },
+                                        { type: 'HSSV', price: '15.000 VNĐ', note: 'Cần thẻ học sinh/sinh viên' },
+                                        { type: 'Người cao tuổi', price: '35.000 VNĐ', note: 'Công dân Việt Nam từ 60 tuổi' },
+                                        { type: 'Miễn phí', price: '0 VNĐ', note: 'Trẻ dưới 15, người khuyết tật, nhà giáo' }
+                                    ]).forEach(function(t){ %>
+                                        <tr>
+                                            <td><%= t.type %></td>
+                                            <td><%= t.price %></td>
+                                            <td><%= t.note || '' %></td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                            <p class="note">Giá có thể thay đổi vào dịp Lễ/Tết và sự kiện đặc biệt.</p>
+                        </div>
+
+                        <!-- Introduction -->
+                        <div class="card intro">
+                            <h2>Giới thiệu</h2>
+                            <p>
+                                <%= (attraction && attraction.description) || 'Văn Miếu – Quốc Tử Giám là quần thể di tích lịch sử nổi tiếng, trường đại học đầu tiên của Việt Nam với kiến trúc cổ kính và không gian tĩnh lặng.' %>
+                            </p>
+                            <div class="gallery">
+                                <% (attraction && attraction.images ? attraction.images.slice(0,2) : ['/client/img/carousel-img5.jpg','/client/img/carousel-img4.jpg']).forEach(function(img){ %>
+                                    <img src="<%= img %>" alt="Hình ảnh điểm tham quan" loading="lazy" class="gallery-img" />
+                                <% }) %>
+                            </div>
+                        </div>
+
+                        <!-- Experiences -->
+                        <div class="card experiences">
+                            <h2>Trải nghiệm nổi bật</h2>
+                            <div class="experience-grid">
+                                <% (attraction && attraction.experiences && attraction.experiences.length ? attraction.experiences : [
+                                    { icon: 'fa-university', title: 'Chiêm ngưỡng kiến trúc', text: 'Khuê Văn Các, giếng Thiên Quang, bia Tiến sĩ...' },
+                                    { icon: 'fa-history', title: 'Tìm hiểu lịch sử – giáo dục', text: 'Khám phá quá trình hình thành và chế độ khoa cử.' },
+                                    { icon: 'fa-leaf', title: 'Không gian linh thiêng', text: 'Thắp hương tưởng nhớ các bậc hiền triết.' },
+                                    { icon: 'fa-pencil', title: 'Trải nghiệm văn hóa', text: 'Xin chữ đầu năm, triển lãm thư pháp.' }
+                                ]).forEach(function(ex){ %>
+                                    <div class="exp-item">
+                                        <div class="icon"><i class="fa <%= ex.icon %>"></i></div>
+                                        <div class="content">
+                                            <h3><%= ex.title %></h3>
+                                            <p><%= ex.text %></p>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+
+                        <!-- Rules -->
+                        <div class="card rules">
+                            <h2>Lưu ý khi tham quan</h2>
+                            <ul class="rule-list">
+                                <% (attraction && attraction.rules && attraction.rules.length ? attraction.rules : [
+                                    'Chấp hành quy định, không xâm hại hiện vật/cảnh quan.',
+                                    'Trang phục lịch sự; không hút thuốc, đội nón trong khu trưng bày.',
+                                    'Không nói tục, gây mất trật tự nơi tôn nghiêm.',
+                                    'Thắp hương, dâng lễ đúng nơi quy định.',
+                                    'Giữ gìn vệ sinh khu di tích.',
+                                    'Ghi hình cần được sự đồng ý của ban quản lý.'
+                                ]).forEach(function(r){ %>
+                                    <li><i class="fa fa-check"></i><span><%= r %></span></li>
+                                <% }) %>
+                            </ul>
+                        </div>
+
+                        <!-- Reviews placeholder -->
+                        <div class="card reviews">
+                            <h2>Đánh giá</h2>
+                            <p>Chức năng đánh giá sẽ được bổ sung.</p>
+                        </div>
+                    </section>
+
+                    <!-- Right column -->
+                    <aside class="column sidebar">
+                        <div class="card related">
+                            <h2>Gợi ý liên quan</h2>
+                            <div class="related-grid">
+                                <% (relatedAttractions && relatedAttractions.length ? relatedAttractions : [
+                                    { title: 'Hoàng thành Thăng Long', href: '#', image: '/client/img/carousel-img4.jpg' },
+                                    { title: 'Bảo tàng Dân tộc học', href: '#', image: '/client/img/carousel-img6.jpg' },
+                                    { title: 'Phố cổ Hà Nội', href: '#', image: '/client/img/img3.png' }
+                                ]).forEach(function(a){ %>
+                                    <a class="related-card" href="<%= a.href %>">
+                                        <div class="thumb">
+                                            <img src="<%= a.image %>" alt="<%= a.title %>" loading="lazy" />
+                                        </div>
+                                        <div class="meta">
+                                            <h3><%= a.title %></h3>
+                                        </div>
+                                    </a>
+                                <% }) %>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </main>
+
+        <%- include('../../partials/footer') %>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="/client/js/includes.js"></script>
+        <script src="/client/js/script.js"></script>
+        <script src="/client/js/attraction-detail.js"></script>
+    </body>
+    </html>
+

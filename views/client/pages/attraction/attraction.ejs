@@ -14,7 +14,7 @@
         <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="manifest" href="/client/img/site.webmanifest" />
     </head>
     <body>
         <%- include('../../partials/header') %>
@@ -101,7 +101,7 @@
             <!-- Grid -->
             <section class="attraction-grid" aria-label="Danh sách điểm tham quan">
                 <!-- Historic -->
-                <article class="attraction-card" data-title="Hoàng thành Thăng Long" data-category="historic">
+                <article class="attraction-card" data-title="Hoàng thành Thăng Long" data-category="historic" data-slug="hoang-thanh-thang-long">
                     <div class="thumb">
                         <img src="/client/img/carousel-img4.jpg" alt="Hoàng thành Thăng Long" loading="lazy" />
                     </div>
@@ -110,12 +110,12 @@
                         <p class="desc font-color">Di sản văn hóa thế giới, dấu ấn nghìn năm của kinh thành Thăng Long.
                         </p>
                         <div class="actions">
-                            <a class="ctn" href="#">Xem chi tiết</a>
+                            <a class="ctn" href="/attraction/hoang-thanh-thang-long">Xem chi tiết</a>
                         </div>
                     </div>
                 </article>
 
-                <article class="attraction-card" data-title="Văn Miếu - Quốc Tử Giám" data-category="historic">
+                <article class="attraction-card" data-title="Văn Miếu - Quốc Tử Giám" data-category="historic" data-slug="van-mieu-quoc-tu-giam">
                     <div class="thumb">
                         <img src="/client/img/carousel-img5.jpg" alt="Văn Miếu - Quốc Tử Giám" loading="lazy" />
                     </div>
@@ -123,13 +123,13 @@
                         <h3 class="title dark">Văn Miếu - Quốc Tử Giám</h3>
                         <p class="desc font-color">Trường đại học đầu tiên của Việt Nam, nơi tôn vinh truyền thống hiếu học.</p>
                         <div class="actions">
-                            <a class="ctn" href="#">Xem chi tiết</a>
+                            <a class="ctn" href="/attraction/van-mieu-quoc-tu-giam">Xem chi tiết</a>
                         </div>
                     </div>
                 </article>
 
                 <!-- Museum -->
-                <article class="attraction-card" data-title="Bảo tàng Dân tộc học Việt Nam" data-category="museum">
+                <article class="attraction-card" data-title="Bảo tàng Dân tộc học Việt Nam" data-category="museum" data-slug="bao-tang-dan-toc-hoc-viet-nam">
                     <div class="thumb">
                         <img src="/client/img/carousel-img6.jpg" alt="Bảo tàng Dân tộc học Việt Nam" loading="lazy" />
                     </div>
@@ -137,13 +137,13 @@
                         <h3 class="title dark">Bảo tàng Dân tộc học Việt Nam</h3>
                         <p class="desc font-color">Không gian khám phá văn hóa 54 dân tộc Việt Nam sống động, đa dạng.</p>
                         <div class="actions">
-                            <a class="ctn" href="#">Xem chi tiết</a>
+                            <a class="ctn" href="/attraction/bao-tang-dan-toc-hoc-viet-nam">Xem chi tiết</a>
                         </div>
                     </div>
                 </article>
 
                 <!-- Old Quarter -->
-                <article class="attraction-card" data-title="Phố cổ Hà Nội" data-category="oldquarter">
+                <article class="attraction-card" data-title="Phố cổ Hà Nội" data-category="oldquarter" data-slug="pho-co-ha-noi">
                     <div class="thumb">
                         <img src="/client/img/img3.png" alt="Phố cổ Hà Nội" loading="lazy" />
                     </div>
@@ -151,13 +151,13 @@
                         <h3 class="title dark">Phố cổ Hà Nội</h3>
                         <p class="desc font-color">Không gian 36 phố phường đặc trưng, đậm nét văn hóa và ẩm thực.</p>
                         <div class="actions">
-                            <a class="ctn" href="#">Xem chi tiết</a>
+                            <a class="ctn" href="/attraction/pho-co-ha-noi">Xem chi tiết</a>
                         </div>
                     </div>
                 </article>
 
                 <!-- Craft Villages -->
-                <article class="attraction-card" data-title="Làng gốm Bát Tràng" data-category="craft">
+                <article class="attraction-card" data-title="Làng gốm Bát Tràng" data-category="craft" data-slug="lang-gom-bat-trang">
                     <div class="thumb">
                         <img src="/client/img/img4.png" alt="Làng gốm Bát Tràng" loading="lazy" />
                     </div>
@@ -165,13 +165,13 @@
                         <h3 class="title dark">Làng gốm Bát Tràng</h3>
                         <p class="desc font-color">Làng nghề lâu đời, nổi tiếng với sản phẩm gốm sứ tinh xảo, trải nghiệm tự tay nặn gốm.</p>
                         <div class="actions">
-                            <a class="ctn" href="#">Xem chi tiết</a>
+                            <a class="ctn" href="/attraction/lang-gom-bat-trang">Xem chi tiết</a>
                         </div>
                     </div>
                 </article>
 
                 <!-- Parks / Entertainment -->
-                <article class="attraction-card" data-title="Công viên Thống Nhất" data-category="park">
+                <article class="attraction-card" data-title="Công viên Thống Nhất" data-category="park" data-slug="cong-vien-thong-nhat">
                     <div class="thumb">
                         <img src="/client/img/img5.png" alt="Công viên Thống Nhất" loading="lazy" />
                     </div>
@@ -179,13 +179,13 @@
                         <h3 class="title dark">Công viên Thống Nhất</h3>
                         <p class="desc font-color">Không gian xanh giữa lòng thành phố, phù hợp nghỉ ngơi, đi dạo.</p>
                         <div class="actions">
-                            <a class="ctn" href="#">Xem chi tiết</a>
+                            <a class="ctn" href="/attraction/cong-vien-thong-nhat">Xem chi tiết</a>
                         </div>
                     </div>
                 </article>
 
                 <!-- Festivals -->
-                <article class="attraction-card" data-title="Lễ hội Gióng" data-category="festival">
+                <article class="attraction-card" data-title="Lễ hội Gióng" data-category="festival" data-slug="le-hoi-giong">
                     <div class="thumb">
                         <img src="/client/img/img6.png" alt="Lễ hội Gióng" loading="lazy" />
                     </div>
@@ -193,7 +193,7 @@
                         <h3 class="title dark">Lễ hội Gióng</h3>
                         <p class="desc font-color">Di sản văn hóa phi vật thể đại diện của nhân loại, đậm bản sắc Hà Nội.</p>
                         <div class="actions">
-                            <a class="ctn" href="#">Xem chi tiết</a>
+                            <a class="ctn" href="/attraction/le-hoi-giong">Xem chi tiết</a>
                         </div>
                     </div>
                 </article>
