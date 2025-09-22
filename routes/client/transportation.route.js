@@ -3,5 +3,5 @@ const route = express.Router()
 
 const transportationController = require("../../controller/client/transportation.controller") 
 
-route.get('/transportation', transportationController.index)
+route.get('/transportation', transportationController.transportation)
 module.exports = route; 
