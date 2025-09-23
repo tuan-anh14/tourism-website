@@ -132,9 +132,15 @@
 .attraction-detail.main .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 .content-section { padding: 72px 0; }
 .content-section.map-overview { padding: 0; }
+/* Remove any gap between map and next section */
+#map-overview.content-section { padding-bottom: 0; margin-bottom: 0; }
+#humanities-attraction.content-section { padding-top: 0; margin-top: 0; }
 .section-header { text-align: center; margin-bottom: 36px; }
 .section-header h2 { margin: 0 0 8px 0; font-size: 32px; }
 .section-header p { margin: 0; color: var(--medium-gray); }
+
+/* Tighten space before Gallery */
+#gallery.content-section { padding-top: 0px; margin-top: 0; }
 
 /* Map Overview */
 .map-overview .itinerary-overview__map-container { position: relative; border-radius: 0; overflow: hidden; box-shadow: none; width: 100vw; margin-left: calc(50% - 50vw); margin-top: -80px; }
@@ -144,7 +150,7 @@
 .map-overview .map-overview__heading { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 2; text-align: center; color: #111; padding: 0; background: transparent; box-shadow: none; margin: 0; }
 .map-overview .map-overview__heading h2 { margin: 0; font-size: 24px; line-height: 1.2; text-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 .map-overview .map-overview__heading p { margin: 6px 0 0 0; font-size: 13px; color: var(--medium-gray); text-shadow: 0 1px 6px rgba(0,0,0,0.06); }
-.map-overview .itinerary-overview__map-gradient-vertical { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 88%, rgba(255,255,255,0.92) 100%); }
+.map-overview .itinerary-overview__map-gradient-vertical { display: none; }
 .map-overview .itinerary-overview__map-gradient-horizontal { display: none; }
 
 @media (max-width: 768px) {
@@ -203,7 +209,11 @@
 .review-content p { margin: 6px 0 0 0; color: var(--medium-gray); }
 
 /* Reviews PRO */
+section.reviews-pro { --reviews-gutter: 40px; }
+@media (max-width: 768px) { section.reviews-pro { --reviews-gutter: 16px; } }
 .reviews-pro__header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+/* Make the reviews header nearly full-width while staying scoped to the reviews section */
+section.reviews-pro .reviews-pro__header { width: calc(100vw - var(--reviews-gutter) * 2); margin-left: calc(50% - 50vw + var(--reviews-gutter)); padding: 0; }
 .reviews-pro__heading h2 { margin: 0; font-size: 28px; }
 .reviews-pro__heading .subheading { margin: 6px 0 0 0; color: var(--medium-gray); }
 .reviews-pro__provider { display: flex; align-items: center; gap: 10px; }
@@ -213,7 +223,7 @@
 .reviews-pro__provider-stats .stars i { color: #ffc107; }
 .reviews-pro__link { color: var(--primary-color); text-decoration: none; }
 
-.reviews-pro__slider { position: relative; }
+.reviews-pro__slider { position: relative; width: calc(100vw - var(--reviews-gutter) * 2); margin-left: calc(50% - 50vw + var(--reviews-gutter)); padding: 0; overflow: visible; }
 .reviews-pro__viewport { overflow: hidden; }
 .reviews-pro__track { display: grid; grid-auto-flow: column; gap: 10px; transition: transform .3s ease; }
 .reviews-pro__card { width: 380px; min-height: 180px; background: rgba(255,255,255,0.96); border-radius: 16px; box-shadow: var(--shadow-light); padding: 16px; display: grid; gap: 10px; }
@@ -222,9 +232,17 @@
 .reviews-pro__stars i { color: #ffc107; }
 .reviews-pro__meta { color: var(--medium-gray); display: flex; align-items: center; gap: 8px; }
 .reviews-pro__meta .dot { width: 3px; height: 3px; border-radius: 50%; background: #5c5766; display: inline-block; }
-.reviews-pro__nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.55); color: #fff; border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; }
-.reviews-pro__nav.prev { left: -8px; }
-.reviews-pro__nav.next { right: -8px; }
+/* Avatar + author */
+.reviews-pro__avatar { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; }
+.reviews-pro__avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.reviews-pro__nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.55); color: #fff; border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; z-index: 2; }
+.reviews-pro__nav.prev { left: 12px; }
+.reviews-pro__nav.next { right: 12px; }
+
+/* Reviews dots */
+.reviews-pro__dots { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
+.reviews-pro__dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,0,0,0.25); cursor: pointer; transition: opacity .2s ease, transform .2s ease, background .2s ease; }
+.reviews-pro__dot.active { background: #5c5766; transform: scale(1.2); }
 
 @media (max-width: 768px) {
   .reviews-pro__card { width: 300px; }
@@ -309,9 +327,15 @@ body.dark .modal-content { background: rgba(28,28,30,0.96); color: #f0f0f0; }
 body.dark textarea { background: rgba(38,38,40,0.9); border-color: rgba(255,255,255,0.16); color: #f0f0f0; }
 
 /* Itinerary Day (namespaced) */
+.content-section#humanities-attraction { padding-top: 0; }
 .itinerary-day__hero-wrapper { position: relative; width: 100vw; margin-left: calc(50% - 50vw); }
+.itinerary-day__hero-wrapper { margin-top: 0; }
 .itinerary-day__hero-media { position: relative; height: clamp(420px, 60vh, 640px); overflow: hidden; }
-.itinerary-day__hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.itinerary-day__hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 0; transition: transform .5s ease; }
+.itinerary-day__hero-media:hover img { transform: scale(1.04); }
+/* Banner title overlay (restored) */
+.itinerary-day__banner-title { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; padding: 0 16px; z-index: 2; pointer-events: none; }
+.itinerary-day__banner-title h2 { margin: 0; font-size: clamp(24px, 4vw, 44px); font-weight: 800; text-shadow: 0 6px 24px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.35); letter-spacing: .2px; }
 .itinerary-day__title-wrapper { text-align: center; margin-bottom: 12px; }
 .itinerary-day__title { margin: 0; font-size: 28px; font-weight: 800; }
 .itinerary-day__subtitle { margin: 4px 0 0 0; color: var(--medium-gray); }
@@ -319,10 +343,16 @@ body.dark textarea { background: rgba(38,38,40,0.9); border-color: rgba(255,255,
 .itinerary-day__overlay { margin-top: -80px; position: relative; z-index: 2; }
 
 .itinerary-day__content-container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
-.itinerary-day__columns { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; align-items: start; }
+.itinerary-day__columns { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; align-items: start; }
 .itinerary-day__description-card, .itinerary-day__info-card, .itinerary-day__highlights, .itinerary-day__notes { background: rgba(255,255,255,0.96); border-radius: 16px; box-shadow: var(--shadow-light); padding: 16px; }
 .itinerary-day__info-list, .itinerary-day__highlights-list, .itinerary-day__notes-list { margin: 0; padding-left: 18px; }
 .itinerary-day__info-list .note { color: var(--medium-gray); font-size: 13px; list-style: none; padding-left: 0; }
+/* Improved readability */
+.itinerary-day__description p { line-height: 1.7; margin: 8px 0 0 0; color: var(--dark-gray); }
+.itinerary-day__info-list li { margin-bottom: 6px; }
+.itinerary-day__highlights-list li { margin-bottom: 6px; }
+.itinerary-day__notes-list li { margin-bottom: 6px; }
+.itinerary-day__description-card + .itinerary-day__info-card { margin-top: 12px; }
 
 @media (max-width: 1024px) {
     .itinerary-day__columns { grid-template-columns: 1fr; }
