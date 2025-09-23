@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="/client/css/responsive.css" />
         <link rel="stylesheet" href="/client/css/harmony.css" />
         <link rel="stylesheet" href="/client/css/attraction-detail.css" />
+                <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" />
         <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
@@ -18,141 +19,298 @@
     </head>
     <body>
         <%- include('../../partials/header') %>
-
         <!-- Hero -->
-        <header class="attraction-detail hero" style="--hero:url('<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0]))) || '/client/img/header-bg.jfif' %>')" aria-label="Ảnh và tiêu đề điểm tham quan">
+        <header class="attraction-detail hero" id="hero" style="--hero:url('<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0]))) || '/client/img/header-bg.jfif' %>')" aria-label="Ảnh và tiêu đề điểm tham quan">
             <div class="hero-overlay"></div>
+            <a href="/attraction" class="back-link" aria-label="Quay lại danh sách">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại
+            </a>
             <div class="hero-content">
-                <a href="/attraction" class="back-link" aria-label="Quay lại danh sách">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại
-                </a>
-                <h1 class="title"><%= (attraction && attraction.title) || 'Điểm tham quan' %></h1>
-                <p class="location">
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <span><%= (attraction && attraction.address) || '' %></span>
-                </p>
-                <% if (attraction && attraction.shortDescription) { %>
-                <p class="short-desc"><%= attraction.shortDescription %></p>
-                <% } %>
+                <div class="hero-text">
+                    <h1 class="title"><%= (attraction && attraction.title) || 'Điểm tham quan' %></h1>
+                    <p class="location">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        <span><%= (attraction && attraction.address) || '' %></span>
+                    </p>
+                    <% if (attraction && attraction.shortDescription) { %>
+                    <p class="short-desc"><%= attraction.shortDescription %></p>
+                    <% } %>
+                </div>
                 <div class="hero-actions">
-                    <button class="btn-share" type="button" aria-label="Chia sẻ">
-                        <i class="fa fa-share-alt" aria-hidden="true"></i> Chia sẻ
+                    <button class="btn-primary" type="button">
+                        <i class="fa fa-calendar" aria-hidden="true"></i> Lên kế hoạch
                     </button>
+                    <button class="btn-secondary" type="button">
+                        <i class="fa fa-heart" aria-hidden="true"></i> Yêu thích
+                    </button>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <div class="scroll-arrow">
+                    <i class="fa fa-chevron-down"></i>
                 </div>
             </div>
         </header>
 
         <main class="attraction-detail main" aria-label="Nội dung chi tiết điểm tham quan">
             <div class="container">
-                <div class="layout">
-                    <!-- Left column -->
-                    <section class="column primary">
-                        <!-- Overview Cards -->
-                        <div class="card info">
-                            <h2>Thông tin</h2>
-                            <div class="info-grid">
-                                <div class="info-item">
-                                    <span class="label">Địa chỉ</span>
-                                    <p class="value"><%= (attraction && attraction.address) || '—' %></p>
-                                </div>
-                                <div class="info-item">
-                                    <span class="label">Giờ mở cửa</span>
-                                    <div class="value">
-                                        <% if (attraction && attraction.openHours) { %>
-                                            <ul class="hours">
-                                                <% (attraction.openHours || []).forEach(function(h){ %>
-                                                    <li><%= h %></li>
-                                                <% }) %>
-                                            </ul>
-                                        <% } else { %>
-                                            <ul class="hours">
-                                                <li>Mùa hè (15/4 - 15/10): 7:30 - 18:00</li>
-                                                <li>Mùa đông (còn lại): 8:00 - 18:00</li>
-                                            </ul>
-                                        <% } %>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <span class="label">Bản đồ</span>
-                                    <div class="map">
-                                        <iframe
-                                            title="Bản đồ"
-                                            loading="lazy"
-                                            referrerpolicy="no-referrer-when-downgrade"
-                                            src="<%= (attraction && attraction.mapEmbedUrl) || 'https://www.google.com/maps?q=58+Qu%E1%BB%91c+T%E1%BB%AD+Gi%C3%A1m,+H%C3%A0+N%E1%BB%99i&output=embed' %>">
-                                        </iframe>
-                                    </div>
+                <!-- Map Overview Section -->
+                <section id="map-overview" class="content-section map-overview">
+                    <div class="itinerary-overview__map-container">
+                        <div class="itinerary-overview__map-inner">
+                            <div id="glanceMap"
+                                 class="itinerary-overview__map"
+                                 data-lat="<%= (attraction && attraction.lat) || 21.028511 %>"
+                                 data-lng="<%= (attraction && attraction.lng) || 105.804817 %>"
+                                 data-zoom="<%= (attraction && attraction.mapZoom) || 14 %>"
+                                 data-name="<%= (attraction && attraction.title) || '' %>"
+                                 data-address="<%= (attraction && attraction.address) || '' %>"
+                                 data-image="<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0]))) || '' %>"
+                                 data-url="<%= (attraction && ('/attraction/' + (attraction.slug || attraction._id))) || '' %>"
+                                 data-route='<%- JSON.stringify((attraction && attraction.route) || []) %>'></div>
+                            <div class="map-overview__heading">
+                                <h2>Bản đồ tổng quan</h2>
+                                <p>Vị trí và phạm vi điểm tham quan</p>
+                            </div>
+                            
+                        </div>
+                        <div class="itinerary-overview__map-gradient-vertical"></div>
+                        <div class="itinerary-overview__map-gradient-horizontal"></div>
+                    </div>
+                </section>
+                <!-- Overview Section -->
+                <section id="overview" class="content-section">
+                    <div class="section-header">
+                        <h2>Tổng quan</h2>
+                        <p>Khám phá thông tin cơ bản về điểm tham quan</p>
+                    </div>
+                    
+                    <!-- Fact Box -->
+                    <div class="fact-box">
+                        <div class="fact-item" data-map-lat="<%= (attraction && attraction.lat) || 21.028511 %>" data-map-lng="<%= (attraction && attraction.lng) || 105.804817 %>">
+                            <div class="fact-icon">
+                                <i class="fa fa-map-marker"></i>
+                            </div>
+                            <div class="fact-content">
+                                <h3>Địa chỉ</h3>
+                                <p class="map-fly-trigger"><%= (attraction && attraction.address) || '58 Quốc Tử Giám, Đống Đa, Hà Nội' %></p>
+                            </div>
+                        </div>
+                        
+                        <div class="fact-item">
+                            <div class="fact-icon">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                            <div class="fact-content">
+                                <h3>Giờ mở cửa</h3>
+                                <div class="hours-list">
+                                    <% if (attraction && attraction.openHours) { %>
+                                        <% (attraction.openHours || []).forEach(function(h){ %>
+                                            <span class="hour-item"><%= h %></span>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <span class="hour-item">Mùa hè (15/4 - 15/10): 7:30 - 18:00</span>
+                                        <span class="hour-item">Mùa đông (còn lại): 8:00 - 18:00</span>
+                                    <% } %>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Tickets -->
-                        <div class="card tickets">
-                            <h2>Giá vé tham quan</h2>
-                            <table class="ticket-table" aria-label="Giá vé">
-                                <thead>
-                                    <tr>
-                                        <th>Đối tượng</th>
-                                        <th>Giá vé</th>
-                                        <th>Ghi chú</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% (attraction && attraction.tickets && attraction.tickets.length ? attraction.tickets : [
-                                        { type: 'Người lớn', price: '70.000 VNĐ' },
-                                        { type: 'HSSV', price: '15.000 VNĐ', note: 'Cần thẻ học sinh/sinh viên' },
-                                        { type: 'Người cao tuổi', price: '35.000 VNĐ', note: 'Công dân Việt Nam từ 60 tuổi' },
-                                        { type: 'Miễn phí', price: '0 VNĐ', note: 'Trẻ dưới 15, người khuyết tật, nhà giáo' }
-                                    ]).forEach(function(t){ %>
-                                        <tr>
-                                            <td><%= t.type %></td>
-                                            <td><%= t.price %></td>
-                                            <td><%= t.note || '' %></td>
-                                        </tr>
-                                    <% }) %>
-                                </tbody>
-                            </table>
-                            <p class="note">Giá có thể thay đổi vào dịp Lễ/Tết và sự kiện đặc biệt.</p>
-                        </div>
-
-                        <!-- Introduction -->
-                        <div class="card intro">
-                            <h2>Giới thiệu</h2>
-                            <p>
-                                <%= (attraction && attraction.description) || 'Văn Miếu – Quốc Tử Giám là quần thể di tích lịch sử nổi tiếng, trường đại học đầu tiên của Việt Nam với kiến trúc cổ kính và không gian tĩnh lặng.' %>
-                            </p>
-                            <div class="gallery">
-                                <% (attraction && attraction.images ? attraction.images.slice(0,2) : ['/client/img/carousel-img5.jpg','/client/img/carousel-img4.jpg']).forEach(function(img){ %>
-                                    <img src="<%= img %>" alt="Hình ảnh điểm tham quan" loading="lazy" class="gallery-img" />
-                                <% }) %>
+                        
+                        <div class="fact-item">
+                            <div class="fact-icon">
+                                <i class="fa fa-ticket"></i>
+                            </div>
+                            <div class="fact-content">
+                                <h3>Giá vé</h3>
+                                <div class="price-range">
+                                    <span class="price">70.000 VNĐ</span>
+                                    <span class="price-note">Người lớn</span>
+                                </div>
                             </div>
                         </div>
+                        
+                        <div class="fact-item">
+                            <div class="fact-icon">
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="fact-content">
+                                <h3>Đánh giá</h3>
+                                <div class="rating">
+                                    <div class="stars">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <span class="rating-text">4.8/5 (1,234 đánh giá)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-                        <!-- Experiences -->
-                        <div class="card experiences">
-                            <h2>Trải nghiệm nổi bật</h2>
-                            <div class="experience-grid">
-                                <% (attraction && attraction.experiences && attraction.experiences.length ? attraction.experiences : [
-                                    { icon: 'fa-university', title: 'Chiêm ngưỡng kiến trúc', text: 'Khuê Văn Các, giếng Thiên Quang, bia Tiến sĩ...' },
-                                    { icon: 'fa-history', title: 'Tìm hiểu lịch sử – giáo dục', text: 'Khám phá quá trình hình thành và chế độ khoa cử.' },
-                                    { icon: 'fa-leaf', title: 'Không gian linh thiêng', text: 'Thắp hương tưởng nhớ các bậc hiền triết.' },
-                                    { icon: 'fa-pencil', title: 'Trải nghiệm văn hóa', text: 'Xin chữ đầu năm, triển lãm thư pháp.' }
-                                ]).forEach(function(ex){ %>
-                                    <div class="exp-item">
-                                        <div class="icon"><i class="fa <%= ex.icon %>"></i></div>
-                                        <div class="content">
-                                            <h3><%= ex.title %></h3>
-                                            <p><%= ex.text %></p>
+                <!-- Experiences Section -->
+                <section id="experiences" class="content-section">
+                    <div class="section-header">
+                        <h2>Trải nghiệm nổi bật</h2>
+                        <p>Khám phá những hoạt động thú vị tại đây</p>
+                    </div>
+                    
+                    <div class="experiences-grid">
+                        <% (attraction && attraction.experiences && attraction.experiences.length ? attraction.experiences : [
+                            { icon: 'fa-university', title: 'Chiêm ngưỡng kiến trúc', text: 'Khuê Văn Các, giếng Thiên Quang, bia Tiến sĩ...', duration: '2-3 giờ', difficulty: 'Dễ' },
+                            { icon: 'fa-history', title: 'Tìm hiểu lịch sử – giáo dục', text: 'Khám phá quá trình hình thành và chế độ khoa cử.', duration: '1-2 giờ', difficulty: 'Trung bình' },
+                            { icon: 'fa-leaf', title: 'Không gian linh thiêng', text: 'Thắp hương tưởng nhớ các bậc hiền triết.', duration: '30 phút', difficulty: 'Dễ' },
+                            { icon: 'fa-pencil', title: 'Trải nghiệm văn hóa', text: 'Xin chữ đầu năm, triển lãm thư pháp.', duration: '1 giờ', difficulty: 'Dễ' }
+                        ]).forEach(function(ex){ %>
+                            <div class="experience-card" data-expandable>
+                                <div class="card-header">
+                                    <div class="exp-icon">
+                                        <i class="fa <%= ex.icon %>"></i>
+                                    </div>
+                                    <div class="exp-info">
+                                        <h3><%= ex.title %></h3>
+                                        <div class="exp-meta">
+                                            <span class="duration"><i class="fa fa-clock-o"></i> <%= ex.duration %></span>
+                                            <span class="difficulty"><i class="fa fa-signal"></i> <%= ex.difficulty %></span>
                                         </div>
                                     </div>
+                                    <button class="expand-btn" type="button">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                                <div class="card-content">
+                                    <p><%= ex.text %></p>
+                                    <div class="exp-actions">
+                                        <button class="btn-outline">Thêm vào kế hoạch</button>
+                                        <button class="btn-primary">Tìm hiểu thêm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </section>
+
+                <!-- Gallery Section -->
+                <section id="gallery" class="content-section">
+                    <div class="section-header">
+                        <h2>Hình ảnh</h2>
+                        <p>Khám phá vẻ đẹp qua những bức ảnh</p>
+                    </div>
+                    
+                    <div class="gallery-grid">
+                        <% (attraction && attraction.images ? attraction.images : ['/client/img/carousel-img5.jpg','/client/img/carousel-img4.jpg','/client/img/carousel-img6.jpg','/client/img/img3.png']).forEach(function(img, index){ %>
+                            <div class="gallery-item" data-index="<%= index %>">
+                                <img src="<%= img %>" alt="Hình ảnh điểm tham quan" loading="lazy" />
+                                <div class="gallery-overlay">
+                                    <button class="gallery-btn" type="button">
+                                        <i class="fa fa-search-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </section>
+
+                <!-- Reviews Section -->
+                <section id="reviews" class="content-section">
+                    <div class="section-header">
+                        <h2>Đánh giá từ du khách</h2>
+                        <p>Chia sẻ trải nghiệm của bạn</p>
+                    </div>
+                    
+                    <div class="reviews-summary">
+                        <div class="rating-overview">
+                            <div class="rating-score">4.8</div>
+                            <div class="rating-stars">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="rating-count">Dựa trên 1,234 đánh giá</div>
+                        </div>
+                        <button class="btn-primary" id="writeReviewBtn">
+                            <i class="fa fa-pencil"></i> Viết đánh giá
+                        </button>
+                    </div>
+                    
+                    <div class="reviews-list">
+                        <div class="review-item">
+                            <div class="review-avatar">
+                                <img src="/client/img/avatar1.jpg" alt="Avatar" />
+                            </div>
+                            <div class="review-content">
+                                <div class="review-header">
+                                    <h4>Nguyễn Văn A</h4>
+                                    <div class="review-rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <span class="review-date">2 ngày trước</span>
+                                </div>
+                                <p>Một trải nghiệm tuyệt vời! Kiến trúc cổ kính và không gian yên tĩnh rất phù hợp để tham quan.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="review-item">
+                            <div class="review-avatar">
+                                <img src="/client/img/avatar2.jpg" alt="Avatar" />
+                            </div>
+                            <div class="review-content">
+                                <div class="review-header">
+                                    <h4>Trần Thị B</h4>
+                                    <div class="review-rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+                                    <span class="review-date">1 tuần trước</span>
+                                </div>
+                                <p>Rất đáng để ghé thăm, đặc biệt là vào mùa thu. Cảnh đẹp và lịch sử phong phú.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Practical Info Section -->
+                <section id="practical" class="content-section">
+                    <div class="section-header">
+                        <h2>Thông tin thực tế</h2>
+                        <p>Những điều cần biết trước khi đến</p>
+                    </div>
+                    
+                    <div class="practical-grid">
+                        <div class="practical-card">
+                            <h3><i class="fa fa-ticket"></i> Giá vé tham quan</h3>
+                            <div class="ticket-list">
+                                <% (attraction && attraction.tickets && attraction.tickets.length ? attraction.tickets : [
+                                    { type: 'Người lớn', price: '70.000 VNĐ' },
+                                    { type: 'HSSV', price: '15.000 VNĐ', note: 'Cần thẻ học sinh/sinh viên' },
+                                    { type: 'Người cao tuổi', price: '35.000 VNĐ', note: 'Công dân Việt Nam từ 60 tuổi' },
+                                    { type: 'Miễn phí', price: '0 VNĐ', note: 'Trẻ dưới 15, người khuyết tật, nhà giáo' }
+                                ]).forEach(function(t){ %>
+                                    <div class="ticket-item">
+                                        <span class="ticket-type"><%= t.type %></span>
+                                        <span class="ticket-price"><%= t.price %></span>
+                                        <% if (t.note) { %>
+                                            <span class="ticket-note"><%= t.note %></span>
+                                        <% } %>
+                                    </div>
                                 <% }) %>
                             </div>
                         </div>
-
-                        <!-- Rules -->
-                        <div class="card rules">
-                            <h2>Lưu ý khi tham quan</h2>
-                            <ul class="rule-list">
+                        
+                        <div class="practical-card">
+                            <h3><i class="fa fa-exclamation-triangle"></i> Lưu ý khi tham quan</h3>
+                            <ul class="rules-list">
                                 <% (attraction && attraction.rules && attraction.rules.length ? attraction.rules : [
                                     'Chấp hành quy định, không xâm hại hiện vật/cảnh quan.',
                                     'Trang phục lịch sự; không hút thuốc, đội nón trong khu trưng bày.',
@@ -165,45 +323,91 @@
                                 <% }) %>
                             </ul>
                         </div>
-
-                        <!-- Reviews placeholder -->
-                        <div class="card reviews">
-                            <h2>Đánh giá</h2>
-                            <p>Chức năng đánh giá sẽ được bổ sung.</p>
-                        </div>
-                    </section>
-
-                    <!-- Right column -->
-                    <aside class="column sidebar">
-                        <div class="card related">
-                            <h2>Gợi ý liên quan</h2>
-                            <div class="related-grid">
-                                <% (relatedAttractions && relatedAttractions.length ? relatedAttractions : [
-                                    { title: 'Hoàng thành Thăng Long', href: '#', image: '/client/img/carousel-img4.jpg' },
-                                    { title: 'Bảo tàng Dân tộc học', href: '#', image: '/client/img/carousel-img6.jpg' },
-                                    { title: 'Phố cổ Hà Nội', href: '#', image: '/client/img/img3.png' }
-                                ]).forEach(function(a){ %>
-                                    <a class="related-card" href="<%= a.href %>">
-                                        <div class="thumb">
-                                            <img src="<%= a.image %>" alt="<%= a.title %>" loading="lazy" />
-                                        </div>
-                                        <div class="meta">
-                                            <h3><%= a.title %></h3>
-                                        </div>
-                                    </a>
-                                <% }) %>
+                        
+                        <div class="practical-card">
+                            <h3><i class="fa fa-map"></i> Bản đồ</h3>
+                            <div class="map-container">
+                                <iframe
+                                    title="Bản đồ"
+                                    loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade"
+                                    src="<%= (attraction && attraction.mapEmbedUrl) || 'https://www.google.com/maps?q=58+Qu%E1%BB%91c+T%E1%BB%AD+Gi%C3%A1m,+H%C3%A0+N%E1%BB%99i&output=embed' %>">
+                                </iframe>
                             </div>
                         </div>
-                    </aside>
-                </div>
+                    </div>
+                </section>
             </div>
         </main>
+
+        <!-- Gallery Modal -->
+        <div class="gallery-modal" id="galleryModal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <button class="modal-close" type="button">
+                    <i class="fa fa-times"></i>
+                </button>
+                <div class="modal-nav">
+                    <button class="nav-prev" type="button">
+                        <i class="fa fa-chevron-left"></i>
+                    </button>
+                    <button class="nav-next" type="button">
+                        <i class="fa fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="modal-image">
+                    <img src="" alt="Gallery image" />
+                </div>
+                <div class="modal-info">
+                    <span class="image-counter">1 / 4</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Modal -->
+        <div class="review-modal" id="reviewModal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Viết đánh giá</h3>
+                    <button class="modal-close" type="button">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <form class="review-form">
+                    <div class="form-group">
+                        <label>Đánh giá của bạn</label>
+                        <div class="rating-input">
+                            <input type="radio" name="rating" value="5" id="star5" />
+                            <label for="star5"><i class="fa fa-star"></i></label>
+                            <input type="radio" name="rating" value="4" id="star4" />
+                            <label for="star4"><i class="fa fa-star"></i></label>
+                            <input type="radio" name="rating" value="3" id="star3" />
+                            <label for="star3"><i class="fa fa-star"></i></label>
+                            <input type="radio" name="rating" value="2" id="star2" />
+                            <label for="star2"><i class="fa fa-star"></i></label>
+                            <input type="radio" name="rating" value="1" id="star1" />
+                            <label for="star1"><i class="fa fa-star"></i></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewText">Nhận xét</label>
+                        <textarea id="reviewText" placeholder="Chia sẻ trải nghiệm của bạn..." rows="4"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-outline" id="cancelReview">Hủy</button>
+                        <button type="submit" class="btn-primary">Gửi đánh giá</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <%- include('../../partials/footer') %>
 
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="/client/js/includes.js"></script>
         <script src="/client/js/script.js"></script>
+        <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
         <script src="/client/js/attraction-detail.js"></script>
     </body>
     </html>
