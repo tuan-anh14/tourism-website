@@ -8,6 +8,7 @@ require("dotenv").config();
 const database = require("./config/database");
 const route = require("./routes/client/index.route");
 const routeAdmin = require("./routes/admin/index.route");
+const apiChatRouter = require('./routes/api/chat.route');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -40,6 +41,7 @@ database.connect();
 
 route(app);
 app.use('/admin', routeAdmin);
+app.use('/api', apiChatRouter);
 
 // app.get("*", (req, res) => {
 //   res.status(404).render("client/pages/errors/404", { pageTitle: "404 Not Found" });

@@ -96,7 +96,7 @@
             root.innerHTML = '';
             var wrap = document.createElement('div');
             wrap.className = 'hnv-chat';
-            wrap.innerHTML = '\n                <button class="hnv-chat__toggle" aria-label="Chat"><i class="fa fa-comments"></i></button>\n                <div class="hnv-chat__panel" role="dialog" aria-label="Chatbot">\n                    <div class="hnv-chat__header">Hà Nội Vibes - Trợ lý du lịch</div>\n                    <div class="hnv-chat__body">\n                        <div id="layout" order_random="true">\n                            <div id="text1_wrapper"><div id="text1" class="hnv-chip">Gợi ý lịch trình 2 ngày?</div></div>\n                            <div id="text2_wrapper"><div id="text2" class="hnv-chip">Ăn gì ở Phố cổ?</div></div>\n                            <div id="text3_wrapper"><div id="text3" class="hnv-chip">Phương tiện di chuyển?</div></div>\n                            <div id="text4_wrapper"><div id="text4"> <a href=\"https://www.elsewhere.io/letter-from-our-founders\" target=\"_blank\" class=\"hnv-link\">Letter from Our Founders</a> <br> <a href=\"https://www.elsewhere.io/contact-us\" target=\"_blank\" class=\"hnv-link\">Contact Us</a></div></div>\n                            <div id="text5_wrapper"><div id="text5" class="hnv-chip">Top điểm check-in</div></div>\n                            <div id="text6_wrapper"><div id="text6">Same boundary-pushing trips. <br>Same unforgettable experiences.</div></div>\n                        </div>\n                        <div class=\"hnv-chat__messages\" id=\"hnvMsgs\">\n                            <div class=\"hnv-msg hnv-msg--bot\">Xin chào! Bạn muốn đi đâu ở Hà Nội?</div>\n                        </div>\n                    </div>\n                    <div class=\"hnv-chat__footer\">\n                        <input class=\"hnv-input\" id=\"hnvInput\" type=\"text\" placeholder=\"Nhập câu hỏi của bạn...\" />\n                        <button class=\"hnv-send\" id=\"hnvSend\" aria-label=\"Gửi\"><i class=\"fa fa-paper-plane\"></i></button>\n                    </div>\n                </div>';
+            wrap.innerHTML = '\n                <button class="hnv-chat__toggle" aria-label="Chat"><i class="fa fa-comments"></i></button>\n                <div class="hnv-chat__panel" role="dialog" aria-label="Chatbot">\n                    <div class="hnv-chat__header">Hà Nội Vibes - Trợ lý du lịch</div>\n                    <div class="hnv-chat__body">\n                        <div class="hnv-quick">\n                            <button class="hnv-chip" data-q="Gợi ý lịch trình 2 ngày?">Gợi ý lịch trình 2 ngày?</button>\n                            <button class="hnv-chip" data-q="Ăn gì ở Phố cổ?">Ăn gì ở Phố cổ?</button>\n                            <button class="hnv-chip" data-q="Phương tiện di chuyển?">Phương tiện di chuyển?</button>\n                            <button class="hnv-chip" data-q="Top điểm check-in">Top điểm check-in</button>\n                        </div>\n                        <div class=\"hnv-chat__messages\" id=\"hnvMsgs\">\n                            <div class=\"hnv-msg hnv-msg--bot\">Xin chào! Bạn muốn đi đâu ở Hà Nội?</div>\n                        </div>\n                    </div>\n                    <div class=\"hnv-chat__footer\">\n                        <input class=\"hnv-input\" id=\"hnvInput\" type=\"text\" placeholder=\"Nhập câu hỏi của bạn...\" />\n                        <button class=\"hnv-send\" id=\"hnvSend\" aria-label=\"Gửi\"><i class=\"fa fa-paper-plane\"></i></button>\n                    </div>\n                </div>';
             root.appendChild(wrap);
 
             var toggle = wrap.querySelector('.hnv-chat__toggle');
@@ -111,6 +111,21 @@
             var input = wrap.querySelector('#hnvInput');
             var send = wrap.querySelector('#hnvSend');
             var msgs = wrap.querySelector('#hnvMsgs');
+            var history = [];
+            var busy = false;
+            var lastSent = 0;
+            function sendToApi(text){
+                busy = true; lastSent = Date.now();
+                return fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: history }) })
+                    .then(function(r){
+                        if (r.status === 429) throw new Error('Too Many Requests');
+                        return r.json();
+                    })
+                    .then(function(data){ return (data && data.content) || 'Xin lỗi, có lỗi xảy ra.'; })
+                    .catch(function(e){ return e && e.message === 'Too Many Requests' ? 'Hệ thống đang bận, vui lòng thử lại sau vài giây.' : 'Không thể kết nối máy chủ.'; })
+                    .finally(function(){ busy = false; });
+            }
+
             function echo(){
                 if (!input || !msgs) return;
                 var v = (input.value||'').trim();
@@ -119,15 +134,31 @@
                 me.className = 'hnv-msg hnv-msg--me';
                 me.textContent = v;
                 msgs.appendChild(me);
+                history.push({ role: 'user', content: v });
                 input.value='';
-                var bot = document.createElement('div');
-                bot.className = 'hnv-msg hnv-msg--bot';
-                bot.textContent = 'Cảm ơn! Chúng tôi sẽ gợi ý dựa trên: ' + v;
-                msgs.appendChild(bot);
+                var bot = document.createElement('div'); bot.className = 'hnv-msg hnv-msg--bot'; bot.textContent = '...'; msgs.appendChild(bot);
                 msgs.scrollTop = msgs.scrollHeight;
+                if (busy) { bot.textContent = 'Vui lòng chờ giây lát...'; return; }
+                var now = Date.now();
+                var wait = Math.max(0, 1000 - (now - lastSent));
+                setTimeout(function(){
+                    sendToApi(v).then(function(reply){ history.push({ role: 'assistant', content: reply }); bot.textContent = reply; msgs.scrollTop = msgs.scrollHeight; });
+                }, wait);
             }
             if (send) send.addEventListener('click', function(e){ e.preventDefault(); echo(); });
             if (input) input.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); echo(); }});
+
+            // Quick chips: click to auto-send
+            var quick = wrap.querySelector('.hnv-quick');
+            if (quick) {
+                quick.addEventListener('click', function(e){
+                    var chip = e.target.closest('.hnv-chip');
+                    if (!chip) return;
+                    var q = chip.getAttribute('data-q') || chip.textContent || '';
+                    input.value = q.trim();
+                    echo();
+                });
+            }
         })();
     }
 
