@@ -294,6 +294,28 @@
         setupReviewModal();
         setupMobileMenu();
         initMapOverview();
+
+        // Reviews slider basic
+        (function(){
+            var viewport = document.querySelector('.reviews-pro__viewport');
+            var track = document.querySelector('.reviews-pro__track');
+            var prev = document.querySelector('.reviews-pro__nav.prev');
+            var next = document.querySelector('.reviews-pro__nav.next');
+            if (!viewport || !track || !prev || !next) return;
+            var offset = 0;
+            function slide(dir){
+                var card = track.querySelector('.reviews-pro__card');
+                if (!card) return;
+                var step = card.offsetWidth + 10; // gap
+                offset += dir * step;
+                var maxOffset = Math.max(0, track.scrollWidth - viewport.clientWidth);
+                if (offset < 0) offset = 0;
+                if (offset > maxOffset) offset = maxOffset;
+                track.style.transform = 'translateX(' + (-offset) + 'px)';
+            }
+            prev.addEventListener('click', function(){ slide(-1); });
+            next.addEventListener('click', function(){ slide(1); });
+        })();
     }
 
     if (document.readyState === 'loading') {
