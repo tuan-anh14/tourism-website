@@ -171,7 +171,8 @@
   .explore-content {
     margin: 0 auto;
     text-align: center;
-    width: 80%;
+    width: 90%;
+    padding: 1.2rem 0.8rem;
   }
 
   .explore-content .ctn {
@@ -179,9 +180,18 @@
   }
 }
 @media screen and (max-width: 600px) {
+  /* make explore copy readable on narrow screens */
+  .explore { padding: 40px 0; min-height: 70vh; }
+  .explore-content p { padding: 0 16px; max-width: 100%; }
+  .explore-content h1 { letter-spacing: 0.1rem; }
+
   #about_us p {
     margin: auto;
   }
+  /* carousel: keep each duplicate contained */
+  .containerx { gap: 1.2rem; }
+  .cards { height: 42vh; }
+  .cardt { left: 0; width: 70%; }
 }
 @media screen and (max-width: 470px) {
   .ctn {

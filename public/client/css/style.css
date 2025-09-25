@@ -263,7 +263,8 @@ section {
 /* explore */
 .explore {
   width: 100%;
-  height: 100vh;
+  min-height: 80vh;
+  height: auto;
   background-image: url(../img/bg2.png);
   background-attachment: fixed;
   background-position: center;
@@ -271,6 +272,7 @@ section {
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
+  padding: 60px 0; /* ensure spacing so content never touches next section */
 }
 
 .explore-content {
@@ -279,11 +281,12 @@ section {
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-left: 8rem;
+  /* center block and constrain readable width */
   position: relative;
   z-index: 1;
   padding: 2rem 17px;
-  margin: auto;
+  margin: 0 auto;
+  max-width: 980px;
 }
 
 .explore-content::after {
@@ -370,7 +373,8 @@ section {
 #about_us {
   background: url("https://awe365.com/wp-content/uploads/2013/07/HÀ NỘI-sports-hang-gliding-flickrcc-image-by-Steve-Slater.jpg");
   width: 100%;
-  height: 630px;
+  /* allow section to grow when carousel is duplicated */
+  min-height: 630px;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -936,14 +940,17 @@ input[type=radio] {
 
 .containerx {
   width: 100%;
-  height: 50vh;
+  /* let container expand based on number of carousels stacked */
+  height: auto;
+  display: grid;
+  gap: 2rem;
   transform-style: preserve-3d;
 }
 
 .cards {
   position: relative;
-  width: 100vh;
-  height: 100%;
+  width: 100%;
+  height: 50vh; /* single carousel height */
 }
 
 .cards label img {
