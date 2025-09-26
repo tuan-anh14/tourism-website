@@ -91,7 +91,7 @@ html {
   justify-content: space-between;
   align-items: center;
   padding: 12px 5px;
-  z-index: 10;
+  z-index: 1200; /* keep above page banners and modals triggers */
   color: whitesmoke;
 }
 
@@ -113,6 +113,8 @@ html {
   display: flex;
   align-items: center;
 }
+
+/* Mobile responsive handled by responsive.css */
 
 .nav-links li {
   font-family: var(--ff-montserrat);

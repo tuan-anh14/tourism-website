@@ -163,16 +163,7 @@
         });
     }
 
-    function setupMobileMenu(){
-        var nav = document.getElementById('stickyNav');
-        if (!nav) return;
-        var toggle = nav.querySelector('.mobile-menu-toggle');
-        if (!toggle) return;
-        toggle.addEventListener('click', function(){
-            nav.classList.toggle('open');
-        });
-        window.addEventListener('resize', function(){ if (window.innerWidth > 1024) nav.classList.remove('open'); });
-    }
+    // Mobile menu handled by script.js - safeBindNavbarToggle()
 
     function initMapOverview(){
         if (typeof maplibregl === 'undefined') return;
@@ -292,7 +283,7 @@
         setupExpandableCards();
         setupGalleryModal();
         setupReviewModal();
-        setupMobileMenu();
+        // setupMobileMenu(); // handled by script.js
         initMapOverview();
 
         // Reviews slider with dots
