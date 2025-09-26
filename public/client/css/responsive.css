@@ -243,3 +243,83 @@
     text-align: justify;
   }
 }
+
+/* ===========================================
+   MAP SECTION RESPONSIVE STYLES
+   =========================================== */
+
+/* Tablet and smaller screens */
+@media screen and (max-width: 768px) {
+  .map-section {
+    height: 80vh;
+    min-height: 500px;
+  }
+  
+  #hanoi-map {
+    height: 80vh;
+    min-height: 500px;
+  }
+  
+  .map-title-overlay {
+    top: 40px;
+    padding: 20px 30px;
+    max-width: 400px;
+  }
+  
+  .map-title-overlay h1 {
+    font-size: 1.8rem;
+  }
+  
+  .map-title-overlay p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile screens */
+@media screen and (max-width: 480px) {
+  .map-section {
+    height: 70vh;
+    min-height: 400px;
+  }
+  
+  #hanoi-map {
+    height: 70vh;
+    min-height: 400px;
+  }
+  
+  .map-title-overlay {
+    top: 30px;
+    padding: 15px 20px;
+    max-width: 350px;
+  }
+  
+  .map-title-overlay h1 {
+    font-size: 1.6rem;
+  }
+  
+  .map-title-overlay .line {
+    width: 60px;
+    height: 2px;
+  }
+  
+  .map-title-overlay p {
+    font-size: 0.8rem;
+  }
+}
+
+/* Very small screens */
+@media screen and (max-width: 320px) {
+  .map-section {
+    height: 60vh;
+    min-height: 350px;
+  }
+  
+  #hanoi-map {
+    height: 60vh;
+    min-height: 350px;
+  }
+  
+  .map-title-overlay h1 {
+    font-size: 1.4rem;
+  }
+}

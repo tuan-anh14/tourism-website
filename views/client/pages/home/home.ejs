@@ -29,6 +29,8 @@
             href="/client/img/favicon-16x16.png"
         />
         <link rel="manifest" href="/site.webmanifest" />
+        <!-- MapLibre GL CSS -->
+        <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@5.7.3/dist/maplibre-gl.css' />
     </head>
     <body
         onload='if (window.location.href.substr(window.location.href.length - 6) == "#about") { introAboutLogoTransition(); }'
@@ -142,6 +144,16 @@
         </section>
         <!--Events-->
 
+        <!-- Map Section -->
+        <section class="map-section" id="map-section">
+            <div class="map-title-overlay">
+                <h1>Bản đồ Hà Nội</h1>
+                <div class="line"></div>
+            </div>
+            <div id="hanoi-map"></div>
+        </section>
+        <!-- Map Section -->
+
         <!-- About -->
         <section id="about">
             <div class="title">
@@ -166,19 +178,9 @@
                                 <img src="/client/img/carousel-img6.jpg" />
                             </label>
                         </div>
-                        <div class="cards">
-                            <label class="cardt" for="item-1" id="col-img-1">
-                                <img src="/client/img/carousel-img4.jpg" />
-                            </label>
-                            <label class="cardt" for="item-2" id="col-img-2">
-                                <img src="/client/img/carousel-img5.jpg" />
-                            </label>
-                            <label class="cardt" for="item-3" id="col-img-3">
-                                <img src="/client/img/carousel-img6.jpg" />
-                            </label>
-                        </div>
                     </div>
                 </div>
+                
                 
             </div>
         </section>
@@ -475,5 +477,112 @@
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="/client/js/includes.js"></script>
         <script src="/client/js/script.js"></script>
+        
+        <!-- MapLibre GL JS -->
+        <script src='https://unpkg.com/maplibre-gl@5.7.3/dist/maplibre-gl.js'></script>
+        <script>
+            // ===========================================
+            // HANOI MAP INITIALIZATION
+            // ===========================================
+            
+            // Wait for DOM to be fully loaded
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize Hanoi Map
+                const hanoiMap = new maplibregl.Map({
+                    container: 'hanoi-map',
+                    style: 'https://demotiles.maplibre.org/style.json',
+                    center: [105.8342, 21.0285], // Hanoi coordinates
+                    zoom: 2, // Global view
+                    pitch: 0, // Flat view for globe
+                    bearing: 0
+                });
+
+                // Add navigation controls
+                hanoiMap.addControl(new maplibregl.NavigationControl(), 'top-right');
+                
+                // Add fullscreen control
+                hanoiMap.addControl(new maplibregl.FullscreenControl(), 'top-right');
+
+                // Set globe projection when style loads
+                hanoiMap.on('style.load', () => {
+                    hanoiMap.setProjection({
+                        type: 'globe', // Set projection to globe
+                    });
+                    
+                    // Add some famous landmarks in Hanoi
+                    addHanoiLandmarks(hanoiMap);
+                });
+
+                // Add event listeners for smooth interactions
+                hanoiMap.on('load', () => {
+                    console.log('Hanoi map loaded successfully');
+                });
+
+                // Function to add Hanoi marker
+                function addHanoiLandmarks(map) {
+                    // Create a popup for Hanoi
+                    const popup = new maplibregl.Popup({
+                        offset: 25,
+                        closeButton: true,
+                        closeOnClick: false
+                    }).setHTML(`
+                        <div style="font-family: 'Roboto', sans-serif; padding: 15px; text-align: center;">
+                            <h3 style="color: #2c3e50; margin: 0 0 10px 0; font-size: 18px;">🏛️ Hà Nội</h3>
+                            <p style="color: #5a6c7d; margin: 0; font-size: 14px; line-height: 1.4;">
+                                Thủ đô nghìn năm văn hiến<br/>
+                                Trái tim của Việt Nam
+                            </p>
+                        </div>
+                    `);
+
+                    // Create marker element for Hanoi
+                    const markerElement = document.createElement('div');
+                    markerElement.className = 'hanoi-marker';
+                    markerElement.style.cssText = `
+                        width: 25px;
+                        height: 25px;
+                        border-radius: 50%;
+                        background: linear-gradient(45deg, #e74c3c, #c0392b);
+                        border: 4px solid white;
+                        box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        animation: pulse 2s infinite;
+                    `;
+
+                    // Add pulse animation
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        @keyframes pulse {
+                            0% { transform: scale(1); }
+                            50% { transform: scale(1.1); }
+                            100% { transform: scale(1); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+
+                    // Add hover effect
+                    markerElement.addEventListener('mouseenter', function() {
+                        this.style.transform = 'scale(1.3)';
+                        this.style.background = 'linear-gradient(45deg, #f39c12, #e67e22)';
+                        this.style.animation = 'none';
+                    });
+
+                    markerElement.addEventListener('mouseleave', function() {
+                        this.style.transform = 'scale(1)';
+                        this.style.background = 'linear-gradient(45deg, #e74c3c, #c0392b)';
+                        this.style.animation = 'pulse 2s infinite';
+                    });
+
+                    // Create marker for Hanoi
+                    const marker = new maplibregl.Marker({
+                        element: markerElement
+                    })
+                    .setLngLat([105.8342, 21.0285]) // Hanoi coordinates
+                    .setPopup(popup)
+                    .addTo(map);
+                }
+            });
+        </script>
     </body>
 </html>
