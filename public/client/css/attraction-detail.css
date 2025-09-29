@@ -19,6 +19,10 @@
     --border-radius-lg: 20px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-fast: all 0.2s ease;
+    
+    /* Font System Integration */
+    --ff-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --ff-heading: "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
 /* Sticky Navigation */
@@ -357,4 +361,328 @@ body.dark textarea { background: rgba(38,38,40,0.9); border-color: rgba(255,255,
 
 @media (max-width: 1024px) {
     .itinerary-day__columns { grid-template-columns: 1fr; }
+}
+
+/* ===========================================
+   NEW EXPERIENCE & GUIDELINE STYLES
+   =========================================== */
+
+/* Experience Cards Grid */
+.experiences-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.experience-card {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.experience-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.experience-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.experience-icon i {
+    color: var(--white);
+    font-size: 20px;
+}
+
+.experience-content {
+    flex: 1;
+}
+
+.experience-content h4 {
+    font-family: var(--ff-heading);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin: 0 0 8px 0;
+}
+
+.experience-content p {
+    font-family: var(--ff-primary);
+    color: var(--medium-gray);
+    line-height: 1.5;
+    margin: 0 0 12px 0;
+}
+
+.experience-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.experience-meta span {
+    font-family: var(--ff-primary);
+    font-size: 14px;
+    color: var(--medium-gray);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.difficulty {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.difficulty-easy {
+    background: rgba(46, 204, 113, 0.1);
+    color: var(--success-color);
+}
+
+.difficulty-trung-bình,
+.difficulty-medium {
+    background: rgba(243, 156, 18, 0.1);
+    color: var(--warning-color);
+}
+
+.difficulty-khó,
+.difficulty-hard {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--danger-color);
+}
+
+/* Guidelines & Tips */
+.itinerary-day__guidelines,
+.itinerary-day__tips {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.itinerary-day__guidelines h3,
+.itinerary-day__tips h3 {
+    font-family: var(--ff-heading);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin: 0 0 16px 0;
+}
+
+.itinerary-day__notes-list,
+.itinerary-day__tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.itinerary-day__notes-list li,
+.itinerary-day__tips-list li {
+    font-family: var(--ff-primary);
+    color: var(--medium-gray);
+    line-height: 1.6;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+    padding-left: 20px;
+}
+
+.itinerary-day__notes-list li:last-child,
+.itinerary-day__tips-list li:last-child {
+    border-bottom: none;
+}
+
+.itinerary-day__notes-list li::before,
+.itinerary-day__tips-list li::before {
+    content: "•";
+    color: var(--primary-color);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+/* Amenities */
+.itinerary-day__amenities {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.itinerary-day__amenities h3 {
+    font-family: var(--ff-heading);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin: 0 0 16px 0;
+}
+
+.itinerary-day__amenities-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 8px;
+}
+
+.itinerary-day__amenities-list li {
+    font-family: var(--ff-primary);
+    color: var(--medium-gray);
+    padding: 8px 12px;
+    background: rgba(252, 3, 107, 0.05);
+    border-radius: 6px;
+    border-left: 3px solid var(--primary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .experiences-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .experience-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .experience-icon {
+        align-self: center;
+    }
+    
+    .experience-meta {
+        justify-content: center;
+    }
+    
+    .itinerary-day__amenities-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dark Mode Support */
+body.dark .experience-card,
+body.dark .itinerary-day__guidelines,
+body.dark .itinerary-day__tips,
+body.dark .itinerary-day__amenities {
+    background: rgba(20, 20, 22, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark .experience-content h4,
+body.dark .itinerary-day__guidelines h3,
+body.dark .itinerary-day__tips h3,
+body.dark .itinerary-day__amenities h3 {
+    color: var(--white);
+}
+
+body.dark .experience-content p,
+body.dark .itinerary-day__notes-list li,
+body.dark .itinerary-day__tips-list li {
+    color: #cbd5e1;
+}
+
+body.dark .itinerary-day__notes-list li,
+body.dark .itinerary-day__tips-list li {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark .itinerary-day__amenities-list li {
+    background: rgba(255, 255, 255, 0.05);
+    color: #e5e7eb;
+}
+
+/* ===========================================
+   NEW LAYOUT STYLES - SIDE BY SIDE
+   =========================================== */
+
+/* Remove top margin for first section */
+.no-margin-top {
+    margin-top: -72px !important;
+}
+
+/* New side-by-side layout */
+.intro-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 32px;
+    align-items: start;
+    margin-bottom: 32px;
+}
+
+.intro-section,
+.info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Description content - no text truncation */
+.description-content {
+    line-height: 1.7;
+}
+
+.description-content p {
+    font-family: var(--ff-primary);
+    color: var(--dark-gray);
+    margin: 0;
+    line-height: 1.7;
+    text-align: justify;
+}
+
+/* Additional info row */
+.additional-info-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+/* Responsive Design for New Layout */
+@media (max-width: 1024px) {
+    .intro-layout {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    
+    .additional-info-row {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .intro-layout {
+        gap: 20px;
+    }
+    
+    .additional-info-row {
+        gap: 16px;
+    }
+    
+    .description-content p {
+        text-align: left;
+    }
+}
+
+/* Dark Mode Support for New Layout */
+body.dark .description-content p {
+    color: #e5e7eb;
 }

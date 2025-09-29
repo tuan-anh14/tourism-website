@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="/client/css/responsive.css" />
         <link rel="stylesheet" href="/client/css/harmony.css" />
         <link rel="stylesheet" href="/client/css/attraction-detail.css" />
-                <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" />
+        <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" />
         <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
@@ -19,48 +19,13 @@
     </head>
     <body>
         <%- include('../../partials/header') %>
-        <% /* Normalize attraction data: use provided data if available, otherwise use clean defaults for Văn Miếu – Quốc Tử Giám */ %>
-        <% var attraction = (typeof attraction !== 'undefined' && attraction) ? attraction : {
-            title: 'Văn Miếu – Quốc Tử Giám',
-            seoDescription: 'Di tích lịch sử – văn hóa nổi tiếng của Hà Nội, trường đại học đầu tiên của Việt Nam.',
-            address: '58 Quốc Tử Giám, Văn Miếu – Quốc Tử Giám, Đống Đa, Hà Nội',
-            lat: 21.027962,
-            lng: 105.835515,
-            mapZoom: 15,
-            heroImage: '/client/img/carousel-img5.jpg',
-            images: ['/client/img/carousel-img5.jpg','/client/img/carousel-img4.jpg','/client/img/carousel-img6.jpg','/client/img/img3.png'],
-            openHours: [
-                'Mùa hè (15/4 - 15/10): 7:30 - 18:00',
-                'Mùa đông (còn lại): 8:00 - 18:00'
-            ],
-            tickets: [
-                { type: 'Người lớn', price: '70.000 VNĐ' },
-                { type: 'HSSV', price: '15.000 VNĐ', note: 'Cần thẻ học sinh/sinh viên' },
-                { type: 'Người cao tuổi/khuyết tật nặng', price: '35.000 VNĐ' },
-                { type: 'Miễn phí', price: '0 VNĐ', note: 'Trẻ dưới 15 tuổi, người khuyết tật, nhà giáo' }
-            ],
-            rules: [
-                'Chấp hành quy định, không xâm hại hiện vật/cảnh quan.',
-                'Trang phục lịch sự; không hút thuốc, đội nón trong khu trưng bày.',
-                'Không nói tục, gây mất trật tự nơi tôn nghiêm.',
-                'Thắp hương, dâng lễ đúng nơi quy định.',
-                'Giữ gìn vệ sinh khu di tích.',
-                'Ghi hình cần được sự đồng ý của ban quản lý.'
-            ],
-            experiences: [
-                { icon: 'fa-university', title: 'Chiêm ngưỡng kiến trúc', text: 'Khuê Văn Các, giếng Thiên Quang, bia Tiến sĩ...', duration: '2-3 giờ', difficulty: 'Dễ' },
-                { icon: 'fa-history', title: 'Tìm hiểu lịch sử – giáo dục', text: 'Khám phá quá trình hình thành và chế độ khoa cử.', duration: '1-2 giờ', difficulty: 'Trung bình' },
-                { icon: 'fa-leaf', title: 'Không gian linh thiêng', text: 'Thắp hương tưởng nhớ các bậc hiền triết.', duration: '30 phút', difficulty: 'Dễ' },
-                { icon: 'fa-pencil', title: 'Trải nghiệm văn hóa', text: 'Xin chữ đầu năm, triển lãm thư pháp.', duration: '1 giờ', difficulty: 'Dễ' }
-            ],
-            reviews: [
-                { name: 'Rachel', country: 'Việt Nam', rating: 5, text: 'Không gian cổ kính và trang nghiêm, trải nghiệm rất đáng giá.', avatar: '/client/img/avatar.png' },
-                { name: 'Anh', country: 'Việt Nam', rating: 5, text: 'Kiến trúc đẹp, nhiều thông tin lịch sử bổ ích.', avatar: '/client/img/avatar.png' },
-                { name: 'Minh', country: 'Việt Nam', rating: 5, text: 'Địa điểm tuyệt vời để tìm hiểu truyền thống hiếu học.', avatar: '/client/img/avatar.png' },
-                { name: 'Lan', country: 'Việt Nam', rating: 5, text: 'Rất thích khu bia Tiến sĩ và Khuê Văn Các.', avatar: '/client/img/avatar.png' }
-            ],
-            mapEmbedUrl: 'https://www.google.com/maps?q=58+Qu%E1%BB%91c+T%E1%BB%AD+Gi%C3%A1m,+H%C3%A0+N%E1%BB%99i&output=embed'
-        }; %>
+        <% /* ===========================================
+             DYNAMIC DATA INITIALIZATION
+             ===========================================
+             Data will be managed by attraction-data.js
+             This ensures clean separation of concerns
+             =========================================== */ %>
+        <% var attraction = (typeof attraction !== 'undefined' && attraction) ? attraction : null; %>
         <!-- Hero -->
         <header class="attraction-detail hero" id="hero" style="--hero:url('<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0]))) || '/client/img/header-bg.jfif' %>')" aria-label="Ảnh và tiêu đề điểm tham quan">
             <div class="hero-overlay"></div>
@@ -120,38 +85,66 @@
                         <div class="itinerary-overview__map-gradient-horizontal"></div>
                     </div>
                 </section>
-                <!-- Humanities Attraction (Itinerary-style) -->
-                <section id="humanities-attraction" class="content-section itinerary-day">
+                <!-- ===========================================
+                     SECTION 1: INTRODUCTION & BASIC INFO
+                     =========================================== -->
+                <section id="attraction-intro" class="content-section itinerary-day no-margin-top">
                     <div class="itinerary-day__hero-wrapper">
                         <div class="itinerary-day__hero-media">
-                            <img src="<%= (attraction && attraction.images && attraction.images[0]) || '/client/img/carousel-img5.jpg' %>" alt="Văn Miếu – Quốc Tử Giám" loading="lazy" />
+                            <img src="<%= (attraction && attraction.images && attraction.images[0]) || '/client/img/carousel-img5.jpg' %>" alt="<%= (attraction && attraction.title) || 'Điểm tham quan' %>" loading="lazy" />
                             <div class="itinerary-day__banner-title">
-                                <h2>Chào mừng tới Văn Miếu – Quốc Tử Giám</h2>
+                                <h2>Chào mừng tới <%= (attraction && attraction.title) || 'Điểm tham quan' %></h2>
                             </div>
                         </div>
                     </div>
 
                     <div class="itinerary-day__overlay">
                         <div class="itinerary-day__content-container">
-                            <div class="itinerary-day__columns">
-                                <div class="itinerary-day__column-left">
+                            <!-- NEW LAYOUT: Side by side Introduction and Basic Info -->
+                            <div class="intro-layout">
+                                <!-- LEFT: Introduction -->
+                                <div class="intro-section">
                                     <div class="itinerary-day__description-card">
                                         <div class="itinerary-day__description">
                                             <h3>Giới thiệu chung</h3>
-                                            <p>Văn Miếu – Quốc Tử Giám là quần thể di tích lịch sử, văn hóa nổi tiếng nằm ở trung tâm Hà Nội, được xây dựng từ năm 1070 dưới triều Lý. Đây là trường đại học đầu tiên của Việt Nam, nơi đào tạo và tôn vinh những bậc hiền tài cho đất nước. Với kiến trúc cổ kính, không gian tĩnh lặng cùng hệ thống bia tiến sĩ độc đáo, Văn Miếu – Quốc Tử Giám không chỉ là điểm đến hấp dẫn của du khách trong và ngoài nước, mà còn là biểu tượng của truyền thống hiếu học và nền văn hiến lâu đời của dân tộc Việt Nam.</p>
+                                            <div class="description-content">
+                                                <p><%= (attraction && attraction.description) || 'Văn Miếu – Quốc Tử Giám là quần thể di tích lịch sử, văn hóa nổi tiếng nằm ở trung tâm Hà Nội, được xây dựng từ năm 1070 dưới triều Lý. Đây là trường đại học đầu tiên của Việt Nam, nơi đào tạo và tôn vinh những bậc hiền tài cho đất nước. Với kiến trúc cổ kính, không gian tĩnh lặng cùng hệ thống bia tiến sĩ độc đáo, Văn Miếu – Quốc Tử Giám không chỉ là điểm đến hấp dẫn của du khách trong và ngoài nước, mà còn là biểu tượng của truyền thống hiếu học và nền văn hiến lâu đời của dân tộc Việt Nam.' %></p>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
 
+                                <!-- RIGHT: Basic Info -->
+                                <div class="info-section">
                                     <div class="itinerary-day__info-card">
-                                        <h3>Thông tin</h3>
+                                        <h3>Thông tin cơ bản</h3>
                                         <ul class="itinerary-day__info-list">
-                                            <li><strong>Vị trí</strong>: 58 P. Quốc Tử Giám, Văn Miếu – Quốc Tử Giám, Đống Đa, Hà Nội</li>
+                                            <li><strong>Vị trí</strong>: <%= (attraction && attraction.address) || '58 P. Quốc Tử Giám, Văn Miếu – Quốc Tử Giám, Đống Đa, Hà Nội' %></li>
+                                            <% if (attraction && attraction.openHours && attraction.openHours.length > 0) { %>
+                                            <li><strong>Giờ mở cửa</strong>:
+                                                <ul>
+                                                    <% attraction.openHours.forEach(function(hour) { %>
+                                                    <li><%= hour %></li>
+                                                    <% }); %>
+                                                </ul>
+                                            </li>
+                                            <% } else { %>
                                             <li><strong>Giờ mở cửa</strong>:
                                                 <ul>
                                                     <li>Mùa hè (15/4 - 15/10): 7:30 - 18:00</li>
                                                     <li>Mùa đông (còn lại): 8:00 - 18:00</li>
                                                 </ul>
                                             </li>
+                                            <% } %>
+                                            <% if (attraction && attraction.tickets && attraction.tickets.length > 0) { %>
+                                            <li><strong>Giá vé tham quan</strong>:
+                                                <ul>
+                                                    <% attraction.tickets.forEach(function(ticket) { %>
+                                                    <li><%= ticket.type %>: <%= ticket.price %><% if (ticket.note) { %> (<%= ticket.note %>)<% } %></li>
+                                                    <% }); %>
+                                                </ul>
+                                            </li>
+                                            <% } else { %>
                                             <li><strong>Giá vé tham quan</strong>:
                                                 <ul>
                                                     <li>Người lớn: 70.000 VNĐ</li>
@@ -161,94 +154,100 @@
                                                     <li>Nhóm từ 10 người: áp dụng giảm giá</li>
                                                 </ul>
                                             </li>
+                                            <% } %>
                                             <li class="note">Giá vé có thể thay đổi vào dịp Lễ/Tết và sự kiện đặc biệt.</li>
                                         </ul>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="itinerary-day__column-right">
-                                    <div class="itinerary-day__highlights">
-                                        <h3>Trải nghiệm của du khách</h3>
-                                        <ul class="itinerary-day__highlights-list">
-                                            <li><strong>Chiêm ngưỡng kiến trúc cổ kính</strong>: Khuê Văn Các, giếng Thiên Quang, bia Tiến sĩ...</li>
-                                            <li><strong>Tìm hiểu lịch sử – giáo dục</strong>: Quá trình hình thành, phát triển của Quốc Tử Giám và chế độ khoa cử.</li>
-                                            <li><strong>Không gian linh thiêng, tôn nghiêm</strong>: Thắp hương tưởng nhớ các bậc hiền triết, tôn sư trọng đạo.</li>
-                                            <li><strong>Trải nghiệm văn hóa</strong>: Xin chữ đầu năm, triển lãm thư pháp, hoạt động giáo dục.</li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="itinerary-day__notes">
-                                        <h3>Lưu ý khi tham quan</h3>
-                                        <ul class="itinerary-day__notes-list">
-                                            <li>Chấp hành quy định, không xâm hại di tích (không xoa đầu rùa, ngồi lên bia Tiến sĩ...).</li>
-                                            <li>Trang phục lịch sự, không hút thuốc, không đội nón trong khu trưng bày.</li>
-                                            <li>Không nói tục, gây mất trật tự nơi tôn nghiêm.</li>
-                                            <li>Thắp hương/dâng lễ đúng nơi quy định; liên hệ ban quản lý nếu cần hướng dẫn.</li>
-                                            <li>Giữ gìn vệ sinh khu di tích; hoạt động ghi hình cần sự đồng ý của ban quản lý.</li>
-                                        </ul>
-                                    </div>
+                            <!-- Additional Info Row -->
+                            <div class="additional-info-row">
+                                <% if (attraction && attraction.highlights && attraction.highlights.length > 0) { %>
+                                <div class="itinerary-day__highlights">
+                                    <h3>Điểm nổi bật</h3>
+                                    <ul class="itinerary-day__highlights-list">
+                                        <% attraction.highlights.forEach(function(highlight) { %>
+                                        <li><%= highlight %></li>
+                                        <% }); %>
+                                    </ul>
                                 </div>
+                                <% } %>
+
+                                <% if (attraction && attraction.amenities && attraction.amenities.length > 0) { %>
+                                <div class="itinerary-day__amenities">
+                                    <h3>Tiện ích</h3>
+                                    <ul class="itinerary-day__amenities-list">
+                                        <% attraction.amenities.forEach(function(amenity) { %>
+                                        <li><%= amenity %></li>
+                                        <% }); %>
+                                    </ul>
+                                </div>
+                                <% } %>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Humanities Attraction (Itinerary-style) -->
-                <section id="humanities-attraction" class="content-section itinerary-day">
+                <!-- ===========================================
+                     SECTION 2: EXPERIENCES & GUIDELINES
+                     =========================================== -->
+                <section id="attraction-experiences" class="content-section itinerary-day">
                     <div class="itinerary-day__hero-wrapper">
                         <div class="itinerary-day__hero-media">
-                            <img src="<%= (attraction && attraction.images && attraction.images[5]) || '/client/img/carousel-img4.jpg' %>" alt="Văn Miếu – Quốc Tử Giám" loading="lazy" />
+                            <img src="<%= (attraction && attraction.images && attraction.images[1]) || '/client/img/carousel-img4.jpg' %>" alt="<%= (attraction && attraction.title) || 'Điểm tham quan' %> - Trải nghiệm" loading="lazy" />
                         </div>
                     </div>
 
                     <div class="itinerary-day__overlay">
                         <div class="itinerary-day__content-container">
                             <div class="itinerary-day__columns">
+                                <!-- LEFT COLUMN: Experiences -->
                                 <div class="itinerary-day__column-left">
-                                    <div class="itinerary-day__description-card">
-                                        <div class="itinerary-day__description">
-                                            <h3>Giới thiệu chung</h3>
-                                            <p>Văn Miếu – Quốc Tử Giám là quần thể di tích lịch sử, văn hóa nổi tiếng nằm ở trung tâm Hà Nội, được xây dựng từ năm 1070 dưới triều Lý. Đây là trường đại học đầu tiên của Việt Nam, nơi đào tạo và tôn vinh những bậc hiền tài cho đất nước. Với kiến trúc cổ kính, không gian tĩnh lặng cùng hệ thống bia tiến sĩ độc đáo, Văn Miếu – Quốc Tử Giám không chỉ là điểm đến hấp dẫn của du khách trong và ngoài nước, mà còn là biểu tượng của truyền thống hiếu học và nền văn hiến lâu đời của dân tộc Việt Nam.</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="itinerary-day__info-card">
-                                        <h3>Thông tin</h3>
-                                        <ul class="itinerary-day__info-list">
-                                            <li><strong>Vị trí</strong>: 58 P. Quốc Tử Giám, Văn Miếu – Quốc Tử Giám, Đống Đa, Hà Nội</li>
-                                            <li><strong>Giờ mở cửa</strong>:
-                                                <ul>
-                                                    <li>Mùa hè (15/4 - 15/10): 7:30 - 18:00</li>
-                                                    <li>Mùa đông (còn lại): 8:00 - 18:00</li>
-                                                </ul>
-                                            </li>
-                                            <li><strong>Giá vé tham quan</strong>:
-                                                <ul>
-                                                    <li>Người lớn: 70.000 VNĐ</li>
-                                                    <li>Học sinh, sinh viên: 15.000 VNĐ (cần thẻ)</li>
-                                                    <li>Người cao tuổi/khuyết tật nặng: 35.000 VNĐ</li>
-                                                    <li>Trẻ dưới 15 tuổi, người khuyết tật, nhà giáo: miễn phí</li>
-                                                    <li>Nhóm từ 10 người: áp dụng giảm giá</li>
-                                                </ul>
-                                            </li>
-                                            <li class="note">Giá vé có thể thay đổi vào dịp Lễ/Tết và sự kiện đặc biệt.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="itinerary-day__column-right">
-                                    <div class="itinerary-day__highlights">
+                                    <div class="itinerary-day__experiences">
                                         <h3>Trải nghiệm của du khách</h3>
+                                        <% if (attraction && attraction.experiences && attraction.experiences.length > 0) { %>
+                                        <div class="experiences-grid">
+                                            <% attraction.experiences.forEach(function(experience) { %>
+                                            <div class="experience-card">
+                                                <div class="experience-icon">
+                                                    <i class="fa <%= experience.icon || 'fa-star' %>"></i>
+                                                </div>
+                                                <div class="experience-content">
+                                                    <h4><%= experience.title %></h4>
+                                                    <p><%= experience.text %></p>
+                                                    <div class="experience-meta">
+                                                        <span class="duration"><i class="fa fa-clock-o"></i> <%= experience.duration %></span>
+                                                        <span class="difficulty difficulty-<%= experience.difficulty ? experience.difficulty.toLowerCase() : 'easy' %>">
+                                                            <i class="fa fa-signal"></i> <%= experience.difficulty || 'Dễ' %>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% }); %>
+                                        </div>
+                                        <% } else { %>
                                         <ul class="itinerary-day__highlights-list">
                                             <li><strong>Chiêm ngưỡng kiến trúc cổ kính</strong>: Khuê Văn Các, giếng Thiên Quang, bia Tiến sĩ...</li>
                                             <li><strong>Tìm hiểu lịch sử – giáo dục</strong>: Quá trình hình thành, phát triển của Quốc Tử Giám và chế độ khoa cử.</li>
                                             <li><strong>Không gian linh thiêng, tôn nghiêm</strong>: Thắp hương tưởng nhớ các bậc hiền triết, tôn sư trọng đạo.</li>
                                             <li><strong>Trải nghiệm văn hóa</strong>: Xin chữ đầu năm, triển lãm thư pháp, hoạt động giáo dục.</li>
                                         </ul>
+                                        <% } %>
                                     </div>
+                                </div>
 
-                                    <div class="itinerary-day__notes">
-                                        <h3>Lưu ý khi tham quan</h3>
+                                <!-- RIGHT COLUMN: Guidelines & Rules -->
+                                <div class="itinerary-day__column-right">
+                                    <div class="itinerary-day__guidelines">
+                                        <h3>Hướng dẫn tham quan</h3>
+                                        <% if (attraction && attraction.rules && attraction.rules.length > 0) { %>
+                                        <ul class="itinerary-day__notes-list">
+                                            <% attraction.rules.forEach(function(rule) { %>
+                                            <li><%= rule %></li>
+                                            <% }); %>
+                                        </ul>
+                                        <% } else { %>
                                         <ul class="itinerary-day__notes-list">
                                             <li>Chấp hành quy định, không xâm hại di tích (không xoa đầu rùa, ngồi lên bia Tiến sĩ...).</li>
                                             <li>Trang phục lịch sự, không hút thuốc, không đội nón trong khu trưng bày.</li>
@@ -256,7 +255,19 @@
                                             <li>Thắp hương/dâng lễ đúng nơi quy định; liên hệ ban quản lý nếu cần hướng dẫn.</li>
                                             <li>Giữ gìn vệ sinh khu di tích; hoạt động ghi hình cần sự đồng ý của ban quản lý.</li>
                                         </ul>
+                                        <% } %>
                                     </div>
+
+                                    <% if (attraction && attraction.tips && attraction.tips.length > 0) { %>
+                                    <div class="itinerary-day__tips">
+                                        <h3>Mẹo tham quan</h3>
+                                        <ul class="itinerary-day__tips-list">
+                                            <% attraction.tips.forEach(function(tip) { %>
+                                            <li><%= tip %></li>
+                                            <% }); %>
+                                        </ul>
+                                    </div>
+                                    <% } %>
                                 </div>
                             </div>
                         </div>
@@ -420,8 +431,15 @@
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="/client/js/includes.js"></script>
         <script src="/client/js/script.js"></script>
+        <script src="/client/js/attraction-data.js"></script>
         <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
         <script src="/client/js/attraction-detail.js"></script>
+        
+        <!-- Initialize Dynamic Data -->
+        <script>
+            // Initialize attraction data with server data
+            window.AttractionData.initialize(null);
+        </script>
     </body>
     </html>
 
