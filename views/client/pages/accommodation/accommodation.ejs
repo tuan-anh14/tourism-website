@@ -77,89 +77,46 @@
 
             <!-- Grid -->
             <section class="accommodation-grid" aria-label="Danh sách cơ sở lưu trú">
-                <article class="accommodation-card" data-title="Hanoi Old Quarter Hotel" data-type="hotel" data-area="center" data-price="1800000" data-amenities="wifi,breakfast,parking">
+                <% 
+                    var list = (typeof accommodations !== 'undefined' && accommodations && accommodations.length) ? accommodations : null;
+                    function slugify(str){
+                        if (!str) return '';
+                        return String(str).toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
+                    }
+                %>
+                <% if (list) { list.forEach(function(item){
+                    var title = item.title || 'Cơ sở lưu trú';
+                    var img = item.image || item.heroImage || (item.images && item.images[0]) || '/client/img/carousel-img2.jpg';
+                    var type = item.type || 'hotel';
+                    var area = item.area || 'center';
+                    var price = (item.price && Number(item.price)) || (item.priceFrom && Number(item.priceFrom)) || '';
+                    var amenities = (item.amenities && item.amenities.join(',')) || '';
+                    var desc = item.shortDescription || item.description || '';
+                    var slug = item.slug || slugify(title);
+                %>
+                <article class="accommodation-card" data-title="<%= title %>" data-type="<%= type %>" data-area="<%= area %>" data-price="<%= price %>" data-amenities="<%= amenities %>">
                     <div class="thumb">
-                        <img src="/client/img/carousel-img2.jpg" alt="Hanoi Old Quarter Hotel" loading="lazy" />
+                        <img src="<%= img %>" alt="<%= title %>" loading="lazy" />
                     </div>
                     <div class="content">
-                        <h3 class="title dark">Hanoi Old Quarter Hotel</h3>
-                        <p class="desc font-color">Vị trí trung tâm phố cổ, phòng ốc hiện đại, gần hồ Hoàn Kiếm.</p>
+                        <h3 class="title dark"><%= title %></h3>
+                        <% if (desc) { %><p class="desc font-color"><%= desc %></p><% } %>
                         <div class="meta">
-                            <span class="price">~ 1.800.000đ/đêm</span>
+                            <% if (price) { %>
+                            <span class="price">~ <%= Number(price).toLocaleString('vi-VN') %>đ/đêm</span>
+                            <% } %>
                             <div class="amenities">
-                                <span class="tag">Wi‑Fi</span>
-                                <span class="tag">Bữa sáng</span>
-                                <span class="tag">Đỗ xe</span>
+                                <% if (item.amenities && item.amenities.length) { item.amenities.slice(0,3).forEach(function(a){ %>
+                                <span class="tag"><%= a %></span>
+                                <% }) } %>
                             </div>
                         </div>
                         <div class="actions">
-                            <a class="ctn" href="#">Đặt phòng</a>
+                            <a class="ctn" href="/accommodation/<%= slug %>">Xem chi tiết</a>
                         </div>
                     </div>
                 </article>
-
-                <article class="accommodation-card" data-title="Lakeside Homestay" data-type="homestay" data-area="tayho" data-price="900000" data-amenities="wifi,kitchen,lakeview">
-                    <div class="thumb">
-                        <img src="/client/img/carousel-img3.jpg" alt="Lakeside Homestay" loading="lazy" />
-                    </div>
-                    <div class="content">
-                        <h3 class="title dark">Lakeside Homestay</h3>
-                        <p class="desc font-color">Không gian ấm cúng ven Hồ Tây, có bếp và ban công hướng hồ.</p>
-                        <div class="meta">
-                            <span class="price">~ 900.000đ/đêm</span>
-                            <div class="amenities">
-                                <span class="tag">Wi‑Fi</span>
-                                <span class="tag">Bếp</span>
-                                <span class="tag">View hồ</span>
-                            </div>
-                        </div>
-                        <div class="actions">
-                            <a class="ctn" href="#">Xem chi tiết</a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="accommodation-card" data-title="Budget Guesthouse" data-type="guesthouse" data-area="caugiay" data-price="600000" data-amenities="wifi,parking,aircon">
-                    <div class="thumb">
-                        <img src="/client/img/img1.jfif" alt="Budget Guesthouse" loading="lazy" />
-                    </div>
-                    <div class="content">
-                        <h3 class="title dark">Budget Guesthouse</h3>
-                        <p class="desc font-color">Giải pháp tiết kiệm, phòng sạch, đầy đủ điều hòa, chỗ đỗ xe.</p>
-                        <div class="meta">
-                            <span class="price">~ 600.000đ/đêm</span>
-                            <div class="amenities">
-                                <span class="tag">Wi‑Fi</span>
-                                <span class="tag">Đỗ xe</span>
-                                <span class="tag">Điều hòa</span>
-                            </div>
-                        </div>
-                        <div class="actions">
-                            <a class="ctn" href="#">Xem chi tiết</a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="accommodation-card" data-title="Serviced Apartment Center" data-type="apartment" data-area="haibatrung" data-price="2500000" data-amenities="wifi,kitchen,washing">
-                    <div class="thumb">
-                        <img src="/client/img/img2.jfif" alt="Serviced Apartment Center" loading="lazy" />
-                    </div>
-                    <div class="content">
-                        <h3 class="title dark">Serviced Apartment Center</h3>
-                        <p class="desc font-color">Căn hộ dịch vụ đầy đủ nội thất, bếp và máy giặt, phù hợp lưu trú dài ngày.</p>
-                        <div class="meta">
-                            <span class="price">~ 2.500.000đ/đêm</span>
-                            <div class="amenities">
-                                <span class="tag">Wi‑Fi</span>
-                                <span class="tag">Bếp</span>
-                                <span class="tag">Máy giặt</span>
-                            </div>
-                        </div>
-                        <div class="actions">
-                            <a class="ctn" href="#">Đặt phòng</a>
-                        </div>
-                    </div>
-                </article>
+                <% }) } %>
             </section>
         </section>
 

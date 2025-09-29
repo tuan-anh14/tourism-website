@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= (acc && acc.title) || 'Chi tiết lưu trú' %> | HÀ NỘI</title>
+        <meta name="description" content="<%= (acc && (acc.title + ' - Lưu trú Hà Nội')) || 'Chi tiết lưu trú Hà Nội' %>" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="/client/css/style.css" />
+        <link rel="stylesheet" href="/client/css/responsive.css" />
+        <link rel="stylesheet" href="/client/css/harmony.css" />
+        <link rel="stylesheet" href="/client/css/accommodation-detail.css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
+        <link rel="manifest" href="/client/img/site.webmanifest" />
+    </head>
+    <body class="accommodation-detail-page">
+        <%- include('../../partials/header') %>
+
+        <!-- Banner with overlayed accommodation header block -->
+        <header class="page-header acc-detail-banner" style="background-image:url('<%= (acc && (acc.heroImage || (acc.images && acc.images[0]))) || '/client/img/header-bg.jfif' %>')">
+            <div class="acc-detail-banner__overlay"></div>
+            <div class="container">
+                <div class="accommodation-header">
+                    <div class="accommodation-title">
+                        <div class="title-left">
+                            <% if (acc && acc.categoryLabel) { %>
+                            <div class="hotel-category">
+                                <i class="fa fa-star"></i> <%= acc.categoryLabel %>
+                            </div>
+                            <% } %>
+                            <h1><%= (acc && acc.title) || 'Lưu trú' %></h1>
+                            <div class="rating">
+                                <div class="stars" aria-label="<%= acc ? acc.rating : 0 %> sao">
+                                    <% var full = Math.floor((acc && acc.rating) || 0); var half = (acc && (acc.rating - full >= 0.5)) ? 1 : 0; var empty = 5 - full - half; %>
+                                    <% for (var i = 0; i < full; i++) { %><i class="fa fa-star"></i><% } %>
+                                    <% if (half) { %><i class="fa fa-star-half-o"></i><% } %>
+                                    <% for (var i = 0; i < empty; i++) { %><i class="fa fa-star-o"></i><% } %>
+                                </div>
+                                <% if (acc && acc.reviewCount) { %>
+                                <span class="review-count">(<%= (acc.rating || '0') %>/5 - <%= acc.reviewCount %> đánh giá)</span>
+                                <% } %>
+                            </div>
+                            <div class="location">
+                                <i class="fa fa-map-marker"></i>
+                                <span><%= (acc && acc.address) || '' %></span>
+                            </div>
+                        </div>
+                        <div class="price-box">
+                            <div class="price-label">Giá từ</div>
+                            <div class="price"><%= (acc && acc.priceFrom) ? (acc.priceFrom.toLocaleString('vi-VN')) + '₫' : '—' %></div>
+                            <div class="price-unit"><%= (acc && acc.priceUnit) || '/ đêm' %></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="acc-detail main">
+            <div class="container main-content">
+                <!-- Gallery -->
+                <section class="image-gallery" id="gallery">
+                    <% var imgs = (acc && acc.images && acc.images.length) ? acc.images : ['/client/img/carousel-img2.jpg','/client/img/carousel-img3.jpg','/client/img/img1.jfif','/client/img/img2.jfif','/client/img/img3.png']; %>
+                    <% imgs.slice(0, 5).forEach(function(img, idx){ %>
+                    <div class="gallery-item" data-index="<%= idx %>">
+                        <img src="<%= img %>" alt="Hình ảnh lưu trú" loading="lazy" />
+                        <% if (idx === 0) { %>
+                        <button class="show-all-photos" type="button">
+                            <i class="fa fa-images"></i> Xem tất cả ảnh
+                        </button>
+                        <% } %>
+                    </div>
+                    <% }) %>
+                </section>
+
+                <div class="content-grid">
+                    <div>
+                        <!-- Intro -->
+                        <section class="main-section">
+                            <h2 class="section-title">Giới thiệu</h2>
+                            <div class="description">
+                                <% var intro = (acc && acc.intro && acc.intro.length) ? acc.intro : []; %>
+                                <% if (!intro.length) { %>
+                                    <p>Thông tin đang được cập nhật.</p>
+                                <% } else { intro.forEach(function(p){ %>
+                                    <p><%= p %></p>
+                                <% }) } %>
+                            </div>
+                            <% if (acc && acc.highlights && acc.highlights.length) { %>
+                            <div class="highlight-box">
+                                <h3><i class="fa fa-award"></i> Điểm nổi bật</h3>
+                                <ul>
+                                    <% acc.highlights.forEach(function(h){ %>
+                                    <li><%= h %></li>
+                                    <% }) %>
+                                </ul>
+                            </div>
+                            <% } %>
+
+                            <% if (acc && acc.roomFeatures && acc.roomFeatures.length) { %>
+                            <div class="room-info">
+                                <h3><i class="fa fa-bed"></i> Tiện nghi trong phòng</h3>
+                                <div class="room-features-list">
+                                    <% acc.roomFeatures.forEach(function(f){ %>
+                                    <div class="feature-item"><i class="fa fa-check-circle"></i><span><%= f %></span></div>
+                                    <% }) %>
+                                </div>
+                            </div>
+                            <% } %>
+                        </section>
+
+                        <!-- Services -->
+                        <% var services = (acc && acc.services) || {}; %>
+                        <section class="services-section">
+                            <h2 class="section-title">Dịch vụ & Tiện ích</h2>
+                            <% if (!services.common && !services.service && !services.breakfast) { %>
+                                <p class="font-color">Thông tin đang được cập nhật.</p>
+                            <% } %>
+                            <% if (services.common && services.common.length) { %>
+                            <div class="service-category">
+                                <h3>Tiện nghi chung</h3>
+                                <div class="service-list">
+                                    <% services.common.forEach(function(s){ %>
+                                    <div class="service-item"><i class="fa fa-check"></i><span><%= s %></span></div>
+                                    <% }) %>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if (services.service && services.service.length) { %>
+                            <div class="service-category">
+                                <h3>Dịch vụ</h3>
+                                <div class="service-list">
+                                    <% services.service.forEach(function(s){ %>
+                                    <div class="service-item"><i class="fa fa-check"></i><span><%= s %></span></div>
+                                    <% }) %>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if (services.breakfast && services.breakfast.length) { %>
+                            <div class="service-category">
+                                <h3>Bữa sáng</h3>
+                                <div class="service-list">
+                                    <% services.breakfast.forEach(function(s){ %>
+                                    <div class="service-item"><i class="fa fa-check"></i><span><%= s %></span></div>
+                                    <% }) %>
+                                </div>
+                            </div>
+                            <% } %>
+                        </section>
+
+                        <!-- Nearby places -->
+                        <% var near = (acc && acc.nearbyPlaces) || []; %>
+                        <% if (near.length) { %>
+                        <section class="nearby-places">
+                            <h2 class="section-title">Địa điểm gần đây</h2>
+                            <% near.forEach(function(p){ %>
+                            <div class="place-item">
+                                <div class="place-name">
+                                    <i class="fa <%= p.icon || 'fa-map-marker' %>"></i>
+                                    <span><%= p.name %></span>
+                                </div>
+                                <div class="place-distance"><%= p.distance %></div>
+                            </div>
+                            <% }) %>
+                        </section>
+                        <% } %>
+
+                        <!-- Map -->
+                        <section class="map-container">
+                            <h2 class="section-title">Vị trí trên bản đồ</h2>
+                            <div class="map-placeholder" id="mapPlaceholder" data-lat="<%= (acc && acc.map && acc.map.lat) || '' %>" data-lng="<%= (acc && acc.map && acc.map.lng) || '' %>">
+                                <i class="fa fa-map-marker" style="font-size: 3rem;"></i>
+                            </div>
+                            <% if (acc && acc.address) { %>
+                            <p class="map-address"><strong>Địa chỉ:</strong> <%= acc.address %></p>
+                            <% } %>
+                        </section>
+                    </div>
+
+                    <aside class="sidebar">
+                        <!-- Booking card (placeholder form) -->
+                        <section class="booking-card">
+                            <h3><i class="fa fa-calendar-check-o"></i> Đặt phòng</h3>
+                            <form>
+                                <div class="form-group">
+                                    <label><i class="fa fa-calendar"></i> Ngày nhận phòng</label>
+                                    <input type="date" required />
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa fa-calendar"></i> Ngày trả phòng</label>
+                                    <input type="date" required />
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa fa-users"></i> Số khách</label>
+                                    <select>
+                                        <option>1 người</option>
+                                        <option>2 người</option>
+                                        <option>3 người</option>
+                                        <option>4 người</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa fa-door-open"></i> Loại phòng</label>
+                                    <select>
+                                        <option>Studio Standard</option>
+                                        <option>Studio Deluxe</option>
+                                        <option>Studio Premium</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-primary">
+                                    <i class="fa fa-paper-plane"></i> Đặt phòng ngay
+                                </button>
+                            </form>
+                            <div class="benefits-box">
+                                <div class="benefit-item"><i class="fa fa-check-circle"></i><span>Đặt phòng an toàn</span></div>
+                                <div class="benefit-item"><i class="fa fa-check-circle"></i><span>Xác nhận tức thì</span></div>
+                                <div class="benefit-item"><i class="fa fa-check-circle"></i><span>Hỗ trợ 24/7</span></div>
+                            </div>
+                        </section>
+
+                        <!-- Contact info -->
+                        <% var contacts = (acc && acc.contacts) || {}; %>
+                        <section class="contact-info">
+                            <h3><i class="fa fa-address-book"></i> Thông tin liên hệ</h3>
+                            <% if (contacts.phone) { %>
+                            <div class="contact-item">
+                                <i class="fa fa-phone"></i>
+                                <div>
+                                    <div class="label">Điện thoại</div>
+                                    <div class="value"><%= contacts.phone %></div>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if (contacts.email) { %>
+                            <div class="contact-item">
+                                <i class="fa fa-envelope"></i>
+                                <div>
+                                    <div class="label">Email</div>
+                                    <div class="value"><%= contacts.email %></div>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if (contacts.address || acc.address) { %>
+                            <div class="contact-item">
+                                <i class="fa fa-map-marker"></i>
+                                <div>
+                                    <div class="label">Địa chỉ</div>
+                                    <div class="value"><%= contacts.address || acc.address %></div>
+                                </div>
+                            </div>
+                            <% } %>
+                        </section>
+                    </aside>
+                </div>
+            </div>
+        </main>
+
+        <!--footer-->
+        <%- include('../../partials/footer') %>
+        <!--footer-->
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="/client/js/includes.js"></script>
+        <script src="/client/js/script.js"></script>
+    </body>
+    </html>
+
+
