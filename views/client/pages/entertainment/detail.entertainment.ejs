@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= pageTitle %> | HÀ NỘI</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="/client/css/style.css" />
+        <link rel="stylesheet" href="/client/css/responsive.css" />
+        <link rel="stylesheet" href="/client/css/harmony.css" />
+        <link rel="stylesheet" href="/client/css/entertainment-detail.css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
+        <link rel="manifest" href="/client/img/site.webmanifest" />
+    </head>
+    <body>
+        <%- include('../../partials/header') %>
+
+        <!-- Banner -->
+        <header class="page-header entertainment-banner" style="background-image: url('<%= detail.heroImage %>');">
+            <div class="header-content">
+                <h2 id="quote">Văn hoá & Nghệ thuật</h2>
+                <div class="line"></div>
+                <h1><%= detail.title %></h1>
+                <p class="font-color">Trải nghiệm nghệ thuật giữa lòng Thủ đô</p>
+            </div>
+        </header>
+
+        <section class="detail-container">
+            <!-- Quick Info -->
+            <div class="quick-info">
+                <% (detail.quickInfo || []).forEach(function(info){ %>
+                    <article class="info-card">
+                        <div class="info-card-icon"><%= info.icon %></div>
+                        <h3><%= info.label %></h3>
+                        <p class="font-color"><%= info.value %></p>
+                    </article>
+                <% }) %>
+            </div>
+
+            <!-- Intro -->
+            <section class="content-section">
+                <h2 class="dark"><%= detail.intro.title %></h2>
+                <% (detail.intro.paragraphs || []).forEach(function(p){ %>
+                    <p class="font-color"><%= p %></p>
+                <% }) %>
+
+                <% (detail.sections || []).forEach(function(sec){ %>
+                    <h3 class="dark"><%= sec.title %></h3>
+                    <% (sec.paragraphs || []).forEach(function(p){ %>
+                        <p class="font-color"><%= p %></p>
+                    <% }) %>
+                    <% if (sec.bullets && sec.bullets.length) { %>
+                        <ul>
+                            <% sec.bullets.forEach(function(b){ %>
+                                <li class="font-color"><%= b %></li>
+                            <% }) %>
+                        </ul>
+                    <% } %>
+                <% }) %>
+
+                <% if (detail.highlight) { %>
+                    <div class="highlight-box">
+                        <h4 class="dark">💡 <%= detail.highlight.title %></h4>
+                        <p class="font-color"><%= detail.highlight.content %></p>
+                    </div>
+                <% } %>
+            </section>
+
+            <!-- Gallery -->
+            <section class="content-section">
+                <h2 class="dark">Hình ảnh</h2>
+                <div class="gallery">
+                    <% (detail.gallery || []).forEach(function(img){ %>
+                        <figure class="gallery-item">
+                            <img src="<%= img.src %>" alt="<%= img.alt %>" loading="lazy" />
+                        </figure>
+                    <% }) %>
+                </div>
+            </section>
+
+            <!-- Notes -->
+            <section class="content-section">
+                <h2 class="dark">Lưu ý khi tham quan</h2>
+                <div class="highlight-box">
+                    <ul>
+                        <li class="font-color">Trang phục lịch sự khi tham dự biểu diễn</li>
+                        <li class="font-color">Nên đặt vé trước và đến sớm 15–20 phút</li>
+                        <li class="font-color">Tuân thủ quy định chụp ảnh/quay video</li>
+                        <li class="font-color">Giữ trật tự và tắt chuông điện thoại</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Map -->
+            <section class="content-section">
+                <h2 class="dark">Vị trí</h2>
+                <div class="map-container">
+                    <iframe src="<%= detail.mapEmbed %>" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="cta-section">
+                <h2 class="dark"><%= detail.cta.title %></h2>
+                <p class="font-color" style="margin-bottom: 16px;"><%= detail.cta.subtitle %></p>
+                <% (detail.cta.actions || []).forEach(function(act){ %>
+                    <a href="<%= act.href %>" class="btn"><%= act.label %></a>
+                <% }) %>
+            </section>
+        </section>
+
+        <!-- up scroll -->
+        <i class="arrow" onclick="topFunction()" id="upbtn"></i>
+
+        <!--footer-->
+        <%- include('../../partials/footer') %>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="/client/js/includes.js"></script>
+        <script src="/client/js/script.js"></script>
+    </body>
+    </html>
