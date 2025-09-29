@@ -91,7 +91,7 @@
     outline: none !important;
     background: transparent !important;
     font-size: 16px;
-    font-family: var(--ff-roboto, 'Roboto', sans-serif);
+    font-family: var(--ff-primary);
     color: #333 !important;
     padding: 0;
     width: 100%;
@@ -145,7 +145,7 @@
     color: #333;
     cursor: pointer;
     transition: opacity .25s ease, transform .25s ease, background-color .2s ease, color .2s ease;
-    font-family: var(--ff-roboto, 'Roboto', sans-serif);
+    font-family: var(--ff-primary);
     position: absolute;
     left: 0;
     margin: 0;
@@ -429,7 +429,7 @@ body.dark .suggestion-category {
     background: transparent;
     color: inherit;
     font-size: 16px;
-    font-family: var(--ff-roboto, 'Roboto', sans-serif);
+    font-family: var(--ff-primary);
 }
 
 .attraction-filters .category-select {
@@ -451,7 +451,7 @@ body.dark .suggestion-category {
     color: inherit;
     height: 44px;
     font-size: 15px;
-    font-family: var(--ff-roboto, 'Roboto', sans-serif);
+    font-family: var(--ff-primary);
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -592,7 +592,7 @@ body.dark .attraction-card {
 
 .attraction-card .title {
     font-size: 20px;
-    font-family: var(--ff-lora, 'Lora', serif);
+    font-family: var(--ff-heading);
     font-weight: 700;
     text-align: left;
     margin: 0;
