@@ -8,9 +8,9 @@
   --soft: #fff0f6;
 }
 
-.page-header.entertainment-banner { background-size: cover; background-position: center; position: relative; height: 70vh; min-height: 380px; }
+.page-header.entertainment-banner { background-size: cover; background-position: center; position: relative; }
 .page-header.entertainment-banner::before { content:""; position:absolute; inset:0; background: rgba(0,0,0,.15); }
-.page-header.entertainment-banner .header-content { position: relative; padding: 2rem; margin-bottom: 80px; letter-spacing: .25rem; }
+.page-header.entertainment-banner .header-content { position: relative; }
 
 /* Mobile banner adjustments - show more image, smaller center block */
 @media (max-width: 768px) {
