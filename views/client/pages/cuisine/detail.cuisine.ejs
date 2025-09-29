@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= (food && food.title) || 'Chi tiết ẩm thực' %> | HÀ NỘI</title>
+        <meta name="description" content="<%= (food && food.seoDescription) || 'Ẩm thực Hà Nội' %>" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="/client/css/style.css" />
+        <link rel="stylesheet" href="/client/css/responsive.css" />
+        <link rel="stylesheet" href="/client/css/harmony.css" />
+        <link rel="stylesheet" href="/client/css/cuisine-detail.css" />
+        <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
+        <link rel="manifest" href="/client/img/site.webmanifest" />
+    </head>
+    <body class="cuisine-detail-page">
+        <%- include('../../partials/header') %>
+
+        <!-- Hero -->
+        <header class="page-header cuisine-hero" style="background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('<%= (food && (food.heroImage || (food.images && food.images[0]))) || 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200' %>')">
+            <div class="header-content">
+                <% if (food && food.badge) { %>
+                <div class="food-badge"><i class="fa fa-star"></i> <%= food.badge %></div>
+                <% } %>
+                <h1><%= (food && food.title) || 'Món đặc sản Hà Nội' %></h1>
+                <p class="hero-subtitle"><%= (food && food.subtitle) || 'Tinh hoa ẩm thực Thủ đô - Hương vị khó quên' %></p>
+            </div>
+        </header>
+
+        <main class="cuisine-detail main">
+            <div class="container">
+                <div class="main-grid">
+                    <div>
+                        <section class="content-section">
+                            <h2 class="section-title"><i class="fa fa-book"></i> Giới thiệu</h2>
+                            <div class="description">
+                                <% var paragraphs = (food && food.description && Array.isArray(food.description)) ? food.description : (food && food.description ? [food.description] : []); %>
+                                <% if (!paragraphs.length) { %>
+                                    <p>Bài viết về món ăn đang được cập nhật.</p>
+                                <% } else { paragraphs.forEach(function(p){ %>
+                                    <p><%= p %></p>
+                                <% }) } %>
+                            </div>
+
+                            <% if (food && (food.highlightTitle || food.highlightText)) { %>
+                            <div class="highlight-box">
+                                <h3><i class="fa fa-lightbulb-o"></i> <%= food.highlightTitle || 'Điểm đặc biệt' %></h3>
+                                <p><%= food.highlightText || '' %></p>
+                            </div>
+                            <% } %>
+
+                            <% var ingredients = (food && food.ingredients) || []; %>
+                            <% if (ingredients.length) { %>
+                            <h3 class="subsection-title"><i class="fa fa-pepper"></i> Thành phần món ăn</h3>
+                            <div class="ingredients-grid">
+                                <% ingredients.forEach(function(it){ %>
+                                <div class="ingredient-item">
+                                    <i class="fa fa-circle"></i>
+                                    <div>
+                                        <strong><%= it.name %></strong>
+                                        <% if (it.note) { %><p class="muted"><%= it.note %></p><% } %>
+                                    </div>
+                                </div>
+                                <% }) %>
+                            </div>
+                            <% } %>
+
+                            <% var gallery = (food && food.images) || []; %>
+                            <% if (gallery.length) { %>
+                            <h3 class="subsection-title"><i class="fa fa-image"></i> Hình ảnh món ăn</h3>
+                            <div class="image-gallery">
+                                <% gallery.slice(0, 6).forEach(function(img){ %>
+                                <div class="gallery-item"><img src="<%= img %>" alt="Hình món ăn" loading="lazy" /></div>
+                                <% }) %>
+                            </div>
+                            <% } %>
+                        </section>
+                    </div>
+
+                    <aside class="sidebar">
+                        <section class="info-card">
+                            <h3><i class="fa fa-info-circle"></i> Thông tin món ăn</h3>
+                            <div class="info-item"><i class="fa fa-map-marker"></i><div><div class="info-label">Xuất xứ</div><div class="info-value"><%= (food && food.origin) || 'Hà Nội' %></div></div></div>
+                            <div class="info-item"><i class="fa fa-tag"></i><div><div class="info-label">Giá trung bình</div><div class="info-value"><%= (food && food.priceRange) || '50.000 - 120.000₫' %></div></div></div>
+                            <div class="info-item"><i class="fa fa-clock-o"></i><div><div class="info-label">Thời gian phục vụ</div><div class="info-value"><%= (food && food.servingTime) || '8:00 - 21:00' %></div></div></div>
+                            <div class="info-item"><i class="fa fa-fire"></i><div><div class="info-label">Độ cay</div><div class="info-value"><%= (food && food.spicyLevel) || 'Trung bình' %></div></div></div>
+                            <div class="info-item"><i class="fa fa-star"></i><div><div class="info-label">Độ phổ biến</div><div class="info-value"><%= (food && food.popularity) || '★★★★★ (5/5)' %></div></div></div>
+                        </section>
+
+                        <% var similars = (food && food.similar) || []; %>
+                        <% if (similars.length) { %>
+                        <section class="info-card">
+                            <h3><i class="fa fa-heart"></i> Món ăn tương tự</h3>
+                            <div class="similar-list">
+                                <% similars.forEach(function(s){ %>
+                                <a class="similar-link" href="<%= s.href || '#' %>"><i class="fa fa-cutlery"></i> <%= s.name %></a>
+                                <% }) %>
+                            </div>
+                        </section>
+                        <% } %>
+                    </aside>
+                </div>
+
+                <% var restaurants = (food && food.restaurants) || []; %>
+                <% if (restaurants.length) { %>
+                <section class="restaurants-section">
+                    <h2 class="section-title"><i class="fa fa-store"></i> Địa điểm thưởng thức nổi tiếng</h2>
+                    <div class="restaurant-cards">
+                        <% restaurants.forEach(function(r){ %>
+                        <article class="restaurant-card">
+                            <div class="restaurant-image" style="background-image: linear-gradient(rgba(249,115,22,0.2), rgba(249,115,22,0.2)), url('<%= r.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800' %>');"></div>
+                            <div class="restaurant-content">
+                                <div class="restaurant-name"><%= r.name %></div>
+                                <div class="restaurant-detail"><i class="fa fa-map-marker"></i><span><%= r.address %></span></div>
+                                <% if (r.time) { %><div class="restaurant-detail"><i class="fa fa-clock-o"></i><span><%= r.time %></span></div><% } %>
+                                <% if (r.price) { %><div class="price-tag"><i class="fa fa-money"></i> <%= r.price %></div><% } %>
+                                <% if (r.mapUrl) { %><a class="btn-map" href="<%= r.mapUrl %>" data-map-url="<%= r.mapUrl %>" data-name="<%= r.name %>" data-address="<%= r.address %>" data-lat="<%= r.lat || '' %>" data-lng="<%= r.lng || '' %>"><i class="fa fa-map"></i> Xem bản đồ</a><% } %>
+                            </div>
+                        </article>
+                        <% }) %>
+                    </div>
+                </section>
+                <% } %>
+
+                <% var tips = (food && food.tips) || []; %>
+                <% if (tips.length) { %>
+                <section class="tips-section">
+                    <h2 class="section-title"><i class="fa fa-lightbulb-o"></i> Mẹo thưởng thức</h2>
+                    <div class="tips-grid">
+                        <% tips.forEach(function(t){ %>
+                        <div class="tip-card"><h4><i class="fa <%= t.icon || 'fa-check' %>"></i> <%= t.title %></h4><p><%= t.text %></p></div>
+                        <% }) %>
+                    </div>
+                </section>
+                <% } %>
+            </div>
+        </main>
+
+        <!-- up scroll -->
+        <i class="arrow" onclick="topFunction()" id="upbtn"></i>
+
+        <%- include('../../partials/footer') %>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="/client/js/includes.js"></script>
+        <script src="/client/js/script.js"></script>
+        <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
+        <script src="/client/js/cuisine-detail.js"></script>
+    </body>
+    </html>
+
+

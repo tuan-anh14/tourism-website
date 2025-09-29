@@ -81,85 +81,28 @@
 
             <!-- Grid -->
             <section class="cuisine-grid" aria-label="Danh sách món/quán">
-                <article class="cuisine-card" data-title="Phở Bò Truyền Thống" data-area="center" data-type="noodle" data-form="street" data-rating="4.8">
+                <% var list = (typeof cuisines !== 'undefined' && cuisines && cuisines.length) ? cuisines : []; %>
+                <% if (list.length) { list.forEach(function(item){ %>
+                <article class="cuisine-card" data-title="<%= item.title %>" data-area="<%= item.area %>" data-type="<%= item.type %>" data-form="<%= item.form %>" data-rating="<%= item.rating %>">
                     <div class="thumb">
-                        <img src="/client/img/img3.png" alt="Phở bò Hà Nội" loading="lazy" />
+                        <img src="<%= item.image %>" alt="<%= item.title %>" loading="lazy" />
                     </div>
                     <div class="content">
-                        <h3 class="title dark">Phở Bò Truyền Thống</h3>
-                        <p class="desc font-color">Nước dùng trong, ngọt xương; bánh phở mềm; thịt bò thơm béo vừa đủ.</p>
+                        <h3 class="title dark"><%= item.title %></h3>
+                        <% if (item.desc) { %><p class="desc font-color"><%= item.desc %></p><% } %>
                         <div class="meta">
                             <div>
-                                <div class="address"><i class="fa fa-map-marker"></i> Phố cổ, Hoàn Kiếm</div>
-                                <div class="hours"><i class="fa fa-clock-o"></i> 06:00 - 22:00</div>
+                                <% if (item.address) { %><div class="address"><i class="fa fa-map-marker"></i> <%= item.address %></div><% } %>
+                                <% if (item.hours) { %><div class="hours"><i class="fa fa-clock-o"></i> <%= item.hours %></div><% } %>
                             </div>
-                            <div class="rating"><i class="fa fa-star"></i> 4.8</div>
+                            <div class="rating"><i class="fa fa-star"></i> <%= item.rating %></div>
                         </div>
                         <div class="actions">
-                            <a class="ctn" href="#">Xem chi tiết</a>
+                            <a class="ctn" href="/cuisine/<%= item.slug %>">Xem chi tiết</a>
                         </div>
                     </div>
                 </article>
-
-                <article class="cuisine-card" data-title="Bún Chả Hà Nội" data-area="dongda" data-type="grill" data-form="street" data-rating="4.6">
-                    <div class="thumb">
-                        <img src="/client/img/img4.png" alt="Bún chả Hà Nội" loading="lazy" />
-                    </div>
-                    <div class="content">
-                        <h3 class="title dark">Bún Chả Hà Nội</h3>
-                        <p class="desc font-color">Viên chả nướng thơm lừng, nước mắm pha hài hòa, đủ chua cay mặn ngọt.</p>
-                        <div class="meta">
-                            <div>
-                                <div class="address"><i class="fa fa-map-marker"></i> Chùa Láng, Đống Đa</div>
-                                <div class="hours"><i class="fa fa-clock-o"></i> 10:00 - 20:00</div>
-                            </div>
-                            <div class="rating"><i class="fa fa-star"></i> 4.6</div>
-                        </div>
-                        <div class="actions">
-                            <a class="ctn" href="#">Xem chi tiết</a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="cuisine-card" data-title="Chả Cá Lã Vọng" data-area="tayho" data-type="grill" data-form="restaurant" data-rating="4.7">
-                    <div class="thumb">
-                        <img src="/client/img/img5.png" alt="Chả cá Lã Vọng" loading="lazy" />
-                    </div>
-                    <div class="content">
-                        <h3 class="title dark">Chả Cá Lã Vọng</h3>
-                        <p class="desc font-color">Cá lăng tươi xào thì là, hành lá; ăn kèm bún, mắm tôm, lạc rang.</p>
-                        <div class="meta">
-                            <div>
-                                <div class="address"><i class="fa fa-map-marker"></i> Trấn Vũ, Tây Hồ</div>
-                                <div class="hours"><i class="fa fa-clock-o"></i> 11:00 - 22:00</div>
-                            </div>
-                            <div class="rating"><i class="fa fa-star"></i> 4.7</div>
-                        </div>
-                        <div class="actions">
-                            <a class="ctn" href="#">Xem chi tiết</a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="cuisine-card" data-title="Cốm Làng Vòng" data-area="caugiay" data-type="snack" data-form="street" data-rating="4.5">
-                    <div class="thumb">
-                        <img src="/client/img/img6.png" alt="Cốm làng Vòng" loading="lazy" />
-                    </div>
-                    <div class="content">
-                        <h3 class="title dark">Cốm Làng Vòng</h3>
-                        <p class="desc font-color">Hạt cốm xanh dẻo thơm, gói lá sen; đặc sản mùa thu Hà Nội.</p>
-                        <div class="meta">
-                            <div>
-                                <div class="address"><i class="fa fa-map-marker"></i> Làng Vòng, Cầu Giấy</div>
-                                <div class="hours"><i class="fa fa-clock-o"></i> 08:00 - 18:00</div>
-                            </div>
-                            <div class="rating"><i class="fa fa-star"></i> 4.5</div>
-                        </div>
-                        <div class="actions">
-                            <a class="ctn" href="#">Xem chi tiết</a>
-                        </div>
-                    </div>
-                </article>
+                <% }) } %>
             </section>
         </section>
 
