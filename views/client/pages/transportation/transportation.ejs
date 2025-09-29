@@ -1,75 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chức năng đang phát triển</title>
-  <style>
-    /* Reset some basic elements */
-    * {
-      box-sizing: border-box;
-    }
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-      background-color: #f0f2f5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(0, 0, 0, 0.65);
-    }
-    .container {
-      text-align: center;
-      padding: 24px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.15);
-      max-width: 400px;
-      width: 90%;
-    }
-    .status {
-      font-size: 96px;
-      font-weight: 700;
-      color: rgba(0, 0, 0, 0.85);
-      margin: 0;
-      line-height: 1;
-    }
-    .title {
-      font-size: 24px;
-      font-weight: 600;
-      margin: 16px 0 8px;
-    }
-    .subtitle {
-      font-size: 14px;
-      color: rgba(0, 0, 0, 0.45);
-      margin-bottom: 24px;
-    }
-    .btn-primary {
-      background-color: #1890ff;
-      color: #fff;
-      border: none;
-      padding: 8px 24px;
-      font-size: 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-    }
-    .btn-primary:hover {
-      background-color: #40a9ff;
-    }
-  </style>
-</head>
-<body>
-  <div class="container" role="main" aria-labelledby="status-title" aria-describedby="status-desc">
-    <h1 class="status" id="status-title">404</h1>
-    <div class="title">Rất tiếc, trang bạn truy cập không tồn tại.</div>
-    <a href="/" class="btn-primary" role="button">Quay về trang chủ</a>
-  </div>
-</body>
-</html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= pageTitle %> | HÀ NỘI</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="/client/css/style.css" />
+        <link rel="stylesheet" href="/client/css/responsive.css" />
+        <link rel="stylesheet" href="/client/css/harmony.css" />
+        <link rel="stylesheet" href="/client/css/transportation.css" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
+        <link rel="manifest" href="/client/img/site.webmanifest" />
+    </head>
+    <body>
+        <%- include('../../partials/header') %>
+
+        <!-- Banner -->
+        <header class="page-header transportation-banner" style="background-image: url('<%= hero.bannerImage %>');">
+            <div class="header-content">
+                <h2 id="quote">Khám phá Hà Nội – di sản và nhịp sống</h2>
+                <div class="line"></div>
+                <h1><%= hero.title %></h1>
+                <p class="font-color"><%= hero.subtitle %></p>
+            </div>
+        </header>
+
+        <!-- Arrival Transport Options -->
+        <section class="transportation-page">
+            <div class="title">
+                <h1 class="dark">Phương tiện đến Hà Nội</h1>
+                <div class="line"></div>
+                <p class="font-color">Nhiều lựa chọn di chuyển từ các tỉnh thành đến Thủ đô</p>
+            </div>
+
+            <div class="transport-cards">
+                <% arrivalTransports.forEach(function(item){ %>
+                    <article class="transport-card">
+                        <div class="transport-icon"><i class="fa <%= item.icon %>"></i></div>
+                        <h3 class="dark"><%= item.title %></h3>
+                        <p class="font-color"><%= item.desc %></p>
+                    </article>
+                <% }) %>
+            </div>
+        </section>
+
+        <!-- Local Transport Options -->
+        <section class="transportation-page">
+            <div class="title">
+                <h1 class="dark">Phương tiện di chuyển trong Hà Nội</h1>
+                <div class="line"></div>
+                <p class="font-color">Đa dạng lựa chọn cho mọi nhu cầu và ngân sách</p>
+            </div>
+
+            <div class="local-transport-grid">
+                <% localTransports.forEach(function(item){ %>
+                    <article class="local-transport-card">
+                        <div class="card-header">
+                            <i class="fa <%= item.icon %>"></i>
+                            <h3><%= item.title %></h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="font-color"><%= item.desc %></p>
+                            <div class="features-list">
+                                <% (item.tags || []).forEach(function(tag){ %>
+                                    <span class="feature-tag"><%= tag %></span>
+                                <% }) %>
+                            </div>
+                        </div>
+                    </article>
+                <% }) %>
+            </div>
+        </section>
+
+        <!-- Useful Apps -->
+        <section class="transportation-page">
+            <div class="title">
+                <h1 class="dark">Ứng dụng hữu ích</h1>
+                <div class="line"></div>
+                <p class="font-color">Tải ngay để di chuyển dễ dàng hơn</p>
+            </div>
+            <div class="app-grid">
+                <% apps.forEach(function(app){ %>
+                    <div class="app-card">
+                        <div class="app-icon"><i class="fa <%= app.icon %>"></i></div>
+                        <div class="app-info">
+                            <h4 class="dark"><%= app.name %></h4>
+                            <p class="font-color"><%= app.desc %></p>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </section>
+
+        <!-- Comparison Table -->
+        <section class="transportation-page">
+            <div class="title">
+                <h1 class="dark">Bảng so sánh chi phí</h1>
+                <div class="line"></div>
+            </div>
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phương tiện</th>
+                            <th>Phạm vi giá</th>
+                            <th>Thời gian chờ</th>
+                            <th>Phù hợp với</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% comparisons.forEach(function(row){ %>
+                            <tr>
+                                <td><i class="fa <%= row.icon %>" style="color: var(--primary);"></i> <%= row.label %></td>
+                                <td><span class="price-badge"><%= row.price %></span></td>
+                                <td><%= row.wait %></td>
+                                <td><%= row.fit %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Tips -->
+        <section class="transportation-page tips-section">
+            <div class="title">
+                <h1 class="dark">Mẹo di chuyển thông minh</h1>
+                <div class="line"></div>
+            </div>
+            <div class="tips-grid">
+                <% tips.forEach(function(t){ %>
+                    <div class="tip-card">
+                        <h4><i class="fa <%= t.icon %>"></i> <%= t.title %></h4>
+                        <p class="font-color"><%= t.desc %></p>
+                    </div>
+                <% }) %>
+            </div>
+        </section>
+
+        <!-- up scroll -->
+        <i class="arrow" onclick="topFunction()" id="upbtn"></i>
+
+        <!--footer-->
+        <%- include('../../partials/footer') %>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="/client/js/includes.js"></script>
+        <script src="/client/js/script.js"></script>
+    </body>
+    </html>
