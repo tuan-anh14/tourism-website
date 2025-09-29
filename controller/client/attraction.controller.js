@@ -11,7 +11,7 @@ const DEMO_ATTRACTIONS = {
         address: "58 P. Quốc Tử Giám, Văn Miếu – Quốc Tử Giám, Đống Đa, Hà Nội",
         heroImage: "/client/img/carousel-img5.jpg",
         shortDescription: "Biểu tượng truyền thống hiếu học của Thăng Long.",
-        description: "Văn Miếu – Quốc Tử Giám là quần thể di tích lịch sử, văn hóa nổi tiếng...",
+        description: "Văn Miếu – Quốc Tử Giám là quần thể di tích lịch sử, văn hóa nổi tiếng nằm ở trung tâm Hà Nội, được xây dựng từ năm 1070 dưới triều Lý. Đây là trường đại học đầu tiên của Việt Nam, nơi đào tạo và tôn vinh những bậc hiền tài cho đất nước. Với kiến trúc cổ kính, không gian tĩnh lặng cùng hệ thống bia tiến sĩ độc đáo, Văn Miếu – Quốc Tử Giám không chỉ là điểm đến hấp dẫn của du khách trong và ngoài nước, mà còn là biểu tượng của truyền thống hiếu học và nền văn hiến lâu đời của dân tộc Việt Nam.",
         mapEmbedUrl: "https://www.google.com/maps?q=58+Qu%E1%BB%91c+T%E1%BB%AD+Gi%C3%A1m,+H%C3%A0+N%E1%BB%99i&output=embed",
         openHours: [
             "Mùa hè (15/4 - 15/10): 7:30 - 18:00",
