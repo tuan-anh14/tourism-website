@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="/client/css/responsive.css" />
         <link rel="stylesheet" href="/client/css/harmony.css" />
         <link rel="stylesheet" href="/client/css/accommodation-detail.css" />
+        <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" />
         <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
@@ -75,6 +76,7 @@
                     <% }) %>
                 </section>
 
+                
                 <div class="content-grid">
                     <div>
                         <!-- Intro -->
@@ -167,16 +169,7 @@
                         </section>
                         <% } %>
 
-                        <!-- Map -->
-                        <section class="map-container">
-                            <h2 class="section-title">Vị trí trên bản đồ</h2>
-                            <div class="map-placeholder" id="mapPlaceholder" data-lat="<%= (acc && acc.map && acc.map.lat) || '' %>" data-lng="<%= (acc && acc.map && acc.map.lng) || '' %>">
-                                <i class="fa fa-map-marker" style="font-size: 3rem;"></i>
-                            </div>
-                            <% if (acc && acc.address) { %>
-                            <p class="map-address"><strong>Địa chỉ:</strong> <%= acc.address %></p>
-                            <% } %>
-                        </section>
+                        <!-- Map moved below to span full width -->
                     </div>
 
                     <aside class="sidebar">
@@ -228,7 +221,7 @@
                             <div class="contact-item">
                                 <i class="fa fa-phone"></i>
                                 <div>
-                                    <div class="label">Điện thoại</div>
+                                    <!-- <div class="label">Điện thoại</div> -->
                                     <div class="value"><%= contacts.phone %></div>
                                 </div>
                             </div>
@@ -237,25 +230,95 @@
                             <div class="contact-item">
                                 <i class="fa fa-envelope"></i>
                                 <div>
-                                    <div class="label">Email</div>
+                                    <!-- <div class="label">Email</div> -->
                                     <div class="value"><%= contacts.email %></div>
                                 </div>
                             </div>
                             <% } %>
-                            <% if (contacts.address || acc.address) { %>
+                            <% if (contacts.address || (acc && acc.address)) { %>
                             <div class="contact-item">
                                 <i class="fa fa-map-marker"></i>
                                 <div>
-                                    <div class="label">Địa chỉ</div>
-                                    <div class="value"><%= contacts.address || acc.address %></div>
+                                    <!-- <div class="label">Địa chỉ</div> -->
+                                    <div class="value"><%= contacts.address || (acc && acc.address) || '' %></div>
                                 </div>
                             </div>
                             <% } %>
                         </section>
                     </aside>
                 </div>
+
+                <!-- Map (full-width) -->
+                <section class="map-container">
+                    <h2 class="section-title">Vị trí trên bản đồ</h2>
+                    <div id="accMap"
+                         class="acc-map-embed"
+                         data-lat="<%= (acc && acc.map && acc.map.lat) || 21.028511 %>"
+                         data-lng="<%= (acc && acc.map && acc.map.lng) || 105.804817 %>"
+                         data-zoom="<%= (acc && acc.map && acc.map.zoom) || 14 %>"
+                         data-name="<%= (acc && acc.title) || '' %>"
+                         data-address="<%= (acc && acc.address) || '' %>"
+                         data-image="<%= (acc && (acc.heroImage || (acc.images && acc.images[0]))) || '' %>"
+                         data-url="<%= (acc && ('/accommodation/' + (acc.slug || ''))) || '' %>"></div>
+                    <% if (acc && acc.address) { %>
+                    <p class="map-address"><strong>Địa chỉ:</strong> <%= acc.address %></p>
+                    <% } %>
+                </section>
             </div>
         </main>
+
+        <!-- up scroll -->
+        <i class="arrow" onclick="topFunction()" id="upbtn"></i>
+
+        <!-- Reviews Section (similar to attraction) - at bottom -->
+        <section id="reviews" class="content-section reviews-pro">
+            <div class="reviews-pro__header">
+                <div class="reviews-pro__heading">
+                    <h2>Đừng chỉ nghe chúng tôi, hãy nghe du khách</h2>
+                    <p class="subheading">Chúng tôi yêu du khách của mình – và rất vui vì điều đó là tương hỗ.</p>
+                </div>
+                <div class="reviews-pro__provider">
+                    <img class="reviews-pro__provider-icon" src="/client/img/google.svg" alt="Google reviews" />
+                    <div class="reviews-pro__provider-stats">
+                        <span class="overall"><%= (acc && acc.rating) || '4.8' %></span>
+                        <span class="stars" aria-label="5 sao">
+                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                        </span>
+                        <a class="reviews-pro__link" href="#" target="_blank" rel="noreferrer">Xem tất cả đánh giá</a>
+                        <span class="total">(<%= (acc && acc.reviewCount) || '269' %>)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reviews-pro__slider">
+                <button class="reviews-pro__nav prev" type="button" aria-label="Trước">&#10094;</button>
+                <div class="reviews-pro__viewport">
+                    <div class="reviews-pro__track">
+                        <% var rv = (acc && acc.reviews && acc.reviews.length) ? acc.reviews : [
+                            { name: 'Linh', country: 'Việt Nam', rating: 5, text: 'Phòng sạch, spa tuyệt vời.' },
+                            { name: 'An', country: 'Việt Nam', rating: 5, text: 'Vị trí tiện đi lại, nhân viên thân thiện.' },
+                            { name: 'Jade', country: 'Singapore', rating: 4, text: 'Rất ổn so với tầm giá.' },
+                            { name: 'Minh', country: 'Việt Nam', rating: 5, text: 'Không gian yên tĩnh, decor đẹp.' }
+                        ]; rv.forEach(function(r){ %>
+                        <div class="reviews-pro__card">
+                            <img class="reviews-pro__quote" src="/client/img/quote.svg" alt="Quote" />
+                            <div class="reviews-pro__text"><%= r.text %></div>
+                            <div class="reviews-pro__stars">
+                                <% for (var i=0;i<r.rating;i++){ %><i class="fa fa-star"></i><% } %>
+                            </div>
+                            <div class="reviews-pro__meta">
+                                <span class="name"><%= r.name %></span>
+                                <span class="dot"></span>
+                                <span class="country"><%= r.country %></span>
+                            </div>
+                        </div>
+                        <% }); %>
+                    </div>
+                </div>
+                <div class="reviews-pro__dots" role="tablist" aria-label="Chuyển trang đánh giá"></div>
+                <button class="reviews-pro__nav next" type="button" aria-label="Sau">&#10095;</button>
+            </div>
+        </section>
 
         <!--footer-->
         <%- include('../../partials/footer') %>
@@ -264,6 +327,8 @@
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="/client/js/includes.js"></script>
         <script src="/client/js/script.js"></script>
+        <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
+        <script src="/client/js/accommodation-detail.js"></script>
     </body>
     </html>
 
