@@ -9,40 +9,30 @@ body.dark .accommodation-detail-page .navbar .nav-links li a { color: #fff; }
 .accommodation-detail-page .navbar .nav-links li a.active,
 .accommodation-detail-page .navbar .nav-links li a:hover { border-color: rgba(255,255,255,0.8) !important; }
 
-.acc-detail-banner.page-header {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 320px; /* match other page headers */
-    position: relative;
-    display: flex;
-    align-items: flex-end;
-    padding: 60px 20px; /* consistent with .page-header */
+/* Accommodation Banner - aligned with entertainment detail */
+.page-header.accommodation-banner { 
+    background-size: cover; 
+    background-position: center; 
+    position: relative; 
 }
-.acc-detail-banner__overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%);
+.page-header.accommodation-banner::before { 
+    content:""; 
+    position:absolute; 
+    inset:0; 
+    background: rgba(0,0,0,.15); 
 }
-.acc-detail-banner .container { position: relative; width: 100%; }
-.accommodation-header { 
-    position: absolute; left: 0; right: 0; bottom: 10px; 
-    z-index: 1; color: #fff; 
-    background: rgba(0,0,0,0.20);
-    border-radius: 12px; padding: 20px; margin: 0;
+.page-header.accommodation-banner .header-content { 
+    position: relative; 
 }
-.accommodation-title { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
-.accommodation-title .title-left { flex: 1; }
-.accommodation-title h1 { margin: 6px 0 8px; }
-.hotel-category { display: inline-block; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #fff; padding: 4px 12px; border-radius: 999px; font-weight: 600; font-size: 13px; }
-.rating { display: flex; align-items: center; gap: 8px; }
-.rating .stars { color: #fbbf24; }
-.rating .review-count { color: rgba(255,255,255,0.9); font-size: 14px; }
-.location { color: rgba(255,255,255,0.95); display: flex; align-items: center; gap: 8px; }
 
-.price-box { background: var(--gradient-primary, linear-gradient(135deg, #fc036b 0%, #c10251 100%)); color: #fff; padding: 16px; border-radius: 12px; min-width: 200px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
-.price-box .price-label { opacity: .9; font-size: 14px; }
-.price-box .price { font-size: 28px; font-weight: 800; }
-.price-box .price-unit { opacity: .9; font-size: 14px; }
+/* Mobile banner adjustments - show more image, smaller center block */
+@media (max-width: 768px) {
+  .page-header.accommodation-banner { height: 56vh; min-height: 300px; }
+  .page-header.accommodation-banner .header-content { padding: 1rem; margin-bottom: 40px; letter-spacing: .15rem; }
+  .page-header.accommodation-banner .header-content h1 { font-size: clamp(1.4rem, 6vw, 2rem); margin-top: 16px; margin-bottom: 8px; }
+  .page-header.accommodation-banner .header-content h2 { font-size: clamp(0.9rem, 4.2vw, 1.2rem); }
+  .page-header.accommodation-banner .header-content p { font-size: clamp(0.8rem, 3.8vw, 1rem); }
+}
 
 /* Layout */
 .acc-detail.main .main-content { margin-top: 24px; }

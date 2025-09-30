@@ -9,22 +9,29 @@
   --shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
-.page-header.transportation-banner {
-  background-size: cover;
-  background-position: center;
-  position: relative;
+/* Transportation Banner - aligned with entertainment detail */
+.page-header.transportation-banner { 
+    background-size: cover; 
+    background-position: center; 
+    position: relative; 
+}
+.page-header.transportation-banner::before { 
+    content:""; 
+    position:absolute; 
+    inset:0; 
+    background: rgba(0,0,0,.15); 
+}
+.page-header.transportation-banner .header-content { 
+    position: relative; 
 }
 
-.page-header.transportation-banner::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  /* subtle overlay to improve text readability */
-  background: rgba(0,0,0,0.15);
-}
-
-.page-header.transportation-banner .header-content {
-  position: relative;
+/* Mobile banner adjustments - show more image, smaller center block */
+@media (max-width: 768px) {
+  .page-header.transportation-banner { height: 56vh; min-height: 300px; }
+  .page-header.transportation-banner .header-content { padding: 1rem; margin-bottom: 40px; letter-spacing: .15rem; }
+  .page-header.transportation-banner .header-content h1 { font-size: clamp(1.4rem, 6vw, 2rem); margin-top: 16px; margin-bottom: 8px; }
+  .page-header.transportation-banner .header-content h2 { font-size: clamp(0.9rem, 4.2vw, 1.2rem); }
+  .page-header.transportation-banner .header-content p { font-size: clamp(0.8rem, 3.8vw, 1rem); }
 }
 
 .transportation-page {
@@ -199,8 +206,137 @@
 .tip-card h4 i { color: #14b8a6; }
 .tip-card p { color: var(--muted); }
 
+/* Mobile responsive fixes for transportation banner */
 @media (max-width: 768px) {
+  .page-header.transportation-banner {
+    height: 50vh !important;
+    min-height: 400px !important;
+    padding-top: 0 !important;
+    background-position: center center !important;
+    background-attachment: scroll !important;
+    align-items: flex-end !important;
+    padding-bottom: 60px !important;
+  }
+  
+  .page-header.transportation-banner .header-content {
+    padding: 2rem 2.5rem !important;
+    margin-bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-radius: 12px !important;
+    backdrop-filter: blur(8px) !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+  
+  .page-header.transportation-banner .header-content h1 {
+    font-size: clamp(1.8rem, 6vw, 2.5rem) !important;
+    margin-bottom: 0.8rem !important;
+    margin-top: 0 !important;
+    line-height: 1.2 !important;
+  }
+  
+  .page-header.transportation-banner .header-content h2 {
+    font-size: clamp(1.1rem, 4vw, 1.4rem) !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .page-header.transportation-banner .header-content p {
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem) !important;
+    margin-bottom: 1rem !important;
+    line-height: 1.4 !important;
+  }
+  
+  .page-header.transportation-banner .line {
+    width: 50px !important;
+    height: 3px !important;
+    margin: 0.8rem auto !important;
+  }
+  
   .transportation-page { padding: 40px 0 10px; }
+}
+
+@media (max-width: 480px) {
+  .page-header.transportation-banner {
+    height: 45vh !important;
+    min-height: 350px !important;
+    align-items: flex-end !important;
+    padding-bottom: 50px !important;
+  }
+  
+  .page-header.transportation-banner .header-content {
+    padding: 1.5rem 2rem !important;
+    margin-bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-radius: 10px !important;
+    backdrop-filter: blur(6px) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+  
+  .page-header.transportation-banner .header-content h1 {
+    font-size: clamp(1.5rem, 7vw, 2rem) !important;
+    margin-bottom: 0.6rem !important;
+    margin-top: 0 !important;
+    line-height: 1.1 !important;
+  }
+  
+  .page-header.transportation-banner .header-content h2 {
+    font-size: clamp(1rem, 5vw, 1.2rem) !important;
+    margin-bottom: 0.4rem !important;
+  }
+  
+  .page-header.transportation-banner .header-content p {
+    font-size: clamp(0.8rem, 4vw, 1rem) !important;
+    margin-bottom: 0.8rem !important;
+    line-height: 1.3 !important;
+  }
+  
+  .page-header.transportation-banner .line {
+    width: 40px !important;
+    height: 2.5px !important;
+    margin: 0.6rem auto !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .page-header.transportation-banner {
+    height: 40vh !important;
+    min-height: 300px !important;
+    align-items: flex-end !important;
+    padding-bottom: 40px !important;
+  }
+  
+  .page-header.transportation-banner .header-content {
+    padding: 1.2rem 1.5rem !important;
+    margin-bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-radius: 8px !important;
+    backdrop-filter: blur(5px) !important;
+    box-shadow: 0 3px 16px rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+  
+  .page-header.transportation-banner .header-content h1 {
+    font-size: clamp(1.2rem, 6vw, 1.6rem) !important;
+    margin-bottom: 0.4rem !important;
+    margin-top: 0 !important;
+  }
+  
+  .page-header.transportation-banner .header-content h2 {
+    font-size: clamp(0.8rem, 4.5vw, 1rem) !important;
+    margin-bottom: 0.3rem !important;
+  }
+  
+  .page-header.transportation-banner .header-content p {
+    font-size: clamp(0.7rem, 4vw, 0.9rem) !important;
+    margin-bottom: 0.6rem !important;
+  }
+  
+  .page-header.transportation-banner .line {
+    width: 35px !important;
+    height: 2px !important;
+    margin: 0.5rem auto !important;
+  }
 }
 
 /* Transportation page scoped styles */

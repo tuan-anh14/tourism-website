@@ -26,36 +26,13 @@
              This ensures clean separation of concerns
              =========================================== */ %>
         <% var attraction = (typeof attraction !== 'undefined' && attraction) ? attraction : null; %>
-        <!-- Hero -->
-        <header class="attraction-detail hero" id="hero" style="--hero:url('<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0]))) || '/client/img/header-bg.jfif' %>')" aria-label="Ảnh và tiêu đề điểm tham quan">
-            <div class="hero-overlay"></div>
-            <a href="/attraction" class="back-link" aria-label="Quay lại danh sách">
-                <i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại
-            </a>
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1 class="title"><%= (attraction && attraction.title) || 'Điểm tham quan' %></h1>
-                    <p class="location">
-                        <i class="fa fa-map-marker" aria-hidden="true"></i>
-                        <span><%= (attraction && attraction.address) || '' %></span>
-                    </p>
-                    <% if (attraction && attraction.shortDescription) { %>
-                    <p class="short-desc"><%= attraction.shortDescription %></p>
-                    <% } %>
-                </div>
-                <div class="hero-actions">
-                    <button class="btn-primary" type="button">
-                        <i class="fa fa-calendar" aria-hidden="true"></i> Lên kế hoạch
-                    </button>
-                    <button class="btn-secondary" type="button">
-                        <i class="fa fa-heart" aria-hidden="true"></i> Yêu thích
-                    </button>
-                </div>
-            </div>
-            <div class="scroll-indicator">
-                <div class="scroll-arrow">
-                    <i class="fa fa-chevron-down"></i>
-                </div>
+        <!-- Banner -->
+        <header class="page-header attraction-banner" style="background-image: url('<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0]))) || '/client/img/header-bg.jfif' %>');">
+            <div class="header-content">
+                <h2 id="quote">Di tích & Lịch sử</h2>
+                <div class="line"></div>
+                <h1><%= (attraction && attraction.title) || 'Điểm tham quan' %></h1>
+                <p class="font-color">Khám phá vẻ đẹp văn hóa Hà Nội</p>
             </div>
         </header>
 

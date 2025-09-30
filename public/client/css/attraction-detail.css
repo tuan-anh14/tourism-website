@@ -97,39 +97,30 @@
 
 /* .mobile-menu-toggle - not used, using .menu-btn from responsive.css */
 
-/* Hero Section */
-.attraction-detail.hero {
-    position: relative;
-    background-image: var(--hero);
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 120px 20px 60px;
-    overflow: hidden;
+/* Attraction Banner - aligned with entertainment detail */
+.page-header.attraction-banner { 
+    background-size: cover; 
+    background-position: center; 
+    position: relative; 
 }
-.attraction-detail.hero .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.6) 100%); transition: var(--transition); }
-.attraction-detail.hero.scrolled .hero-overlay { background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.65) 60%, rgba(0,0,0,0.8) 100%); }
+.page-header.attraction-banner::before { 
+    content:""; 
+    position:absolute; 
+    inset:0; 
+    background: rgba(0,0,0,.15); 
+}
+.page-header.attraction-banner .header-content { 
+    position: relative; 
+}
 
-.attraction-detail.hero .hero-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; width: 100%; color: #fff; text-align: center; transition: var(--transition); }
-.attraction-detail.hero.scrolled .hero-content { transform: translateY(-10px) scale(0.96); opacity: 0.95; }
-
-.attraction-detail.hero .back-link { color: #fff; text-decoration: none; opacity: .95; position: absolute; left: 16px; top: 16px; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 999px; z-index: 3; }
-.attraction-detail.hero .title { margin: 10px 0 8px 0; font-family: var(--ff-lora, 'Lora', serif); font-weight: 800; font-size: clamp(2.2rem, 5vw, 4rem); text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-.attraction-detail.hero .location { margin: 0 0 10px 0; opacity: .92; display: flex; gap: 8px; align-items: center; justify-content: center; }
-.attraction-detail.hero .short-desc { margin: 0 0 18px 0; opacity: .96; max-width: 720px; margin-left: auto; margin-right: auto; }
-
-.attraction-detail.hero .hero-actions { display: flex; gap: 12px; justify-content: center; }
-.btn-primary, .btn-secondary { padding: 12px 18px; border-radius: 999px; cursor: pointer; transition: var(--transition); border: none; }
-.btn-primary { background: var(--primary-color); color: #fff; box-shadow: var(--shadow-light); }
-.btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: var(--shadow-medium); }
-.btn-secondary { background: rgba(255,255,255,0.18); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
-.btn-secondary:hover { background: rgba(255,255,255,0.28); }
-
-.scroll-indicator { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; opacity: .85; animation: bounce 2s infinite; }
+/* Mobile banner adjustments - show more image, smaller center block */
+@media (max-width: 768px) {
+  .page-header.attraction-banner { height: 56vh; min-height: 300px; }
+  .page-header.attraction-banner .header-content { padding: 1rem; margin-bottom: 40px; letter-spacing: .15rem; }
+  .page-header.attraction-banner .header-content h1 { font-size: clamp(1.4rem, 6vw, 2rem); margin-top: 16px; margin-bottom: 8px; }
+  .page-header.attraction-banner .header-content h2 { font-size: clamp(0.9rem, 4.2vw, 1.2rem); }
+  .page-header.attraction-banner .header-content p { font-size: clamp(0.8rem, 3.8vw, 1rem); }
+}
 
 /* Main */
 .attraction-detail.main .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }

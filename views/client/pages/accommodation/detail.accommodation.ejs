@@ -20,42 +20,13 @@
     <body class="accommodation-detail-page">
         <%- include('../../partials/header') %>
 
-        <!-- Banner with overlayed accommodation header block -->
-        <header class="page-header acc-detail-banner" style="background-image:url('<%= (acc && (acc.heroImage || (acc.images && acc.images[0]))) || '/client/img/header-bg.jfif' %>')">
-            <div class="acc-detail-banner__overlay"></div>
-            <div class="container">
-                <div class="accommodation-header">
-                    <div class="accommodation-title">
-                        <div class="title-left">
-                            <% if (acc && acc.categoryLabel) { %>
-                            <div class="hotel-category">
-                                <i class="fa fa-star"></i> <%= acc.categoryLabel %>
-                            </div>
-                            <% } %>
-                            <h1><%= (acc && acc.title) || 'Lưu trú' %></h1>
-                            <div class="rating">
-                                <div class="stars" aria-label="<%= acc ? acc.rating : 0 %> sao">
-                                    <% var full = Math.floor((acc && acc.rating) || 0); var half = (acc && (acc.rating - full >= 0.5)) ? 1 : 0; var empty = 5 - full - half; %>
-                                    <% for (var i = 0; i < full; i++) { %><i class="fa fa-star"></i><% } %>
-                                    <% if (half) { %><i class="fa fa-star-half-o"></i><% } %>
-                                    <% for (var i = 0; i < empty; i++) { %><i class="fa fa-star-o"></i><% } %>
-                                </div>
-                                <% if (acc && acc.reviewCount) { %>
-                                <span class="review-count">(<%= (acc.rating || '0') %>/5 - <%= acc.reviewCount %> đánh giá)</span>
-                                <% } %>
-                            </div>
-                            <div class="location">
-                                <i class="fa fa-map-marker"></i>
-                                <span><%= (acc && acc.address) || '' %></span>
-                            </div>
-                        </div>
-                        <div class="price-box">
-                            <div class="price-label">Giá từ</div>
-                            <div class="price"><%= (acc && acc.priceFrom) ? (acc.priceFrom.toLocaleString('vi-VN')) + '₫' : '—' %></div>
-                            <div class="price-unit"><%= (acc && acc.priceUnit) || '/ đêm' %></div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Banner -->
+        <header class="page-header accommodation-banner" style="background-image: url('<%= (acc && (acc.heroImage || (acc.images && acc.images[0]))) || '/client/img/header-bg.jfif' %>');">
+            <div class="header-content">
+                <h2 id="quote">Lưu trú & Nghỉ dưỡng</h2>
+                <div class="line"></div>
+                <h1><%= (acc && acc.title) || 'Lưu trú' %></h1>
+                <p class="font-color">Trải nghiệm nghỉ dưỡng tuyệt vời tại Hà Nội</p>
             </div>
         </header>
 

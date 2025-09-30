@@ -1,0 +1,303 @@
+/* Entertainment Main Page - Responsive Banner Fix */
+
+/* Override conflicting styles from other CSS files */
+/* Specific styles for entertainment main page banner */
+.page-header.entertainment-main-banner {
+  position: relative !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  min-height: 60vh !important;
+  height: auto !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 80px !important;
+}
+
+/* Ensure banner image is fully visible on mobile */
+@media (max-width: 768px) {
+  .page-header.entertainment-main-banner {
+    background-position: center center !important;
+    background-attachment: scroll !important;
+    height: 50vh !important;
+    min-height: 350px !important;
+  }
+}
+
+.page-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.header-content {
+  position: relative !important;
+  z-index: 2 !important;
+  text-align: center !important;
+  color: white !important;
+  padding: 2.5rem 3rem !important;
+  max-width: 800px !important;
+  margin: 0 auto !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+  border-radius: 15px !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+  font-family: var(--ff-heading) !important;
+  letter-spacing: 0.3rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Glass effect hover animation */
+.header-content:hover {
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  transform: translateY(-2px) !important;
+}
+
+.header-content h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.header-content h2 {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.header-content p {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  margin-bottom: 1.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.line {
+  width: 60px;
+  height: 3px;
+  background: #fc036b;
+  margin: 1rem auto;
+}
+
+/* Mobile responsive fixes */
+@media (max-width: 768px) {
+  .page-header.entertainment-main-banner {
+    height: 50vh !important;
+    min-height: 400px !important;
+    padding-top: 0 !important;
+    align-items: flex-end !important;
+    padding-bottom: 60px !important;
+  }
+  
+  .header-content {
+    padding: 2rem 2.5rem !important;
+    margin-bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-radius: 12px !important;
+    backdrop-filter: blur(8px) !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+  
+  .header-content h1 {
+    font-size: clamp(1.8rem, 6vw, 2.5rem) !important;
+    margin-bottom: 0.8rem !important;
+    margin-top: 0 !important;
+    line-height: 1.2 !important;
+  }
+  
+  .header-content h2 {
+    font-size: clamp(1.1rem, 4vw, 1.4rem) !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .header-content p {
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem) !important;
+    margin-bottom: 1rem !important;
+    line-height: 1.4 !important;
+  }
+  
+  .line {
+    width: 50px !important;
+    height: 3px !important;
+    margin: 0.8rem auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header.entertainment-main-banner {
+    height: 45vh !important;
+    min-height: 350px !important;
+    align-items: flex-end !important;
+    padding-bottom: 50px !important;
+  }
+  
+  .header-content {
+    padding: 1.5rem 2rem !important;
+    margin-bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-radius: 10px !important;
+    backdrop-filter: blur(6px) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+  
+  .header-content h1 {
+    font-size: clamp(1.5rem, 7vw, 2rem) !important;
+    margin-bottom: 0.6rem !important;
+    margin-top: 0 !important;
+    line-height: 1.1 !important;
+  }
+  
+  .header-content h2 {
+    font-size: clamp(1rem, 5vw, 1.2rem) !important;
+    margin-bottom: 0.4rem !important;
+  }
+  
+  .header-content p {
+    font-size: clamp(0.8rem, 4vw, 1rem) !important;
+    margin-bottom: 0.8rem !important;
+    line-height: 1.3 !important;
+  }
+  
+  .line {
+    width: 40px !important;
+    height: 2.5px !important;
+    margin: 0.6rem auto !important;
+  }
+}
+
+/* Extra small screens - even more compact */
+@media (max-width: 360px) {
+  .page-header.entertainment-main-banner {
+    height: 40vh !important;
+    min-height: 300px !important;
+    align-items: flex-end !important;
+    padding-bottom: 40px !important;
+  }
+  
+  .header-content {
+    padding: 1.2rem 1.5rem !important;
+    margin-bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-radius: 8px !important;
+    backdrop-filter: blur(5px) !important;
+    box-shadow: 0 3px 16px rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+  
+  .header-content h1 {
+    font-size: clamp(1.2rem, 6vw, 1.6rem) !important;
+    margin-bottom: 0.4rem !important;
+    margin-top: 0 !important;
+  }
+  
+  .header-content h2 {
+    font-size: clamp(0.8rem, 4.5vw, 1rem) !important;
+    margin-bottom: 0.3rem !important;
+  }
+  
+  .header-content p {
+    font-size: clamp(0.7rem, 4vw, 0.9rem) !important;
+    margin-bottom: 0.6rem !important;
+  }
+  
+  .line {
+    width: 35px !important;
+    height: 2px !important;
+    margin: 0.5rem auto !important;
+  }
+}
+
+/* Entertainment venues section styling */
+.entertainment-details {
+  margin: 1rem 0;
+}
+
+.entertainment-details p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.entertainment-details strong {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Event categories section */
+.event-categories {
+  background: #f8f9fa;
+  padding: 3rem 0;
+}
+
+.event-categories .title {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.event-categories .feature-card {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-categories .feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.event-categories .feature-card i {
+  font-size: 3rem;
+  color: #fc036b;
+  margin-bottom: 1rem;
+}
+
+.event-categories .feature-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.event-categories .feature-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Responsive adjustments for entertainment sections */
+@media (max-width: 768px) {
+  .event-categories {
+    padding: 2rem 0;
+  }
+  
+  .event-categories .feature-card {
+    padding: 1.5rem 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .event-categories .feature-card i {
+    font-size: 2.5rem;
+  }
+  
+  .event-categories .feature-card h3 {
+    font-size: 1.1rem;
+  }
+}

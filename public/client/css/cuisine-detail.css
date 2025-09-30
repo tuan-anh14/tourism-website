@@ -3,12 +3,30 @@
 .cuisine-detail-page .navbar.glass { background: transparent !important; box-shadow: none !important; }
 .cuisine-detail-page .navbar .nav-links li a { color: #fff; }
 
-.cuisine-hero.page-header {
-    background-size: cover; background-position: center; background-repeat: no-repeat;
-    min-height: 360px; display:flex; align-items:flex-end; justify-content:center; text-align:center; padding: 60px 20px 40px 20px;
+/* Cuisine Banner - aligned with entertainment detail */
+.page-header.cuisine-banner { 
+    background-size: cover; 
+    background-position: center; 
+    position: relative; 
 }
-.cuisine-hero .header-content { color:#fff; text-align:center; background: rgba(0,0,0,0.28); padding: 18px 22px; border-radius: 12px; max-width: 880px; }
-.cuisine-hero .food-badge { display:inline-block; background: linear-gradient(135deg,#ff6ea4,#fc036b); color:#fff; padding:6px 12px; border-radius:999px; font-weight:700; margin-bottom:10px; }
+.page-header.cuisine-banner::before { 
+    content:""; 
+    position:absolute; 
+    inset:0; 
+    background: rgba(0,0,0,.15); 
+}
+.page-header.cuisine-banner .header-content { 
+    position: relative; 
+}
+
+/* Mobile banner adjustments - show more image, smaller center block */
+@media (max-width: 768px) {
+  .page-header.cuisine-banner { height: 56vh; min-height: 300px; }
+  .page-header.cuisine-banner .header-content { padding: 1rem; margin-bottom: 40px; letter-spacing: .15rem; }
+  .page-header.cuisine-banner .header-content h1 { font-size: clamp(1.4rem, 6vw, 2rem); margin-top: 16px; margin-bottom: 8px; }
+  .page-header.cuisine-banner .header-content h2 { font-size: clamp(0.9rem, 4.2vw, 1.2rem); }
+  .page-header.cuisine-banner .header-content p { font-size: clamp(0.8rem, 3.8vw, 1rem); }
+}
 
 .cuisine-detail .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 .main-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; align-items: start; }

@@ -20,14 +20,13 @@
     <body class="cuisine-detail-page">
         <%- include('../../partials/header') %>
 
-        <!-- Hero -->
-        <header class="page-header cuisine-hero" style="background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('<%= (food && (food.heroImage || (food.images && food.images[0]))) || 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200' %>')">
+        <!-- Banner -->
+        <header class="page-header cuisine-banner" style="background-image: url('<%= (food && (food.heroImage || (food.images && food.images[0]))) || 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200' %>');">
             <div class="header-content">
-                <% if (food && food.badge) { %>
-                <div class="food-badge"><i class="fa fa-star"></i> <%= food.badge %></div>
-                <% } %>
+                <h2 id="quote">Ẩm thực & Đặc sản</h2>
+                <div class="line"></div>
                 <h1><%= (food && food.title) || 'Món đặc sản Hà Nội' %></h1>
-                <p class="hero-subtitle"><%= (food && food.subtitle) || 'Tinh hoa ẩm thực Thủ đô - Hương vị khó quên' %></p>
+                <p class="font-color">Khám phá hương vị truyền thống Hà Nội</p>
             </div>
         </header>
 
