@@ -34,3 +34,166 @@
 
 <!-- Global Chatbot mount -->
 <div id="hnv-chatbot-root"></div>
+
+<!-- GTranslate Widget -->
+<style>
+    .gtranslate_wrapper {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+    .gtranslate_wrapper select,
+    .gtranslate_wrapper a {
+        padding: 8px 12px;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border: 1px solid #ddd;
+    }
+    @media (max-width: 768px) {
+        .gtranslate_wrapper { top: 10px; right: 10px; transform: scale(0.9); }
+    }
+    .notranslate { unicode-bidi: plaintext; }
+    /* Mark brand as not translated if desired */
+    .footer-logo, .logo { translate: none; }
+</style>
+<div class="gtranslate_wrapper"></div>
+<script>
+    window.gtranslateSettings = {
+        default_language: "vi",
+        wrapper_selector: ".gtranslate_wrapper",
+        languages: [
+            "vi",     // Vietnamese
+            "en",     // English
+            "zh-CN",  // Simplified Chinese
+            "zh-TW",  // Traditional Chinese
+            "ja",     // Japanese
+            "ko",     // Korean
+            "th",     // Thai
+            "fr",     // French
+            "de",     // German
+            "es"      // Spanish
+        ],
+        native_language_names: true,
+        detect_browser_language: true,
+        flag_size: 24,
+        float_switcher_open_direction: "bottom"
+    };
+    window.addEventListener('DOMContentLoaded', function(){
+        if(!document.querySelector('script[src="https://cdn.gtranslate.net/widgets/latest/float.js"]')){
+            var s=document.createElement('script');
+            s.src='https://cdn.gtranslate.net/widgets/latest/float.js';
+            s.defer=true; document.body.appendChild(s);
+        }
+    });
+    // Helper to refresh translation after dynamic content updates (optional usage)
+    window.refreshTranslation = function(){
+        if (window.gtranslate && typeof window.gtranslate.translate === 'function') {
+            window.gtranslate.translate();
+        }
+    };
+</script>
+<script>
+    // Lightweight client-side overrides for specific phrases after GTranslate
+    (function(){
+        // Targeted English overrides (fast, no heavy DOM walk)
+        // var EN_OVERRIDES = {
+        //     nav: {
+        //         pri: 'Home',
+        //         sec: 'Attractions',
+        //         tri: 'Stays',
+        //         quad: 'Food & Drinks',
+        //         quint: 'Transportation',
+        //         hex: 'Entertainment'
+        //     },
+        //     texts: [
+        //         { selector: 'header .header-content h2#quote', text: 'Discover Hanoi — Heritage and Vibrancy' },
+        //         { selector: 'header .header-content h1', text: 'Hanoi Travel Guide' },
+        //         { selector: 'header .header-content .ctn', text: 'Learn More' },
+        //         { selector: '.tours .content-col h1', text: 'Overview of Hanoi' },
+        //         { selector: '.explore .explore-content h1', text: 'Project Overview' },
+        //         { selector: '.events .title h1', text: 'Featured Tours' },
+        //         { selector: '.map-section .map-title-overlay h1', text: 'Hanoi Map' },
+        //         { selector: '#about .title h1', text: 'Gallery' },
+        //         { selector: '.title h1.font-color', text: 'Contributors' },
+        //         { selector: '#contact .title h1', text: 'Contact' },
+        //         { selector: '.cbox-message', text: 'Prefer Another Method?\nContact us using the details below' }
+        //     ],
+        //     links: [
+        //         { selector: '.card .ctn', text: 'View Details' }
+        //     ]
+        // };
+
+        function getCurrentLanguage(){
+            try {
+                if (window.gtranslate && typeof window.gtranslate.getCurrentLanguage === 'function') {
+                    return window.gtranslate.getCurrentLanguage();
+                }
+            } catch(e) {}
+            var htmlLang = document.documentElement.getAttribute('lang');
+            if (htmlLang) return htmlLang;
+            var first = (location.pathname.split('/')[1] || '').toLowerCase();
+            return first || 'vi';
+        }
+        function applyCustomTranslations(){
+            var lang = getCurrentLanguage();
+            if (lang !== 'en') return; // only override in English, keep Vietnamese default as-is
+
+            // Navigation by fixed ids
+            try {
+                var navMap = EN_OVERRIDES.nav || {};
+                Object.keys(navMap).forEach(function(id){
+                    var el = document.getElementById(id);
+                    if (el && !el.closest('.notranslate')) el.textContent = navMap[id];
+                });
+            } catch(e) {}
+
+            // Key headings and CTAs
+            try {
+                (EN_OVERRIDES.texts || []).forEach(function(item){
+                    var el = document.querySelector(item.selector);
+                    if (el && !el.closest('.notranslate')) el.textContent = item.text;
+                });
+            } catch(e) {}
+
+            // Re-label repeated card CTAs if present
+            try {
+                (EN_OVERRIDES.links || []).forEach(function(item){
+                    document.querySelectorAll(item.selector).forEach(function(el){
+                        if (!el.closest('.notranslate')) el.textContent = item.text;
+                    });
+                });
+            } catch(e) {}
+        }
+
+        // Debounced apply to avoid thrashing on large DOM updates
+        var timer;
+        function scheduleApply(){
+            clearTimeout(timer);
+            timer = setTimeout(applyCustomTranslations, 200);
+        }
+
+        // Run after initial load
+        window.addEventListener('load', scheduleApply);
+
+        // Re-run when GTranslate likely changed content (URL or DOM changes)
+        window.addEventListener('popstate', scheduleApply);
+        window.addEventListener('hashchange', scheduleApply);
+
+        // Observe DOM changes to re-apply overrides post-translation
+        var isApplying = false;
+        var mo = new MutationObserver(function(){
+            if (isApplying) return;
+            scheduleApply();
+        });
+        mo.observe(document.body || document.documentElement, { childList: true, subtree: true });
+
+        // Hook into our helper to re-apply after manual refreshTranslation calls
+        var originalRefresh = window.refreshTranslation;
+        window.refreshTranslation = function(){
+            try { if (originalRefresh) originalRefresh(); } catch(e) {}
+            scheduleApply();
+        };
+    })();
+</script>
