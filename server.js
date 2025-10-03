@@ -43,9 +43,16 @@ route(app);
 app.use('/admin', routeAdmin);
 app.use('/api', apiChatRouter);
 
-// app.get("*", (req, res) => {
-//   res.status(404).render("client/pages/errors/404", { pageTitle: "404 Not Found" });
-// });
+// 404 - không khớp route nào
+app.use((req, res) => {
+  res.status(404).render('errors/404'); // views/errors/404.ejs
+});
+
+// 500 - error handler 4 tham số
+app.use((err, req, res, next) => {
+  if (res.headersSent) return next(err);
+  res.status(500).render('errors/500', { error: err }); // views/errors/500.ejs
+});
 
 const server = http.createServer(app);
 (async () => {
