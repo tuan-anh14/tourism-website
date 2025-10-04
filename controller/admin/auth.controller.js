@@ -87,11 +87,12 @@ const showDashboard = async (req, res) => {
       .limit(5)
       .populate('targetId');
 
-    res.render('admin/pages/dashboard', {
+    res.render('admin/layout', {
       pageTitle: 'Dashboard',
       user: req.user,
       stats,
-      recentReviews
+      recentReviews,
+      page: 'dashboard'
     });
   } catch (error) {
     console.error('Dashboard error:', error);

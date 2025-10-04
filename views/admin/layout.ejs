@@ -195,7 +195,11 @@
                 <% } %>
 
                 <!-- Page content -->
-                <%- body %>
+                <% if (page === 'dashboard') { %>
+                    <%- include('pages/dashboard') %>
+                <% } else { %>
+                    <%- body %>
+                <% } %>
             </main>
         </div>
     </div>
