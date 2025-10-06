@@ -1,0 +1,267 @@
+[
+  {
+    "name": "Văn Miếu - Quốc Tử Giám",
+    "category": "lich-su",
+    "address": "58 Quốc Tử Giám, Văn Miếu, Đống Đa",
+    "district": "Đống Đa",
+    "opening_hours": "8:00 - 17:00 hàng ngày",
+    "ticket_info": {
+      "normal": 30000,
+      "student": 15000,
+      "child": 0,
+      "senior": 15000
+    },
+    "intro": "Văn Miếu - Quốc Tử Giám là trường đại học đầu tiên của Việt Nam, được xây dựng từ năm 1070.",
+    "description": "Văn Miếu - Quốc Tử Giám là một quần thể di tích lịch sử văn hóa quan trọng của Hà Nội. Đây là nơi thờ Khổng Tử và các bậc hiền triết của Nho giáo, đồng thời cũng là trường đại học đầu tiên của Việt Nam. Quần thể kiến trúc này được xây dựng từ năm 1070 dưới thời vua Lý Thánh Tông và được mở rộng qua nhiều triều đại. Văn Miếu có kiến trúc độc đáo với 5 sân trong, mỗi sân có ý nghĩa riêng. Đây là nơi tổ chức các lễ hội văn hóa, triển lãm và các hoạt động giáo dục truyền thống.",
+    "highlights": [
+      "Trường đại học đầu tiên của Việt Nam",
+      "Kiến trúc cổ kính với 5 sân trong",
+      "82 tấm bia tiến sĩ được UNESCO công nhận",
+      "Nơi tổ chức nhiều lễ hội văn hóa truyền thống"
+    ],
+    "visitor_notes": [
+      "Mặc trang phục lịch sự khi tham quan",
+      "Không được chạm vào các bia đá cổ",
+      "Có thể thuê hướng dẫn viên để hiểu rõ hơn về lịch sử",
+      "Nên tham quan vào buổi sáng để tránh đông người"
+    ],
+    "images": [
+      "/uploads/van-mieu-1.jpg",
+      "/uploads/van-mieu-2.jpg",
+      "/uploads/van-mieu-3.jpg"
+    ],
+    "map": {
+      "lat": 21.0267,
+      "lng": 105.8362,
+      "link": "https://maps.google.com/?q=21.0267,105.8362"
+    },
+    "reviews": [
+      {
+        "user": "Nguyễn Văn A",
+        "rating": 5,
+        "comment": "Một nơi rất ý nghĩa về mặt lịch sử và văn hóa. Kiến trúc đẹp và có nhiều thông tin thú vị.",
+        "date": "2024-01-15T10:30:00.000Z"
+      },
+      {
+        "user": "Trần Thị B",
+        "rating": 4,
+        "comment": "Địa điểm lịch sử quan trọng, giá vé hợp lý. Nên có hướng dẫn viên để hiểu rõ hơn.",
+        "date": "2024-01-20T14:15:00.000Z"
+      }
+    ],
+    "isActive": true,
+    "featured": true
+  },
+  {
+    "name": "Hồ Gươm (Hồ Hoàn Kiếm)",
+    "category": "lich-su",
+    "address": "Hàng Trống, Hoàn Kiếm",
+    "district": "Hoàn Kiếm",
+    "opening_hours": "Mở cửa 24/7",
+    "ticket_info": {
+      "normal": 0,
+      "student": 0,
+      "child": 0,
+      "senior": 0
+    },
+    "intro": "Hồ Gươm là trái tim của Hà Nội, gắn liền với truyền thuyết Lê Lợi trả gươm cho rùa thần.",
+    "description": "Hồ Gươm (tên chính thức là Hồ Hoàn Kiếm) là một hồ nước ngọt nằm ở trung tâm Hà Nội. Hồ có diện tích khoảng 12 ha và sâu trung bình 1,2m. Đây là một trong những biểu tượng nổi tiếng nhất của thủ đô Hà Nội. Hồ Gươm gắn liền với truyền thuyết Lê Lợi trả gươm cho rùa thần sau khi đánh đuổi quân Minh xâm lược. Trong hồ có đền Ngọc Sơn và tháp Rùa - những công trình kiến trúc đẹp mắt. Xung quanh hồ là những con phố cổ với kiến trúc Pháp cổ kính. Đây là nơi người dân Hà Nội thường tập thể dục buổi sáng và tản bộ buổi chiều.",
+    "highlights": [
+      "Trái tim của Hà Nội",
+      "Gắn liền với truyền thuyết Lê Lợi trả gươm",
+      "Đền Ngọc Sơn và tháp Rùa nổi tiếng",
+      "Không gian xanh mát giữa lòng thành phố"
+    ],
+    "visitor_notes": [
+      "Nên tham quan vào sáng sớm hoặc chiều tối",
+      "Có thể đi bộ quanh hồ để ngắm cảnh",
+      "Chú ý an toàn khi chụp ảnh gần bờ hồ",
+      "Có thể thuê xe đạp để tham quan khu vực xung quanh"
+    ],
+    "images": [
+      "/uploads/ho-guom-1.jpg",
+      "/uploads/ho-guom-2.jpg",
+      "/uploads/ho-guom-3.jpg"
+    ],
+    "map": {
+      "lat": 21.0285,
+      "lng": 105.8542,
+      "link": "https://maps.google.com/?q=21.0285,105.8542"
+    },
+    "reviews": [
+      {
+        "user": "Lê Văn C",
+        "rating": 5,
+        "comment": "Cảnh đẹp, không khí trong lành. Rất thích đi bộ quanh hồ vào buổi sáng.",
+        "date": "2024-01-10T06:30:00.000Z"
+      },
+      {
+        "user": "Phạm Thị D",
+        "rating": 4,
+        "comment": "Địa điểm đẹp, lịch sử thú vị. Hơi đông người vào cuối tuần.",
+        "date": "2024-01-25T16:45:00.000Z"
+      }
+    ],
+    "isActive": true,
+    "featured": true
+  },
+  {
+    "name": "Chợ Đồng Xuân",
+    "category": "pho-co",
+    "address": "Đồng Xuân, Hoàn Kiếm",
+    "district": "Hoàn Kiếm",
+    "opening_hours": "6:00 - 19:00 hàng ngày",
+    "ticket_info": {
+      "normal": 0,
+      "student": 0,
+      "child": 0,
+      "senior": 0
+    },
+    "intro": "Chợ Đồng Xuân là chợ lớn nhất và lâu đời nhất của Hà Nội, nơi buôn bán sầm uất.",
+    "description": "Chợ Đồng Xuân là một trong những chợ lớn nhất và lâu đời nhất của Hà Nội, được xây dựng từ năm 1889. Chợ có diện tích khoảng 9.000m² với kiến trúc Pháp cổ kính. Đây là nơi buôn bán sầm uất với hàng nghìn gian hàng bán đủ loại mặt hàng từ thực phẩm, quần áo, đồ gia dụng đến đồ lưu niệm. Chợ Đồng Xuân không chỉ là nơi mua sắm mà còn là điểm đến văn hóa, nơi du khách có thể trải nghiệm cuộc sống thường nhật của người Hà Nội. Xung quanh chợ là khu phố cổ với những con phố nhỏ hẹp và kiến trúc cổ kính.",
+    "highlights": [
+      "Chợ lớn nhất và lâu đời nhất Hà Nội",
+      "Kiến trúc Pháp cổ kính từ năm 1889",
+      "Hàng nghìn gian hàng đa dạng",
+      "Trải nghiệm văn hóa mua sắm truyền thống"
+    ],
+    "visitor_notes": [
+      "Nên đi vào buổi sáng để tránh đông người",
+      "Mặc cả khi mua hàng",
+      "Chú ý an toàn tài sản cá nhân",
+      "Có thể thử các món ăn đường phố xung quanh"
+    ],
+    "images": [
+      "/uploads/cho-dong-xuan-1.jpg",
+      "/uploads/cho-dong-xuan-2.jpg",
+      "/uploads/cho-dong-xuan-3.jpg"
+    ],
+    "map": {
+      "lat": 21.0353,
+      "lng": 105.8397,
+      "link": "https://maps.google.com/?q=21.0353,105.8397"
+    },
+    "reviews": [
+      {
+        "user": "Hoàng Văn E",
+        "rating": 4,
+        "comment": "Chợ rất lớn và đa dạng hàng hóa. Giá cả hợp lý, mặc cả được.",
+        "date": "2024-01-12T09:20:00.000Z"
+      },
+      {
+        "user": "Vũ Thị F",
+        "rating": 3,
+        "comment": "Hơi ồn ào và đông người. Cần chú ý an toàn tài sản.",
+        "date": "2024-01-18T11:30:00.000Z"
+      }
+    ],
+    "isActive": true,
+    "featured": false
+  },
+  {
+    "name": "Bảo tàng Hồ Chí Minh",
+    "category": "bao-tang",
+    "address": "19 Ngọc Hà, Đội Cấn, Ba Đình",
+    "district": "Ba Đình",
+    "opening_hours": "8:00 - 11:30, 14:00 - 16:30 (Thứ 3, 5, 7, CN)",
+    "ticket_info": {
+      "normal": 0,
+      "student": 0,
+      "child": 0,
+      "senior": 0
+    },
+    "intro": "Bảo tàng Hồ Chí Minh là nơi lưu giữ và trưng bày những hiện vật, tài liệu về cuộc đời và sự nghiệp của Chủ tịch Hồ Chí Minh.",
+    "description": "Bảo tàng Hồ Chí Minh là một trong những bảo tàng lớn nhất và quan trọng nhất của Việt Nam, được khánh thành vào năm 1990. Bảo tàng có diện tích trưng bày hơn 4.000m² với hàng nghìn hiện vật, tài liệu, hình ảnh về cuộc đời và sự nghiệp cách mạng của Chủ tịch Hồ Chí Minh. Bảo tàng được thiết kế với kiến trúc hiện đại, có hệ thống chiếu sáng và âm thanh tiên tiến. Các phòng trưng bày được sắp xếp theo chủ đề và thời gian, giúp du khách hiểu rõ về cuộc đời của Bác từ thời niên thiếu đến khi trở thành lãnh tụ vĩ đại của dân tộc.",
+    "highlights": [
+      "Bảo tàng lớn nhất về Chủ tịch Hồ Chí Minh",
+      "Hàng nghìn hiện vật và tài liệu quý",
+      "Kiến trúc hiện đại với hệ thống chiếu sáng tiên tiến",
+      "Trưng bày theo chủ đề và thời gian"
+    ],
+    "visitor_notes": [
+      "Miễn phí vé vào cửa",
+      "Cần mặc trang phục lịch sự",
+      "Không được chụp ảnh trong một số khu vực",
+      "Nên thuê hướng dẫn viên để hiểu rõ hơn"
+    ],
+    "images": [
+      "/uploads/bao-tang-ho-chi-minh-1.jpg",
+      "/uploads/bao-tang-ho-chi-minh-2.jpg",
+      "/uploads/bao-tang-ho-chi-minh-3.jpg"
+    ],
+    "map": {
+      "lat": 21.0369,
+      "lng": 105.8322,
+      "link": "https://maps.google.com/?q=21.0369,105.8322"
+    },
+    "reviews": [
+      {
+        "user": "Đặng Văn G",
+        "rating": 5,
+        "comment": "Bảo tàng rất ý nghĩa, có nhiều thông tin bổ ích về Bác Hồ. Miễn phí vé vào cửa.",
+        "date": "2024-01-08T10:15:00.000Z"
+      },
+      {
+        "user": "Bùi Thị H",
+        "rating": 4,
+        "comment": "Nơi học tập lịch sử tốt. Cần có thời gian để tham quan hết.",
+        "date": "2024-01-22T14:30:00.000Z"
+      }
+    ],
+    "isActive": true,
+    "featured": true
+  },
+  {
+    "name": "Phố cổ Hà Nội",
+    "category": "pho-co",
+    "address": "Khu phố cổ, Hoàn Kiếm",
+    "district": "Hoàn Kiếm",
+    "opening_hours": "Mở cửa 24/7",
+    "ticket_info": {
+      "normal": 0,
+      "student": 0,
+      "child": 0,
+      "senior": 0
+    },
+    "intro": "Phố cổ Hà Nội là khu vực lịch sử với 36 phố phường, nơi lưu giữ kiến trúc và văn hóa truyền thống.",
+    "description": "Phố cổ Hà Nội là khu vực lịch sử nằm ở trung tâm thành phố, được hình thành từ thế kỷ 11. Khu phố cổ có 36 phố phường, mỗi phố chuyên về một nghề thủ công truyền thống như Hàng Bạc (bạc), Hàng Đồng (đồng), Hàng Thiếc (thiếc)... Kiến trúc phố cổ đặc trưng với những ngôi nhà ống hẹp, sâu, có sân trong và giếng trời. Các con phố nhỏ hẹp, quanh co tạo nên một mạng lưới giao thông độc đáo. Đây là nơi du khách có thể trải nghiệm cuộc sống thường nhật của người Hà Nội, thưởng thức ẩm thực đường phố và mua sắm đồ lưu niệm.",
+    "highlights": [
+      "36 phố phường lịch sử",
+      "Kiến trúc nhà ống đặc trưng",
+      "Mỗi phố chuyên một nghề thủ công",
+      "Trải nghiệm văn hóa truyền thống"
+    ],
+    "visitor_notes": [
+      "Nên đi bộ để khám phá từng con phố",
+      "Có thể thuê xe xích lô để tham quan",
+      "Thử các món ăn đường phố đặc sản",
+      "Chú ý an toàn giao thông"
+    ],
+    "images": [
+      "/uploads/pho-co-1.jpg",
+      "/uploads/pho-co-2.jpg",
+      "/uploads/pho-co-3.jpg"
+    ],
+    "map": {
+      "lat": 21.0333,
+      "lng": 105.8500,
+      "link": "https://maps.google.com/?q=21.0333,105.8500"
+    },
+    "reviews": [
+      {
+        "user": "Ngô Văn I",
+        "rating": 5,
+        "comment": "Khu phố cổ rất đẹp và có nhiều điều thú vị để khám phá. Nên đi bộ để cảm nhận hết vẻ đẹp.",
+        "date": "2024-01-05T15:20:00.000Z"
+      },
+      {
+        "user": "Lý Thị K",
+        "rating": 4,
+        "comment": "Phố cổ có kiến trúc đẹp, nhiều quán ăn ngon. Hơi đông người vào cuối tuần.",
+        "date": "2024-01-28T12:45:00.000Z"
+      }
+    ],
+    "isActive": true,
+    "featured": true
+  }
+]

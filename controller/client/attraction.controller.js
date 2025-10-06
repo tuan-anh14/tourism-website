@@ -1,91 +1,314 @@
-module.exports.attractions = (req, res) => {
-    res.render("client/pages/attraction/attraction.ejs", {
-        pageTitle: "Điểm tham quan"
-    })
+// === DANH SÁCH ĐIỂM THAM QUAN ===
+module.exports.attractions = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = 12;
+        const skip = (page - 1) * limit;
+        const category = req.query.category || '';
+        const search = req.query.search || '';
+        const sort = req.query.sort || 'featured';
+
+        let query = { isActive: true };
+        
+        // Lọc theo danh mục
+        if (category) {
+            query.category = category;
+        }
+
+        // Tìm kiếm
+        if (search) {
+            query.$or = [
+                { name: { $regex: search, $options: 'i' } },
+                { nameEn: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } },
+                { tags: { $in: [new RegExp(search, 'i')] } }
+            ];
+        }
+
+        // Sắp xếp
+        let sortOption = {};
+        switch (sort) {
+            case 'rating':
+                sortOption = { 'rating.average': -1 };
+                break;
+            case 'name':
+                sortOption = { name: 1 };
+                break;
+            case 'newest':
+                sortOption = { createdAt: -1 };
+                break;
+            default:
+                sortOption = { featured: -1, 'rating.average': -1 };
+        }
+
+        const [attractions, total] = await Promise.all([
+            Attraction.find(query)
+                .select('name slug title shortDescription images rating category featured')
+                .sort(sortOption)
+                .skip(skip)
+                .limit(limit),
+            Attraction.countDocuments(query)
+        ]);
+
+        const totalPages = Math.ceil(total / limit);
+
+        // Lấy danh mục cho filter
+        const categories = await Attraction.distinct('category', { isActive: true });
+
+        res.render("client/pages/attraction/attraction.ejs", {
+            pageTitle: "Điểm tham quan",
+            attractions,
+            categories,
+            pagination: {
+                currentPage: page,
+                totalPages,
+                hasNext: page < totalPages,
+                hasPrev: page > 1
+            },
+            filters: {
+                category,
+                search,
+                sort
+            }
+        });
+
+    } catch (error) {
+        console.error('Attractions list error:', error);
+        res.render("client/pages/attraction/attraction.ejs", {
+            pageTitle: "Điểm tham quan",
+            attractions: [],
+            categories: [],
+            pagination: {
+                currentPage: 1,
+                totalPages: 0,
+                hasNext: false,
+                hasPrev: false
+            },
+            filters: {
+                category: '',
+                search: '',
+                sort: 'featured'
+            }
+        });
+    }
 }
 
-// Basic in-memory demo data. Replace with DB queries later.
-const DEMO_ATTRACTIONS = {
-    "van-mieu-quoc-tu-giam": {
-        title: "Văn Miếu – Quốc Tử Giám",
-        address: "58 P. Quốc Tử Giám, Văn Miếu – Quốc Tử Giám, Đống Đa, Hà Nội",
-        heroImage: "/client/img/carousel-img5.jpg",
-        shortDescription: "Biểu tượng truyền thống hiếu học của Thăng Long.",
-        description: "Văn Miếu – Quốc Tử Giám là quần thể di tích lịch sử, văn hóa nổi tiếng nằm ở trung tâm Hà Nội, được xây dựng từ năm 1070 dưới triều Lý. Đây là trường đại học đầu tiên của Việt Nam, nơi đào tạo và tôn vinh những bậc hiền tài cho đất nước. Với kiến trúc cổ kính, không gian tĩnh lặng cùng hệ thống bia tiến sĩ độc đáo, Văn Miếu – Quốc Tử Giám không chỉ là điểm đến hấp dẫn của du khách trong và ngoài nước, mà còn là biểu tượng của truyền thống hiếu học và nền văn hiến lâu đời của dân tộc Việt Nam.",
-        mapEmbedUrl: "https://www.google.com/maps?q=58+Qu%E1%BB%91c+T%E1%BB%AD+Gi%C3%A1m,+H%C3%A0+N%E1%BB%99i&output=embed",
-        openHours: [
-            "Mùa hè (15/4 - 15/10): 7:30 - 18:00",
-            "Mùa đông (còn lại): 8:00 - 18:00"
-        ],
-        tickets: [
-            { type: "Người lớn", price: "70.000 VNĐ" },
-            { type: "HSSV", price: "15.000 VNĐ", note: "Cần thẻ HSSV" },
-            { type: "Người cao tuổi", price: "35.000 VNĐ" }
-        ],
-        experiences: [
-            { icon: "fa-university", title: "Chiêm ngưỡng kiến trúc", text: "Khuê Văn Các, bia Tiến sĩ..." },
-            { icon: "fa-history", title: "Tìm hiểu lịch sử", text: "Quá trình hình thành và khoa cử." },
-            { icon: "fa-pencil", title: "Trải nghiệm xin chữ", text: "Xin chữ đầu năm, thư pháp." }
-        ],
-        images: ["/client/img/carousel-img5.jpg","/client/img/carousel-img4.jpg"],
-        seoDescription: "Chi tiết Văn Miếu – Quốc Tử Giám"
-    },
-    "hoang-thanh-thang-long": {
-        title: "Hoàng thành Thăng Long",
-        address: "19C Hoàng Diệu, Ba Đình, Hà Nội",
-        heroImage: "/client/img/carousel-img4.jpg",
-        shortDescription: "Di sản văn hóa thế giới, dấu ấn nghìn năm Thăng Long.",
-        description: "Khu di tích trung tâm Hoàng thành Thăng Long gắn liền lịch sử Thăng Long – Hà Nội.",
-        mapEmbedUrl: "https://www.google.com/maps?q=Hoang+thanh+Thang+Long+Ha+Noi&output=embed",
-        openHours: ["Thứ 3 - CN: 8:00 - 17:00"],
-        tickets: [
-            { type: "Người lớn", price: "30.000 VNĐ" },
-            { type: "HSSV", price: "15.000 VNĐ" }
-        ],
-        experiences: [
-            { icon: "fa-landmark", title: "Di tích lịch sử", text: "Khám phá dấu tích hoàng cung xưa." },
-            { icon: "fa-camera", title: "Check-in cổ kính", text: "Ảnh đẹp cùng kiến trúc cổ." }
-        ],
-        images: ["/client/img/carousel-img4.jpg"],
-        seoDescription: "Chi tiết Hoàng thành Thăng Long"
+// Demo data đã được thay thế bằng database thực tế
+
+// Import model mới
+const Attraction = require('../../model/Attraction');
+
+module.exports.attractionDetail = async (req, res) => {
+    try {
+        const slug = String(req.params.slug || '').toLowerCase();
+        const isValid = /^[a-z0-9-]+$/.test(slug);
+        
+        if (!isValid) {
+            return res.status(404).render("client/pages/attraction/detail.attraction.ejs", {
+                attraction: {
+                    title: "Slug không hợp lệ",
+                    shortDescription: "Vui lòng quay lại danh sách.",
+                    address: "",
+                    images: []
+                },
+                relatedAttractions: []
+            });
+        }
+
+        // Tìm kiếm attraction theo slug
+        const attraction = await Attraction.findOne({ 
+            slug: slug, 
+            isActive: true 
+        });
+
+        if (!attraction) {
+            return res.status(404).render("client/pages/attraction/detail.attraction.ejs", {
+                attraction: {
+                    title: "Không tìm thấy điểm tham quan",
+                    shortDescription: "Vui lòng quay lại danh sách.",
+                    address: "",
+                    images: []
+                },
+                relatedAttractions: []
+            });
+        }
+
+        // Lấy các điểm tham quan liên quan (cùng danh mục)
+        const relatedAttractions = await Attraction.find({
+            category: attraction.category,
+            _id: { $ne: attraction._id },
+            isActive: true
+        })
+        .select('name slug title shortDescription images rating')
+        .limit(4)
+        .sort({ 'rating.average': -1 });
+
+        // Cập nhật view count (nếu cần)
+        // attraction.viewCount = (attraction.viewCount || 0) + 1;
+        // await attraction.save();
+
+        res.render("client/pages/attraction/detail.attraction.ejs", {
+            attraction,
+            relatedAttractions
+        });
+
+    } catch (error) {
+        console.error('Attraction detail error:', error);
+        res.status(500).render("client/pages/attraction/detail.attraction.ejs", {
+            attraction: {
+                title: "Lỗi hệ thống",
+                shortDescription: "Có lỗi xảy ra, vui lòng thử lại sau.",
+                address: "",
+                images: []
+            },
+            relatedAttractions: []
+        });
+    }
+}
+
+// === API ENDPOINTS ===
+// Tìm kiếm API
+module.exports.search = async (req, res) => {
+    try {
+        const { q, category, limit = 10 } = req.query;
+        
+        const results = await Attraction.search(q, {
+            category,
+            limit: parseInt(limit)
+        });
+
+        res.json({
+            success: true,
+            data: results,
+            total: results.length
+        });
+    } catch (error) {
+        console.error('Search error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi tìm kiếm'
+        });
     }
 };
 
-module.exports.attractionDetail = (req, res) => {
-    const slug = String(req.params.slug || '').toLowerCase();
-    const isValid = /^[a-z0-9-]+$/.test(slug);
-    if (!isValid) {
-        return res.status(404).render("client/pages/attraction/detail.attraction.ejs", {
-            attraction: {
-                title: "Slug không hợp lệ",
-                shortDescription: "Vui lòng quay lại danh sách.",
-                address: "",
-                images: []
-            },
-            relatedAttractions: []
+// Lấy điểm nổi bật
+module.exports.getFeatured = async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 6;
+        const attractions = await Attraction.getFeatured(limit);
+        
+        res.json({
+            success: true,
+            data: attractions
+        });
+    } catch (error) {
+        console.error('Get featured error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi lấy dữ liệu'
         });
     }
-    const attraction = DEMO_ATTRACTIONS[slug] || null;
+};
 
-    if (!attraction) {
-        return res.status(404).render("client/pages/attraction/detail.attraction.ejs", {
-            attraction: {
-                title: "Không tìm thấy điểm tham quan",
-                shortDescription: "Vui lòng quay lại danh sách.",
-                address: "",
-                images: []
-            },
-            relatedAttractions: []
+// Lấy theo danh mục
+module.exports.getByCategory = async (req, res) => {
+    try {
+        const { category } = req.params;
+        const limit = parseInt(req.query.limit) || 10;
+        
+        const attractions = await Attraction.getByCategory(category, limit);
+        
+        res.json({
+            success: true,
+            data: attractions
+        });
+    } catch (error) {
+        console.error('Get by category error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi lấy dữ liệu'
         });
     }
+};
 
-    const relatedAttractions = [
-        { title: "Hoàng thành Thăng Long", href: "/attraction/hoang-thanh-thang-long", image: "/client/img/carousel-img4.jpg" },
-        { title: "Phố cổ Hà Nội", href: "/attraction/pho-co-ha-noi", image: "/client/img/img3.png" }
-    ];
+// Lấy gần vị trí
+module.exports.getNearby = async (req, res) => {
+    try {
+        const { lat, lng } = req.query;
+        const radius = parseInt(req.query.radius) || 10;
+        const limit = parseInt(req.query.limit) || 10;
 
-    res.render("client/pages/attraction/detail.attraction.ejs", {
-        attraction,
-        relatedAttractions
-    });
-}
+        if (!lat || !lng) {
+            return res.status(400).json({
+                success: false,
+                message: 'Thiếu thông tin vị trí'
+            });
+        }
+
+        const attractions = await Attraction.getNearby(
+            parseFloat(lat), 
+            parseFloat(lng), 
+            radius, 
+            limit
+        );
+
+        res.json({
+            success: true,
+            data: attractions
+        });
+    } catch (error) {
+        console.error('Get nearby error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi lấy dữ liệu'
+        });
+    }
+};
+
+// Thêm đánh giá
+module.exports.addReview = async (req, res) => {
+    try {
+        const { slug } = req.params;
+        const { user, rating, comment, avatar, country } = req.body;
+
+        if (!user || !rating || rating < 1 || rating > 5) {
+            return res.status(400).json({
+                success: false,
+                message: 'Dữ liệu không hợp lệ'
+            });
+        }
+
+        const attraction = await Attraction.findOne({ slug, isActive: true });
+        if (!attraction) {
+            return res.status(404).json({
+                success: false,
+                message: 'Không tìm thấy điểm tham quan'
+            });
+        }
+
+        const reviewData = {
+            user,
+            rating: parseInt(rating),
+            comment,
+            avatar: avatar || '/client/img/avatar.png',
+            country: country || 'Việt Nam'
+        };
+
+        await attraction.addReview(reviewData);
+
+        res.json({
+            success: true,
+            message: 'Đánh giá đã được thêm',
+            data: {
+                averageRating: attraction.rating.average,
+                totalReviews: attraction.rating.count
+            }
+        });
+    } catch (error) {
+        console.error('Add review error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi thêm đánh giá'
+        });
+    }
+};

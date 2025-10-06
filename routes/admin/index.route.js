@@ -26,13 +26,16 @@ router.get('/logout', authController.logout);
 // Dashboard
 router.get('/dashboard', requireAuth, authController.showDashboard);
 
+// Import upload middleware
+const { uploadMultiple } = require('../../middleware/upload');
+
 // Attractions routes
 router.get('/attractions', requireAuth, attractionController.index);
 router.get('/attractions/create', requireAuth, requireEditor, attractionController.create);
-router.post('/attractions', requireAuth, requireEditor, attractionController.store);
+router.post('/attractions', requireAuth, requireEditor, uploadMultiple, attractionController.store);
 router.get('/attractions/:id', requireAuth, attractionController.show);
 router.get('/attractions/:id/edit', requireAuth, requireEditor, attractionController.edit);
-router.put('/attractions/:id', requireAuth, requireEditor, attractionController.update);
+router.put('/attractions/:id', requireAuth, requireEditor, uploadMultiple, attractionController.update);
 router.delete('/attractions/:id', requireAuth, requireEditor, attractionController.destroy);
 
 // TODO: Add more routes for other modules

@@ -4,8 +4,8 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title><%= (attraction && attraction.title) || 'Chi tiết điểm tham quan' %> | HÀ NỘI</title>
-        <meta name="description" content="<%= (attraction && attraction.seoDescription) || 'Chi tiết điểm tham quan Hà Nội' %>" />
+        <title><%= (attraction && (attraction.title || attraction.name)) || 'Chi tiết điểm tham quan' %> | HÀ NỘI</title>
+        <meta name="description" content="<%= (attraction && (attraction.seoDescription || attraction.shortDescription)) || 'Chi tiết điểm tham quan Hà Nội' %>" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
         <link rel="stylesheet" href="/client/css/style.css" />
         <link rel="stylesheet" href="/client/css/responsive.css" />
@@ -27,12 +27,37 @@
              =========================================== */ %>
         <% var attraction = (typeof attraction !== 'undefined' && attraction) ? attraction : null; %>
         <!-- Banner -->
-        <header class="page-header attraction-banner" style="background-image: url('<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0]))) || '/client/img/header-bg.jfif' %>');">
+        <header class="page-header attraction-banner" style="background-image: url('<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0] && attraction.images[0].url))) || '/client/img/header-bg.jfif' %>');">
             <div class="header-content">
-                <h2 id="quote">Di tích & Lịch sử</h2>
+                <h2 id="quote">
+                    <%= attraction && attraction.category === 'di-tich-lich-su' ? 'Di tích & Lịch sử' :
+                        attraction.category === 'bao-tang' ? 'Bảo tàng & Triển lãm' :
+                        attraction.category === 'pho-co' ? 'Phố cổ & Văn hóa' :
+                        attraction.category === 'lang-nghe' ? 'Làng nghề & Thủ công' :
+                        attraction.category === 'khu-vui-choi' ? 'Giải trí & Vui chơi' :
+                        attraction.category === 'le-hoi' ? 'Lễ hội & Sự kiện' :
+                        attraction.category === 'van-hoa' ? 'Văn hóa & Nghệ thuật' :
+                        attraction.category === 'tu-nhien' ? 'Thiên nhiên & Cảnh quan' :
+                        attraction.category === 'ton-giao' ? 'Tôn giáo & Tâm linh' : 'Điểm tham quan' %>
+                </h2>
                 <div class="line"></div>
-                <h1><%= (attraction && attraction.title) || 'Điểm tham quan' %></h1>
-                <p class="font-color">Khám phá vẻ đẹp văn hóa Hà Nội</p>
+                <h1><%= (attraction && (attraction.title || attraction.name)) || 'Điểm tham quan' %></h1>
+                <p class="font-color">
+                    <%= (attraction && attraction.shortDescription) || 'Khám phá vẻ đẹp văn hóa Hà Nội' %>
+                </p>
+                <% if (attraction && attraction.rating && attraction.rating.average > 0) { %>
+                    <div class="banner-rating">
+                        <div class="stars">
+                            <% for (let i = 1; i <= 5; i++) { %>
+                                <i class="fa fa-star <%= i <= Math.round(attraction.rating.average) ? 'active' : '' %>"></i>
+                            <% } %>
+                        </div>
+                        <span class="rating-text">
+                            <%= attraction.rating.average.toFixed(1) %> 
+                            (<%= attraction.rating.count %> đánh giá)
+                        </span>
+                    </div>
+                <% } %>
             </div>
         </header>
 
@@ -44,12 +69,12 @@
                         <div class="itinerary-overview__map-inner">
                             <div id="glanceMap"
                                  class="itinerary-overview__map"
-                                 data-lat="<%= (attraction && attraction.lat) || 21.028511 %>"
-                                 data-lng="<%= (attraction && attraction.lng) || 105.804817 %>"
-                                 data-zoom="<%= (attraction && attraction.mapZoom) || 14 %>"
-                                 data-name="<%= (attraction && attraction.title) || '' %>"
+                                 data-lat="<%= (attraction && (attraction.lat || attraction.coordinates?.lat)) || 21.028511 %>"
+                                 data-lng="<%= (attraction && (attraction.lng || attraction.coordinates?.lng)) || 105.804817 %>"
+                                 data-zoom="<%= (attraction && (attraction.mapZoom || attraction.map?.zoom)) || 14 %>"
+                                 data-name="<%= (attraction && (attraction.title || attraction.name)) || '' %>"
                                  data-address="<%= (attraction && attraction.address) || '' %>"
-                                 data-image="<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0]))) || '' %>"
+                                 data-image="<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0] && attraction.images[0].url))) || '' %>"
                                  data-url="<%= (attraction && ('/attraction/' + (attraction.slug || attraction._id))) || '' %>"
                                  data-route='<%- JSON.stringify((attraction && attraction.route) || []) %>'></div>
                             <div class="map-overview__heading">
@@ -68,9 +93,11 @@
                 <section id="attraction-intro" class="content-section itinerary-day no-margin-top">
                     <div class="itinerary-day__hero-wrapper">
                         <div class="itinerary-day__hero-media">
-                            <img src="<%= (attraction && attraction.images && attraction.images[0]) || '/client/img/carousel-img5.jpg' %>" alt="<%= (attraction && attraction.title) || 'Điểm tham quan' %>" loading="lazy" />
+                            <img src="<%= (attraction && attraction.images && attraction.images[0] && attraction.images[0].url) || '/client/img/carousel-img5.jpg' %>" 
+                                 alt="<%= (attraction && (attraction.title || attraction.name)) || 'Điểm tham quan' %>" 
+                                 loading="lazy" />
                             <div class="itinerary-day__banner-title">
-                                <h2>Chào mừng tới <%= (attraction && attraction.title) || 'Điểm tham quan' %></h2>
+                                <h2>Chào mừng tới <%= (attraction && (attraction.title || attraction.name)) || 'Điểm tham quan' %></h2>
                             </div>
                         </div>
                     </div>
@@ -85,7 +112,14 @@
                                         <div class="itinerary-day__description">
                                             <h3>Giới thiệu chung</h3>
                                             <div class="description-content">
-                                                <p><%= (attraction && attraction.description) || 'Văn Miếu – Quốc Tử Giám là quần thể di tích lịch sử, văn hóa nổi tiếng nằm ở trung tâm Hà Nội, được xây dựng từ năm 1070 dưới triều Lý. Đây là trường đại học đầu tiên của Việt Nam, nơi đào tạo và tôn vinh những bậc hiền tài cho đất nước. Với kiến trúc cổ kính, không gian tĩnh lặng cùng hệ thống bia tiến sĩ độc đáo, Văn Miếu – Quốc Tử Giám không chỉ là điểm đến hấp dẫn của du khách trong và ngoài nước, mà còn là biểu tượng của truyền thống hiếu học và nền văn hiến lâu đời của dân tộc Việt Nam.' %></p>
+                                                <p><%= (attraction && attraction.description) || 'Khám phá điểm tham quan thú vị tại Hà Nội với lịch sử và văn hóa đặc sắc.' %></p>
+                                                <% if (attraction && attraction.intro) { %>
+                                                    <p><%= attraction.intro %></p>
+                                                <% } %>
+                                                <% if (attraction && attraction.history) { %>
+                                                    <h4>Lịch sử</h4>
+                                                    <p><%= attraction.history %></p>
+                                                <% } %>
                                             </div>
                                         </div>
                                     </div>
@@ -96,7 +130,9 @@
                                     <div class="itinerary-day__info-card">
                                         <h3>Thông tin cơ bản</h3>
                                         <ul class="itinerary-day__info-list">
-                                            <li><strong>Vị trí</strong>: <%= (attraction && attraction.address) || '58 P. Quốc Tử Giám, Văn Miếu – Quốc Tử Giám, Đống Đa, Hà Nội' %></li>
+                                            <li><strong>Vị trí</strong>: <%= (attraction && attraction.address) || 'Địa chỉ chưa cập nhật' %></li>
+                                            
+                                            <!-- Giờ mở cửa -->
                                             <% if (attraction && attraction.openHours && attraction.openHours.length > 0) { %>
                                             <li><strong>Giờ mở cửa</strong>:
                                                 <ul>
@@ -105,14 +141,27 @@
                                                     <% }); %>
                                                 </ul>
                                             </li>
-                                            <% } else { %>
+                                            <% } else if (attraction && attraction.openingHours) { %>
                                             <li><strong>Giờ mở cửa</strong>:
                                                 <ul>
-                                                    <li>Mùa hè (15/4 - 15/10): 7:30 - 18:00</li>
-                                                    <li>Mùa đông (còn lại): 8:00 - 18:00</li>
+                                                    <% if (attraction.openingHours.summer && attraction.openingHours.summer.open && attraction.openingHours.summer.close) { %>
+                                                    <li>Mùa hè: <%= attraction.openingHours.summer.open %> - <%= attraction.openingHours.summer.close %></li>
+                                                    <% } %>
+                                                    <% if (attraction.openingHours.winter && attraction.openingHours.winter.open && attraction.openingHours.winter.close) { %>
+                                                    <li>Mùa đông: <%= attraction.openingHours.winter.open %> - <%= attraction.openingHours.winter.close %></li>
+                                                    <% } %>
+                                                    <% if (attraction.openingHours.general && attraction.openingHours.general.length > 0) { %>
+                                                        <% attraction.openingHours.general.forEach(function(hour) { %>
+                                                        <li><%= hour %></li>
+                                                        <% }); %>
+                                                    <% } %>
                                                 </ul>
                                             </li>
+                                            <% } else { %>
+                                            <li><strong>Giờ mở cửa</strong>: Thông tin chưa cập nhật</li>
                                             <% } %>
+                                            
+                                            <!-- Giá vé -->
                                             <% if (attraction && attraction.tickets && attraction.tickets.length > 0) { %>
                                             <li><strong>Giá vé tham quan</strong>:
                                                 <ul>
@@ -121,18 +170,29 @@
                                                     <% }); %>
                                                 </ul>
                                             </li>
-                                            <% } else { %>
+                                            <% } else if (attraction && attraction.ticketPrices) { %>
                                             <li><strong>Giá vé tham quan</strong>:
                                                 <ul>
-                                                    <li>Người lớn: 70.000 VNĐ</li>
-                                                    <li>Học sinh, sinh viên: 15.000 VNĐ (cần thẻ)</li>
-                                                    <li>Người cao tuổi/khuyết tật nặng: 35.000 VNĐ</li>
-                                                    <li>Trẻ dưới 15 tuổi, người khuyết tật, nhà giáo: miễn phí</li>
-                                                    <li>Nhóm từ 10 người: áp dụng giảm giá</li>
+                                                    <% if (attraction.ticketPrices.adult) { %>
+                                                    <li>Người lớn: <%= attraction.ticketPrices.adult.toLocaleString() %> VNĐ</li>
+                                                    <% } %>
+                                                    <% if (attraction.ticketPrices.student) { %>
+                                                    <li>Học sinh, sinh viên: <%= attraction.ticketPrices.student.toLocaleString() %> VNĐ</li>
+                                                    <% } %>
+                                                    <% if (attraction.ticketPrices.elderly) { %>
+                                                    <li>Người cao tuổi: <%= attraction.ticketPrices.elderly.toLocaleString() %> VNĐ</li>
+                                                    <% } %>
+                                                    <% if (attraction.ticketPrices.child !== undefined) { %>
+                                                    <li>Trẻ em: <%= attraction.ticketPrices.child === 0 ? 'Miễn phí' : attraction.ticketPrices.child.toLocaleString() + ' VNĐ' %></li>
+                                                    <% } %>
+                                                    <% if (attraction.ticketPrices.note) { %>
+                                                    <li class="note"><%= attraction.ticketPrices.note %></li>
+                                                    <% } %>
                                                 </ul>
                                             </li>
+                                            <% } else { %>
+                                            <li><strong>Giá vé tham quan</strong>: Thông tin chưa cập nhật</li>
                                             <% } %>
-                                            <li class="note">Giá vé có thể thay đổi vào dịp Lễ/Tết và sự kiện đặc biệt.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -161,6 +221,17 @@
                                     </ul>
                                 </div>
                                 <% } %>
+
+                                <% if (attraction && attraction.tags && attraction.tags.length > 0) { %>
+                                <div class="itinerary-day__tags">
+                                    <h3>Tags</h3>
+                                    <div class="tags-container">
+                                        <% attraction.tags.forEach(function(tag) { %>
+                                        <span class="tag"><%= tag %></span>
+                                        <% }); %>
+                                    </div>
+                                </div>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -172,7 +243,9 @@
                 <section id="attraction-experiences" class="content-section itinerary-day">
                     <div class="itinerary-day__hero-wrapper">
                         <div class="itinerary-day__hero-media">
-                            <img src="<%= (attraction && attraction.images && attraction.images[1]) || '/client/img/carousel-img4.jpg' %>" alt="<%= (attraction && attraction.title) || 'Điểm tham quan' %> - Trải nghiệm" loading="lazy" />
+                            <img src="<%= (attraction && attraction.images && attraction.images[1] && attraction.images[1].url) || '/client/img/carousel-img4.jpg' %>" 
+                                 alt="<%= (attraction && (attraction.title || attraction.name)) || 'Điểm tham quan' %> - Trải nghiệm" 
+                                 loading="lazy" />
                         </div>
                     </div>
 
@@ -204,12 +277,9 @@
                                             <% }); %>
                                         </div>
                                         <% } else { %>
-                                        <ul class="itinerary-day__highlights-list">
-                                            <li><strong>Chiêm ngưỡng kiến trúc cổ kính</strong>: Khuê Văn Các, giếng Thiên Quang, bia Tiến sĩ...</li>
-                                            <li><strong>Tìm hiểu lịch sử – giáo dục</strong>: Quá trình hình thành, phát triển của Quốc Tử Giám và chế độ khoa cử.</li>
-                                            <li><strong>Không gian linh thiêng, tôn nghiêm</strong>: Thắp hương tưởng nhớ các bậc hiền triết, tôn sư trọng đạo.</li>
-                                            <li><strong>Trải nghiệm văn hóa</strong>: Xin chữ đầu năm, triển lãm thư pháp, hoạt động giáo dục.</li>
-                                        </ul>
+                                        <div class="no-experiences">
+                                            <p>Thông tin trải nghiệm đang được cập nhật. Vui lòng quay lại sau.</p>
+                                        </div>
                                         <% } %>
                                     </div>
                                 </div>
@@ -224,14 +294,16 @@
                                             <li><%= rule %></li>
                                             <% }); %>
                                         </ul>
-                                        <% } else { %>
+                                        <% } else if (attraction && attraction.notes && attraction.notes.length > 0) { %>
                                         <ul class="itinerary-day__notes-list">
-                                            <li>Chấp hành quy định, không xâm hại di tích (không xoa đầu rùa, ngồi lên bia Tiến sĩ...).</li>
-                                            <li>Trang phục lịch sự, không hút thuốc, không đội nón trong khu trưng bày.</li>
-                                            <li>Không nói tục, gây mất trật tự nơi tôn nghiêm.</li>
-                                            <li>Thắp hương/dâng lễ đúng nơi quy định; liên hệ ban quản lý nếu cần hướng dẫn.</li>
-                                            <li>Giữ gìn vệ sinh khu di tích; hoạt động ghi hình cần sự đồng ý của ban quản lý.</li>
+                                            <% attraction.notes.forEach(function(note) { %>
+                                            <li><%= note %></li>
+                                            <% }); %>
                                         </ul>
+                                        <% } else { %>
+                                        <div class="no-guidelines">
+                                            <p>Thông tin hướng dẫn đang được cập nhật.</p>
+                                        </div>
                                         <% } %>
                                     </div>
 
@@ -258,22 +330,24 @@
                     </div>
                     
                     <div class="gallery-grid">
-                        <% var __baseImgs = (attraction && attraction.images && attraction.images.length)
-                            ? attraction.images
-                            : ['/client/img/carousel-img5.jpg','/client/img/carousel-img4.jpg','/client/img/carousel-img6.jpg','/client/img/img3.png'];
-                           var __imgs = __baseImgs.slice();
-                           var __targetCount = Math.max(9, Math.min(12, __baseImgs.length * 3)); // 5-10+ images
-                           while (__imgs.length < __targetCount) { __imgs.push(__baseImgs[__imgs.length % __baseImgs.length]); }
-                           __imgs.forEach(function(img, index){ %>
-                            <div class="gallery-item" data-index="<%= index %>">
-                                <img src="<%= img %>" alt="Hình ảnh điểm tham quan" loading="lazy" />
-                                <div class="gallery-overlay">
-                                    <button class="gallery-btn" type="button">
-                                        <i class="fa fa-search-plus"></i>
-                                    </button>
+                        <% if (attraction && attraction.images && attraction.images.length > 0) { %>
+                            <% attraction.images.forEach(function(img, index) { %>
+                                <div class="gallery-item" data-index="<%= index %>">
+                                    <img src="<%= img.url %>" 
+                                         alt="<%= img.alt || img.caption || 'Hình ảnh điểm tham quan' %>" 
+                                         loading="lazy" />
+                                    <div class="gallery-overlay">
+                                        <button class="gallery-btn" type="button">
+                                            <i class="fa fa-search-plus"></i>
+                                        </button>
+                                    </div>
                                 </div>
+                            <% }); %>
+                        <% } else { %>
+                            <div class="no-gallery">
+                                <p>Hình ảnh đang được cập nhật</p>
                             </div>
-                        <% }) %>
+                        <% } %>
                     </div>
                 </section>
 
@@ -287,12 +361,14 @@
                         <div class="reviews-pro__provider">
                             <img class="reviews-pro__provider-icon" src="/client/img/google.svg" alt="Google reviews" />
                             <div class="reviews-pro__provider-stats">
-                                <span class="overall">4.9</span>
-                                <span class="stars" aria-label="5 sao">
-                                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                <span class="overall"><%= (attraction && attraction.rating && attraction.rating.average) ? attraction.rating.average.toFixed(1) : '0.0' %></span>
+                                <span class="stars" aria-label="<%= (attraction && attraction.rating && attraction.rating.average) ? Math.round(attraction.rating.average) : 0 %> sao">
+                                    <% for (let i = 1; i <= 5; i++) { %>
+                                        <i class="fa fa-star <%= i <= Math.round((attraction && attraction.rating && attraction.rating.average) || 0) ? 'active' : '' %>"></i>
+                                    <% } %>
                                 </span>
-                                <a class="reviews-pro__link" href="#" target="_blank" rel="noreferrer">Xem tất cả đánh giá</a>
-                                <span class="total">(269)</span>
+                                <a class="reviews-pro__link" href="#reviews" rel="noreferrer">Xem tất cả đánh giá</a>
+                                <span class="total">(<%= (attraction && attraction.rating && attraction.rating.count) || 0 %>)</span>
                             </div>
                         </div>
                     </div>
@@ -301,32 +377,37 @@
                         <button class="reviews-pro__nav prev" type="button" aria-label="Trước">&#10094;</button>
                         <div class="reviews-pro__viewport">
                             <div class="reviews-pro__track">
-                                <% var __rvList = (typeof reviews !== 'undefined' && reviews && reviews.length)
-                                    ? reviews
-                                    : ((attraction && attraction.reviews && attraction.reviews.length) ? attraction.reviews : (attraction && attraction.reviews) || [
-                                        { name: 'Rachel', country: 'Việt Nam', rating: 5, text: 'Không gian cổ kính và trang nghiêm, trải nghiệm rất đáng giá.', avatar: '/client/img/avatar.png' },
-                                        { name: 'Anh', country: 'Việt Nam', rating: 5, text: 'Kiến trúc đẹp, nhiều thông tin lịch sử bổ ích.', avatar: '/client/img/avatar.png' },
-                                        { name: 'Minh', country: 'Việt Nam', rating: 5, text: 'Địa điểm tuyệt vời để tìm hiểu truyền thống hiếu học.', avatar: '/client/img/avatar.png' },
-                                        { name: 'Lan', country: 'Việt Nam', rating: 5, text: 'Rất thích khu bia Tiến sĩ và Khuê Văn Các.', avatar: '/client/img/avatar.png' },
-                                        { name: 'Rachel', country: 'Việt Nam', rating: 5, text: 'Không gian cổ kính và trang nghiêm, trải nghiệm rất đáng giá.', avatar: '/client/img/avatar.png' },
-                                        { name: 'Anh', country: 'Việt Nam', rating: 5, text: 'Kiến trúc đẹp, nhiều thông tin lịch sử bổ ích.', avatar: '/client/img/avatar.png' },
-                                        { name: 'Minh', country: 'Việt Nam', rating: 5, text: 'Địa điểm tuyệt vời để tìm hiểu truyền thống hiếu học.', avatar: '/client/img/avatar.png' },
-                                        { name: 'Lan', country: 'Việt Nam', rating: 5, text: 'Rất thích khu bia Tiến sĩ và Khuê Văn Các.', avatar: '/client/img/avatar.png' }
-                                    ]);
-                                __rvList.forEach(function(rv){ %>
-                                <div class="reviews-pro__card">
-                                    <img class="reviews-pro__quote" src="/client/img/quote.svg" alt="Quote" />
-                                    <div class="reviews-pro__text"><%= rv.text %></div>
-                                    <div class="reviews-pro__stars">
-                                        <% for (var i=0;i<rv.rating;i++){ %><i class="fa fa-star"></i><% } %>
+                                <% if (attraction && attraction.reviews && attraction.reviews.length > 0) { %>
+                                    <% attraction.reviews.forEach(function(review) { %>
+                                    <div class="reviews-pro__card">
+                                        <img class="reviews-pro__quote" src="/client/img/quote.svg" alt="Quote" />
+                                        <div class="reviews-pro__text"><%= review.comment || review.content || 'Đánh giá từ khách du lịch' %></div>
+                                        <div class="reviews-pro__stars">
+                                            <% for (var i=0;i<review.rating;i++){ %><i class="fa fa-star"></i><% } %>
+                                        </div>
+                                        <div class="reviews-pro__meta">
+                                            <span class="name"><%= review.user %></span>
+                                            <span class="dot"></span>
+                                            <span class="country"><%= review.country || 'Việt Nam' %></span>
+                                        </div>
                                     </div>
-                                    <div class="reviews-pro__meta">
-                                        <span class="name"><%= rv.name %></span>
-                                        <span class="dot"></span>
-                                        <span class="country"><%= rv.country %></span>
+                                    <% }); %>
+                                <% } else { %>
+                                    <div class="no-reviews">
+                                        <div class="reviews-pro__card">
+                                            <img class="reviews-pro__quote" src="/client/img/quote.svg" alt="Quote" />
+                                            <div class="reviews-pro__text">Chưa có đánh giá nào. Hãy là người đầu tiên chia sẻ trải nghiệm của bạn!</div>
+                                            <div class="reviews-pro__stars">
+                                                <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                            </div>
+                                            <div class="reviews-pro__meta">
+                                                <span class="name">Khách du lịch</span>
+                                                <span class="dot"></span>
+                                                <span class="country">Việt Nam</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <% }) %>
+                                <% } %>
                             </div>
                         </div>
                         <div class="reviews-pro__dots" role="tablist" aria-label="Chuyển trang đánh giá"></div>

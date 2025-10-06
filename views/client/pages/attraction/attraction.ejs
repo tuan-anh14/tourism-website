@@ -77,127 +77,148 @@
                     <div class="category-select">
                         <select id="attraction-category" aria-label="Chọn nhóm điểm tham quan">
                             <option value="all">Tất cả thể loại</option>
-                            <option value="historic">Di tích lịch sử</option>
-                            <option value="museum">Bảo tàng</option>
-                            <option value="oldquarter">Phố cổ</option>
-                            <option value="craft">Làng nghề truyền thống</option>
-                            <option value="park">Khu vui chơi</option>
-                            <option value="festival">Lễ hội</option>
+                            <% if (categories && categories.length > 0) { %>
+                                <% categories.forEach(category => { %>
+                                    <option value="<%= category %>" <%= filters.category === category ? 'selected' : '' %>>
+                                        <%= category === 'di-tich-lich-su' ? 'Di tích lịch sử' : 
+                                            category === 'bao-tang' ? 'Bảo tàng' :
+                                            category === 'pho-co' ? 'Phố cổ' :
+                                            category === 'lang-nghe' ? 'Làng nghề' :
+                                            category === 'khu-vui-choi' ? 'Khu vui chơi' :
+                                            category === 'le-hoi' ? 'Lễ hội' :
+                                            category === 'van-hoa' ? 'Văn hóa' :
+                                            category === 'tu-nhien' ? 'Tự nhiên' :
+                                            category === 'ton-giao' ? 'Tôn giáo' : category %>
+                                    </option>
+                                <% }); %>
+                            <% } %>
                         </select>
                     </div>
                 </div>
             </div>
 
             <div class="attraction-pills" aria-label="Chọn nhanh theo nhóm">
-                <div class="pill active" data-category="all">Tất cả</div>
-                <div class="pill" data-category="historic">Di tích lịch sử</div>
-                <div class="pill" data-category="museum">Bảo tàng</div>
-                <div class="pill" data-category="oldquarter">Phố cổ</div>
-                <div class="pill" data-category="craft">Làng nghề</div>
-                <div class="pill" data-category="park">Khu vui chơi</div>
-                <div class="pill" data-category="festival">Lễ hội</div>
+                <div class="pill <%= !filters.category || filters.category === 'all' ? 'active' : '' %>" data-category="all">Tất cả</div>
+                <% if (categories && categories.length > 0) { %>
+                    <% categories.forEach(category => { %>
+                        <div class="pill <%= filters.category === category ? 'active' : '' %>" data-category="<%= category %>">
+                            <%= category === 'di-tich-lich-su' ? 'Di tích lịch sử' : 
+                                category === 'bao-tang' ? 'Bảo tàng' :
+                                category === 'pho-co' ? 'Phố cổ' :
+                                category === 'lang-nghe' ? 'Làng nghề' :
+                                category === 'khu-vui-choi' ? 'Khu vui chơi' :
+                                category === 'le-hoi' ? 'Lễ hội' :
+                                category === 'van-hoa' ? 'Văn hóa' :
+                                category === 'tu-nhien' ? 'Tự nhiên' :
+                                category === 'ton-giao' ? 'Tôn giáo' : category %>
+                        </div>
+                    <% }); %>
+                <% } %>
             </div>
 
             <!-- Grid -->
             <section class="attraction-grid" aria-label="Danh sách điểm tham quan">
-                <!-- Historic -->
-                <article class="attraction-card" data-title="Hoàng thành Thăng Long" data-category="historic" data-slug="hoang-thanh-thang-long">
-                    <div class="thumb">
-                        <img src="/client/img/carousel-img4.jpg" alt="Hoàng thành Thăng Long" loading="lazy" />
-                    </div>
-                    <div class="content">
-                        <h3 class="title dark">Hoàng thành Thăng Long</h3>
-                        <p class="desc font-color">Di sản văn hóa thế giới, dấu ấn nghìn năm của kinh thành Thăng Long.
-                        </p>
-                        <div class="actions">
-                            <a class="ctn" href="/attraction/hoang-thanh-thang-long">Xem chi tiết</a>
+                <% if (attractions && attractions.length > 0) { %>
+                    <% attractions.forEach(attraction => { %>
+                        <article class="attraction-card" 
+                                data-title="<%= attraction.name %>" 
+                                data-category="<%= attraction.category %>" 
+                                data-slug="<%= attraction.slug %>">
+                            <div class="thumb">
+                                <% if (attraction.images && attraction.images.length > 0) { %>
+                                    <img src="<%= attraction.images[0].url %>" 
+                                         alt="<%= attraction.images[0].alt || attraction.name %>" 
+                                         loading="lazy" />
+                                <% } else { %>
+                                    <img src="/client/img/carousel-img5.jpg" 
+                                         alt="<%= attraction.name %>" 
+                                         loading="lazy" />
+                                <% } %>
+                                <% if (attraction.featured) { %>
+                                    <div class="featured-badge">
+                                        <i class="fa fa-star"></i>
+                                        <span>Nổi bật</span>
+                                    </div>
+                                <% } %>
+                            </div>
+                            <div class="content">
+                                <h3 class="title dark"><%= attraction.name %></h3>
+                                <p class="desc font-color">
+                                    <%= attraction.shortDescription || attraction.description?.substring(0, 100) + '...' || 'Khám phá điểm tham quan thú vị tại Hà Nội' %>
+                                </p>
+                                <div class="attraction-meta">
+                                    <div class="rating">
+                                        <div class="stars">
+                                            <% for (let i = 1; i <= 5; i++) { %>
+                                                <i class="fa fa-star <%= i <= Math.round(attraction.rating?.average || 0) ? 'active' : '' %>"></i>
+                                            <% } %>
+                                        </div>
+                                        <span class="rating-text">
+                                            <%= (attraction.rating?.average || 0).toFixed(1) %> 
+                                            (<%= attraction.rating?.count || 0 %> đánh giá)
+                                        </span>
+                                    </div>
+                                    <div class="category-badge">
+                                        <%= attraction.category === 'di-tich-lich-su' ? 'Di tích lịch sử' : 
+                                            attraction.category === 'bao-tang' ? 'Bảo tàng' :
+                                            attraction.category === 'pho-co' ? 'Phố cổ' :
+                                            attraction.category === 'lang-nghe' ? 'Làng nghề' :
+                                            attraction.category === 'khu-vui-choi' ? 'Khu vui chơi' :
+                                            attraction.category === 'le-hoi' ? 'Lễ hội' :
+                                            attraction.category === 'van-hoa' ? 'Văn hóa' :
+                                            attraction.category === 'tu-nhien' ? 'Tự nhiên' :
+                                            attraction.category === 'ton-giao' ? 'Tôn giáo' : attraction.category %>
+                                    </div>
+                                </div>
+                                <div class="actions">
+                                    <a class="ctn" href="/attraction/<%= attraction.slug %>">Xem chi tiết</a>
+                                </div>
+                            </div>
+                        </article>
+                    <% }); %>
+                <% } else { %>
+                    <div class="no-results">
+                        <div class="no-results-content">
+                            <i class="fa fa-search fa-3x"></i>
+                            <h3>Không tìm thấy điểm tham quan</h3>
+                            <p>Hãy thử tìm kiếm với từ khóa khác hoặc chọn danh mục khác</p>
+                            <button class="btn-primary" onclick="clearFilters()">Xóa bộ lọc</button>
                         </div>
                     </div>
-                </article>
-
-                <article class="attraction-card" data-title="Văn Miếu - Quốc Tử Giám" data-category="historic" data-slug="van-mieu-quoc-tu-giam">
-                    <div class="thumb">
-                        <img src="/client/img/carousel-img5.jpg" alt="Văn Miếu - Quốc Tử Giám" loading="lazy" />
-                    </div>
-                    <div class="content">
-                        <h3 class="title dark">Văn Miếu - Quốc Tử Giám</h3>
-                        <p class="desc font-color">Trường đại học đầu tiên của Việt Nam, nơi tôn vinh truyền thống hiếu học.</p>
-                        <div class="actions">
-                            <a class="ctn" href="/attraction/van-mieu-quoc-tu-giam">Xem chi tiết</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Museum -->
-                <article class="attraction-card" data-title="Bảo tàng Dân tộc học Việt Nam" data-category="museum" data-slug="bao-tang-dan-toc-hoc-viet-nam">
-                    <div class="thumb">
-                        <img src="/client/img/carousel-img6.jpg" alt="Bảo tàng Dân tộc học Việt Nam" loading="lazy" />
-                    </div>
-                    <div class="content">
-                        <h3 class="title dark">Bảo tàng Dân tộc học Việt Nam</h3>
-                        <p class="desc font-color">Không gian khám phá văn hóa 54 dân tộc Việt Nam sống động, đa dạng.</p>
-                        <div class="actions">
-                            <a class="ctn" href="/attraction/bao-tang-dan-toc-hoc-viet-nam">Xem chi tiết</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Old Quarter -->
-                <article class="attraction-card" data-title="Phố cổ Hà Nội" data-category="oldquarter" data-slug="pho-co-ha-noi">
-                    <div class="thumb">
-                        <img src="/client/img/img3.png" alt="Phố cổ Hà Nội" loading="lazy" />
-                    </div>
-                    <div class="content">
-                        <h3 class="title dark">Phố cổ Hà Nội</h3>
-                        <p class="desc font-color">Không gian 36 phố phường đặc trưng, đậm nét văn hóa và ẩm thực.</p>
-                        <div class="actions">
-                            <a class="ctn" href="/attraction/pho-co-ha-noi">Xem chi tiết</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Craft Villages -->
-                <article class="attraction-card" data-title="Làng gốm Bát Tràng" data-category="craft" data-slug="lang-gom-bat-trang">
-                    <div class="thumb">
-                        <img src="/client/img/img4.png" alt="Làng gốm Bát Tràng" loading="lazy" />
-                    </div>
-                    <div class="content">
-                        <h3 class="title dark">Làng gốm Bát Tràng</h3>
-                        <p class="desc font-color">Làng nghề lâu đời, nổi tiếng với sản phẩm gốm sứ tinh xảo, trải nghiệm tự tay nặn gốm.</p>
-                        <div class="actions">
-                            <a class="ctn" href="/attraction/lang-gom-bat-trang">Xem chi tiết</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Parks / Entertainment -->
-                <article class="attraction-card" data-title="Công viên Thống Nhất" data-category="park" data-slug="cong-vien-thong-nhat">
-                    <div class="thumb">
-                        <img src="/client/img/img5.png" alt="Công viên Thống Nhất" loading="lazy" />
-                    </div>
-                    <div class="content">
-                        <h3 class="title dark">Công viên Thống Nhất</h3>
-                        <p class="desc font-color">Không gian xanh giữa lòng thành phố, phù hợp nghỉ ngơi, đi dạo.</p>
-                        <div class="actions">
-                            <a class="ctn" href="/attraction/cong-vien-thong-nhat">Xem chi tiết</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Festivals -->
-                <article class="attraction-card" data-title="Lễ hội Gióng" data-category="festival" data-slug="le-hoi-giong">
-                    <div class="thumb">
-                        <img src="/client/img/img6.png" alt="Lễ hội Gióng" loading="lazy" />
-                    </div>
-                    <div class="content">
-                        <h3 class="title dark">Lễ hội Gióng</h3>
-                        <p class="desc font-color">Di sản văn hóa phi vật thể đại diện của nhân loại, đậm bản sắc Hà Nội.</p>
-                        <div class="actions">
-                            <a class="ctn" href="/attraction/le-hoi-giong">Xem chi tiết</a>
-                        </div>
-                    </div>
-                </article>
+                <% } %>
             </section>
+
+            <!-- Pagination -->
+            <% if (pagination && pagination.totalPages > 1) { %>
+                <div class="pagination-container">
+                    <nav class="pagination" aria-label="Phân trang">
+                        <% if (pagination.hasPrev) { %>
+                            <a href="?page=<%= pagination.currentPage - 1 %>&category=<%= filters.category %>&search=<%= filters.search %>&sort=<%= filters.sort %>" 
+                               class="pagination-btn prev">
+                                <i class="fa fa-chevron-left"></i>
+                                Trước
+                            </a>
+                        <% } %>
+                        
+                        <div class="pagination-pages">
+                            <% for (let i = Math.max(1, pagination.currentPage - 2); i <= Math.min(pagination.totalPages, pagination.currentPage + 2); i++) { %>
+                                <a href="?page=<%= i %>&category=<%= filters.category %>&search=<%= filters.search %>&sort=<%= filters.sort %>" 
+                                   class="pagination-page <%= i === pagination.currentPage ? 'active' : '' %>">
+                                    <%= i %>
+                                </a>
+                            <% } %>
+                        </div>
+                        
+                        <% if (pagination.hasNext) { %>
+                            <a href="?page=<%= pagination.currentPage + 1 %>&category=<%= filters.category %>&search=<%= filters.search %>&sort=<%= filters.sort %>" 
+                               class="pagination-btn next">
+                                Sau
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        <% } %>
+                    </nav>
+                </div>
+            <% } %>
         </section>
 
         <!-- up scroll -->

@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Profile Visit Chart (Bar Chart)
 function initProfileVisitChart() {
+    const chartElement = document.querySelector("#profile-visit-chart");
+    if (!chartElement) return;
+    
     const options = {
         series: [{
             name: 'Visits',
@@ -60,12 +63,15 @@ function initProfileVisitChart() {
         }
     };
 
-    const chart = new ApexCharts(document.querySelector("#profile-visit-chart"), options);
+    const chart = new ApexCharts(chartElement, options);
     chart.render();
 }
 
 // Europe Chart (Area Chart)
 function initEuropeChart() {
+    const chartElement = document.querySelector("#europe-chart");
+    if (!chartElement) return;
+    
     const options = {
         series: [{
             name: 'Europe',
@@ -106,12 +112,15 @@ function initEuropeChart() {
         }
     };
 
-    const chart = new ApexCharts(document.querySelector("#europe-chart"), options);
+    const chart = new ApexCharts(chartElement, options);
     chart.render();
 }
 
 // Visitors Profile Chart (Donut Chart)
 function initVisitorsProfileChart() {
+    const chartElement = document.querySelector("#visitors-profile-chart");
+    if (!chartElement) return;
+    
     const options = {
         series: [30, 70],
         chart: {
@@ -150,7 +159,7 @@ function initVisitorsProfileChart() {
         }
     };
 
-    const chart = new ApexCharts(document.querySelector("#visitors-profile-chart"), options);
+    const chart = new ApexCharts(chartElement, options);
     chart.render();
 }
 
