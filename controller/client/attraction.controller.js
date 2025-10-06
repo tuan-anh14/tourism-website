@@ -1,4 +1,64 @@
 // === DANH SÁCH ĐIỂM THAM QUAN ===
+// View-model normalizer to keep templates stable regardless of DB schema
+function mapAttractionToView(attractionDoc) {
+    if (!attractionDoc) return null;
+
+    const doc = typeof attractionDoc.toObject === 'function' ? attractionDoc.toObject() : attractionDoc;
+
+    // Normalize images to [{ url, alt }]
+    const normalizedImages = Array.isArray(doc.images)
+        ? doc.images.map((img) => {
+            if (typeof img === 'string') {
+                return { url: img, alt: doc.name };
+            }
+            if (img && typeof img === 'object') {
+                return { url: img.url || img.path || '', alt: img.alt || doc.name };
+            }
+            return { url: '', alt: doc.name };
+        })
+        : [];
+
+    // Normalize rating
+    const reviews = Array.isArray(doc.reviews) ? doc.reviews : [];
+    const ratingCount = reviews.length;
+    const ratingAverage = ratingCount > 0
+        ? (reviews.reduce((acc, r) => acc + (r.rating || 0), 0) / ratingCount)
+        : 0;
+
+    // Short description fallback
+    const shortDescription = doc.shortDescription || doc.intro || (doc.description ? String(doc.description).slice(0, 120) : '');
+
+    // Category passthrough
+    const category = doc.category;
+
+    return {
+        _id: doc._id,
+        name: doc.name,
+        title: doc.title || doc.name,
+        slug: doc.slug || String(doc._id),
+        shortDescription,
+        description: doc.description || '',
+        intro: doc.intro || '',
+        address: doc.address || '',
+        category,
+        featured: !!doc.featured,
+        images: normalizedImages,
+        rating: { average: ratingAverage, count: ratingCount },
+        // Map coordinates for detail page compatibility
+        heroImage: doc.heroImage || (normalizedImages[0] ? normalizedImages[0].url : ''),
+        lat: doc.map && typeof doc.map.lat === 'number' ? doc.map.lat : doc.lat,
+        lng: doc.map && typeof doc.map.lng === 'number' ? doc.map.lng : doc.lng,
+        openingHours: doc.openingHours,
+        openHours: doc.openHours,
+        tickets: doc.tickets,
+        ticketPrices: doc.ticketPrices,
+        highlights: Array.isArray(doc.highlights) ? doc.highlights : [],
+        amenities: Array.isArray(doc.amenities) ? doc.amenities : [],
+        notes: Array.isArray(doc.visitor_notes) ? doc.visitor_notes : (Array.isArray(doc.notes) ? doc.notes : []),
+        tags: Array.isArray(doc.tags) ? doc.tags : [],
+        route: Array.isArray(doc.route) ? doc.route : []
+    };
+}
 module.exports.attractions = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
@@ -41,12 +101,12 @@ module.exports.attractions = async (req, res) => {
                 sortOption = { featured: -1, 'rating.average': -1 };
         }
 
-        const [attractions, total] = await Promise.all([
+        const [attractionDocs, total] = await Promise.all([
             Attraction.find(query)
-                .select('name slug title shortDescription images rating category featured')
                 .sort(sortOption)
                 .skip(skip)
-                .limit(limit),
+                .limit(limit)
+                .lean(),
             Attraction.countDocuments(query)
         ]);
 
@@ -54,6 +114,8 @@ module.exports.attractions = async (req, res) => {
 
         // Lấy danh mục cho filter
         const categories = await Attraction.distinct('category', { isActive: true });
+
+        const attractions = attractionDocs.map(mapAttractionToView);
 
         res.render("client/pages/attraction/attraction.ejs", {
             pageTitle: "Điểm tham quan",
@@ -100,10 +162,11 @@ const Attraction = require('../../model/Attraction');
 
 module.exports.attractionDetail = async (req, res) => {
     try {
-        const slug = String(req.params.slug || '').toLowerCase();
-        const isValid = /^[a-z0-9-]+$/.test(slug);
+        const slugOrId = String(req.params.slug || '').toLowerCase();
+        const isSlugLike = /^[a-z0-9-]+$/.test(slugOrId);
+        const isObjectId = /^[a-f0-9]{24}$/.test(slugOrId);
         
-        if (!isValid) {
+        if (!isSlugLike) {
             return res.status(404).render("client/pages/attraction/detail.attraction.ejs", {
                 attraction: {
                     title: "Slug không hợp lệ",
@@ -115,13 +178,20 @@ module.exports.attractionDetail = async (req, res) => {
             });
         }
 
-        // Tìm kiếm attraction theo slug
-        const attraction = await Attraction.findOne({ 
-            slug: slug, 
+        // Tìm attraction theo slug; nếu không có, thử tìm theo _id (fallback)
+        let attractionDoc = await Attraction.findOne({ 
+            slug: slugOrId, 
             isActive: true 
-        });
+        }).lean();
 
-        if (!attraction) {
+        if (!attractionDoc && isObjectId) {
+            attractionDoc = await Attraction.findOne({
+                _id: slugOrId,
+                isActive: true
+            }).lean();
+        }
+
+        if (!attractionDoc) {
             return res.status(404).render("client/pages/attraction/detail.attraction.ejs", {
                 attraction: {
                     title: "Không tìm thấy điểm tham quan",
@@ -134,14 +204,17 @@ module.exports.attractionDetail = async (req, res) => {
         }
 
         // Lấy các điểm tham quan liên quan (cùng danh mục)
-        const relatedAttractions = await Attraction.find({
-            category: attraction.category,
-            _id: { $ne: attraction._id },
+        const relatedDocs = await Attraction.find({
+            category: attractionDoc.category,
+            _id: { $ne: attractionDoc._id },
             isActive: true
         })
-        .select('name slug title shortDescription images rating')
         .limit(4)
-        .sort({ 'rating.average': -1 });
+        .sort({ featured: -1, createdAt: -1 })
+        .lean();
+
+        const attraction = mapAttractionToView(attractionDoc);
+        const relatedAttractions = relatedDocs.map(mapAttractionToView);
 
         // Cập nhật view count (nếu cần)
         // attraction.viewCount = (attraction.viewCount || 0) + 1;
