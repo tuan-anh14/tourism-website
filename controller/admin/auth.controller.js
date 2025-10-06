@@ -1,7 +1,7 @@
 const User = require('../../model/User');
 
-// Hiển thị trang đăng nhập
-const showLogin = (req, res) => {
+// [GET] /admin/login
+module.exports.showLogin = (req, res) => {
   if (req.session.userId) {
     return res.redirect('/admin/dashboard');
   }
@@ -12,8 +12,8 @@ const showLogin = (req, res) => {
   });
 };
 
-// Xử lý đăng nhập
-const login = async (req, res) => {
+// [POST] /admin/login
+module.exports.login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -51,8 +51,8 @@ const login = async (req, res) => {
   }
 };
 
-// Đăng xuất
-const logout = (req, res) => {
+// [GET] /admin/logout
+module.exports.logout = (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       console.error('Logout error:', err);
@@ -61,8 +61,8 @@ const logout = (req, res) => {
   });
 };
 
-// Hiển thị dashboard
-const showDashboard = async (req, res) => {
+// [GET] /admin/dashboard
+module.exports.showDashboard = async (req, res) => {
   try {
     const Attraction = require('../../model/Attraction');
     const Accommodation = require('../../model/Accommodation');
@@ -103,11 +103,4 @@ const showDashboard = async (req, res) => {
       recentReviews: []
     });
   }
-};
-
-module.exports = {
-  showLogin,
-  login,
-  logout,
-  showDashboard
 };
