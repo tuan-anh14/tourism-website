@@ -1,7 +1,7 @@
 const Attraction = require('../../model/Attraction');
 
-// Hiển thị danh sách điểm tham quan
-const index = async (req, res) => {
+// [GET] /admin/attractions
+module.exports.index = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
@@ -81,8 +81,8 @@ const index = async (req, res) => {
   }
 };
 
-// Hiển thị form tạo mới
-const create = (req, res) => {
+// [GET] /admin/attractions/create
+module.exports.create = (req, res) => {
   res.render('admin/layout', {
     pageTitle: 'Thêm Điểm tham quan',
     page: 'attractions',
@@ -137,8 +137,8 @@ const validateAttraction = (data) => {
   return errors;
 };
 
-// Xử lý tạo mới
-const store = async (req, res) => {
+// [POST] /admin/attractions
+module.exports.store = async (req, res) => {
   try {
     const data = req.body;
     console.log('[ADMIN][ATTRACTION][STORE] body:', JSON.stringify(data));
@@ -213,8 +213,8 @@ const store = async (req, res) => {
   }
 };
 
-// Hiển thị chi tiết
-const show = async (req, res) => {
+// [GET] /admin/attractions/:id
+module.exports.show = async (req, res) => {
   try {
     const attraction = await Attraction.findById(req.params.id);
     if (!attraction) {
@@ -236,8 +236,8 @@ const show = async (req, res) => {
   }
 };
 
-// Hiển thị form chỉnh sửa
-const edit = async (req, res) => {
+// [GET] /admin/attractions/:id/edit
+module.exports.edit = async (req, res) => {
   try {
     const attraction = await Attraction.findById(req.params.id);
     if (!attraction) {
@@ -270,8 +270,8 @@ const edit = async (req, res) => {
   }
 };
 
-// Xử lý cập nhật
-const update = async (req, res) => {
+// [PUT] /admin/attractions/:id
+module.exports.update = async (req, res) => {
   try {
     const data = req.body;
     console.log('[ADMIN][ATTRACTION][UPDATE] id:', req.params.id);
@@ -362,8 +362,8 @@ const update = async (req, res) => {
   }
 };
 
-// Xóa
-const destroy = async (req, res) => {
+// [DELETE] /admin/attractions/:id
+module.exports.destroy = async (req, res) => {
   try {
     const attraction = await Attraction.findById(req.params.id);
     
@@ -380,14 +380,4 @@ const destroy = async (req, res) => {
     req.flash('error', 'Có lỗi xảy ra khi xóa điểm tham quan: ' + error.message);
     res.redirect('/admin/attractions');
   }
-};
-
-module.exports = {
-  index,
-  create,
-  store,
-  show,
-  edit,
-  update,
-  destroy
 };
