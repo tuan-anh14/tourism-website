@@ -307,6 +307,8 @@
             <!-- Page content -->
             <% if (page === 'dashboard') { %>
                 <%- include('pages/dashboard') %>
+            <% } else if (body) { %>
+                <%- include('../' + body) %>
             <% } else { %>
                 <%- body %>
             <% } %>

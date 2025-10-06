@@ -28,8 +28,9 @@ const index = async (req, res) => {
     const total = await Attraction.countDocuments(query);
     const totalPages = Math.ceil(total / limit);
 
-    res.render('admin/pages/attractions/index', {
+    res.render('admin/layout', {
       pageTitle: 'Quản lý Điểm tham quan',
+      page: 'attractions',
       user: req.user,
       attractions,
       currentPage: page,
@@ -43,19 +44,22 @@ const index = async (req, res) => {
         { value: 'pho-co', label: 'Phố cổ' },
         { value: 'khu-vui-choi', label: 'Khu vui chơi' },
         { value: 'le-hoi', label: 'Lễ hội' }
-      ]
+      ],
+      body: 'admin/pages/attractions/index'
     });
   } catch (error) {
     console.error('Attractions index error:', error);
-    res.render('admin/pages/attractions/index', {
+    res.render('admin/layout', {
       pageTitle: 'Quản lý Điểm tham quan',
+      page: 'attractions',
       user: req.user,
       attractions: [],
       currentPage: 1,
       totalPages: 0,
       search: '',
       category: '',
-      categories: []
+      categories: [],
+      body: 'admin/pages/attractions/index'
     });
   }
 };
