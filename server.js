@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const http = require("http");
 const session = require("express-session");
+const methodOverride = require("method-override");
 const flash = require("connect-flash");
 require("dotenv").config();
 
@@ -15,8 +16,24 @@ const port = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(express.urlencoded({ extended: false }));
+// Parse nested fields from forms (e.g. ticket_info[normal], map[lat])
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Support PUT/DELETE from HTML forms via _method
+app.use(methodOverride('_method'));
+
+// Minimal request logging for admin troubleshooting
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const ms = Date.now() - start;
+    if (req.originalUrl.startsWith('/admin')) {
+      console.log(`[ADMIN] ${req.method} ${req.originalUrl} -> ${res.statusCode} (${ms}ms)`);
+    }
+  });
+  next();
+});
 
 // Session configuration
 app.use(session({

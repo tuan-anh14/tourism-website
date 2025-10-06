@@ -141,6 +141,9 @@ const validateAttraction = (data) => {
 const store = async (req, res) => {
   try {
     const data = req.body;
+    console.log('[ADMIN][ATTRACTION][STORE] body:', JSON.stringify(data));
+    console.log('[ADMIN][ATTRACTION][STORE] files:', (req.files || []).map(f => ({ field: f.fieldname, name: f.originalname, size: f.size })));
+    const startTime = Date.now();
     
     // Validation
     const validationErrors = validateAttraction(data);
@@ -189,6 +192,7 @@ const store = async (req, res) => {
 
     const attraction = new Attraction(data);
     await attraction.save();
+    console.log('[ADMIN][ATTRACTION][STORE] saved:', attraction._id, 'in', (Date.now() - startTime) + 'ms');
 
     req.flash('success', 'Thêm điểm tham quan thành công');
     res.redirect('/admin/attractions');
@@ -270,6 +274,10 @@ const edit = async (req, res) => {
 const update = async (req, res) => {
   try {
     const data = req.body;
+    console.log('[ADMIN][ATTRACTION][UPDATE] id:', req.params.id);
+    console.log('[ADMIN][ATTRACTION][UPDATE] body:', JSON.stringify(data));
+    console.log('[ADMIN][ATTRACTION][UPDATE] files:', (req.files || []).map(f => ({ field: f.fieldname, name: f.originalname, size: f.size })));
+    const startTime = Date.now();
     const attraction = await Attraction.findById(req.params.id);
     
     if (!attraction) {
@@ -332,7 +340,8 @@ const update = async (req, res) => {
     // Cập nhật images vào data
     data.images = attraction.images;
 
-    await Attraction.findByIdAndUpdate(req.params.id, data, { new: true });
+    const updated = await Attraction.findByIdAndUpdate(req.params.id, data, { new: true, runValidators: true });
+    console.log('[ADMIN][ATTRACTION][UPDATE] saved:', updated ? updated._id : 'not-found', 'in', (Date.now() - startTime) + 'ms');
 
     req.flash('success', 'Cập nhật điểm tham quan thành công');
     res.redirect('/admin/attractions');
