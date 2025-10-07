@@ -1,10 +1,19 @@
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 // Cấu hình storage cho multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/uploads/');
+    const dir = path.join('public', 'uploads');
+    try {
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      cb(null, dir);
+    } catch (err) {
+      cb(err, dir);
+    }
   },
   filename: function (req, file, cb) {
     // Tạo tên file unique

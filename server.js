@@ -26,10 +26,26 @@ app.use(methodOverride('_method'));
 // Minimal request logging for admin troubleshooting
 app.use((req, res, next) => {
   const start = Date.now();
-  res.on('finish', () => {
+  let finished = false;
+  const log = (phase) => {
     const ms = Date.now() - start;
     if (req.originalUrl.startsWith('/admin')) {
-      console.log(`[ADMIN] ${req.method} ${req.originalUrl} -> ${res.statusCode} (${ms}ms)`);
+      console.log(`[ADMIN] ${phase} ${req.method} ${req.originalUrl} -> ${res.statusCode} (${ms}ms)`);
+    }
+  };
+  res.on('finish', () => { finished = true; log('FINISH'); });
+  res.on('close', () => { if (!finished) log('ABORT'); });
+  res.on('error', (e) => { console.error('[ADMIN][RES][ERROR]', e); });
+  next();
+});
+
+// Set explicit timeouts and surface 504 instead of hanging
+app.use((req, res, next) => {
+  req.setTimeout(60 * 1000); // 60s
+  res.setTimeout(60 * 1000, () => {
+    if (!res.headersSent) {
+      console.warn(`[TIMEOUT] ${req.method} ${req.originalUrl}`);
+      res.status(504).send('Request timeout');
     }
   });
   next();
@@ -67,8 +83,16 @@ app.use((req, res) => {
 
 // 500 - error handler 4 tham số
 app.use((err, req, res, next) => {
+  // Multer and payload errors show up here
+  if (req.originalUrl && req.originalUrl.startsWith('/admin')) {
+    console.error('[ADMIN][ERROR]', err && (err.stack || err.message || err));
+  }
   if (res.headersSent) return next(err);
-  res.status(500).render('errors/500', { error: err }); // views/errors/500.ejs
+  const isMulter = err && (err.name === 'MulterError' || err.code === 'LIMIT_FILE_SIZE');
+  if (isMulter) {
+    return res.status(400).render('errors/500', { error: { message: 'Upload ảnh lỗi: ' + (err.message || err.code) } });
+  }
+  res.status(500).render('errors/500', { error: err });
 });
 
 const server = http.createServer(app);

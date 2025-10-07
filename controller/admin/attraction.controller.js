@@ -38,6 +38,27 @@ module.exports.index = async (req, res) => {
     const total = await Attraction.countDocuments(query);
     const totalPages = Math.ceil(total / limit);
 
+    // Check if request wants JSON (from Postman/API)
+    if (req.headers.accept && req.headers.accept.includes('application/json')) {
+      return res.json({
+        success: true,
+        data: {
+          attractions,
+          pagination: {
+            currentPage: page,
+            totalPages,
+            total,
+            limit
+          },
+          filters: {
+            search,
+            category,
+            status
+          }
+        }
+      });
+    }
+
     res.render('admin/layout', {
       pageTitle: 'Quản lý Điểm tham quan',
       page: 'attractions',
@@ -148,6 +169,13 @@ module.exports.store = async (req, res) => {
     // Validation
     const validationErrors = validateAttraction(data);
     if (validationErrors.length > 0) {
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(400).json({
+          success: false,
+          message: 'Dữ liệu không hợp lệ',
+          errors: validationErrors
+        });
+      }
       req.flash('error', validationErrors.join(', '));
       return res.redirect('/admin/attractions/create');
     }
@@ -194,6 +222,15 @@ module.exports.store = async (req, res) => {
     await attraction.save();
     console.log('[ADMIN][ATTRACTION][STORE] saved:', attraction._id, 'in', (Date.now() - startTime) + 'ms');
 
+    // Check if request wants JSON (from Postman/API)
+    if (req.headers.accept && req.headers.accept.includes('application/json')) {
+      return res.status(201).json({
+        success: true,
+        message: 'Thêm điểm tham quan thành công',
+        data: attraction
+      });
+    }
+
     req.flash('success', 'Thêm điểm tham quan thành công');
     res.redirect('/admin/attractions');
   } catch (error) {
@@ -201,14 +238,37 @@ module.exports.store = async (req, res) => {
     
     // Handle specific MongoDB errors
     if (error.code === 11000) {
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(400).json({
+          success: false,
+          message: 'Tên điểm tham quan đã tồn tại'
+        });
+      }
       req.flash('error', 'Tên điểm tham quan đã tồn tại');
     } else if (error.name === 'ValidationError') {
       const validationErrors = Object.values(error.errors).map(err => err.message);
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(400).json({
+          success: false,
+          message: 'Dữ liệu không hợp lệ',
+          errors: validationErrors
+        });
+      }
       req.flash('error', validationErrors.join(', '));
     } else {
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(500).json({
+          success: false,
+          message: 'Có lỗi xảy ra khi thêm điểm tham quan',
+          error: error.message
+        });
+      }
       req.flash('error', 'Có lỗi xảy ra khi thêm điểm tham quan: ' + error.message);
     }
     
+    if (req.headers.accept && req.headers.accept.includes('application/json')) {
+      return; // Already sent JSON response
+    }
     res.redirect('/admin/attractions/create');
   }
 };
@@ -218,8 +278,22 @@ module.exports.show = async (req, res) => {
   try {
     const attraction = await Attraction.findById(req.params.id);
     if (!attraction) {
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(404).json({
+          success: false,
+          message: 'Không tìm thấy điểm tham quan'
+        });
+      }
       req.flash('error', 'Không tìm thấy điểm tham quan');
       return res.redirect('/admin/attractions');
+    }
+
+    // Check if request wants JSON (from Postman/API)
+    if (req.headers.accept && req.headers.accept.includes('application/json')) {
+      return res.json({
+        success: true,
+        data: attraction
+      });
     }
 
     res.render('admin/layout', {
@@ -231,6 +305,13 @@ module.exports.show = async (req, res) => {
     });
   } catch (error) {
     console.error('Show attraction error:', error);
+    if (req.headers.accept && req.headers.accept.includes('application/json')) {
+      return res.status(500).json({
+        success: false,
+        message: 'Lỗi server',
+        error: error.message
+      });
+    }
     req.flash('error', 'Có lỗi xảy ra');
     res.redirect('/admin/attractions');
   }
@@ -381,3 +462,4 @@ module.exports.destroy = async (req, res) => {
     res.redirect('/admin/attractions');
   }
 };
+

@@ -19,7 +19,7 @@
 <% } %>
 
 <!-- Form -->
-<form method="POST" action="/admin/attractions/<%= attraction._id %>" enctype="multipart/form-data" id="attractionForm">
+<form method="POST" action="/admin/attractions/<%= attraction._id %>?_method=PUT" enctype="multipart/form-data" id="attractionForm">
     <input type="hidden" name="_method" value="PUT">
     
     <div class="row">
