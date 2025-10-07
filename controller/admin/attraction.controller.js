@@ -362,15 +362,21 @@ module.exports.update = async (req, res) => {
     const attraction = await Attraction.findById(req.params.id);
     
     if (!attraction) {
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(404).json({ success: false, message: 'Không tìm thấy điểm tham quan' });
+      }
       req.flash('error', 'Không tìm thấy điểm tham quan');
       return res.redirect('/admin/attractions');
     }
 
     // Validation
-    const validationErrors = validateAttraction(data);
-    if (validationErrors.length > 0) {
-      req.flash('error', validationErrors.join(', '));
-      return res.redirect(`/admin/attractions/${req.params.id}/edit`);
+    const wantsJson = !!(req.headers.accept && req.headers.accept.includes('application/json'));
+    if (!wantsJson) {
+      const validationErrors = validateAttraction(data);
+      if (validationErrors.length > 0) {
+        req.flash('error', validationErrors.join(', '));
+        return res.redirect(`/admin/attractions/${req.params.id}/edit`);
+      }
     }
 
     // Xử lý xóa images cũ nếu được chọn
@@ -418,12 +424,19 @@ module.exports.update = async (req, res) => {
       data.map.lng = parseFloat(data.map.lng);
     }
 
-    // Cập nhật images vào data
-    data.images = attraction.images;
+    // Cập nhật images vào data (giữ ảnh cũ nếu không upload mới)
+    if (!data.images) {
+      data.images = attraction.images;
+    }
 
-    const updated = await Attraction.findByIdAndUpdate(req.params.id, data, { new: true, runValidators: true });
+    // Nếu là JSON, chỉ cập nhật các field được gửi lên (partial update)
+    const updatePayload = wantsJson ? { $set: data } : data;
+    const updated = await Attraction.findByIdAndUpdate(req.params.id, updatePayload, { new: true, runValidators: true });
     console.log('[ADMIN][ATTRACTION][UPDATE] saved:', updated ? updated._id : 'not-found', 'in', (Date.now() - startTime) + 'ms');
 
+    if (wantsJson) {
+      return res.json({ success: true, message: 'Cập nhật điểm tham quan thành công', data: updated });
+    }
     req.flash('success', 'Cập nhật điểm tham quan thành công');
     res.redirect('/admin/attractions');
   } catch (error) {
@@ -431,15 +444,26 @@ module.exports.update = async (req, res) => {
     
     // Handle specific MongoDB errors
     if (error.code === 11000) {
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(400).json({ success: false, message: 'Tên điểm tham quan đã tồn tại' });
+      }
       req.flash('error', 'Tên điểm tham quan đã tồn tại');
     } else if (error.name === 'ValidationError') {
       const validationErrors = Object.values(error.errors).map(err => err.message);
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(400).json({ success: false, message: 'Dữ liệu không hợp lệ', errors: validationErrors });
+      }
       req.flash('error', validationErrors.join(', '));
     } else {
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(500).json({ success: false, message: 'Có lỗi xảy ra khi cập nhật điểm tham quan', error: error.message });
+      }
       req.flash('error', 'Có lỗi xảy ra khi cập nhật điểm tham quan: ' + error.message);
     }
     
-    res.redirect(`/admin/attractions/${req.params.id}/edit`);
+    if (!(req.headers.accept && req.headers.accept.includes('application/json'))){
+      return res.redirect(`/admin/attractions/${req.params.id}/edit`);
+    }
   }
 };
 
@@ -454,10 +478,16 @@ module.exports.destroy = async (req, res) => {
     }
 
     await Attraction.findByIdAndDelete(req.params.id);
+    if (req.headers.accept && req.headers.accept.includes('application/json')) {
+      return res.json({ success: true, message: 'Xóa điểm tham quan thành công', data: { id: req.params.id } });
+    }
     req.flash('success', 'Xóa điểm tham quan thành công');
     res.redirect('/admin/attractions');
   } catch (error) {
     console.error('Delete attraction error:', error);
+    if (req.headers.accept && req.headers.accept.includes('application/json')) {
+      return res.status(500).json({ success: false, message: 'Có lỗi xảy ra khi xóa điểm tham quan', error: error.message });
+    }
     req.flash('error', 'Có lỗi xảy ra khi xóa điểm tham quan: ' + error.message);
     res.redirect('/admin/attractions');
   }

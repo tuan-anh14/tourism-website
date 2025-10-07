@@ -7,14 +7,24 @@ const attractionController = require('../../controller/admin/attraction.controll
 
 const router = express.Router();
 
-// Flash messages middleware
+// Global middleware for all admin routes
 router.use((req, res, next) => {
+  // Set global variables for all admin routes
+  res.locals.admin = true;
+  res.locals.currentPath = req.path;
+  res.locals.currentMethod = req.method;
+  
+  // Flash messages middleware
   res.locals.flash = {
     success: req.flash('success'),
     error: req.flash('error'),
     warning: req.flash('warning'),
     info: req.flash('info')
   };
+  
+  // Log all admin requests
+  console.log(`[ADMIN] ${req.method} ${req.path} - ${new Date().toISOString()}`);
+  
   next();
 });
 
