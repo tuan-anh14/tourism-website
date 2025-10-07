@@ -23,21 +23,7 @@ app.use(express.json());
 // Support PUT/DELETE from HTML forms via _method
 app.use(methodOverride('_method'));
 
-// Minimal request logging for admin troubleshooting
-app.use((req, res, next) => {
-  const start = Date.now();
-  let finished = false;
-  const log = (phase) => {
-    const ms = Date.now() - start;
-    if (req.originalUrl.startsWith('/admin')) {
-      console.log(`[ADMIN] ${phase} ${req.method} ${req.originalUrl} -> ${res.statusCode} (${ms}ms)`);
-    }
-  };
-  res.on('finish', () => { finished = true; log('FINISH'); });
-  res.on('close', () => { if (!finished) log('ABORT'); });
-  res.on('error', (e) => { console.error('[ADMIN][RES][ERROR]', e); });
-  next();
-});
+// (Removed verbose per-request admin logging)
 
 // Set explicit timeouts and surface 504 instead of hanging
 app.use((req, res, next) => {
