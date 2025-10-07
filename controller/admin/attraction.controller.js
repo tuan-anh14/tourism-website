@@ -380,6 +380,44 @@ module.exports.editPatch = async (req, res) => {
       attraction.images = [ ...(attraction.images || []), ...newImages ];
     }
 
+    // Normalize booleans (checkbox sends 'on' when checked, undefined when unchecked)
+    data.isActive = data.isActive === 'on' || data.isActive === true || data.isActive === 'true';
+    data.featured = data.featured === 'on' || data.featured === true || data.featured === 'true';
+
+    // Normalize arrays - remove empty values
+    const arrayFields = ['highlights', 'visitor_notes'];
+    arrayFields.forEach((field) => {
+      if (data[field]) {
+        if (Array.isArray(data[field])) {
+          data[field] = data[field].filter((item) => item && String(item).trim() !== '');
+        } else {
+          data[field] = [data[field]].filter((item) => item && String(item).trim() !== '');
+        }
+      }
+    });
+
+    // Normalize ticket_info numeric values
+    if (data.ticket_info) {
+      Object.keys(data.ticket_info).forEach((key) => {
+        if (data.ticket_info[key] !== '' && data.ticket_info[key] !== undefined) {
+          data.ticket_info[key] = parseFloat(data.ticket_info[key]);
+        } else {
+          delete data.ticket_info[key];
+        }
+      });
+    }
+
+    // Normalize map coordinates
+    if (data.map && data.map.lat && data.map.lng) {
+      const latNum = parseFloat(data.map.lat);
+      const lngNum = parseFloat(data.map.lng);
+      if (!Number.isNaN(latNum)) data.map.lat = latNum;
+      if (!Number.isNaN(lngNum)) data.map.lng = lngNum;
+    }
+
+    // Remove method-override helper
+    if (data._method) delete data._method;
+
     // build $set payload from data
     const setPayload = {};
     Object.keys(data).forEach((key) => {
