@@ -134,11 +134,13 @@ document.addEventListener('DOMContentLoaded', function() {
         return icons[type] || 'info-circle';
     }
 
-    // Confirm delete function
-    window.confirmDelete = function(id, name, deleteUrl) {
+    // Confirm delete function (admin attractions)
+    window.confirmDelete = function(id, name) {
         var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
         document.getElementById('deleteName').textContent = name;
-        document.getElementById('deleteForm').action = deleteUrl;
+        // Default admin attractions delete URL
+        var form = document.getElementById('deleteForm');
+        if (form) form.action = '/admin/attractions/delete/' + id;
         modal.show();
     };
 

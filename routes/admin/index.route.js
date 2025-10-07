@@ -46,7 +46,9 @@ router.post('/attractions', requireAuth, requireEditor, uploadMultiple, attracti
 router.get('/attractions/:id', requireAuth, attractionController.show);
 router.get('/attractions/edit/:id', requireAuth, requireEditor, attractionController.edit);
 router.patch('/attractions/edit/:id', requireAuth, requireEditor, uploadMultiple, attractionController.editPatch);
+// Accept both DELETE (via method-override) and direct POST for compatibility
 router.delete('/attractions/delete/:id', requireAuth, requireEditor, attractionController.destroy);
+router.post('/attractions/delete/:id', requireAuth, requireEditor, attractionController.destroy);
 
 // TODO: Add more routes for other modules
 // Accommodations, Foods, Entertainment, Tours, News, Reviews, Users
