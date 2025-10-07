@@ -320,7 +320,8 @@ module.exports.show = async (req, res) => {
 // [GET] /admin/attractions/:id/edit
 module.exports.edit = async (req, res) => {
   try {
-    const attraction = await Attraction.findById(req.params.id);
+    const id = req.params.id;
+    const attraction = await Attraction.findById(id);
     if (!attraction) {
       req.flash('error', 'Không tìm thấy điểm tham quan');
       return res.redirect('/admin/attractions');
@@ -349,6 +350,62 @@ module.exports.edit = async (req, res) => {
     req.flash('error', 'Có lỗi xảy ra');
     res.redirect('/admin/attractions');
   }
+};
+
+// [PATCH] /admin/attractions/edit/:id (align ProductManagement)
+module.exports.editPatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+    console.log('[ADMIN][ATTRACTION][EDIT_PATCH] id:', id);
+    console.log('[ADMIN][ATTRACTION][EDIT_PATCH] body:', JSON.stringify(data));
+    console.log('[ADMIN][ATTRACTION][EDIT_PATCH] files:', (req.files || []).map(f => ({ field: f.fieldname, name: f.originalname, size: f.size })));
+
+    const attraction = await Attraction.findById(id);
+    if (!attraction) {
+      req.flash('error', 'Không tìm thấy điểm tham quan');
+      return res.redirect('back');
+    }
+
+    // remove images
+    if (data.removeImages) {
+      const removeArray = Array.isArray(data.removeImages) ? data.removeImages : [data.removeImages];
+      const removeIndexes = removeArray.map(i => parseInt(i));
+      attraction.images = (attraction.images || []).filter((_, idx) => !removeIndexes.includes(idx));
+    }
+
+    // add new images
+    if (req.files && req.files.length > 0) {
+      const newImages = req.files.map(file => `/uploads/${file.filename}`);
+      attraction.images = [ ...(attraction.images || []), ...newImages ];
+    }
+
+    // build $set payload from data
+    const setPayload = {};
+    Object.keys(data).forEach((key) => {
+      if (key !== 'removeImages' && data[key] !== undefined) setPayload[key] = data[key];
+    });
+    setPayload.images = attraction.images;
+
+    const pushPayload = {};
+    if (req.user && req.user._id) {
+      pushPayload.updatedBy = {
+        account_id: req.user._id,
+        updateAt: new Date()
+      };
+    }
+
+    const updateOps = Object.keys(pushPayload).length
+      ? { $set: setPayload, $push: pushPayload }
+      : { $set: setPayload };
+
+    await Attraction.updateOne({ _id: id }, updateOps, { runValidators: true });
+    req.flash('success', 'Đã cập nhật thành công điểm tham quan!');
+  } catch (error) {
+    console.error('Edit attraction PATCH error:', error);
+    req.flash('error', 'Cập nhật thất bại!');
+  }
+  return res.redirect('back');
 };
 
 // [PUT] /admin/attractions/:id
@@ -380,9 +437,10 @@ module.exports.update = async (req, res) => {
     }
 
     // Xử lý xóa images cũ nếu được chọn
-    if (data.removeImages && Array.isArray(data.removeImages)) {
-      const removeIndexes = data.removeImages.map(index => parseInt(index));
-      attraction.images = attraction.images.filter((_, index) => !removeIndexes.includes(index));
+    if (data.removeImages) {
+      const removeArray = Array.isArray(data.removeImages) ? data.removeImages : [data.removeImages];
+      const removeIndexes = removeArray.map(index => parseInt(index));
+      attraction.images = (attraction.images || []).filter((_, index) => !removeIndexes.includes(index));
     }
 
     // Xử lý images mới nếu có
@@ -424,21 +482,41 @@ module.exports.update = async (req, res) => {
       data.map.lng = parseFloat(data.map.lng);
     }
 
+    // Thêm ảnh mới nếu upload từ form và giữ ảnh cũ
+    if (req.files && req.files.length > 0) {
+      const newImages = req.files.map(file => `/uploads/${file.filename}`);
+      attraction.images = [ ...(attraction.images || []), ...newImages ];
+    }
     // Cập nhật images vào data (giữ ảnh cũ nếu không upload mới)
-    if (!data.images) {
-      data.images = attraction.images;
+    if (!data.images) data.images = attraction.images;
+
+    // Tạo payload $set chỉ gồm các field thực sự có trong request
+    const setPayload = {};
+    Object.keys(data).forEach((k) => {
+      if (data[k] !== undefined) setPayload[k] = data[k];
+    });
+
+    const pushPayload = {};
+    if (req.user && req.user._id) {
+      pushPayload.updatedBy = {
+        account_id: req.user._id,
+        updateAt: new Date()
+      };
     }
 
-    // Nếu là JSON, chỉ cập nhật các field được gửi lên (partial update)
-    const updatePayload = wantsJson ? { $set: data } : data;
-    const updated = await Attraction.findByIdAndUpdate(req.params.id, updatePayload, { new: true, runValidators: true });
+    const updateOps = Object.keys(pushPayload).length
+      ? { $set: setPayload, $push: pushPayload }
+      : { $set: setPayload };
+
+    await Attraction.updateOne({ _id: req.params.id }, updateOps, { runValidators: true });
+    const updated = await Attraction.findById(req.params.id);
     console.log('[ADMIN][ATTRACTION][UPDATE] saved:', updated ? updated._id : 'not-found', 'in', (Date.now() - startTime) + 'ms');
 
     if (wantsJson) {
       return res.json({ success: true, message: 'Cập nhật điểm tham quan thành công', data: updated });
     }
     req.flash('success', 'Cập nhật điểm tham quan thành công');
-    res.redirect('/admin/attractions');
+    return res.redirect('back');
   } catch (error) {
     console.error('Update attraction error:', error);
     

@@ -19,8 +19,8 @@
 <% } %>
 
 <!-- Form -->
-<form method="POST" action="/admin/attractions/<%= attraction._id %>?_method=PUT" enctype="multipart/form-data" id="attractionForm">
-    <input type="hidden" name="_method" value="PUT">
+<form method="POST" action="/admin/attractions/edit/<%= attraction._id %>?_method=PATCH" enctype="multipart/form-data" id="attractionForm">
+    <input type="hidden" name="_method" value="PATCH">
     
     <div class="row">
         <!-- === THÔNG TIN CƠ BẢN === -->
@@ -130,13 +130,13 @@
                         <div class="col-12">
                             <div class="mb-3">
                                 <label for="intro" class="form-label">Giới thiệu</label>
-                                <textarea class="form-control" id="intro" name="intro" rows="3"><%= attraction.intro || '' %></textarea>
+                                <textarea class="form-control textarea-mce" id="intro" name="intro" rows="3"><%= attraction.intro || '' %></textarea>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="mb-3">
                                 <label for="description" class="form-label">Mô tả chi tiết <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="description" name="description" rows="5" required><%= attraction.description || '' %></textarea>
+                                <textarea class="form-control textarea-mce" id="description" name="description" rows="5" required><%= attraction.description || '' %></textarea>
                             </div>
                         </div>
                     </div>
@@ -394,6 +394,11 @@ function removeVisitorNote(button) {
 
 // Form validation
 document.getElementById('attractionForm').addEventListener('submit', function(e) {
+    // Sync TinyMCE content back to textareas before validation/submit
+    if (window.tinymce && typeof tinymce.triggerSave === 'function') {
+        tinymce.triggerSave();
+    }
+
     const name = document.getElementById('name').value.trim();
     const category = document.getElementById('category').value;
     const address = document.getElementById('address').value.trim();
@@ -403,6 +408,12 @@ document.getElementById('attractionForm').addEventListener('submit', function(e)
     if (!name || !category || !address || !district || !description) {
         e.preventDefault();
         alert('Vui lòng điền đầy đủ các trường bắt buộc (*)');
+        // Re-enable submit button if we blocked submission
+        const submitBtn = this.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-save me-2"></i>Cập nhật điểm tham quan';
+        }
         return false;
     }
 });

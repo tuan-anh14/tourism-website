@@ -291,21 +291,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Loading states for buttons
+    // Loading state only when the form actually submits
     function initLoadingStates() {
-        var submitButtons = document.querySelectorAll('button[type="submit"]');
-        submitButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                var form = this.closest('form');
-                if (form && form.checkValidity()) {
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý...';
-                    this.disabled = true;
+        var forms = document.querySelectorAll('form');
+        forms.forEach(function(form) {
+            form.addEventListener('submit', function() {
+                var submitBtn = form.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý...';
+                    submitBtn.disabled = true;
                 }
             });
         });
     }
 
-    // Initialize loading states
+    // Initialize loading states on submit
     initLoadingStates();
 
     // Copy to clipboard functionality

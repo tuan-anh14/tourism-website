@@ -164,7 +164,7 @@
                                            title="Xem chi tiết">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="/admin/attractions/<%= attraction._id %>/edit" 
+                                        <a href="/admin/attractions/edit/<%= attraction._id %>" 
                                            class="btn btn-sm btn-outline-primary" 
                                            title="Chỉnh sửa">
                                             <i class="fas fa-edit"></i>
@@ -265,7 +265,7 @@
 <script>
 function confirmDelete(id, name) {
     document.getElementById('deleteName').textContent = name;
-    document.getElementById('deleteForm').action = '/admin/attractions/' + id;
+    document.getElementById('deleteForm').action = '/admin/attractions/delete/' + id;
     new bootstrap.Modal(document.getElementById('deleteModal')).show();
 }
 </script>
