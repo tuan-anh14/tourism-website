@@ -162,8 +162,6 @@ const validateAttraction = (data) => {
 module.exports.store = async (req, res) => {
   try {
     const data = req.body;
-    console.log('[ADMIN][ATTRACTION][STORE] body:', JSON.stringify(data));
-    console.log('[ADMIN][ATTRACTION][STORE] files:', (req.files || []).map(f => ({ field: f.fieldname, name: f.originalname, size: f.size })));
     const startTime = Date.now();
     
     // Validation
@@ -220,7 +218,7 @@ module.exports.store = async (req, res) => {
 
     const attraction = new Attraction(data);
     await attraction.save();
-    console.log('[ADMIN][ATTRACTION][STORE] saved:', attraction._id, 'in', (Date.now() - startTime) + 'ms');
+    // Saved successfully
 
     // Check if request wants JSON (from Postman/API)
     if (req.headers.accept && req.headers.accept.includes('application/json')) {
@@ -357,9 +355,7 @@ module.exports.editPatch = async (req, res) => {
   try {
     const id = req.params.id;
     const data = req.body;
-    console.log('[ADMIN][ATTRACTION][EDIT_PATCH] id:', id);
-    console.log('[ADMIN][ATTRACTION][EDIT_PATCH] body:', JSON.stringify(data));
-    console.log('[ADMIN][ATTRACTION][EDIT_PATCH] files:', (req.files || []).map(f => ({ field: f.fieldname, name: f.originalname, size: f.size })));
+    // Edit PATCH request received
 
     const attraction = await Attraction.findById(id);
     if (!attraction) {
@@ -450,9 +446,7 @@ module.exports.editPatch = async (req, res) => {
 module.exports.update = async (req, res) => {
   try {
     const data = req.body;
-    console.log('[ADMIN][ATTRACTION][UPDATE] id:', req.params.id);
-    console.log('[ADMIN][ATTRACTION][UPDATE] body:', JSON.stringify(data));
-    console.log('[ADMIN][ATTRACTION][UPDATE] files:', (req.files || []).map(f => ({ field: f.fieldname, name: f.originalname, size: f.size })));
+    // Update request received
     const startTime = Date.now();
     const attraction = await Attraction.findById(req.params.id);
     
@@ -548,7 +542,7 @@ module.exports.update = async (req, res) => {
 
     await Attraction.updateOne({ _id: req.params.id }, updateOps, { runValidators: true });
     const updated = await Attraction.findById(req.params.id);
-    console.log('[ADMIN][ATTRACTION][UPDATE] saved:', updated ? updated._id : 'not-found', 'in', (Date.now() - startTime) + 'ms');
+    // Updated successfully
 
     if (wantsJson) {
       return res.json({ success: true, message: 'Cập nhật điểm tham quan thành công', data: updated });
