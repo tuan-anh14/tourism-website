@@ -4,6 +4,7 @@ const { requireAuth, requireAdmin, requireEditor } = require('../../middleware/a
 // Import controllers
 const authController = require('../../controller/admin/auth.controller');
 const attractionController = require('../../controller/admin/attraction.controller');
+const accommodationController = require('../../controller/admin/accommodation.controller');
 
 const router = express.Router();
 
@@ -50,7 +51,18 @@ router.patch('/attractions/edit/:id', requireAuth, requireEditor, uploadMultiple
 router.delete('/attractions/delete/:id', requireAuth, requireEditor, attractionController.destroy);
 router.post('/attractions/delete/:id', requireAuth, requireEditor, attractionController.destroy);
 
+// Accommodations routes (aligned with ProductManagement pattern)
+router.get('/accommodations', requireAuth, accommodationController.index);
+router.get('/accommodations/create', requireAuth, requireEditor, accommodationController.create);
+router.post('/accommodations', requireAuth, requireEditor, uploadMultiple, accommodationController.store);
+router.get('/accommodations/:id', requireAuth, accommodationController.show);
+router.get('/accommodations/edit/:id', requireAuth, requireEditor, accommodationController.edit);
+router.patch('/accommodations/edit/:id', requireAuth, requireEditor, uploadMultiple, accommodationController.editPatch);
+// Accept both DELETE (via method-override) and direct POST for compatibility
+router.delete('/accommodations/delete/:id', requireAuth, requireEditor, accommodationController.destroy);
+router.post('/accommodations/delete/:id', requireAuth, requireEditor, accommodationController.destroy);
+
 // TODO: Add more routes for other modules
-// Accommodations, Foods, Entertainment, Tours, News, Reviews, Users
+// Foods, Entertainment, Tours, News, Reviews, Users
 
 module.exports = router;

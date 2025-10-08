@@ -1,0 +1,422 @@
+<!-- Page Header -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><%= pageTitle %></h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="/admin/accommodations" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>
+            Quay lại
+        </a>
+    </div>
+</div>
+
+<!-- Flash Messages -->
+<% if (typeof flash !== 'undefined' && flash.error && flash.error.length > 0) { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <%= flash.error[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<!-- Form -->
+<form method="POST" action="/admin/accommodations" enctype="multipart/form-data" id="accommodationForm">
+    <div class="row">
+        <!-- === THÔNG TIN CƠ BẢN === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Thông tin cơ bản
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Tên lưu trú <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="type" class="form-label">Loại hình <span class="text-danger">*</span></label>
+                                <select class="form-select" id="type" name="type" required>
+                                    <option value="">Chọn loại hình</option>
+                                    <% types.forEach(type => { %>
+                                        <option value="<%= type.value %>"><%= type.label %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="star" class="form-label">Hạng sao</label>
+                                <select class="form-select" id="star" name="star">
+                                    <option value="">Chọn hạng sao</option>
+                                    <option value="1">1 sao</option>
+                                    <option value="2">2 sao</option>
+                                    <option value="3">3 sao</option>
+                                    <option value="4">4 sao</option>
+                                    <option value="5">5 sao</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="priceFrom" class="form-label">Giá từ (VNĐ) <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="priceFrom" name="priceFrom" min="0" required>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Mô tả chi tiết <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === ĐỊA CHỈ === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        Thông tin địa chỉ
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="address[street]" class="form-label">Địa chỉ đường <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="address[street]" name="address[street]" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="address[district]" class="form-label">Quận/Huyện <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="address[district]" name="address[district]" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="address[city]" class="form-label">Thành phố</label>
+                                <input type="text" class="form-control" id="address[city]" name="address[city]" value="Hà Nội">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="map[locationText]" class="form-label">Mô tả vị trí</label>
+                                <input type="text" class="form-control" id="map[locationText]" name="map[locationText]" placeholder="VD: Gần hồ Hoàn Kiếm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === TỌA ĐỘ BẢN ĐỒ === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-map me-2"></i>
+                        Tọa độ bản đồ
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="map[coordinates][0]" class="form-label">Kinh độ (Longitude)</label>
+                                <input type="number" step="any" class="form-control" id="map[coordinates][0]" name="map[coordinates][0]" placeholder="105.8342">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="map[coordinates][1]" class="form-label">Vĩ độ (Latitude)</label>
+                                <input type="number" step="any" class="form-control" id="map[coordinates][1]" name="map[coordinates][1]" placeholder="21.0278">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="map[mapEmbed]" class="form-label">Link nhúng bản đồ</label>
+                                <input type="url" class="form-control" id="map[mapEmbed]" name="map[mapEmbed]" placeholder="https://www.google.com/maps/embed/...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === TIỆN NGHI & DỊCH VỤ === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-concierge-bell me-2"></i>
+                        Tiện nghi & Dịch vụ
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="highlights" class="form-label">Điểm nổi bật</label>
+                                <div id="highlights-container">
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" name="highlights[]" placeholder="VD: View hồ Tây tuyệt đẹp">
+                                        <button type="button" class="btn btn-outline-danger" onclick="removeField(this)">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addField('highlights-container', 'highlights[]', 'VD: View hồ Tây tuyệt đẹp')">
+                                    <i class="fas fa-plus me-1"></i>Thêm điểm nổi bật
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="amenities" class="form-label">Tiện nghi</label>
+                                <div id="amenities-container">
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" name="amenities[]" placeholder="VD: WiFi miễn phí">
+                                        <button type="button" class="btn btn-outline-danger" onclick="removeField(this)">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addField('amenities-container', 'amenities[]', 'VD: WiFi miễn phí')">
+                                    <i class="fas fa-plus me-1"></i>Thêm tiện nghi
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="services" class="form-label">Dịch vụ</label>
+                                <div id="services-container">
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" name="services[]" placeholder="VD: Đưa đón sân bay">
+                                        <button type="button" class="btn btn-outline-danger" onclick="removeField(this)">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addField('services-container', 'services[]', 'VD: Đưa đón sân bay')">
+                                    <i class="fas fa-plus me-1"></i>Thêm dịch vụ
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="rules" class="form-label">Chính sách/Lưu ý</label>
+                                <div id="rules-container">
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" name="rules[]" placeholder="VD: Nhận phòng từ 14:00">
+                                        <button type="button" class="btn btn-outline-danger" onclick="removeField(this)">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addField('rules-container', 'rules[]', 'VD: Nhận phòng từ 14:00')">
+                                    <i class="fas fa-plus me-1"></i>Thêm chính sách
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === MEDIA === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-images me-2"></i>
+                        Hình ảnh & Video
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="images" class="form-label">Hình ảnh</label>
+                                <input type="file" class="form-control" id="images" name="images" multiple accept="image/*">
+                                <div class="form-text">Chọn nhiều hình ảnh (JPG, PNG, GIF)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="website" class="form-label">Website chính thức</label>
+                                <input type="url" class="form-control" id="website" name="website" placeholder="https://example.com">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="videos" class="form-label">Video giới thiệu</label>
+                                <div id="videos-container">
+                                    <div class="input-group mb-2">
+                                        <input type="url" class="form-control" name="videos[]" placeholder="https://youtube.com/watch?v=...">
+                                        <button type="button" class="btn btn-outline-danger" onclick="removeField(this)">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addField('videos-container', 'videos[]', 'https://youtube.com/watch?v=...')">
+                                    <i class="fas fa-plus me-1"></i>Thêm video
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === LIÊN HỆ === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-phone me-2"></i>
+                        Thông tin liên hệ
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="contact[phone]" class="form-label">Số điện thoại</label>
+                                <input type="tel" class="form-control" id="contact[phone]" name="contact[phone]" placeholder="024 xxxx xxxx">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="contact[email]" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="contact[email]" name="contact[email]" placeholder="info@example.com">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === TAGS & TRẠNG THÁI === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-tags me-2"></i>
+                        Tags & Trạng thái
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="tags" class="form-label">Tags</label>
+                                <div id="tags-container">
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" name="tags[]" placeholder="VD: gần hồ, view đẹp">
+                                        <button type="button" class="btn btn-outline-danger" onclick="removeField(this)">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addField('tags-container', 'tags[]', 'VD: gần hồ, view đẹp')">
+                                    <i class="fas fa-plus me-1"></i>Thêm tag
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Trạng thái</label>
+                                <select class="form-select" id="status" name="status">
+                                    <option value="public">Công khai</option>
+                                    <option value="draft">Bản nháp</option>
+                                    <option value="hidden">Ẩn</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="isActive" name="isActive" checked>
+                                <label class="form-check-label" for="isActive">
+                                    Kích hoạt
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="featured" name="featured">
+                                <label class="form-check-label" for="featured">
+                                    Nổi bật
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === BUTTONS === -->
+        <div class="col-12">
+            <div class="d-flex justify-content-end gap-2">
+                <a href="/admin/accommodations" class="btn btn-secondary">
+                    <i class="fas fa-times me-2"></i>
+                    Hủy
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-2"></i>
+                    Lưu lưu trú
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+function addField(containerId, name, placeholder) {
+    const container = document.getElementById(containerId);
+    const div = document.createElement('div');
+    div.className = 'input-group mb-2';
+    div.innerHTML = `
+        <input type="text" class="form-control" name="${name}" placeholder="${placeholder}">
+        <button type="button" class="btn btn-outline-danger" onclick="removeField(this)">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    container.appendChild(div);
+}
+
+function removeField(button) {
+    button.parentElement.remove();
+}
+
+// Form validation
+document.getElementById('accommodationForm').addEventListener('submit', function(e) {
+    const name = document.getElementById('name').value.trim();
+    const type = document.getElementById('type').value;
+    const priceFrom = document.getElementById('priceFrom').value;
+    const description = document.getElementById('description').value.trim();
+    const street = document.getElementById('address[street]').value.trim();
+    const district = document.getElementById('address[district]').value.trim();
+
+    if (!name || !type || !priceFrom || !description || !street || !district) {
+        e.preventDefault();
+        alert('Vui lòng điền đầy đủ các trường bắt buộc!');
+        return false;
+    }
+
+    if (parseFloat(priceFrom) < 0) {
+        e.preventDefault();
+        alert('Giá từ phải là số dương!');
+        return false;
+    }
+});
+</script>
