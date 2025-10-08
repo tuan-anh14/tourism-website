@@ -83,40 +83,101 @@
                         if (!str) return '';
                         return String(str).toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
                     }
+                    
+                    function getTypeLabel(type) {
+                        var labels = {
+                            'hotel': 'Khách sạn',
+                            'homestay': 'Homestay', 
+                            'apartment': 'Căn hộ dịch vụ',
+                            'resort': 'Resort',
+                            'farmstay': 'Farmstay',
+                            'bungalow': 'Bungalow',
+                            'villa': 'Villa',
+                            'hostel': 'Hostel',
+                            'guesthouse': 'Nhà nghỉ',
+                            'other': 'Khác'
+                        };
+                        return labels[type] || 'Lưu trú';
+                    }
+                    
+                    function getAreaLabel(district) {
+                        var labels = {
+                            'Hoàn Kiếm': 'center',
+                            'Tây Hồ': 'tayho', 
+                            'Cầu Giấy': 'caugiay',
+                            'Hai Bà Trưng': 'haibatrung',
+                            'Ba Đình': 'badinh',
+                            'Đống Đa': 'dongda',
+                            'Thanh Xuân': 'thanhxuan'
+                        };
+                        return labels[district] || 'center';
+                    }
                 %>
                 <% if (list) { list.forEach(function(item){
-                    var title = item.title || 'Cơ sở lưu trú';
-                    var img = item.image || item.heroImage || (item.images && item.images[0]) || '/client/img/carousel-img2.jpg';
+                    var title = item.name || 'Cơ sở lưu trú';
+                    var img = (item.images && item.images[0]) || '/client/img/carousel-img2.jpg';
                     var type = item.type || 'hotel';
-                    var area = item.area || 'center';
-                    var price = (item.price && Number(item.price)) || (item.priceFrom && Number(item.priceFrom)) || '';
+                    var area = getAreaLabel(item.address && item.address.district) || 'center';
+                    var price = item.priceFrom || '';
                     var amenities = (item.amenities && item.amenities.join(',')) || '';
-                    var desc = item.shortDescription || item.description || '';
+                    var desc = item.description || '';
                     var slug = item.slug || slugify(title);
+                    var rating = item.avgRating || 0;
+                    var reviewCount = item.reviewCount || 0;
+                    var star = item.star || 0;
                 %>
                 <article class="accommodation-card" data-title="<%= title %>" data-type="<%= type %>" data-area="<%= area %>" data-price="<%= price %>" data-amenities="<%= amenities %>">
                     <div class="thumb">
                         <img src="<%= img %>" alt="<%= title %>" loading="lazy" />
+                        <% if (star > 0) { %>
+                        <div class="star-badge">
+                            <% for (var i = 0; i < star; i++) { %>
+                            <i class="fa fa-star"></i>
+                            <% } %>
+                        </div>
+                        <% } %>
                     </div>
                     <div class="content">
-                        <h3 class="title dark"><%= title %></h3>
-                        <% if (desc) { %><p class="desc font-color"><%= desc %></p><% } %>
+                        <div class="card-header">
+                            <h3 class="title dark"><%= title %></h3>
+                            <span class="type-label"><%= getTypeLabel(type) %></span>
+                        </div>
+                        <% if (desc) { %><p class="desc font-color"><%= desc.length > 120 ? desc.substring(0, 120) + '...' : desc %></p><% } %>
                         <div class="meta">
                             <% if (price) { %>
-                            <span class="price">~ <%= Number(price).toLocaleString('vi-VN') %>đ/đêm</span>
+                            <span class="price">Từ <%= Number(price).toLocaleString('vi-VN') %>đ/đêm</span>
                             <% } %>
-                            <div class="amenities">
-                                <% if (item.amenities && item.amenities.length) { item.amenities.slice(0,3).forEach(function(a){ %>
-                                <span class="tag"><%= a %></span>
-                                <% }) } %>
+                            <% if (rating > 0) { %>
+                            <div class="rating">
+                                <span class="rating-value"><%= rating.toFixed(1) %></span>
+                                <div class="stars">
+                                    <% for (var i = 1; i <= 5; i++) { %>
+                                    <i class="fa fa-star<%= i <= Math.round(rating) ? '' : '-o' %>"></i>
+                                    <% } %>
+                                </div>
+                                <% if (reviewCount > 0) { %>
+                                <span class="review-count">(<%= reviewCount %>)</span>
+                                <% } %>
                             </div>
+                            <% } %>
+                        </div>
+                        <div class="amenities">
+                            <% if (item.amenities && item.amenities.length) { item.amenities.slice(0,3).forEach(function(a){ %>
+                            <span class="tag"><%= a %></span>
+                            <% }) } %>
                         </div>
                         <div class="actions">
                             <a class="ctn" href="/accommodation/<%= slug %>">Xem chi tiết</a>
                         </div>
                     </div>
                 </article>
-                <% }) } %>
+                <% }) } else { %>
+                <div class="no-results">
+                    <i class="fa fa-search"></i>
+                    <h3>Không tìm thấy cơ sở lưu trú nào</h3>
+                    <p>Hãy thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm</p>
+                </div>
+                <% } %>
             </section>
         </section>
 

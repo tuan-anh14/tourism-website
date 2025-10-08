@@ -4,8 +4,8 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title><%= (acc && acc.title) || 'Chi tiết lưu trú' %> | HÀ NỘI</title>
-        <meta name="description" content="<%= (acc && (acc.title + ' - Lưu trú Hà Nội')) || 'Chi tiết lưu trú Hà Nội' %>" />
+        <title><%= (acc && acc.name) || 'Chi tiết lưu trú' %> | HÀ NỘI</title>
+        <meta name="description" content="<%= (acc && (acc.name + ' - Lưu trú Hà Nội')) || 'Chi tiết lưu trú Hà Nội' %>" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
         <link rel="stylesheet" href="/client/css/style.css" />
         <link rel="stylesheet" href="/client/css/responsive.css" />
@@ -21,11 +21,11 @@
         <%- include('../../partials/header') %>
 
         <!-- Banner -->
-        <header class="page-header accommodation-banner" style="background-image: url('<%= (acc && (acc.heroImage || (acc.images && acc.images[0]))) || '/client/img/header-bg.jfif' %>');">
+        <header class="page-header accommodation-banner" style="background-image: url('<%= (acc && (acc.images && acc.images[0])) || '/client/img/header-bg.jfif' %>');">
             <div class="header-content">
                 <h2 id="quote">Lưu trú & Nghỉ dưỡng</h2>
                 <div class="line"></div>
-                <h1><%= (acc && acc.title) || 'Lưu trú' %></h1>
+                <h1><%= (acc && acc.name) || 'Lưu trú' %></h1>
                 <p class="font-color">Trải nghiệm nghỉ dưỡng tuyệt vời tại Hà Nội</p>
             </div>
         </header>
@@ -34,17 +34,26 @@
             <div class="container main-content">
                 <!-- Gallery -->
                 <section class="image-gallery" id="gallery">
-                    <% var imgs = (acc && acc.images && acc.images.length) ? acc.images : ['/client/img/carousel-img2.jpg','/client/img/carousel-img3.jpg','/client/img/img1.jfif','/client/img/img2.jfif','/client/img/img3.png']; %>
-                    <% imgs.slice(0, 5).forEach(function(img, idx){ %>
-                    <div class="gallery-item" data-index="<%= idx %>">
-                        <img src="<%= img %>" alt="Hình ảnh lưu trú" loading="lazy" />
-                        <% if (idx === 0) { %>
-                        <button class="show-all-photos" type="button">
-                            <i class="fa fa-images"></i> Xem tất cả ảnh
-                        </button>
-                        <% } %>
-                    </div>
-                    <% }) %>
+                    <% 
+                        var imgs = (acc && acc.images && acc.images.length) ? acc.images : ['/client/img/carousel-img2.jpg','/client/img/carousel-img3.jpg','/client/img/img1.jfif','/client/img/img2.jfif','/client/img/img3.png']; 
+                        var hasImages = imgs && imgs.length > 0;
+                    %>
+                    <% if (hasImages) { %>
+                        <% imgs.slice(0, 5).forEach(function(img, idx){ %>
+                        <div class="gallery-item" data-index="<%= idx %>">
+                            <img src="<%= img %>" alt="<%= (acc && acc.name) || 'Hình ảnh lưu trú' %>" loading="lazy" />
+                            <% if (idx === 0 && imgs.length > 1) { %>
+                            <button class="show-all-photos" type="button">
+                                <i class="fa fa-images"></i> Xem tất cả ảnh (<%= imgs.length %>)
+                            </button>
+                            <% } %>
+                        </div>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="gallery-item" data-index="0">
+                            <img src="/client/img/carousel-img2.jpg" alt="<%= (acc && acc.name) || 'Hình ảnh lưu trú' %>" loading="lazy" />
+                        </div>
+                    <% } %>
                 </section>
 
                 
@@ -54,12 +63,11 @@
                         <section class="main-section">
                             <h2 class="section-title">Giới thiệu</h2>
                             <div class="description">
-                                <% var intro = (acc && acc.intro && acc.intro.length) ? acc.intro : []; %>
-                                <% if (!intro.length) { %>
+                                <% if (acc && acc.description) { %>
+                                    <p><%= acc.description %></p>
+                                <% } else { %>
                                     <p>Thông tin đang được cập nhật.</p>
-                                <% } else { intro.forEach(function(p){ %>
-                                    <p><%= p %></p>
-                                <% }) } %>
+                                <% } %>
                             </div>
                             <% if (acc && acc.highlights && acc.highlights.length) { %>
                             <div class="highlight-box">
@@ -72,11 +80,11 @@
                             </div>
                             <% } %>
 
-                            <% if (acc && acc.roomFeatures && acc.roomFeatures.length) { %>
+                            <% if (acc && acc.amenities && acc.amenities.length) { %>
                             <div class="room-info">
-                                <h3><i class="fa fa-bed"></i> Tiện nghi trong phòng</h3>
+                                <h3><i class="fa fa-bed"></i> Tiện nghi</h3>
                                 <div class="room-features-list">
-                                    <% acc.roomFeatures.forEach(function(f){ %>
+                                    <% acc.amenities.forEach(function(f){ %>
                                     <div class="feature-item"><i class="fa fa-check-circle"></i><span><%= f %></span></div>
                                     <% }) %>
                                 </div>
@@ -85,58 +93,30 @@
                         </section>
 
                         <!-- Services -->
-                        <% var services = (acc && acc.services) || {}; %>
                         <section class="services-section">
                             <h2 class="section-title">Dịch vụ & Tiện ích</h2>
-                            <% if (!services.common && !services.service && !services.breakfast) { %>
+                            <% if (acc && acc.services && acc.services.length) { %>
+                                <div class="service-category">
+                                    <div class="service-list">
+                                        <% acc.services.forEach(function(s){ %>
+                                        <div class="service-item"><i class="fa fa-check"></i><span><%= s %></span></div>
+                                        <% }) %>
+                                    </div>
+                                </div>
+                            <% } else { %>
                                 <p class="font-color">Thông tin đang được cập nhật.</p>
-                            <% } %>
-                            <% if (services.common && services.common.length) { %>
-                            <div class="service-category">
-                                <h3>Tiện nghi chung</h3>
-                                <div class="service-list">
-                                    <% services.common.forEach(function(s){ %>
-                                    <div class="service-item"><i class="fa fa-check"></i><span><%= s %></span></div>
-                                    <% }) %>
-                                </div>
-                            </div>
-                            <% } %>
-                            <% if (services.service && services.service.length) { %>
-                            <div class="service-category">
-                                <h3>Dịch vụ</h3>
-                                <div class="service-list">
-                                    <% services.service.forEach(function(s){ %>
-                                    <div class="service-item"><i class="fa fa-check"></i><span><%= s %></span></div>
-                                    <% }) %>
-                                </div>
-                            </div>
-                            <% } %>
-                            <% if (services.breakfast && services.breakfast.length) { %>
-                            <div class="service-category">
-                                <h3>Bữa sáng</h3>
-                                <div class="service-list">
-                                    <% services.breakfast.forEach(function(s){ %>
-                                    <div class="service-item"><i class="fa fa-check"></i><span><%= s %></span></div>
-                                    <% }) %>
-                                </div>
-                            </div>
                             <% } %>
                         </section>
 
-                        <!-- Nearby places -->
-                        <% var near = (acc && acc.nearbyPlaces) || []; %>
-                        <% if (near.length) { %>
-                        <section class="nearby-places">
-                            <h2 class="section-title">Địa điểm gần đây</h2>
-                            <% near.forEach(function(p){ %>
-                            <div class="place-item">
-                                <div class="place-name">
-                                    <i class="fa <%= p.icon || 'fa-map-marker' %>"></i>
-                                    <span><%= p.name %></span>
-                                </div>
-                                <div class="place-distance"><%= p.distance %></div>
+                        <!-- Rules -->
+                        <% if (acc && acc.rules && acc.rules.length) { %>
+                        <section class="rules-section">
+                            <h2 class="section-title">Quy định & Chính sách</h2>
+                            <div class="rules-list">
+                                <% acc.rules.forEach(function(rule){ %>
+                                <div class="rule-item"><i class="fa fa-info-circle"></i><span><%= rule %></span></div>
+                                <% }) %>
                             </div>
-                            <% }) %>
                         </section>
                         <% } %>
 
@@ -185,33 +165,41 @@
                         </section>
 
                         <!-- Contact info -->
-                        <% var contacts = (acc && acc.contacts) || {}; %>
                         <section class="contact-info">
                             <h3><i class="fa fa-address-book"></i> Thông tin liên hệ</h3>
-                            <% if (contacts.phone) { %>
+                            <% if (acc && acc.contact && acc.contact.phone) { %>
                             <div class="contact-item">
                                 <i class="fa fa-phone"></i>
                                 <div>
-                                    <!-- <div class="label">Điện thoại</div> -->
-                                    <div class="value"><%= contacts.phone %></div>
+                                    <div class="value"><%= acc.contact.phone %></div>
                                 </div>
                             </div>
                             <% } %>
-                            <% if (contacts.email) { %>
+                            <% if (acc && acc.contact && acc.contact.email) { %>
                             <div class="contact-item">
                                 <i class="fa fa-envelope"></i>
                                 <div>
-                                    <!-- <div class="label">Email</div> -->
-                                    <div class="value"><%= contacts.email %></div>
+                                    <div class="value"><%= acc.contact.email %></div>
                                 </div>
                             </div>
                             <% } %>
-                            <% if (contacts.address || (acc && acc.address)) { %>
+                            <% if (acc && acc.address) { %>
                             <div class="contact-item">
                                 <i class="fa fa-map-marker"></i>
                                 <div>
-                                    <!-- <div class="label">Địa chỉ</div> -->
-                                    <div class="value"><%= contacts.address || (acc && acc.address) || '' %></div>
+                                    <div class="value">
+                                        <%= acc.address.street %>, <%= acc.address.district %>, <%= acc.address.city %>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if (acc && acc.website) { %>
+                            <div class="contact-item">
+                                <i class="fa fa-globe"></i>
+                                <div>
+                                    <div class="value">
+                                        <a href="<%= acc.website %>" target="_blank" rel="noopener">Website</a>
+                                    </div>
                                 </div>
                             </div>
                             <% } %>
@@ -224,15 +212,15 @@
                     <h2 class="section-title">Vị trí trên bản đồ</h2>
                     <div id="accMap"
                          class="acc-map-embed"
-                         data-lat="<%= (acc && acc.map && acc.map.lat) || 21.028511 %>"
-                         data-lng="<%= (acc && acc.map && acc.map.lng) || 105.804817 %>"
-                         data-zoom="<%= (acc && acc.map && acc.map.zoom) || 14 %>"
-                         data-name="<%= (acc && acc.title) || '' %>"
-                         data-address="<%= (acc && acc.address) || '' %>"
-                         data-image="<%= (acc && (acc.heroImage || (acc.images && acc.images[0]))) || '' %>"
+                         data-lat="<%= (acc && acc.map && acc.map.coordinates && acc.map.coordinates[1]) || 21.028511 %>"
+                         data-lng="<%= (acc && acc.map && acc.map.coordinates && acc.map.coordinates[0]) || 105.804817 %>"
+                         data-zoom="14"
+                         data-name="<%= (acc && acc.name) || '' %>"
+                         data-address="<%= (acc && acc.address && (acc.address.street + ', ' + acc.address.district + ', ' + acc.address.city)) || '' %>"
+                         data-image="<%= (acc && (acc.images && acc.images[0])) || '' %>"
                          data-url="<%= (acc && ('/accommodation/' + (acc.slug || ''))) || '' %>"></div>
                     <% if (acc && acc.address) { %>
-                    <p class="map-address"><strong>Địa chỉ:</strong> <%= acc.address %></p>
+                    <p class="map-address"><strong>Địa chỉ:</strong> <%= acc.address.street %>, <%= acc.address.district %>, <%= acc.address.city %></p>
                     <% } %>
                 </section>
             </div>
@@ -251,12 +239,15 @@
                 <div class="reviews-pro__provider">
                     <img class="reviews-pro__provider-icon" src="/client/img/google.svg" alt="Google reviews" />
                     <div class="reviews-pro__provider-stats">
-                        <span class="overall"><%= (acc && acc.rating) || '4.8' %></span>
+                        <span class="overall"><%= (acc && acc.avgRating) || '4.8' %></span>
                         <span class="stars" aria-label="5 sao">
-                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                            <% var rating = (acc && acc.avgRating) || 4.8; %>
+                            <% for (var i = 1; i <= 5; i++) { %>
+                            <i class="fa fa-star<%= i <= Math.round(rating) ? '' : '-o' %>"></i>
+                            <% } %>
                         </span>
                         <a class="reviews-pro__link" href="#" target="_blank" rel="noreferrer">Xem tất cả đánh giá</a>
-                        <span class="total">(<%= (acc && acc.reviewCount) || '269' %>)</span>
+                        <span class="total">(<%= (acc && acc.reviewCount) || '0' %>)</span>
                     </div>
                 </div>
             </div>
@@ -266,21 +257,21 @@
                 <div class="reviews-pro__viewport">
                     <div class="reviews-pro__track">
                         <% var rv = (acc && acc.reviews && acc.reviews.length) ? acc.reviews : [
-                            { name: 'Linh', country: 'Việt Nam', rating: 5, text: 'Phòng sạch, spa tuyệt vời.' },
-                            { name: 'An', country: 'Việt Nam', rating: 5, text: 'Vị trí tiện đi lại, nhân viên thân thiện.' },
-                            { name: 'Jade', country: 'Singapore', rating: 4, text: 'Rất ổn so với tầm giá.' },
-                            { name: 'Minh', country: 'Việt Nam', rating: 5, text: 'Không gian yên tĩnh, decor đẹp.' }
+                            { user: { name: 'Linh' }, rating: 5, comment: 'Phòng sạch, spa tuyệt vời.' },
+                            { user: { name: 'An' }, rating: 5, comment: 'Vị trí tiện đi lại, nhân viên thân thiện.' },
+                            { user: { name: 'Jade' }, rating: 4, comment: 'Rất ổn so với tầm giá.' },
+                            { user: { name: 'Minh' }, rating: 5, comment: 'Không gian yên tĩnh, decor đẹp.' }
                         ]; rv.forEach(function(r){ %>
                         <div class="reviews-pro__card">
                             <img class="reviews-pro__quote" src="/client/img/quote.svg" alt="Quote" />
-                            <div class="reviews-pro__text"><%= r.text %></div>
+                            <div class="reviews-pro__text"><%= r.comment || r.text %></div>
                             <div class="reviews-pro__stars">
                                 <% for (var i=0;i<r.rating;i++){ %><i class="fa fa-star"></i><% } %>
                             </div>
                             <div class="reviews-pro__meta">
-                                <span class="name"><%= r.name %></span>
+                                <span class="name"><%= r.user && r.user.name ? r.user.name : 'Khách hàng' %></span>
                                 <span class="dot"></span>
-                                <span class="country"><%= r.country %></span>
+                                <span class="country">Việt Nam</span>
                             </div>
                         </div>
                         <% }); %>

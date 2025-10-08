@@ -45,7 +45,7 @@ body.dark .accommodation-detail-page .navbar .nav-links li a { color: #fff; }
 .acc-detail .show-all-photos:hover { background: #667eea; color: #fff; border-color: #667eea; }
 
 .acc-detail .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
-.acc-detail .main-section, .acc-detail .services-section, .acc-detail .nearby-places, .acc-detail .map-container { 
+.acc-detail .main-section, .acc-detail .services-section, .acc-detail .nearby-places, .acc-detail .rules-section, .acc-detail .map-container { 
     background: rgba(255,255,255,0.96); 
     border-radius: 12px; 
     padding: 20px; 
@@ -53,7 +53,7 @@ body.dark .accommodation-detail-page .navbar .nav-links li a { color: #fff; }
     margin-bottom: 24px; 
     border: 1px solid rgba(0,0,0,0.06);
 }
-body.dark .acc-detail .main-section, body.dark .acc-detail .services-section, body.dark .acc-detail .nearby-places, body.dark .acc-detail .map-container { 
+body.dark .acc-detail .main-section, body.dark .acc-detail .services-section, body.dark .acc-detail .nearby-places, body.dark .acc-detail .rules-section, body.dark .acc-detail .map-container { 
     background: rgba(20,20,22,0.9); 
     box-shadow: 0 10px 30px rgba(0,0,0,0.4); 
 }
@@ -74,6 +74,11 @@ body.dark .acc-detail .main-section, body.dark .acc-detail .services-section, bo
 .acc-detail .service-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .acc-detail .service-item { display: flex; align-items: center; gap: 8px; color: #4a5568; }
 .acc-detail .service-item i { color: var(--primary-color, #fc036b); }
+
+/* Rules section */
+.acc-detail .rules-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+.acc-detail .rule-item { display: flex; align-items: flex-start; gap: 10px; color: #4a5568; padding: 8px 0; }
+.acc-detail .rule-item i { color: #007bff; margin-top: 2px; flex-shrink: 0; }
 
 .acc-detail .nearby-places .place-item { display: flex; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding: 12px 0; }
 .acc-detail .nearby-places .place-item:last-child { border-bottom: none; }
