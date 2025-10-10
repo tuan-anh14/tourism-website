@@ -1,0 +1,186 @@
+<!-- Header -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2"><%= pageTitle %></h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <a href="/admin/cuisines" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Quay lại</a>
+  </div>
+  </div>
+
+<!-- Flash -->
+<% if (typeof flash !== 'undefined' && flash.error && flash.error.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= flash.error[0] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+<% } %>
+<% if (typeof flash !== 'undefined' && flash.success && flash.success.length > 0) { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= flash.success[0] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+<% } %>
+
+<form method="POST" action="/admin/cuisines/edit/<%= cuisine._id %>?_method=PATCH" enctype="multipart/form-data">
+  <div class="row">
+    <!-- Basic -->
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header"><h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Thông tin cơ bản</h5></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Tên</label>
+              <input type="text" class="form-control" name="name" value="<%= cuisine.name || '' %>">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Tên tiếng Anh</label>
+              <input type="text" class="form-control" name="nameEn" value="<%= cuisine.nameEn || '' %>">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Loại</label>
+              <select class="form-select" name="type">
+                <option value="">Chọn loại hình</option>
+                <% (types||[]).forEach(t=>{ %>
+                  <option value="<%= t.value %>" <%= cuisine.type===t.value?'selected':'' %>><%= t.label %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="col-12 mb-3">
+              <label class="form-label">Mô tả</label>
+              <textarea class="form-control" name="description" rows="4"><%= cuisine.description || '' %></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features & Tags -->
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header"><h5 class="mb-0"><i class="fas fa-tags me-2"></i>Đặc điểm & Tags</h5></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <label class="form-label">Điểm nhấn</label>
+              <div id="feature-container">
+                <% (cuisine.feature||['']).forEach((val)=>{ %>
+                <div class="input-group mb-2">
+                  <input type="text" class="form-control" name="feature[]" value="<%= val %>" placeholder="VD: Truyền thống, dân dã">
+                  <button type="button" class="btn btn-outline-danger" onclick="removeField(this)"><i class="fas fa-times"></i></button>
+                </div>
+                <% }) %>
+              </div>
+              <button type="button" class="btn btn-sm btn-outline-primary" onclick="addField('feature-container','feature[]','VD: Truyền thống, dân dã')"><i class="fas fa-plus me-1"></i>Thêm</button>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Tags</label>
+              <div id="tags-container">
+                <% (cuisine.tags||['']).forEach((val)=>{ %>
+                <div class="input-group mb-2">
+                  <input type="text" class="form-control" name="tags[]" value="<%= val %>" placeholder="VD: must try, phố cổ">
+                  <button type="button" class="btn btn-outline-danger" onclick="removeField(this)"><i class="fas fa-times"></i></button>
+                </div>
+                <% }) %>
+              </div>
+              <button type="button" class="btn btn-sm btn-outline-primary" onclick="addField('tags-container','tags[]','VD: must try, phố cổ')"><i class="fas fa-plus me-1"></i>Thêm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Media -->
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header"><h5 class="mb-0"><i class="fas fa-images me-2"></i>Hình ảnh</h5></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 mb-3">
+              <div class="d-flex flex-wrap gap-2">
+                <% (cuisine.mainImages||[]).forEach((img, idx)=>{ %>
+                  <div class="position-relative">
+                    <img src="<%= img %>" style="width:100px;height:100px;object-fit:cover;border-radius:6px;">
+                    <label class="form-check position-absolute top-0 end-0 m-1 bg-white p-1 rounded">
+                      <input type="checkbox" class="form-check-input" name="removeImages" value="<%= idx %>"> Xóa
+                    </label>
+                  </div>
+                <% }) %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Thêm ảnh</label>
+              <input type="file" class="form-control" name="images" multiple accept="image/*">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Gallery (URL)</label>
+              <div id="gallery-container">
+                <% (cuisine.gallery||['']).forEach((val)=>{ %>
+                <div class="input-group mb-2">
+                  <input type="url" class="form-control" name="gallery[]" value="<%= val %>" placeholder="https://...">
+                  <button type="button" class="btn btn-outline-danger" onclick="removeField(this)"><i class="fas fa-times"></i></button>
+                </div>
+                <% }) %>
+              </div>
+              <button type="button" class="btn btn-sm btn-outline-primary" onclick="addField('gallery-container','gallery[]','https://...')"><i class="fas fa-plus me-1"></i>Thêm ảnh</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header"><h5 class="mb-0"><i class="fas fa-toggle-on me-2"></i>Trạng thái</h5></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <label class="form-label">Hiển thị</label>
+              <select class="form-select" name="status">
+                <option value="published" <%= cuisine.status==='published'?'selected':'' %>>Công khai</option>
+                <option value="draft" <%= cuisine.status==='draft'?'selected':'' %>>Bản nháp</option>
+                <option value="hidden" <%= cuisine.status==='hidden'?'selected':'' %>>Ẩn</option>
+              </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-center">
+              <div class="form-check mt-4">
+                <input class="form-check-input" type="checkbox" name="isActive" <%= cuisine.isActive? 'checked':'' %> >
+                <label class="form-check-label">Kích hoạt</label>
+              </div>
+            </div>
+            <div class="col-md-4 d-flex align-items-center">
+              <div class="form-check mt-4">
+                <input class="form-check-input" type="checkbox" name="featured" <%= cuisine.featured? 'checked':'' %> >
+                <label class="form-check-label">Nổi bật</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="col-12">
+      <div class="d-flex justify-content-end gap-2">
+        <a href="/admin/cuisines" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Hủy</a>
+        <button class="btn btn-primary"><i class="fas fa-save me-2"></i>Lưu thay đổi</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script>
+function addField(containerId, name, placeholder) {
+  const container = document.getElementById(containerId);
+  const div = document.createElement('div');
+  div.className = 'input-group mb-2';
+  div.innerHTML = `
+    <input type=\"text\" class=\"form-control\" name=\"${name}\" placeholder=\"${placeholder}\"> 
+    <button type=\"button\" class=\"btn btn-outline-danger\" onclick=\"removeField(this)\"><i class=\"fas fa-times\"></i></button>
+  `;
+  container.appendChild(div);
+}
+function removeField(btn){ btn.parentElement.remove(); }
+</script>
+
+

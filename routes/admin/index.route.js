@@ -5,6 +5,7 @@ const { requireAuth, requireAdmin, requireEditor } = require('../../middleware/a
 const authController = require('../../controller/admin/auth.controller');
 const attractionController = require('../../controller/admin/attraction.controller');
 const accommodationController = require('../../controller/admin/accommodation.controller');
+const cuisineController = require('../../controller/admin/cuisine.controller');
 
 const router = express.Router();
 
@@ -61,6 +62,16 @@ router.patch('/accommodations/edit/:id', requireAuth, requireEditor, uploadMulti
 // Accept both DELETE (via method-override) and direct POST for compatibility
 router.delete('/accommodations/delete/:id', requireAuth, requireEditor, accommodationController.destroy);
 router.post('/accommodations/delete/:id', requireAuth, requireEditor, accommodationController.destroy);
+
+// Cuisines routes
+router.get('/cuisines', requireAuth, cuisineController.index);
+router.get('/cuisines/create', requireAuth, requireEditor, cuisineController.create);
+router.post('/cuisines', requireAuth, requireEditor, uploadMultiple, cuisineController.store);
+router.get('/cuisines/:id', requireAuth, cuisineController.show);
+router.get('/cuisines/edit/:id', requireAuth, requireEditor, cuisineController.edit);
+router.patch('/cuisines/edit/:id', requireAuth, requireEditor, uploadMultiple, cuisineController.editPatch);
+router.delete('/cuisines/delete/:id', requireAuth, requireEditor, cuisineController.destroy);
+router.post('/cuisines/delete/:id', requireAuth, requireEditor, cuisineController.destroy);
 
 // TODO: Add more routes for other modules
 // Foods, Entertainment, Tours, News, Reviews, Users

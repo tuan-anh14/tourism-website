@@ -32,6 +32,13 @@
 
         <main class="cuisine-detail main">
             <div class="container">
+                <% if (!food) { %>
+                    <section class="content-section">
+                        <h2 class="section-title"><i class="fa fa-warning"></i> Không tìm thấy món ăn</h2>
+                        <p>Rất tiếc, món ăn bạn tìm không tồn tại hoặc đã bị ẩn.</p>
+                        <a href="/cuisine" class="ctn">Quay lại danh sách Ẩm thực</a>
+                    </section>
+                <% } else { %>
                 <div class="main-grid">
                     <div>
                         <section class="content-section">
@@ -137,6 +144,7 @@
                 </section>
                 <% } %>
             </div>
+            <% } %>
         </main>
 
         <!-- up scroll -->

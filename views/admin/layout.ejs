@@ -226,7 +226,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link <%= (pageTitle && pageTitle.includes('Ẩm thực')) ? 'active' : '' %>" href="/admin/cuisines">
                         <i class="fas fa-utensils"></i>
                         Ẩm thực
                     </a>
@@ -274,7 +274,7 @@
     <!-- Main content -->
     <main class="main-content">
         <div class="content-wrapper">
-            <h1 class="page-title">Thống kê du lịch Hà Nội</h1>
+            <h1 class="page-title"><%= pageTitle || 'Thống kê du lịch Hà Nội' %></h1>
 
             <!-- Flash messages -->
             <% if (typeof flash !== 'undefined') { %>
