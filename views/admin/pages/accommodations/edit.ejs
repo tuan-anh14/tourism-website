@@ -19,7 +19,7 @@
 <% } %>
 
 <!-- Form -->
-<form method="POST" action="/admin/accommodations/edit/<%= accommodation._id %>" enctype="multipart/form-data" id="accommodationForm">
+<form method="POST" action="/admin/accommodations/edit/<%= accommodation._id %>?_method=PATCH" enctype="multipart/form-data" id="accommodationForm">
     <input type="hidden" name="_method" value="PATCH">
     <div class="row">
         <!-- === THÔNG TIN CƠ BẢN === -->

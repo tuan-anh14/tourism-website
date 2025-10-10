@@ -196,7 +196,7 @@
                                         <button type="button" 
                                                 class="btn btn-sm btn-outline-danger" 
                                                 title="Xóa"
-                                                onclick="confirmDelete('<%= accommodation._id %>', '<%= accommodation.name %>')">
+                                                onclick="accommodationAdmin.confirmDelete('<%= accommodation._id %>', '<%= accommodation.name %>')">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -287,9 +287,5 @@
 </div>
 
 <script>
-function confirmDelete(id, name) {
-    document.getElementById('deleteName').textContent = name;
-    document.getElementById('deleteForm').action = '/admin/accommodations/delete/' + id;
-    new bootstrap.Modal(document.getElementById('deleteModal')).show();
-}
+// Đã chuyển sang dùng accommodationAdmin.confirmDelete để tránh bị ghi đè bởi admin.js
 </script>
