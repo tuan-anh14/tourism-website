@@ -130,13 +130,13 @@
                         <div class="col-12">
                             <div class="mb-3">
                                 <label for="intro" class="form-label">Giới thiệu</label>
-                                <textarea class="form-control textarea-mce" id="intro" name="intro" rows="3"><%= attraction.intro || '' %></textarea>
+                                <textarea class="form-control" id="intro" name="intro" rows="3"><%= attraction.intro || '' %></textarea>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="mb-3">
                                 <label for="description" class="form-label">Mô tả chi tiết <span class="text-danger">*</span></label>
-                                <textarea class="form-control textarea-mce" id="description" name="description" rows="5" required><%= attraction.description || '' %></textarea>
+                                <textarea class="form-control" id="description" name="description" rows="5" required><%= attraction.description || '' %></textarea>
                             </div>
                         </div>
                     </div>
@@ -394,10 +394,6 @@ function removeVisitorNote(button) {
 
 // Form validation
 document.getElementById('attractionForm').addEventListener('submit', function(e) {
-    // Sync TinyMCE content back to textareas before validation/submit
-    if (window.tinymce && typeof tinymce.triggerSave === 'function') {
-        tinymce.triggerSave();
-    }
 
     const name = document.getElementById('name').value.trim();
     const category = document.getElementById('category').value;
