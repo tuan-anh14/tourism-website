@@ -20,6 +20,10 @@ const transportationSchema = new mongoose.Schema({
     required: true,
     enum: ['may-bay', 'tau-hoa', 'xe-khach', 'xe-ca-nhan', 'taxi', 'xe-cong-nghe', 'xe-bus', 'tau-dien', 'xe-may', 'xe-dap', 'xich-lo', 'xe-dien-du-lich', 'thue-o-to', 'di-bo', 'xe-bus-2-tang', 'xe-dien-mini']
   },
+  icon: {
+    type: String,
+    trim: true
+  },
   description: {
     type: String,
     required: true

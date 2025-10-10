@@ -1,0 +1,179 @@
+<!-- Header -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2"><%= pageTitle %></h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <a href="/admin/transportations" class="btn btn-outline-secondary"><i class="fas fa-bus me-2"></i>Quản lý phương tiện</a>
+  </div>
+  </div>
+
+<!-- Flash -->
+<% if (typeof flash !== 'undefined' && flash.error && flash.error.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= flash.error[0] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+<% } %>
+<% if (typeof flash !== 'undefined' && flash.success && flash.success.length > 0) { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= flash.success[0] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+<% } %>
+
+<form method="POST" action="/admin/transportation-page">
+  <div class="row">
+    <!-- Hero -->
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header"><h5 class="mb-0"><i class="fas fa-image me-2"></i>Hero</h5></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4 mb-3"><label class="form-label">Tiêu đề</label><input type="text" class="form-control" name="hero[title]" value="<%= pageData.hero?.title || '' %>"></div>
+            <div class="col-md-4 mb-3"><label class="form-label">Phụ đề</label><input type="text" class="form-control" name="hero[subtitle]" value="<%= pageData.hero?.subtitle || '' %>"></div>
+            <div class="col-md-4 mb-3"><label class="form-label">Ảnh banner</label><input type="text" class="form-control" name="hero[bannerImage]" value="<%= pageData.hero?.bannerImage || '' %>"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Titles -->
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header"><h5 class="mb-0"><i class="fas fa-heading me-2"></i>Tiêu đề từng mục</h5></div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label">Tiêu đề - Đến Hà Nội</label><input type="text" class="form-control" name="arrivalTitle" value="<%= pageData.arrivalTitle %>"></div>
+            <div class="col-md-6"><label class="form-label">Phụ đề - Đến Hà Nội</label><input type="text" class="form-control" name="arrivalSubtitle" value="<%= pageData.arrivalSubtitle %>"></div>
+            <div class="col-md-6"><label class="form-label">Tiêu đề - Trong Hà Nội</label><input type="text" class="form-control" name="localTitle" value="<%= pageData.localTitle %>"></div>
+            <div class="col-md-6"><label class="form-label">Phụ đề - Trong Hà Nội</label><input type="text" class="form-control" name="localSubtitle" value="<%= pageData.localSubtitle %>"></div>
+            <div class="col-md-6"><label class="form-label">Tiêu đề - Ứng dụng</label><input type="text" class="form-control" name="appsTitle" value="<%= pageData.appsTitle %>"></div>
+            <div class="col-md-6"><label class="form-label">Phụ đề - Ứng dụng</label><input type="text" class="form-control" name="appsSubtitle" value="<%= pageData.appsSubtitle %>"></div>
+            <div class="col-md-6"><label class="form-label">Tiêu đề - So sánh</label><input type="text" class="form-control" name="compareTitle" value="<%= pageData.compareTitle %>"></div>
+            <div class="col-md-6"><label class="form-label">Tiêu đề - Mẹo</label><input type="text" class="form-control" name="tipsTitle" value="<%= pageData.tipsTitle %>"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apps -->
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header"><h5 class="mb-0"><i class="fas fa-mobile-alt me-2"></i>Ứng dụng hữu ích</h5></div>
+        <div class="card-body">
+          <div id="apps">
+            <% (pageData.apps||[{icon:'fa-car',name:'',desc:''}]).forEach((a,idx)=>{ %>
+            <div class="row align-items-end g-2 mb-2">
+              <div class="col-md-2"><label class="form-label">Icon</label><input type="text" class="form-control" name="apps[icon]" value="<%= a.icon %>" placeholder="fa-car"></div>
+              <div class="col-md-4"><label class="form-label">Tên</label><input type="text" class="form-control" name="apps[name]" value="<%= a.name %>"></div>
+              <div class="col-md-6"><label class="form-label">Mô tả</label><input type="text" class="form-control" name="apps[desc]" value="<%= a.desc %>"></div>
+            </div>
+            <% }) %>
+          </div>
+          <div class="d-flex justify-content-end mt-2">
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addAppRow()"><i class="fas fa-plus me-1"></i>Thêm ứng dụng</button>
+          </div>
+          <small class="text-muted">Nhập nhiều dòng, hệ thống sẽ gom theo cột Icon/Tên/Mô tả</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparisons -->
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header"><h5 class="mb-0"><i class="fas fa-table me-2"></i>Bảng so sánh chi phí</h5></div>
+        <div class="card-body">
+          <div id="comparisons">
+            <% (pageData.comparisons||[{label:'',icon:'fa-circle',price:'',wait:'',fit:''}]).forEach((c)=>{ %>
+            <div class="row align-items-end g-2 mb-2">
+              <div class="col-md-3"><label class="form-label">Phương tiện</label><input type="text" class="form-control" name="comparisons[label]" value="<%= c.label %>"></div>
+              <div class="col-md-2"><label class="form-label">Icon</label><input type="text" class="form-control" name="comparisons[icon]" value="<%= c.icon %>" placeholder="fa-taxi"></div>
+              <div class="col-md-2"><label class="form-label">Giá</label><input type="text" class="form-control" name="comparisons[price]" value="<%= c.price %>"></div>
+              <div class="col-md-2"><label class="form-label">Chờ</label><input type="text" class="form-control" name="comparisons[wait]" value="<%= c.wait %>"></div>
+              <div class="col-md-3"><label class="form-label">Phù hợp</label><input type="text" class="form-control" name="comparisons[fit]" value="<%= c.fit %>"></div>
+            </div>
+            <% }) %>
+          </div>
+          <div class="d-flex justify-content-end mt-2">
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addComparisonRow()"><i class="fas fa-plus me-1"></i>Thêm dòng</button>
+          </div>
+          <small class="text-muted">Nhập nhiều dòng, hệ thống sẽ gom theo cột</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header"><h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Mẹo di chuyển</h5></div>
+        <div class="card-body">
+          <div id="tips">
+            <% (pageData.tips||[{icon:'fa-check',title:'',desc:''}]).forEach((t)=>{ %>
+            <div class="row align-items-end g-2 mb-2">
+              <div class="col-md-2"><label class="form-label">Icon</label><input type="text" class="form-control" name="tips[icon]" value="<%= t.icon %>" placeholder="fa-clock"></div>
+              <div class="col-md-4"><label class="form-label">Tiêu đề</label><input type="text" class="form-control" name="tips[title]" value="<%= t.title %>"></div>
+              <div class="col-md-6"><label class="form-label">Mô tả</label><input type="text" class="form-control" name="tips[desc]" value="<%= t.desc %>"></div>
+            </div>
+            <% }) %>
+          </div>
+          <div class="d-flex justify-content-end mt-2">
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addTipRow()"><i class="fas fa-plus me-1"></i>Thêm mẹo</button>
+          </div>
+          <small class="text-muted">Nhập nhiều dòng, hệ thống sẽ gom theo cột Icon/Tiêu đề/Mô tả</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="col-12">
+      <div class="d-flex justify-content-end gap-2">
+        <a href="/admin/dashboard" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Hủy</a>
+        <button class="btn btn-primary"><i class="fas fa-save me-2"></i>Lưu nội dung</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script>
+function makeRow(html){
+  const div = document.createElement('div');
+  div.innerHTML = html.trim();
+  return div.firstChild;
+}
+function addAppRow(){
+  const wrap = document.getElementById('apps');
+  const row = makeRow(`
+    <div class="row align-items-end g-2 mb-2">
+      <div class="col-md-2"><label class="form-label">Icon</label><input type="text" class="form-control" name="apps[icon]" placeholder="fa-car"></div>
+      <div class="col-md-4"><label class="form-label">Tên</label><input type="text" class="form-control" name="apps[name]"></div>
+      <div class="col-md-5"><label class="form-label">Mô tả</label><input type="text" class="form-control" name="apps[desc]"></div>
+      <div class="col-md-1 d-grid"><button type="button" class="btn btn-outline-danger" onclick="this.closest('.row').remove()"><i class="fas fa-trash"></i></button></div>
+    </div>`);
+  wrap.appendChild(row);
+}
+function addComparisonRow(){
+  const wrap = document.getElementById('comparisons');
+  const row = makeRow(`
+    <div class="row align-items-end g-2 mb-2">
+      <div class="col-md-3"><label class="form-label">Phương tiện</label><input type="text" class="form-control" name="comparisons[label]"></div>
+      <div class="col-md-2"><label class="form-label">Icon</label><input type="text" class="form-control" name="comparisons[icon]" placeholder="fa-taxi"></div>
+      <div class="col-md-2"><label class="form-label">Giá</label><input type="text" class="form-control" name="comparisons[price]"></div>
+      <div class="col-md-2"><label class="form-label">Chờ</label><input type="text" class="form-control" name="comparisons[wait]"></div>
+      <div class="col-md-2"><label class="form-label">Phù hợp</label><input type="text" class="form-control" name="comparisons[fit]"></div>
+      <div class="col-md-1 d-grid"><button type="button" class="btn btn-outline-danger" onclick="this.closest('.row').remove()"><i class="fas fa-trash"></i></button></div>
+    </div>`);
+  wrap.appendChild(row);
+}
+function addTipRow(){
+  const wrap = document.getElementById('tips');
+  const row = makeRow(`
+    <div class="row align-items-end g-2 mb-2">
+      <div class="col-md-2"><label class="form-label">Icon</label><input type="text" class="form-control" name="tips[icon]" placeholder="fa-clock"></div>
+      <div class="col-md-4"><label class="form-label">Tiêu đề</label><input type="text" class="form-control" name="tips[title]"></div>
+      <div class="col-md-5"><label class="form-label">Mô tả</label><input type="text" class="form-control" name="tips[desc]"></div>
+      <div class="col-md-1 d-grid"><button type="button" class="btn btn-outline-danger" onclick="this.closest('.row').remove()"><i class="fas fa-trash"></i></button></div>
+    </div>`);
+  wrap.appendChild(row);
+}
+</script>
+
+
