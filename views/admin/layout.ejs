@@ -19,6 +19,8 @@
     <link href="/admin/css/attractions.css" rel="stylesheet">
     <!-- Accommodations CSS -->
     <link href="/admin/css/accommodations.css" rel="stylesheet">
+    <!-- Entertainments CSS -->
+    <link href="/admin/css/entertainments.css" rel="stylesheet">
     
     <style>
         :root {
@@ -244,7 +246,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link <%= (pageTitle && pageTitle.includes('Giải trí')) ? 'active' : '' %>" href="/admin/entertainments">
                         <i class="fas fa-theater-masks"></i>
                         Giải trí
                     </a>

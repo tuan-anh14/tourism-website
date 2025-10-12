@@ -82,17 +82,46 @@
             </section>
 
             <!-- Notes -->
-            <section class="content-section">
-                <h2 class="dark">Lưu ý khi tham quan</h2>
-                <div class="highlight-box">
-                    <ul>
-                        <li class="font-color">Trang phục lịch sự khi tham dự biểu diễn</li>
-                        <li class="font-color">Nên đặt vé trước và đến sớm 15–20 phút</li>
-                        <li class="font-color">Tuân thủ quy định chụp ảnh/quay video</li>
-                        <li class="font-color">Giữ trật tự và tắt chuông điện thoại</li>
-                    </ul>
-                </div>
-            </section>
+            <% if (entertainment.notes && entertainment.notes.length > 0) { %>
+                <section class="content-section">
+                    <h2 class="dark">Lưu ý khi tham quan</h2>
+                    <div class="highlight-box">
+                        <ul>
+                            <% entertainment.notes.forEach(function(note){ %>
+                                <li class="font-color"><%= note %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </section>
+            <% } %>
+
+            <!-- Reviews -->
+            <% if (entertainment.reviews && entertainment.reviews.length > 0) { %>
+                <section class="content-section">
+                    <h2 class="dark">Đánh giá từ khách hàng</h2>
+                    <div class="reviews-container">
+                        <% entertainment.reviews.slice(0, 3).forEach(function(review){ %>
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <h4><%= review.author %></h4>
+                                    <div class="review-rating">
+                                        <% for (let i = 1; i <= 5; i++) { %>
+                                            <i class="fa fa-star <%= i <= review.rating ? 'text-warning' : 'text-muted' %>"></i>
+                                        <% } %>
+                                        <span class="review-date"><%= new Date(review.createdAt).toLocaleDateString('vi-VN') %></span>
+                                    </div>
+                                </div>
+                                <p class="font-color"><%= review.comment %></p>
+                            </div>
+                        <% }) %>
+                        <% if (entertainment.reviews.length > 3) { %>
+                            <p class="text-center">
+                                <a href="#" class="btn btn-outline-primary">Xem thêm <%= entertainment.reviews.length - 3 %> đánh giá</a>
+                            </p>
+                        <% } %>
+                    </div>
+                </section>
+            <% } %>
 
             <!-- Map -->
             <section class="content-section">

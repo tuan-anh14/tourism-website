@@ -1,97 +1,98 @@
 const mongoose = require('mongoose');
 
 const entertainmentSchema = new mongoose.Schema({
+  zone: {
+    type: String,
+    required: true,
+    trim: true
+  },
   name: {
     type: String,
     required: true,
     trim: true
   },
-  nameEn: {
-    type: String,
-    trim: true
-  },
-  category: {
-    type: String,
-    required: true,
-    enum: ['van-hoa-nghe-thuat', 'khu-vui-choi', 'spa-massage', 'the-thao', 'shopping', 'nightlife']
-  },
   type: {
     type: String,
     required: true,
-    enum: ['nha-hat', 'rap-chieu-phim', 'khu-vui-choi', 'spa', 'gym', 'cau-lac-bo', 'bar', 'club', 'trung-tam-thuong-mai', 'cho']
+    trim: true
   },
-  location: {
-    address: {
-      type: String,
-      required: true
-    },
-    district: {
-      type: String,
-      required: true
-    },
-    coordinates: {
-      lat: Number,
-      lng: Number
-    }
+  address: {
+    type: String,
+    required: true,
+    trim: true
   },
-  openingHours: {
-    weekdays: String,
-    weekends: String,
-    note: String
-  },
-  openingHoursEn: {
-    weekdays: String,
-    weekends: String,
-    note: String
-  },
-  ticketPrices: {
-    adult: Number,
-    child: Number,
-    student: Number,
-    note: String
-  },
-  description: {
+  openHours: {
     type: String,
     required: true
   },
-  descriptionEn: String,
-  history: String,
-  historyEn: String,
-  architecture: String,
-  architectureEn: String,
-  experiences: [String],
-  experiencesEn: [String],
-  services: [String],
-  servicesEn: [String],
-  facilities: [String],
-  facilitiesEn: [String],
-  contact: {
-    phone: String,
-    email: String,
-    website: String
+  ticket: {
+    type: String,
+    required: true
   },
-  images: [{
-    url: String,
-    alt: String,
-    isMain: {
-      type: Boolean,
-      default: false
-    }
+  activities: [{
+    type: String,
+    trim: true
   }],
-  rating: {
-    average: {
+  audience: [{
+    type: String,
+    trim: true
+  }],
+  history: {
+    type: String,
+    default: null
+  },
+  architecture: {
+    type: String,
+    default: null
+  },
+  experience: [{
+    type: String,
+    trim: true
+  }],
+  notes: [{
+    type: String,
+    trim: true
+  }],
+  images: [{
+    type: String,
+    trim: true
+  }],
+  map: {
+    lat: {
       type: Number,
-      default: 0,
-      min: 0,
+      required: true
+    },
+    lng: {
+      type: Number,
+      required: true
+    },
+    embedUrl: {
+      type: String,
+      required: true
+    }
+  },
+  reviews: [{
+    author: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    rating: {
+      type: Number,
+      required: true,
+      min: 1,
       max: 5
     },
-    count: {
-      type: Number,
-      default: 0
+    comment: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
     }
-  },
-  notes: [String],
-  notesEn: [String],
+  }],
   isActive: {
     type: Boolean,
     default: true
@@ -99,10 +100,25 @@ const entertainmentSchema = new mongoose.Schema({
   featured: {
     type: Boolean,
     default: false
-  },
-  tags: [String]
+  }
 }, {
   timestamps: true
 });
+
+// Add virtual for average rating
+entertainmentSchema.virtual('averageRating').get(function() {
+  if (this.reviews.length === 0) return 0;
+  const sum = this.reviews.reduce((acc, review) => acc + review.rating, 0);
+  return Math.round((sum / this.reviews.length) * 10) / 10;
+});
+
+// Add virtual for review count
+entertainmentSchema.virtual('reviewCount').get(function() {
+  return this.reviews.length;
+});
+
+// Ensure virtual fields are serialized
+entertainmentSchema.set('toJSON', { virtuals: true });
+entertainmentSchema.set('toObject', { virtuals: true });
 
 module.exports = mongoose.model('Entertainment', entertainmentSchema);

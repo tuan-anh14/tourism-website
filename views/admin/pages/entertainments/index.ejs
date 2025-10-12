@@ -1,0 +1,276 @@
+<!-- Page Actions -->
+<div class="d-flex justify-content-end mb-3">
+    <a href="/admin/entertainments/create" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>
+        Thêm mới
+    </a>
+</div>
+
+<!-- Flash Messages -->
+<% if (typeof flash !== 'undefined' && flash.success && flash.success.length > 0) { %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <%= flash.success[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<% if (typeof flash !== 'undefined' && flash.error && flash.error.length > 0) { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <%= flash.error[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<!-- Filters -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="fas fa-filter me-2"></i>
+            Bộ lọc và tìm kiếm
+        </h5>
+    </div>
+    <div class="card-body">
+        <form method="GET" class="row g-3">
+            <div class="col-md-3">
+                <label for="zone" class="form-label">Khu vực</label>
+                <select class="form-select" id="zone" name="zone">
+                    <option value="">Tất cả khu vực</option>
+                    <% filters.zones.forEach(zone => { %>
+                        <option value="<%= zone %>" <%= filters.currentZone === zone ? 'selected' : '' %>>
+                            <%= zone %>
+                        </option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="type" class="form-label">Loại hình</label>
+                <select class="form-select" id="type" name="type">
+                    <option value="">Tất cả loại hình</option>
+                    <% filters.types.forEach(type => { %>
+                        <option value="<%= type %>" <%= filters.currentType === type ? 'selected' : '' %>>
+                            <%= type %>
+                        </option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="isActive" class="form-label">Trạng thái</label>
+                <select class="form-select" id="isActive" name="isActive">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="true" <%= filters.currentActive === 'true' ? 'selected' : '' %>>Hoạt động</option>
+                    <option value="false" <%= filters.currentActive === 'false' ? 'selected' : '' %>>Tạm dừng</option>
+                </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-search me-1"></i>
+                    Tìm kiếm
+                </button>
+                <a href="/admin/entertainments" class="btn btn-outline-secondary">
+                    <i class="fas fa-times me-1"></i>
+                    Xóa bộ lọc
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="fas fa-list me-2"></i>
+            Danh sách giải trí (<%= entertainments ? entertainments.length : 0 %>)
+        </h5>
+    </div>
+    <div class="card-body">
+        <% if (entertainments && entertainments.length > 0) { %>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 80px;">Hình ảnh</th>
+                            <th>Tên</th>
+                            <th style="width: 120px;">Khu vực</th>
+                            <th style="width: 120px;">Loại hình</th>
+                            <th style="width: 200px;">Địa chỉ</th>
+                            <th style="width: 100px;">Đánh giá</th>
+                            <th style="width: 100px;">Trạng thái</th>
+                            <th style="width: 150px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% entertainments.forEach(entertainment => { %>
+                            <tr>
+                                <td>
+                                    <% if (entertainment.images && entertainment.images.length > 0) { %>
+                                        <img src="<%= entertainment.images[0] %>" 
+                                             alt="<%= entertainment.name %>" 
+                                             class="rounded" 
+                                             style="width: 60px; height: 60px; object-fit: cover;">
+                                    <% } else { %>
+                                        <div class="bg-light rounded d-flex align-items-center justify-content-center" 
+                                             style="width: 60px; height: 60px;">
+                                            <i class="fas fa-image text-muted"></i>
+                                        </div>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <div>
+                                        <strong><%= entertainment.name %></strong>
+                                        <% if (entertainment.featured) { %>
+                                            <span class="badge bg-warning ms-1">Nổi bật</span>
+                                        <% } %>
+                                    </div>
+                                    <div class="mt-1">
+                                        <small class="text-muted">Giá: <%= entertainment.ticket %></small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info"><%= entertainment.zone %></span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary"><%= entertainment.type %></span>
+                                </td>
+                                <td>
+                                    <div>
+                                        <%= entertainment.address.length > 50 ? entertainment.address.substring(0, 50) + '...' : entertainment.address %>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-1"><%= entertainment.averageRating || 0 %></span>
+                                        <div class="rating">
+                                            <% for (let i = 1; i <= 5; i++) { %>
+                                                <i class="fas fa-star <%= i <= (entertainment.averageRating || 0) ? 'text-warning' : 'text-muted' %>" style="font-size: 0.8em;"></i>
+                                            <% } %>
+                                        </div>
+                                        <small class="text-muted ms-1">(<%= entertainment.reviewCount || 0 %>)</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column gap-1">
+                                        <% if (entertainment.isActive) { %>
+                                            <span class="badge bg-success">Hoạt động</span>
+                                        <% } else { %>
+                                            <span class="badge bg-secondary">Tạm dừng</span>
+                                        <% } %>
+                                        <% if (entertainment.featured) { %>
+                                            <span class="badge bg-warning">Nổi bật</span>
+                                        <% } %>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="/admin/entertainments/<%= entertainment._id %>" 
+                                           class="btn btn-sm btn-outline-info" 
+                                           title="Xem chi tiết">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="/admin/entertainments/<%= entertainment._id %>/edit" 
+                                           class="btn btn-sm btn-outline-primary" 
+                                           title="Chỉnh sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" 
+                                                class="btn btn-sm btn-outline-danger" 
+                                                title="Xóa"
+                                                onclick="confirmDelete('<%= entertainment._id %>', '<%= entertainment.name %>')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <% if (pagination.totalPages > 1) { %>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <% if (pagination.hasPrev) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<%= pagination.prevPage %>&zone=<%= filters.currentZone %>&type=<%= filters.currentType %>&isActive=<%= filters.currentActive %>">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                        <% } %>
+                        
+                        <% for (let i = Math.max(1, pagination.currentPage - 2); i <= Math.min(pagination.totalPages, pagination.currentPage + 2); i++) { %>
+                            <li class="page-item <%= i === pagination.currentPage ? 'active' : '' %>">
+                                <a class="page-link" href="?page=<%= i %>&zone=<%= filters.currentZone %>&type=<%= filters.currentType %>&isActive=<%= filters.currentActive %>">
+                                    <%= i %>
+                                </a>
+                            </li>
+                        <% } %>
+                        
+                        <% if (pagination.hasNext) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<%= pagination.nextPage %>&zone=<%= filters.currentZone %>&type=<%= filters.currentType %>&isActive=<%= filters.currentActive %>">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </nav>
+            <% } %>
+        <% } else { %>
+            <div class="text-center py-5">
+                <i class="fas fa-theater-masks fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">Không có địa điểm giải trí nào</h5>
+                <p class="text-muted">
+                    <% if (filters.currentZone || filters.currentType || filters.currentActive) { %>
+                        Không tìm thấy địa điểm giải trí phù hợp với bộ lọc của bạn
+                    <% } else { %>
+                        Hãy thêm địa điểm giải trí đầu tiên của bạn
+                    <% } %>
+                </p>
+                <a href="/admin/entertainments/create" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>
+                    Thêm địa điểm giải trí
+                </a>
+                <% if (filters.currentZone || filters.currentType || filters.currentActive) { %>
+                    <a href="/admin/entertainments" class="btn btn-outline-secondary ms-2">
+                        <i class="fas fa-times me-2"></i>
+                        Xóa bộ lọc
+                    </a>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác nhận xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa địa điểm giải trí <strong id="deleteName"></strong>?</p>
+                <p class="text-danger"><small>Hành động này không thể hoàn tác!</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <form id="deleteForm" method="POST" style="display: inline;">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmDelete(id, name) {
+    document.getElementById('deleteName').textContent = name;
+    document.getElementById('deleteForm').action = '/admin/entertainments/' + id;
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+</script>

@@ -4,5 +4,5 @@ const route = express.Router()
 const entertainmentController = require("../../controller/client/entertainment.controller") 
 
 route.get('/', entertainmentController.entertainment)
-route.get('/:slug', entertainmentController.detail)
+route.get('/:id', entertainmentController.detail)
 module.exports = route; 

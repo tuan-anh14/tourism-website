@@ -58,15 +58,28 @@
             <div class="standard-row">
                 <% entertainments.slice(0, 3).forEach(function(entertainment){ %>
                     <article class="standard-card col">
-                        <img src="<%= entertainment.image %>" alt="<%= entertainment.title %>" />
+                        <img src="<%= entertainment.images && entertainment.images.length > 0 ? entertainment.images[0] : '/client/img/header-bg.jfif' %>" alt="<%= entertainment.name %>" />
                         <div class="card-content">
-                            <h4 class="dark"><%= entertainment.title %></h4>
-                            <p class="font-color"><%= entertainment.description %></p>
+                            <h4 class="dark"><%= entertainment.name %></h4>
+                            <p class="font-color">
+                                <%= entertainment.activities && entertainment.activities.length > 0 
+                                    ? entertainment.activities.slice(0, 2).join(', ') + (entertainment.activities.length > 2 ? '...' : '')
+                                    : entertainment.type %>
+                            </p>
                             <div class="entertainment-details">
-                                <p><strong>Loại hình:</strong> <%= entertainment.category %></p>
-                                <p><strong>Giá vé:</strong> <%= entertainment.price %></p>
+                                <p><strong>Khu vực:</strong> <%= entertainment.zone %></p>
+                                <p><strong>Loại hình:</strong> <%= entertainment.type %></p>
+                                <p><strong>Giá vé:</strong> <%= entertainment.ticket %></p>
+                                <% if (entertainment.averageRating > 0) { %>
+                                    <p><strong>Đánh giá:</strong> 
+                                        <% for (let i = 1; i <= 5; i++) { %>
+                                            <i class="fa fa-star <%= i <= entertainment.averageRating ? 'text-warning' : 'text-muted' %>"></i>
+                                        <% } %>
+                                        (<%= entertainment.reviewCount %>)
+                                    </p>
+                                <% } %>
                             </div>
-                            <a href="/entertainment/<%= entertainment.slug %>" class="ctn">Xem chi tiết</a>
+                            <a href="/entertainment/<%= entertainment._id %>" class="ctn">Xem chi tiết</a>
                         </div>
                     </article>
                 <% }) %>
@@ -76,15 +89,28 @@
             <div class="standard-row" style="margin-top: 60px;">
                 <% entertainments.slice(3, 6).forEach(function(entertainment){ %>
                     <article class="standard-card col">
-                        <img src="<%= entertainment.image %>" alt="<%= entertainment.title %>" />
+                        <img src="<%= entertainment.images && entertainment.images.length > 0 ? entertainment.images[0] : '/client/img/header-bg.jfif' %>" alt="<%= entertainment.name %>" />
                         <div class="card-content">
-                            <h4 class="dark"><%= entertainment.title %></h4>
-                            <p class="font-color"><%= entertainment.description %></p>
+                            <h4 class="dark"><%= entertainment.name %></h4>
+                            <p class="font-color">
+                                <%= entertainment.activities && entertainment.activities.length > 0 
+                                    ? entertainment.activities.slice(0, 2).join(', ') + (entertainment.activities.length > 2 ? '...' : '')
+                                    : entertainment.type %>
+                            </p>
                             <div class="entertainment-details">
-                                <p><strong>Loại hình:</strong> <%= entertainment.category %></p>
-                                <p><strong>Giá vé:</strong> <%= entertainment.price %></p>
+                                <p><strong>Khu vực:</strong> <%= entertainment.zone %></p>
+                                <p><strong>Loại hình:</strong> <%= entertainment.type %></p>
+                                <p><strong>Giá vé:</strong> <%= entertainment.ticket %></p>
+                                <% if (entertainment.averageRating > 0) { %>
+                                    <p><strong>Đánh giá:</strong> 
+                                        <% for (let i = 1; i <= 5; i++) { %>
+                                            <i class="fa fa-star <%= i <= entertainment.averageRating ? 'text-warning' : 'text-muted' %>"></i>
+                                        <% } %>
+                                        (<%= entertainment.reviewCount %>)
+                                    </p>
+                                <% } %>
                             </div>
-                            <a href="/entertainment/<%= entertainment.slug %>" class="ctn">Xem chi tiết</a>
+                            <a href="/entertainment/<%= entertainment._id %>" class="ctn">Xem chi tiết</a>
                         </div>
                     </article>
                 <% }) %>

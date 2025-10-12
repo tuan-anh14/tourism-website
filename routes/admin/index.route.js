@@ -8,6 +8,7 @@ const accommodationController = require('../../controller/admin/accommodation.co
 const cuisineController = require('../../controller/admin/cuisine.controller');
 const transportationController = require('../../controller/admin/transportation.controller');
 const transportationPageController = require('../../controller/admin/transportationPage.controller');
+const entertainmentController = require('../../controller/admin/entertainment.controller');
 
 const router = express.Router();
 
@@ -89,7 +90,18 @@ router.post('/transportations/delete/:id', requireAuth, requireEditor, transport
 router.get('/transportation-page', requireAuth, requireEditor, transportationPageController.edit);
 router.post('/transportation-page', requireAuth, requireEditor, transportationPageController.update);
 
+// Entertainment routes
+router.get('/entertainments', requireAuth, entertainmentController.index);
+router.get('/entertainments/create', requireAuth, requireEditor, entertainmentController.create);
+router.post('/entertainments', requireAuth, requireEditor, entertainmentController.store);
+router.get('/entertainments/:id', requireAuth, entertainmentController.show);
+router.get('/entertainments/edit/:id', requireAuth, requireEditor, entertainmentController.edit);
+router.put('/entertainments/:id', requireAuth, requireEditor, entertainmentController.update);
+router.delete('/entertainments/:id', requireAuth, requireEditor, entertainmentController.destroy);
+router.post('/entertainments/:id/toggle-active', requireAuth, requireEditor, entertainmentController.toggleActive);
+router.post('/entertainments/:id/toggle-featured', requireAuth, requireEditor, entertainmentController.toggleFeatured);
+
 // TODO: Add more routes for other modules
-// Foods, Entertainment, Tours, News, Reviews, Users
+// Foods, Tours, News, Reviews, Users
 
 module.exports = router;

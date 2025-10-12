@@ -1,0 +1,305 @@
+<!-- Page Actions -->
+<div class="d-flex justify-content-end mb-3">
+    <a href="/admin/entertainments" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>
+        Quay lại
+    </a>
+</div>
+
+<!-- Flash Messages -->
+<% if (typeof flash !== 'undefined' && flash.error && flash.error.length > 0) { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <%= flash.error[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<!-- Form -->
+<form method="POST" action="/admin/entertainments" id="entertainmentForm">
+    <div class="row">
+        <!-- === THÔNG TIN CƠ BẢN === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Thông tin cơ bản
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Tên địa điểm <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       value="<%= entertainment ? entertainment.name : '' %>" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="zone" class="form-label">Khu vực <span class="text-danger">*</span></label>
+                                <select class="form-select" id="zone" name="zone" required>
+                                    <option value="">Chọn khu vực</option>
+                                    <% zones.forEach(zone => { %>
+                                        <option value="<%= zone %>" <%= (entertainment && entertainment.zone === zone) ? 'selected' : '' %>>
+                                            <%= zone %>
+                                        </option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="type" class="form-label">Loại hình <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="type" name="type" 
+                                       value="<%= entertainment ? entertainment.type : '' %>" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="address" name="address" 
+                                       value="<%= entertainment ? entertainment.address : '' %>" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="openHours" class="form-label">Giờ mở cửa <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="openHours" name="openHours" 
+                                       value="<%= entertainment ? entertainment.openHours : '' %>" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="ticket" class="form-label">Giá vé <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="ticket" name="ticket" 
+                                       value="<%= entertainment ? entertainment.ticket : '' %>" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === HOẠT ĐỘNG VÀ ĐỐI TƯỢNG === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        Hoạt động và đối tượng
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="activities" class="form-label">Hoạt động chính</label>
+                                <textarea class="form-control" id="activities" name="activities" rows="4" 
+                                          placeholder="Mỗi hoạt động trên một dòng"><%= entertainment ? (entertainment.activities ? entertainment.activities.join('\n') : '') : '' %></textarea>
+                                <div class="form-text">Mỗi hoạt động trên một dòng riêng</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="audience" class="form-label">Đối tượng phù hợp</label>
+                                <textarea class="form-control" id="audience" name="audience" rows="4" 
+                                          placeholder="Mỗi đối tượng trên một dòng"><%= entertainment ? (entertainment.audience ? entertainment.audience.join('\n') : '') : '' %></textarea>
+                                <div class="form-text">Mỗi đối tượng trên một dòng riêng</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === LỊCH SỬ VÀ KIẾN TRÚC === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-history me-2"></i>
+                        Lịch sử và kiến trúc
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="history" class="form-label">Lịch sử hình thành</label>
+                                <textarea class="form-control" id="history" name="history" rows="4" 
+                                          placeholder="Tóm tắt lịch sử hình thành (nếu có)"><%= entertainment ? entertainment.history : '' %></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="architecture" class="form-label">Kiến trúc & Thiết kế</label>
+                                <textarea class="form-control" id="architecture" name="architecture" rows="4" 
+                                          placeholder="Mô tả kiến trúc, cảnh quan (nếu có)"><%= entertainment ? entertainment.architecture : '' %></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === TRẢI NGHIỆM VÀ LƯU Ý === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-star me-2"></i>
+                        Trải nghiệm và lưu ý
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="experience" class="form-label">Trải nghiệm nổi bật</label>
+                                <textarea class="form-control" id="experience" name="experience" rows="4" 
+                                          placeholder="Mỗi trải nghiệm trên một dòng"><%= entertainment ? (entertainment.experience ? entertainment.experience.join('\n') : '') : '' %></textarea>
+                                <div class="form-text">Mỗi trải nghiệm trên một dòng riêng</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="notes" class="form-label">Lưu ý cần biết</label>
+                                <textarea class="form-control" id="notes" name="notes" rows="4" 
+                                          placeholder="Mỗi lưu ý trên một dòng"><%= entertainment ? (entertainment.notes ? entertainment.notes.join('\n') : '') : '' %></textarea>
+                                <div class="form-text">Mỗi lưu ý trên một dòng riêng</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === HÌNH ẢNH === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-images me-2"></i>
+                        Hình ảnh
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="images" class="form-label">URL hình ảnh</label>
+                        <textarea class="form-control" id="images" name="images" rows="4" 
+                                  placeholder="Mỗi URL hình ảnh trên một dòng"><%= entertainment ? (entertainment.images ? entertainment.images.join('\n') : '') : '' %></textarea>
+                        <div class="form-text">Mỗi URL hình ảnh trên một dòng riêng</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === BẢN ĐỒ === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        Thông tin bản đồ
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="lat" class="form-label">Vĩ độ <span class="text-danger">*</span></label>
+                                <input type="number" step="any" class="form-control" id="lat" name="lat" 
+                                       value="<%= entertainment ? entertainment.map.lat : '' %>" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="lng" class="form-label">Kinh độ <span class="text-danger">*</span></label>
+                                <input type="number" step="any" class="form-control" id="lng" name="lng" 
+                                       value="<%= entertainment ? entertainment.map.lng : '' %>" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="embedUrl" class="form-label">URL nhúng Google Maps <span class="text-danger">*</span></label>
+                                <input type="url" class="form-control" id="embedUrl" name="embedUrl" 
+                                       value="<%= entertainment ? entertainment.map.embedUrl : '' %>" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === TRẠNG THÁI === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cog me-2"></i>
+                        Trạng thái
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="isActive" name="isActive" 
+                                       <%= (entertainment && entertainment.isActive) ? 'checked' : 'checked' %>>
+                                <label class="form-check-label" for="isActive">
+                                    Kích hoạt
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="featured" name="featured" 
+                                       <%= (entertainment && entertainment.featured) ? 'checked' : '' %>>
+                                <label class="form-check-label" for="featured">
+                                    Đánh dấu nổi bật
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="d-flex justify-content-end gap-2">
+        <a href="/admin/entertainments" class="btn btn-secondary">
+            <i class="fas fa-times me-2"></i>
+            Hủy
+        </a>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save me-2"></i>
+            Lưu
+        </button>
+    </div>
+</form>
+
+<script>
+document.getElementById('entertainmentForm').addEventListener('submit', function(e) {
+    // Basic validation
+    const requiredFields = ['name', 'zone', 'type', 'address', 'openHours', 'ticket', 'lat', 'lng', 'embedUrl'];
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value.trim()) {
+            input.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            input.classList.remove('is-invalid');
+        }
+    });
+    
+    if (!isValid) {
+        e.preventDefault();
+        alert('Vui lòng điền đầy đủ các trường bắt buộc');
+    }
+});
+</script>
