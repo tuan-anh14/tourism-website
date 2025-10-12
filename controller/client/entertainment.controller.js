@@ -1,15 +1,33 @@
 const Entertainment = require('../../model/Entertainment');
+const Event = require('../../model/Event');
 
 module.exports.entertainment = async (req, res) => {
     try {
-        // Get featured entertainments
-        const featuredEntertainments = await Entertainment.find({ 
-            isActive: true, 
-            featured: true 
-        }).limit(6).lean();
+        // Get all active entertainments (not just featured)
+        const allEntertainments = await Entertainment.find({ 
+            isActive: true 
+        }).sort({ featured: -1, createdAt: -1 }).lean();
 
-        // Get all zones for filtering
-        const zones = await Entertainment.distinct('zone', { isActive: true });
+        // Get featured entertainments for hero section
+        const featuredEntertainments = allEntertainments.filter(item => item.featured).slice(0, 6);
+        
+        // If not enough featured, fill with regular ones
+        if (featuredEntertainments.length < 6) {
+            const regularEntertainments = allEntertainments.filter(item => !item.featured).slice(0, 6 - featuredEntertainments.length);
+            featuredEntertainments.push(...regularEntertainments);
+        }
+
+        // Define fixed zones for filtering
+        const zones = [
+            'Khu văn hóa - nghệ thuật',
+            'Công viên ngoài trời', 
+            'Trung tâm thương mại - vui chơi trong nhà',
+            'Khu vui chơi tổng hợp',
+            'Khu thể thao - giải trí',
+            'Khu ẩm thực - giải trí',
+            'Khu du lịch sinh thái',
+            'Khu vui chơi trẻ em'
+        ];
 
         const hero = {
             title: "Giải trí & Sự kiện",
@@ -17,94 +35,21 @@ module.exports.entertainment = async (req, res) => {
             backgroundImage: "/client/img/header-bg.jfif"
         };
 
-        // Sample events data (can be moved to database later)
-        const events = [
-            {
-                title: "Lễ hội âm nhạc quốc tế",
-                description: "Sự kiện âm nhạc quy tụ các nghệ sĩ nổi tiếng từ khắp thế giới",
-                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400",
-                details: {
-                    time: "20:00 - 23:00",
-                    location: "Sân vận động Mỹ Đình",
-                    language: "Đa ngôn ngữ",
-                    price: "500.000đ - 2.000.000đ"
-                },
-                action: {
-                    label: "Đặt vé",
-                    href: "#"
-                }
-            },
-            {
-                title: "Triển lãm nghệ thuật đương đại",
-                description: "Khám phá những tác phẩm nghệ thuật hiện đại từ các nghệ sĩ trẻ",
-                image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400",
-                details: {
-                    time: "09:00 - 18:00",
-                    location: "Bảo tàng Mỹ thuật Việt Nam",
-                    price: "Miễn phí"
-                },
-                action: {
-                    label: "Tham quan",
-                    href: "#"
-                }
-            },
-            {
-                title: "Workshop làm gốm truyền thống",
-                description: "Trải nghiệm nghề gốm truyền thống với các nghệ nhân làng gốm Bát Tràng",
-                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400",
-                details: {
-                    time: "14:00 - 17:00",
-                    location: "Làng gốm Bát Tràng",
-                    price: "200.000đ"
-                },
-                action: {
-                    label: "Đăng ký",
-                    href: "#"
-                }
-            },
-            {
-                title: "Biểu diễn múa rối nước",
-                description: "Xem múa rối nước - nghệ thuật truyền thống độc đáo của Việt Nam",
-                image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400",
-                details: {
-                    time: "15:00 - 16:00",
-                    location: "Nhà hát múa rối nước Thăng Long",
-                    price: "100.000đ - 200.000đ"
-                },
-                action: {
-                    label: "Đặt vé",
-                    href: "#"
-                }
-            },
-            {
-                title: "Hội chợ ẩm thực đường phố",
-                description: "Thưởng thức các món ăn đặc sản Hà Nội và các vùng miền",
-                image: "https://images.unsplash.com/photo-1555939594-58d7cb5614a6?w=400",
-                details: {
-                    time: "18:00 - 22:00",
-                    location: "Phố đi bộ Hồ Gươm",
-                    price: "50.000đ - 150.000đ/món"
-                },
-                action: {
-                    label: "Tham gia",
-                    href: "#"
-                }
-            },
-            {
-                title: "Buổi hòa nhạc cổ điển",
-                description: "Thưởng thức những bản nhạc cổ điển bất hủ tại không gian sang trọng",
-                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400",
-                details: {
-                    time: "19:30 - 21:30",
-                    location: "Nhà hát Lớn Hà Nội",
-                    price: "300.000đ - 800.000đ"
-                },
-                action: {
-                    label: "Đặt vé",
-                    href: "#"
-                }
-            }
-        ];
+        // Get featured events from database
+        const events = await Event.find({ 
+            isActive: true, 
+            featured: true,
+            startDate: { $gte: new Date() }
+        }).sort({ startDate: 1 }).limit(6).lean();
+
+        // If not enough events, get any upcoming events
+        if (events.length < 6) {
+            const moreEvents = await Event.find({ 
+                isActive: true,
+                startDate: { $gte: new Date() }
+            }).sort({ startDate: 1 }).limit(6 - events.length).lean();
+            events.push(...moreEvents);
+        }
 
         const categories = [
             {
@@ -133,6 +78,7 @@ module.exports.entertainment = async (req, res) => {
             pageTitle: "Giải trí",
             hero: hero,
             entertainments: featuredEntertainments,
+            allEntertainments: allEntertainments, // For filtering
             events: events,
             categories: categories,
             zones: zones

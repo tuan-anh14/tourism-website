@@ -55,65 +55,99 @@
                 <h1 class="dark">Địa điểm giải trí</h1>
                 <div class="line"></div>
             </div>
-            <div class="standard-row">
-                <% entertainments.slice(0, 3).forEach(function(entertainment){ %>
-                    <article class="standard-card col">
-                        <img src="<%= entertainment.images && entertainment.images.length > 0 ? entertainment.images[0] : '/client/img/header-bg.jfif' %>" alt="<%= entertainment.name %>" />
-                        <div class="card-content">
-                            <h4 class="dark"><%= entertainment.name %></h4>
-                            <p class="font-color">
-                                <%= entertainment.activities && entertainment.activities.length > 0 
-                                    ? entertainment.activities.slice(0, 2).join(', ') + (entertainment.activities.length > 2 ? '...' : '')
-                                    : entertainment.type %>
-                            </p>
-                            <div class="entertainment-details">
-                                <p><strong>Khu vực:</strong> <%= entertainment.zone %></p>
-                                <p><strong>Loại hình:</strong> <%= entertainment.type %></p>
-                                <p><strong>Giá vé:</strong> <%= entertainment.ticket %></p>
-                                <% if (entertainment.averageRating > 0) { %>
-                                    <p><strong>Đánh giá:</strong> 
-                                        <% for (let i = 1; i <= 5; i++) { %>
-                                            <i class="fa fa-star <%= i <= entertainment.averageRating ? 'text-warning' : 'text-muted' %>"></i>
-                                        <% } %>
-                                        (<%= entertainment.reviewCount %>)
-                                    </p>
-                                <% } %>
+            
+            <!-- Filter Section -->
+            <div class="filter-section mb-4">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="filter-buttons text-center">
+                                <button class="filter-btn active" data-zone="all">Tất cả</button>
+                                <% zones.forEach(function(zone){ %>
+                                    <button class="filter-btn" data-zone="<%= zone %>"><%= zone %></button>
+                                <% }) %>
                             </div>
-                            <a href="/entertainment/<%= entertainment._id %>" class="ctn">Xem chi tiết</a>
                         </div>
-                    </article>
-                <% }) %>
+                    </div>
+                </div>
             </div>
 
-            <!-- Additional Entertainment Row -->
-            <div class="standard-row" style="margin-top: 60px;">
-                <% entertainments.slice(3, 6).forEach(function(entertainment){ %>
-                    <article class="standard-card col">
-                        <img src="<%= entertainment.images && entertainment.images.length > 0 ? entertainment.images[0] : '/client/img/header-bg.jfif' %>" alt="<%= entertainment.name %>" />
-                        <div class="card-content">
-                            <h4 class="dark"><%= entertainment.name %></h4>
-                            <p class="font-color">
-                                <%= entertainment.activities && entertainment.activities.length > 0 
-                                    ? entertainment.activities.slice(0, 2).join(', ') + (entertainment.activities.length > 2 ? '...' : '')
-                                    : entertainment.type %>
-                            </p>
-                            <div class="entertainment-details">
-                                <p><strong>Khu vực:</strong> <%= entertainment.zone %></p>
-                                <p><strong>Loại hình:</strong> <%= entertainment.type %></p>
-                                <p><strong>Giá vé:</strong> <%= entertainment.ticket %></p>
-                                <% if (entertainment.averageRating > 0) { %>
-                                    <p><strong>Đánh giá:</strong> 
-                                        <% for (let i = 1; i <= 5; i++) { %>
-                                            <i class="fa fa-star <%= i <= entertainment.averageRating ? 'text-warning' : 'text-muted' %>"></i>
-                                        <% } %>
-                                        (<%= entertainment.reviewCount %>)
-                                    </p>
+            <!-- Entertainment Grid -->
+            <div class="entertainment-grid">
+                <div class="standard-row" id="entertainmentRow1">
+                    <% entertainments.slice(0, 3).forEach(function(entertainment){ %>
+                        <article class="standard-card col entertainment-item" data-zone="<%= entertainment.zone %>">
+                            <div class="card-image-container">
+                                <img src="<%= entertainment.images && entertainment.images.length > 0 ? entertainment.images[0] : '/client/img/header-bg.jfif' %>" alt="<%= entertainment.name %>" />
+                                <% if (entertainment.featured) { %>
+                                    <div class="featured-badge">
+                                        <i class="fa fa-star"></i> Nổi bật
+                                    </div>
                                 <% } %>
                             </div>
-                            <a href="/entertainment/<%= entertainment._id %>" class="ctn">Xem chi tiết</a>
-                        </div>
-                    </article>
-                <% }) %>
+                            <div class="card-content">
+                                <h4 class="dark"><%= entertainment.name %></h4>
+                                <p class="font-color">
+                                    <%= entertainment.activities && entertainment.activities.length > 0 
+                                        ? entertainment.activities.slice(0, 2).join(', ') + (entertainment.activities.length > 2 ? '...' : '')
+                                        : entertainment.type %>
+                                </p>
+                                <div class="entertainment-details">
+                                    <p><strong>Khu vực:</strong> <%= entertainment.zone %></p>
+                                    <p><strong>Loại hình:</strong> <%= entertainment.type %></p>
+                                    <p><strong>Giá vé:</strong> <%= entertainment.ticket %></p>
+                                    <% if (entertainment.averageRating > 0) { %>
+                                        <p><strong>Đánh giá:</strong> 
+                                            <% for (let i = 1; i <= 5; i++) { %>
+                                                <i class="fa fa-star <%= i <= entertainment.averageRating ? 'text-warning' : 'text-muted' %>"></i>
+                                            <% } %>
+                                            (<%= entertainment.reviewCount %>)
+                                        </p>
+                                    <% } %>
+                                </div>
+                                <a href="/entertainment/<%= entertainment._id %>" class="ctn">Xem chi tiết</a>
+                            </div>
+                        </article>
+                    <% }) %>
+                </div>
+
+                <!-- Additional Entertainment Row -->
+                <div class="standard-row" style="margin-top: 60px;" id="entertainmentRow2">
+                    <% entertainments.slice(3, 6).forEach(function(entertainment){ %>
+                        <article class="standard-card col entertainment-item" data-zone="<%= entertainment.zone %>">
+                            <div class="card-image-container">
+                                <img src="<%= entertainment.images && entertainment.images.length > 0 ? entertainment.images[0] : '/client/img/header-bg.jfif' %>" alt="<%= entertainment.name %>" />
+                                <% if (entertainment.featured) { %>
+                                    <div class="featured-badge">
+                                        <i class="fa fa-star"></i> Nổi bật
+                                    </div>
+                                <% } %>
+                            </div>
+                            <div class="card-content">
+                                <h4 class="dark"><%= entertainment.name %></h4>
+                                <p class="font-color">
+                                    <%= entertainment.activities && entertainment.activities.length > 0 
+                                        ? entertainment.activities.slice(0, 2).join(', ') + (entertainment.activities.length > 2 ? '...' : '')
+                                        : entertainment.type %>
+                                </p>
+                                <div class="entertainment-details">
+                                    <p><strong>Khu vực:</strong> <%= entertainment.zone %></p>
+                                    <p><strong>Loại hình:</strong> <%= entertainment.type %></p>
+                                    <p><strong>Giá vé:</strong> <%= entertainment.ticket %></p>
+                                    <% if (entertainment.averageRating > 0) { %>
+                                        <p><strong>Đánh giá:</strong> 
+                                            <% for (let i = 1; i <= 5; i++) { %>
+                                                <i class="fa fa-star <%= i <= entertainment.averageRating ? 'text-warning' : 'text-muted' %>"></i>
+                                            <% } %>
+                                            (<%= entertainment.reviewCount %>)
+                                        </p>
+                                    <% } %>
+                                </div>
+                                <a href="/entertainment/<%= entertainment._id %>" class="ctn">Xem chi tiết</a>
+                            </div>
+                        </article>
+                    <% }) %>
+                </div>
             </div>
         </section>
 
@@ -137,6 +171,9 @@
                                     <p><strong>Ngôn ngữ:</strong> <%= event.details.language %></p>
                                 <% } %>
                                 <p><strong><%= event.details.price.includes('Miễn') ? 'Phí:' : 'Giá vé:' %></strong> <%= event.details.price %></p>
+                                <% if (event.startDate) { %>
+                                    <p><strong>Ngày:</strong> <%= new Date(event.startDate).toLocaleDateString('vi-VN') %></p>
+                                <% } %>
                             </div>
                             <a href="<%= event.action.href %>" class="ctn"><%= event.action.label %></a>
                         </div>
@@ -159,6 +196,9 @@
                                     <p><strong>Ngôn ngữ:</strong> <%= event.details.language %></p>
                                 <% } %>
                                 <p><strong><%= event.details.price.includes('Miễn') ? 'Phí:' : 'Giá vé:' %></strong> <%= event.details.price %></p>
+                                <% if (event.startDate) { %>
+                                    <p><strong>Ngày:</strong> <%= new Date(event.startDate).toLocaleDateString('vi-VN') %></p>
+                                <% } %>
                             </div>
                             <a href="<%= event.action.href %>" class="ctn"><%= event.action.label %></a>
                         </div>
@@ -194,5 +234,127 @@
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="/client/js/includes.js"></script>
         <script src="/client/js/script.js"></script>
+        
+        <script>
+        // Entertainment filtering functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const entertainmentItems = document.querySelectorAll('.entertainment-item');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const selectedZone = this.getAttribute('data-zone');
+                    
+                    // Filter entertainment items
+                    entertainmentItems.forEach(item => {
+                        const itemZone = item.getAttribute('data-zone');
+                        
+                        if (selectedZone === 'all' || itemZone === selectedZone) {
+                            item.style.display = 'block';
+                            item.style.animation = 'fadeIn 0.5s ease-in';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+        
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            .filter-section {
+                margin: 40px 0;
+            }
+            
+            .filter-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+            }
+            
+            .filter-btn {
+                padding: 8px 16px;
+                border: 2px solid #ddd;
+                background: white;
+                color: #333;
+                border-radius: 25px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-size: 14px;
+                white-space: nowrap;
+            }
+            
+            .filter-btn:hover {
+                border-color: #007bff;
+                color: #007bff;
+            }
+            
+            .filter-btn.active {
+                background: #007bff;
+                border-color: #007bff;
+                color: white;
+            }
+            
+            .card-image-container {
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .featured-badge {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: linear-gradient(45deg, #ff6b6b, #ffa500);
+                color: white;
+                padding: 4px 8px;
+                border-radius: 15px;
+                font-size: 12px;
+                font-weight: bold;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
+            
+            .entertainment-details {
+                font-size: 14px;
+                line-height: 1.4;
+            }
+            
+            .entertainment-details p {
+                margin-bottom: 5px;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            @media (max-width: 768px) {
+                .filter-buttons {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                
+                .filter-btn {
+                    width: 200px;
+                    margin: 5px 0;
+                }
+                
+                .standard-row {
+                    flex-direction: column;
+                }
+                
+                .standard-card {
+                    margin-bottom: 30px;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        </script>
     </body>
 </html>

@@ -16,7 +16,7 @@
 <% } %>
 
 <!-- Form -->
-<form method="POST" action="/admin/entertainments/<%= entertainment._id %>" id="entertainmentForm">
+<form method="POST" action="/admin/entertainments/<%= entertainment._id %>" id="entertainmentForm" enctype="multipart/form-data">
     <input type="hidden" name="_method" value="PUT">
     <div class="row">
         <!-- === THÔNG TIN CƠ BẢN === -->
@@ -42,19 +42,35 @@
                                 <label for="zone" class="form-label">Khu vực <span class="text-danger">*</span></label>
                                 <select class="form-select" id="zone" name="zone" required>
                                     <option value="">Chọn khu vực</option>
-                                    <% zones.forEach(zone => { %>
-                                        <option value="<%= zone %>" <%= entertainment.zone === zone ? 'selected' : '' %>>
-                                            <%= zone %>
-                                        </option>
-                                    <% }); %>
+                                    <option value="Khu văn hóa - nghệ thuật" <%= entertainment.zone === 'Khu văn hóa - nghệ thuật' ? 'selected' : '' %>>Khu văn hóa - nghệ thuật</option>
+                                    <option value="Công viên ngoài trời" <%= entertainment.zone === 'Công viên ngoài trời' ? 'selected' : '' %>>Công viên ngoài trời</option>
+                                    <option value="Trung tâm thương mại - vui chơi trong nhà" <%= entertainment.zone === 'Trung tâm thương mại - vui chơi trong nhà' ? 'selected' : '' %>>Trung tâm thương mại - vui chơi trong nhà</option>
+                                    <option value="Khu vui chơi tổng hợp" <%= entertainment.zone === 'Khu vui chơi tổng hợp' ? 'selected' : '' %>>Khu vui chơi tổng hợp</option>
+                                    <option value="Khu thể thao - giải trí" <%= entertainment.zone === 'Khu thể thao - giải trí' ? 'selected' : '' %>>Khu thể thao - giải trí</option>
+                                    <option value="Khu ẩm thực - giải trí" <%= entertainment.zone === 'Khu ẩm thực - giải trí' ? 'selected' : '' %>>Khu ẩm thực - giải trí</option>
+                                    <option value="Khu du lịch sinh thái" <%= entertainment.zone === 'Khu du lịch sinh thái' ? 'selected' : '' %>>Khu du lịch sinh thái</option>
+                                    <option value="Khu vui chơi trẻ em" <%= entertainment.zone === 'Khu vui chơi trẻ em' ? 'selected' : '' %>>Khu vui chơi trẻ em</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="type" class="form-label">Loại hình <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="type" name="type" 
-                                       value="<%= entertainment.type %>" required>
+                                <select class="form-select" id="type" name="type" required>
+                                    <option value="">Chọn loại hình</option>
+                                    <option value="Nhà hát - Biểu diễn nghệ thuật" <%= entertainment.type === 'Nhà hát - Biểu diễn nghệ thuật' ? 'selected' : '' %>>Nhà hát - Biểu diễn nghệ thuật</option>
+                                    <option value="Rạp chiếu phim" <%= entertainment.type === 'Rạp chiếu phim' ? 'selected' : '' %>>Rạp chiếu phim</option>
+                                    <option value="Karaoke - Quán bar" <%= entertainment.type === 'Karaoke - Quán bar' ? 'selected' : '' %>>Karaoke - Quán bar</option>
+                                    <option value="Công viên giải trí" <%= entertainment.type === 'Công viên giải trí' ? 'selected' : '' %>>Công viên giải trí</option>
+                                    <option value="Trung tâm thương mại" <%= entertainment.type === 'Trung tâm thương mại' ? 'selected' : '' %>>Trung tâm thương mại</option>
+                                    <option value="Khu vui chơi trẻ em" <%= entertainment.type === 'Khu vui chơi trẻ em' ? 'selected' : '' %>>Khu vui chơi trẻ em</option>
+                                    <option value="Sân vận động - Thể thao" <%= entertainment.type === 'Sân vận động - Thể thao' ? 'selected' : '' %>>Sân vận động - Thể thao</option>
+                                    <option value="Bảo tàng - Triển lãm" <%= entertainment.type === 'Bảo tàng - Triển lãm' ? 'selected' : '' %>>Bảo tàng - Triển lãm</option>
+                                    <option value="Khu ẩm thực - Giải trí" <%= entertainment.type === 'Khu ẩm thực - Giải trí' ? 'selected' : '' %>>Khu ẩm thực - Giải trí</option>
+                                    <option value="Công viên nước" <%= entertainment.type === 'Công viên nước' ? 'selected' : '' %>>Công viên nước</option>
+                                    <option value="Khu du lịch sinh thái" <%= entertainment.type === 'Khu du lịch sinh thái' ? 'selected' : '' %>>Khu du lịch sinh thái</option>
+                                    <option value="Khu vui chơi tổng hợp" <%= entertainment.type === 'Khu vui chơi tổng hợp' ? 'selected' : '' %>>Khu vui chơi tổng hợp</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -68,14 +84,18 @@
                             <div class="mb-3">
                                 <label for="openHours" class="form-label">Giờ mở cửa <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="openHours" name="openHours" 
-                                       value="<%= entertainment.openHours %>" required>
+                                       value="<%= entertainment.openHours %>" 
+                                       placeholder="VD: 8:00 - 22:00 hàng ngày" required>
+                                <div class="form-text">Ví dụ: 8:00 - 22:00 hàng ngày, Thứ 2 - Chủ nhật</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="ticket" class="form-label">Giá vé <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="ticket" name="ticket" 
-                                       value="<%= entertainment.ticket %>" required>
+                                       value="<%= entertainment.ticket %>" 
+                                       placeholder="VD: 50.000đ - 200.000đ" required>
+                                <div class="form-text">Ví dụ: 50.000đ - 200.000đ, Miễn phí, 100.000đ/người</div>
                             </div>
                         </div>
                     </div>
@@ -187,11 +207,42 @@
                     </h5>
                 </div>
                 <div class="card-body">
+                    <!-- Hiển thị hình ảnh hiện tại -->
+                    <% if (entertainment.images && entertainment.images.length > 0) { %>
+                        <div class="mb-3">
+                            <label class="form-label">Hình ảnh hiện tại (<%= entertainment.images.length %> ảnh)</label>
+                            <div class="row" id="currentImages">
+                                <% entertainment.images.forEach((image, index) => { %>
+                                    <div class="col-md-3 mb-2" id="image-<%= index %>">
+                                        <div class="position-relative">
+                                            <img src="<%= image %>" alt="Hình <%= index + 1 %>" class="img-thumbnail" style="width: 100%; height: 120px; object-fit: cover;">
+                                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" onclick="removeImage(<%= index %>)" title="Xóa ảnh">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                            <div class="position-absolute top-0 start-0 bg-primary text-white rounded-circle p-1" 
+                                                 style="width: 20px; height: 20px; font-size: 12px; text-align: center; line-height: 18px;">
+                                                <%= index + 1 %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                    <% } %>
+                    
+                    <!-- Upload hình ảnh mới -->
                     <div class="mb-3">
-                        <label for="images" class="form-label">URL hình ảnh</label>
-                        <textarea class="form-control" id="images" name="images" rows="4" 
-                                  placeholder="Mỗi URL hình ảnh trên một dòng"><%= entertainment.images ? entertainment.images.join('\n') : '' %></textarea>
-                        <div class="form-text">Mỗi URL hình ảnh trên một dòng riêng</div>
+                        <label for="images" class="form-label">Thêm hình ảnh mới</label>
+                        <input type="file" class="form-control" id="images" name="images" multiple accept="image/*">
+                        <div class="form-text">Chọn nhiều hình ảnh (JPG, PNG, GIF, WebP) - Tối đa 10MB mỗi file</div>
+                    </div>
+                    
+                    <!-- New Image Preview Area -->
+                    <div id="newImagePreview" class="row mt-3" style="display: none;">
+                        <div class="col-12">
+                            <label class="form-label">Xem trước hình ảnh mới:</label>
+                            <div id="newPreviewContainer" class="row"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -226,7 +277,9 @@
                             <div class="mb-3">
                                 <label for="embedUrl" class="form-label">URL nhúng Google Maps <span class="text-danger">*</span></label>
                                 <input type="url" class="form-control" id="embedUrl" name="embedUrl" 
-                                       value="<%= entertainment.map.embedUrl %>" required>
+                                       value="<%= entertainment.map.embedUrl %>" 
+                                       placeholder="https://www.google.com/maps/embed?pb=..." required>
+                                <div class="form-text">Lấy từ Google Maps > Chia sẻ > Nhúng bản đồ</div>
                             </div>
                         </div>
                     </div>
@@ -283,7 +336,71 @@
 </form>
 
 <script>
+// Array to store images to be removed
+let imagesToRemove = [];
+
+function removeImage(index) {
+    if (confirm('Bạn có chắc chắn muốn xóa hình ảnh này?')) {
+        imagesToRemove.push(index);
+        // Hide the image container with animation
+        const imageContainer = document.getElementById(`image-${index}`);
+        if (imageContainer) {
+            imageContainer.style.transition = 'opacity 0.3s ease';
+            imageContainer.style.opacity = '0.5';
+            imageContainer.style.pointerEvents = 'none';
+        }
+    }
+}
+
+// New image preview functionality
+document.getElementById('images').addEventListener('change', function(e) {
+    const files = e.target.files;
+    const previewContainer = document.getElementById('newPreviewContainer');
+    const imagePreview = document.getElementById('newImagePreview');
+    
+    // Clear previous previews
+    previewContainer.innerHTML = '';
+    
+    if (files.length > 0) {
+        imagePreview.style.display = 'block';
+        
+        Array.from(files).forEach((file, index) => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const col = document.createElement('div');
+                    col.className = 'col-md-3 mb-2';
+                    col.innerHTML = `
+                        <div class="position-relative">
+                            <img src="${e.target.result}" alt="New Preview ${index + 1}" 
+                                 class="img-thumbnail" style="width: 100%; height: 120px; object-fit: cover;">
+                            <div class="position-absolute top-0 end-0 bg-success text-white rounded-circle p-1" 
+                                 style="width: 20px; height: 20px; font-size: 12px; text-align: center; line-height: 18px;">
+                                +
+                            </div>
+                        </div>
+                    `;
+                    previewContainer.appendChild(col);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    } else {
+        imagePreview.style.display = 'none';
+    }
+});
+
+// Form validation
 document.getElementById('entertainmentForm').addEventListener('submit', function(e) {
+    // Add hidden inputs for images to remove
+    imagesToRemove.forEach(index => {
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'removeImages';
+        hiddenInput.value = index;
+        this.appendChild(hiddenInput);
+    });
+    
     // Basic validation
     const requiredFields = ['name', 'zone', 'type', 'address', 'openHours', 'ticket', 'lat', 'lng', 'embedUrl'];
     let isValid = true;
@@ -301,6 +418,8 @@ document.getElementById('entertainmentForm').addEventListener('submit', function
     if (!isValid) {
         e.preventDefault();
         alert('Vui lòng điền đầy đủ các trường bắt buộc');
+        return;
     }
+    
 });
 </script>

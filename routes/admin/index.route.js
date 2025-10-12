@@ -93,13 +93,17 @@ router.post('/transportation-page', requireAuth, requireEditor, transportationPa
 // Entertainment routes
 router.get('/entertainments', requireAuth, entertainmentController.index);
 router.get('/entertainments/create', requireAuth, requireEditor, entertainmentController.create);
-router.post('/entertainments', requireAuth, requireEditor, entertainmentController.store);
-router.get('/entertainments/:id', requireAuth, entertainmentController.show);
+router.post('/entertainments', requireAuth, requireEditor, uploadMultiple, entertainmentController.store);
 router.get('/entertainments/edit/:id', requireAuth, requireEditor, entertainmentController.edit);
-router.put('/entertainments/:id', requireAuth, requireEditor, entertainmentController.update);
-router.delete('/entertainments/:id', requireAuth, requireEditor, entertainmentController.destroy);
+router.get('/entertainments/:id', requireAuth, entertainmentController.show);
+router.put('/entertainments/:id', requireAuth, requireEditor, uploadMultiple, entertainmentController.update);
+router.patch('/entertainments/:id', requireAuth, requireEditor, uploadMultiple, entertainmentController.update);
+router.post('/entertainments/:id', requireAuth, requireEditor, uploadMultiple, entertainmentController.update);
 router.post('/entertainments/:id/toggle-active', requireAuth, requireEditor, entertainmentController.toggleActive);
 router.post('/entertainments/:id/toggle-featured', requireAuth, requireEditor, entertainmentController.toggleFeatured);
+router.delete('/entertainments/:id', requireAuth, requireEditor, entertainmentController.destroy);
+router.post('/entertainments/delete/:id', requireAuth, requireEditor, entertainmentController.destroy);
+
 
 // TODO: Add more routes for other modules
 // Foods, Tours, News, Reviews, Users

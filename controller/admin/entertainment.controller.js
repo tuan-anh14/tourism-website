@@ -1,4 +1,5 @@
 const Entertainment = require('../../model/Entertainment');
+const { uploadMultiple } = require('../../middleware/upload');
 
 // Get all entertainments for admin
 module.exports.index = async (req, res) => {
@@ -21,9 +22,31 @@ module.exports.index = async (req, res) => {
         const total = await Entertainment.countDocuments(filter);
         const totalPages = Math.ceil(total / limit);
         
-        // Get unique zones and types for filter dropdowns
-        const zones = await Entertainment.distinct('zone');
-        const types = await Entertainment.distinct('type');
+        // Define fixed zones and types for filter dropdowns
+        const zones = [
+            'Khu văn hóa - nghệ thuật',
+            'Công viên ngoài trời', 
+            'Trung tâm thương mại - vui chơi trong nhà',
+            'Khu vui chơi tổng hợp',
+            'Khu thể thao - giải trí',
+            'Khu ẩm thực - giải trí',
+            'Khu du lịch sinh thái',
+            'Khu vui chơi trẻ em'
+        ];
+        const types = [
+            'Nhà hát - Biểu diễn nghệ thuật',
+            'Rạp chiếu phim',
+            'Karaoke - Quán bar',
+            'Công viên giải trí',
+            'Trung tâm thương mại',
+            'Khu vui chơi trẻ em',
+            'Sân vận động - Thể thao',
+            'Bảo tàng - Triển lãm',
+            'Khu ẩm thực - Giải trí',
+            'Công viên nước',
+            'Khu du lịch sinh thái',
+            'Khu vui chơi tổng hợp'
+        ];
         
         res.render('admin/layout', {
             pageTitle: 'Quản lý Giải trí',
@@ -57,8 +80,30 @@ module.exports.index = async (req, res) => {
 // Show create form
 module.exports.create = async (req, res) => {
     try {
-        const zones = await Entertainment.distinct('zone');
-        const types = await Entertainment.distinct('type');
+        const zones = [
+            'Khu văn hóa - nghệ thuật',
+            'Công viên ngoài trời', 
+            'Trung tâm thương mại - vui chơi trong nhà',
+            'Khu vui chơi tổng hợp',
+            'Khu thể thao - giải trí',
+            'Khu ẩm thực - giải trí',
+            'Khu du lịch sinh thái',
+            'Khu vui chơi trẻ em'
+        ];
+        const types = [
+            'Nhà hát - Biểu diễn nghệ thuật',
+            'Rạp chiếu phim',
+            'Karaoke - Quán bar',
+            'Công viên giải trí',
+            'Trung tâm thương mại',
+            'Khu vui chơi trẻ em',
+            'Sân vận động - Thể thao',
+            'Bảo tàng - Triển lãm',
+            'Khu ẩm thực - Giải trí',
+            'Công viên nước',
+            'Khu du lịch sinh thái',
+            'Khu vui chơi tổng hợp'
+        ];
         
         res.render('admin/layout', {
             pageTitle: 'Thêm mới Giải trí',
@@ -82,8 +127,30 @@ module.exports.store = async (req, res) => {
         // Basic validation
         const { zone, name, type, address, openHours, ticket, lat, lng, embedUrl } = req.body;
         if (!zone || !name || !type || !address || !openHours || !ticket || !lat || !lng || !embedUrl) {
-            const zones = await Entertainment.distinct('zone');
-            const types = await Entertainment.distinct('type');
+            const zones = [
+                'Khu văn hóa - nghệ thuật',
+                'Công viên ngoài trời', 
+                'Trung tâm thương mại - vui chơi trong nhà',
+                'Khu vui chơi tổng hợp',
+                'Khu thể thao - giải trí',
+                'Khu ẩm thực - giải trí',
+                'Khu du lịch sinh thái',
+                'Khu vui chơi trẻ em'
+            ];
+            const types = [
+                'Nhà hát - Biểu diễn nghệ thuật',
+                'Rạp chiếu phim',
+                'Karaoke - Quán bar',
+                'Công viên giải trí',
+                'Trung tâm thương mại',
+                'Khu vui chơi trẻ em',
+                'Sân vận động - Thể thao',
+                'Bảo tàng - Triển lãm',
+                'Khu ẩm thực - Giải trí',
+                'Công viên nước',
+                'Khu du lịch sinh thái',
+                'Khu vui chơi tổng hợp'
+            ];
             
             return res.render('admin/layout', {
                 pageTitle: 'Thêm mới Giải trí',
@@ -98,15 +165,24 @@ module.exports.store = async (req, res) => {
 
         const {
             activities, audience, history, architecture,
-            experience, notes, images
+            experience, notes
         } = req.body;
 
         // Process arrays
-        const activitiesArray = activities ? activities.split('\n').filter(item => item.trim()) : [];
+        const activitiesArray = activities ? activities.split('\n').filter(item => item.trim()) : ['Tham quan và khám phá'];
         const audienceArray = audience ? audience.split('\n').filter(item => item.trim()) : [];
         const experienceArray = experience ? experience.split('\n').filter(item => item.trim()) : [];
         const notesArray = notes ? notes.split('\n').filter(item => item.trim()) : [];
-        const imagesArray = images ? images.split('\n').filter(item => item.trim()) : [];
+        
+        // Process uploaded images
+        const imagesArray = req.files && req.files.length > 0 
+            ? req.files.map(file => `/uploads/${file.filename}`)
+            : [];
+        
+        // If no images uploaded, set default placeholder
+        if (imagesArray.length === 0) {
+            imagesArray.push('/client/img/header-bg.jfif'); // Default placeholder image
+        }
 
         const entertainmentData = {
             zone,
@@ -172,8 +248,30 @@ module.exports.edit = async (req, res) => {
             return res.redirect('/admin/entertainments');
         }
 
-        const zones = await Entertainment.distinct('zone');
-        const types = await Entertainment.distinct('type');
+        const zones = [
+            'Khu văn hóa - nghệ thuật',
+            'Công viên ngoài trời', 
+            'Trung tâm thương mại - vui chơi trong nhà',
+            'Khu vui chơi tổng hợp',
+            'Khu thể thao - giải trí',
+            'Khu ẩm thực - giải trí',
+            'Khu du lịch sinh thái',
+            'Khu vui chơi trẻ em'
+        ];
+        const types = [
+            'Nhà hát - Biểu diễn nghệ thuật',
+            'Rạp chiếu phim',
+            'Karaoke - Quán bar',
+            'Công viên giải trí',
+            'Trung tâm thương mại',
+            'Khu vui chơi trẻ em',
+            'Sân vận động - Thể thao',
+            'Bảo tàng - Triển lãm',
+            'Khu ẩm thực - Giải trí',
+            'Công viên nước',
+            'Khu du lịch sinh thái',
+            'Khu vui chơi tổng hợp'
+        ];
 
         res.render('admin/layout', {
             pageTitle: `Chỉnh sửa - ${entertainment.name}`,
@@ -198,8 +296,30 @@ module.exports.update = async (req, res) => {
         const { zone, name, type, address, openHours, ticket, lat, lng, embedUrl } = req.body;
         if (!zone || !name || !type || !address || !openHours || !ticket || !lat || !lng || !embedUrl) {
             const entertainment = await Entertainment.findById(req.params.id);
-            const zones = await Entertainment.distinct('zone');
-            const types = await Entertainment.distinct('type');
+            const zones = [
+                'Khu văn hóa - nghệ thuật',
+                'Công viên ngoài trời', 
+                'Trung tâm thương mại - vui chơi trong nhà',
+                'Khu vui chơi tổng hợp',
+                'Khu thể thao - giải trí',
+                'Khu ẩm thực - giải trí',
+                'Khu du lịch sinh thái',
+                'Khu vui chơi trẻ em'
+            ];
+            const types = [
+                'Nhà hát - Biểu diễn nghệ thuật',
+                'Rạp chiếu phim',
+                'Karaoke - Quán bar',
+                'Công viên giải trí',
+                'Trung tâm thương mại',
+                'Khu vui chơi trẻ em',
+                'Sân vận động - Thể thao',
+                'Bảo tàng - Triển lãm',
+                'Khu ẩm thực - Giải trí',
+                'Công viên nước',
+                'Khu du lịch sinh thái',
+                'Khu vui chơi tổng hợp'
+            ];
             
             return res.render('admin/layout', {
                 pageTitle: `Chỉnh sửa - ${entertainment.name}`,
@@ -214,16 +334,49 @@ module.exports.update = async (req, res) => {
 
         const {
             activities, audience, history, architecture,
-            experience, notes, images,
-            isActive, featured
+            experience, notes,
+            isActive, featured, removeImages
         } = req.body;
 
         // Process arrays
-        const activitiesArray = activities ? activities.split('\n').filter(item => item.trim()) : [];
+        const activitiesArray = activities ? activities.split('\n').filter(item => item.trim()) : ['Tham quan và khám phá'];
         const audienceArray = audience ? audience.split('\n').filter(item => item.trim()) : [];
         const experienceArray = experience ? experience.split('\n').filter(item => item.trim()) : [];
         const notesArray = notes ? notes.split('\n').filter(item => item.trim()) : [];
-        const imagesArray = images ? images.split('\n').filter(item => item.trim()) : [];
+        
+        // Get existing entertainment to preserve current images
+        const existingEntertainment = await Entertainment.findById(req.params.id);
+        if (!existingEntertainment) {
+            req.flash('error', 'Không tìm thấy giải trí');
+            return res.redirect('/admin/entertainments');
+        }
+        
+        let imagesArray = [...existingEntertainment.images];
+        
+        // If no activities provided, use existing ones or default
+        if (activitiesArray.length === 0 && existingEntertainment.activities.length > 0) {
+            activitiesArray.push(...existingEntertainment.activities);
+        } else if (activitiesArray.length === 0) {
+            activitiesArray.push('Tham quan và khám phá');
+        }
+        
+        // Remove selected images
+        if (removeImages) {
+            const removeArray = Array.isArray(removeImages) ? removeImages : [removeImages];
+            const removeIndexes = removeArray.map(index => parseInt(index));
+            imagesArray = imagesArray.filter((_, index) => !removeIndexes.includes(index));
+        }
+        
+        // Add new uploaded images
+        if (req.files && req.files.length > 0) {
+            const newImages = req.files.map(file => `/uploads/${file.filename}`);
+            imagesArray = [...imagesArray, ...newImages];
+        }
+        
+        // If no images left, set default placeholder
+        if (imagesArray.length === 0) {
+            imagesArray.push('/client/img/header-bg.jfif');
+        }
 
         const updateData = {
             zone,
