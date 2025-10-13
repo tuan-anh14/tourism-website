@@ -36,7 +36,7 @@ async function loadAttractionsFromOSM() {
         if (cachedData && cacheTime && (now - parseInt(cacheTime)) < 24 * 60 * 60 * 1000) {
             attractionsData = JSON.parse(cachedData);
             attractionsLoaded = true;
-            addCustomMarkers();
+            // Skip rendering markers for cleaner UI & performance
             loadAllAttractions();
             console.log('Loaded attractions from cache');
             return;
@@ -87,8 +87,7 @@ async function loadAttractionsFromOSM() {
         localStorage.setItem('hanoi-attractions-cache', JSON.stringify(attractionsData));
         localStorage.setItem('hanoi-attractions-cache-time', now.toString());
         
-        // Add markers and update UI
-        addCustomMarkers();
+        // Add update UI (markers disabled for performance)
         loadAllAttractions();
         
         hideLoadingIndicator();
@@ -287,7 +286,7 @@ function loadFallbackData() {
     ];
     
     attractionsLoaded = true;
-    addCustomMarkers();
+    // Skip rendering markers for cleaner UI & performance
     loadAllAttractions();
     console.log('Loaded fallback attractions data');
 }
@@ -348,14 +347,14 @@ function initializeHanoiMap() {
         minZoom: 10 // Giới hạn zoom xa
     });
 
-    // Add navigation controls
+    // Add navigation controls (moved to bottom-right to avoid overlapping custom controls)
     hanoiMap.addControl(new maplibregl.NavigationControl({
         showCompass: true,
         showZoom: true
-    }), 'top-right');
+    }), 'bottom-right');
     
-    // Add fullscreen control
-    hanoiMap.addControl(new maplibregl.FullscreenControl(), 'top-right');
+    // Add fullscreen control (also bottom-right)
+    hanoiMap.addControl(new maplibregl.FullscreenControl(), 'bottom-right');
 
     // Initialize Mapbox GL Draw
     draw = new MapboxDraw({
@@ -406,8 +405,7 @@ function initializeHanoiMap() {
     // Map load event
     hanoiMap.on('load', () => {
         console.log('Hanoi map loaded successfully');
-        // Add custom markers after map loads
-        addCustomMarkers();
+        // Skip auto-adding markers to keep map clean and performant
     });
 }
 
