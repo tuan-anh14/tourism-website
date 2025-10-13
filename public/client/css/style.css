@@ -220,6 +220,23 @@ section {
   text-align: center;
   font-family: var(--ff-heading);
   font-size: var(--fs-headings);
+  letter-spacing: 0.3rem;
+}
+
+.title h1 {
+  font-family: var(--ff-heading);
+  font-size: var(--fs-headings);
+  letter-spacing: 0.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.title h1.dark {
+  font-family: var(--ff-heading);
+  font-size: var(--fs-headings);
+  letter-spacing: 0.3rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 .row {
@@ -254,6 +271,7 @@ section {
   font-size: var(--fs-xl);
   margin: 20px auto;
   font-family: var(--ff-heading);
+  font-weight: 600;
 }
 
 .col p {
@@ -261,6 +279,7 @@ section {
   padding: 0px 40px;
   font-size: var(--fs-paragraphs);
   font-family: var(--ff-primary);
+  line-height: 1.5;
 }
 
 .col > p {
@@ -269,6 +288,8 @@ section {
   line-height: 1.5;
   text-align: center;
   max-width: 35ch;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
 }
 
 .events .ctn {
@@ -319,6 +340,7 @@ section {
   font-family: var(--ff-heading);
   font-size: var(--fs-headings);
   letter-spacing: 0.3rem;
+  font-weight: 600;
   margin: auto;
 }
 
@@ -387,7 +409,10 @@ section {
 .content-col h1 {
   font-size: var(--fs-headings);
   font-family: var(--ff-heading);
+  font-weight: 600;
+  letter-spacing: 0.3rem;
   max-width: 15.5ch;
+  margin: 0;
 }
 
 .content-col .line {
@@ -400,6 +425,9 @@ section {
   width: 100%;
   text-align: left;
   max-width: 40ch;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+  line-height: 1.5;
 }
 
 .content-col .ctn {
@@ -643,6 +671,14 @@ input[type="submit"]:hover {
 
 .crow-message {
   margin: 1rem;
+}
+
+.crow-message h1 {
+  font-family: var(--ff-heading);
+  font-size: var(--fs-headings);
+  font-weight: 600;
+  letter-spacing: 0.3rem;
+  margin: 0;
 }
 
 .crow-message div {
@@ -1077,11 +1113,12 @@ input[type=radio] {
 }
 
 .map-title-overlay h1 {
-  font-size: var(--fs-3xl);
-  font-weight: 700;
+  font-size: var(--fs-headings);
+  font-weight: 600;
   color: #ffffff;
   margin-bottom: 15px;
   font-family: var(--ff-heading);
+  letter-spacing: 0.3rem;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
 }
 
