@@ -385,3 +385,164 @@
     letter-spacing: 0.1rem;
   }
 }
+
+/* ===========================================
+   MAP CONTROLS & LEGEND RESPONSIVE
+   =========================================== */
+
+/* Tablet and smaller screens */
+@media screen and (max-width: 768px) {
+  .map-controls {
+    top: 15px;
+    left: 15px;
+  }
+  
+  .map-control-group {
+    flex-direction: row;
+    gap: 8px;
+    padding: 8px;
+  }
+  
+  .map-control-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+  
+  .area-navigation {
+    margin-top: 10px;
+    padding: 8px;
+  }
+  
+  .area-navigation h5 {
+    font-size: var(--fs-xs);
+    margin-bottom: 8px;
+  }
+  
+  .area-btn {
+    padding: 6px 8px;
+    margin-bottom: 4px;
+    font-size: 10px;
+  }
+  
+  .area-btn i {
+    font-size: 10px;
+    width: 12px;
+  }
+  
+  .map-legend {
+    bottom: 15px;
+    left: 15px;
+    padding: 12px;
+    min-width: 180px;
+  }
+  
+  .map-legend h4 {
+    font-size: var(--fs-base);
+    margin-bottom: 10px;
+  }
+  
+  .legend-item {
+    font-size: var(--fs-xs);
+    margin-bottom: 6px;
+  }
+  
+  .legend-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+  
+  .popup-content {
+    padding: 15px;
+  }
+  
+  .popup-title {
+    font-size: var(--fs-base);
+  }
+  
+  .popup-description {
+    font-size: var(--fs-xs);
+  }
+}
+
+/* Mobile screens */
+@media screen and (max-width: 480px) {
+  .map-controls {
+    top: 10px;
+    left: 10px;
+  }
+  
+  .map-control-group {
+    gap: 6px;
+    padding: 6px;
+  }
+  
+  .map-control-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 12px;
+  }
+  
+  .area-navigation {
+    margin-top: 8px;
+    padding: 6px;
+  }
+  
+  .area-navigation h5 {
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+  
+  .area-btn {
+    padding: 4px 6px;
+    margin-bottom: 3px;
+    font-size: 9px;
+  }
+  
+  .area-btn i {
+    font-size: 9px;
+    width: 10px;
+  }
+  
+  .map-legend {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 10px;
+    min-width: auto;
+  }
+  
+  .map-legend h4 {
+    font-size: var(--fs-sm);
+    margin-bottom: 8px;
+  }
+  
+  .legend-item {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+  
+  .legend-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 9px;
+  }
+  
+  .popup-content {
+    padding: 12px;
+  }
+  
+  .popup-title {
+    font-size: var(--fs-sm);
+  }
+  
+  .popup-description {
+    font-size: 11px;
+  }
+  
+  .type-badge {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+}

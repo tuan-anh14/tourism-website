@@ -1,0 +1,142 @@
+<!-- Map Section -->
+<section class="map-section" id="map-section">
+    <div class="map-title-overlay">
+        <h1>BẢN ĐỒ HÀ NỘI</h1>
+        <div class="line"></div>
+        <p>Khám phá các điểm tham quan nổi bật của thủ đô</p>
+    </div>
+    
+    <!-- Map Container -->
+    <div class="map-container">
+        <!-- Search Sidebar like Tripomatic -->
+        <div class="map-sidebar" id="map-sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fa fa-search"></i> Tìm kiếm Hà Nội</h3>
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Tìm kiếm địa điểm, điểm tham quan...">
+                <button class="search-btn"><i class="fa fa-search"></i></button>
+            </div>
+            
+            <div class="data-controls">
+                <button class="refresh-btn" id="refresh-data" title="Làm mới dữ liệu từ OpenStreetMap">
+                    <i class="fa fa-refresh"></i> Làm mới dữ liệu
+                </button>
+            </div>
+            
+            <div class="filter-section">
+                <h4>Lọc theo loại</h4>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fa fa-globe"></i> Tất cả
+                    </button>
+                    <button class="filter-btn" data-filter="temple">
+                        <i class="fa fa-university"></i> Đền, chùa
+                    </button>
+                    <button class="filter-btn" data-filter="monument">
+                        <i class="fa fa-building"></i> Di tích
+                    </button>
+                    <button class="filter-btn" data-filter="lake">
+                        <i class="fa fa-tree"></i> Hồ, công viên
+                    </button>
+                    <button class="filter-btn" data-filter="museum">
+                        <i class="fa fa-book"></i> Bảo tàng
+                    </button>
+                    <button class="filter-btn" data-filter="viewpoint">
+                        <i class="fa fa-eye"></i> Điểm ngắm cảnh
+                    </button>
+                    <button class="filter-btn" data-filter="park">
+                        <i class="fa fa-leaf"></i> Công viên
+                    </button>
+                    <button class="filter-btn" data-filter="nature">
+                        <i class="fa fa-tree"></i> Thiên nhiên
+                    </button>
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <h4>Kết quả tìm kiếm</h4>
+                <div class="search-results" id="search-results">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar Toggle Button -->
+        <button class="sidebar-toggle-btn" id="sidebar-toggle-btn">
+            <i class="fa fa-bars"></i>
+        </button>
+        
+        <div id="hanoi-map"></div>
+            
+        <!-- Map Controls -->
+        <div class="map-controls">
+            <div class="map-control-group">
+                <button id="toggle-3d" class="map-control-btn" title="Chuyển đổi chế độ 3D">
+                    <i class="fa fa-cube"></i>
+                </button>
+                <button id="reset-view" class="map-control-btn" title="Đặt lại góc nhìn">
+                    <i class="fa fa-home"></i>
+                </button>
+                <button id="toggle-draw" class="map-control-btn" title="Bật/tắt chế độ vẽ">
+                    <i class="fa fa-pencil"></i>
+                </button>
+            </div>
+            
+            <!-- Area Navigation -->
+            <div class="area-navigation">
+                <h5>Khu vực</h5>
+                <button class="area-btn" data-area="center" title="Trung tâm Hà Nội">
+                    <i class="fa fa-map-marker"></i> Trung tâm
+                </button>
+                <button class="area-btn" data-area="old-quarter" title="Phố cổ">
+                    <i class="fa fa-home"></i> Phố cổ
+                </button>
+                <button class="area-btn" data-area="west-lake" title="Hồ Tây">
+                    <i class="fa fa-tree"></i> Hồ Tây
+                </button>
+                <button class="area-btn" data-area="ba-dinh" title="Ba Đình">
+                    <i class="fa fa-building"></i> Ba Đình
+                </button>
+            </div>
+        </div>
+        
+        <!-- Legend -->
+        <div class="map-legend" id="map-legend">
+            <h4>Chú giải</h4>
+            <div class="legend-item">
+                <div class="legend-icon temple-icon">🏛️</div>
+                <span>Đền, chùa</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon monument-icon">🏛️</div>
+                <span>Di tích lịch sử</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon lake-icon">🏞️</div>
+                <span>Hồ, công viên</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon museum-icon">🏛️</div>
+                <span>Bảo tàng</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon viewpoint-icon">👁️</div>
+                <span>Điểm ngắm cảnh</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon park-icon">🌳</div>
+                <span>Công viên</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon nature-icon">🌿</div>
+                <span>Thiên nhiên</span>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Map Section -->
