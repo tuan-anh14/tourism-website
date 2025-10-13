@@ -216,6 +216,15 @@ section {
   margin: 80px auto;
 }
 
+/* Override for about section to ensure full width on mobile */
+@media (max-width: 768px) {
+  #about {
+    width: 100% !important;
+    margin: 40px auto !important;
+    padding: 0 !important;
+  }
+}
+
 .title {
   text-align: center;
   font-family: var(--ff-heading);
@@ -439,55 +448,16 @@ section {
 /* about */
 #about {
   width: 100%;
+  padding: 60px 0;
 }
 
 #about_us {
-  background: url("https://awe365.com/wp-content/uploads/2013/07/HÀ NỘI-sports-hang-gliding-flickrcc-image-by-Steve-Slater.jpg");
   width: 100%;
-  /* allow section to grow when carousel is duplicated */
-  min-height: 630px;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: scroll;
-  margin: 30px 0px 0px 0px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
   position: relative;
   z-index: 1;
-}
-
-#about_us div {
-  padding: 10px;
-  display: grid;
-  align-items: center; 
-  grid-template-columns: 2fr 1fr 1fr;
-  column-gap: 5px;
-  position: relative;
-}
-
-
-#about_us div span {
-  margin: 0;
-  position: absolute;
-  top: 60%;
-  opacity: 0;
-  left: 80%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  transition: 1s;
-}
-
-#about_us p {
-  width: 43em;
-  color: white;
-  text-align: justify;
-  padding-top: 14em;
-  font-family: var(--ff-primary);
-  margin-left: 6em;
-}
-
-#about_us p::first-letter {
-  padding-left: 47px;
-  font-size: 55px;
-  color: #fc036b;
 }
 
 /* Contributors */
@@ -999,84 +969,274 @@ body.dark{
 }
 
 
-/* carousel */
-
-@import url("https://fonts.googleapis.com/css?family=DM+Sans:400,500,700&display=swap");
-
-
+/* Carousel Styles - Clean and Optimized */
 input[type=radio] {
   display: none;
 }
 
-.cardt {
-  position: absolute;
-  width: 60%;
-  height: 80%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  margin: auto;
-  transition: transform .4s ease;
-  cursor: pointer;
+.boxx {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 }
 
 .containerx {
   width: 100%;
-  /* let container expand based on number of carousels stacked */
+  max-width: 1000px;
   height: auto;
-  display: grid;
-  gap: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transform-style: preserve-3d;
+  margin: 0 auto;
+  position: relative;
 }
 
 .cards {
   position: relative;
   width: 100%;
-  height: 50vh; /* single carousel height */
+  height: 70vh; /* Increased height for better display */
+  max-height: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
+  perspective: 1000px;
+}
+
+.cardt {
+  position: absolute;
+  width: 70%; /* Increased width for larger display */
+  height: 85%; /* Increased height for larger display */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .cards label img {
   width: 100%;
   height: 100%;
-  border-radius: 10px;
+  border-radius: 15px;
   object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
 }
 
-#item-1:checked ~ .cards #col-img-3, #item-2:checked ~ .cards #col-img-1, #item-3:checked ~ .cards #col-img-2 {
-  transform: translatex(-40%) scale(.8);
-  opacity: .4;
+/* Side images (inactive) */
+#item-1:checked ~ .cards #col-img-3, 
+#item-2:checked ~ .cards #col-img-1, 
+#item-3:checked ~ .cards #col-img-2 {
+  transform: translate(-50%, -50%) translateX(-60%) scale(0.7);
+  opacity: 0.3;
   z-index: 0;
 }
 
-#item-1:checked ~ .cards #col-img-2, #item-2:checked ~ .cards #col-img-3, #item-3:checked ~ .cards #col-img-1 {
-  transform: translatex(40%) scale(.8);
-  opacity: .4;
+#item-1:checked ~ .cards #col-img-2, 
+#item-2:checked ~ .cards #col-img-3, 
+#item-3:checked ~ .cards #col-img-1 {
+  transform: translate(-50%, -50%) translateX(60%) scale(0.7);
+  opacity: 0.3;
   z-index: 0;
 }
 
-#item-1:checked ~ .cards #col-img-1, #item-2:checked ~ .cards #col-img-2, #item-3:checked ~ .cards #col-img-3 {
-  transform: translatex(0) scale(1);
+/* Center image (active) */
+#item-1:checked ~ .cards #col-img-1, 
+#item-2:checked ~ .cards #col-img-2, 
+#item-3:checked ~ .cards #col-img-3 {
+  transform: translate(-50%, -50%) translateX(0) scale(1);
   opacity: 1;
-  z-index: 1;
+  z-index: 2;
+}
+
+#item-1:checked ~ .cards #col-img-1 img, 
+#item-2:checked ~ .cards #col-img-2 img, 
+#item-3:checked ~ .cards #col-img-3 img {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Hover effects */
+.cardt:hover {
+  transform: translate(-50%, -50%) scale(1.02);
+}
+
+.cardt:hover img {
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  #about {
+    padding: 40px 0 !important;
+    width: 100% !important;
+    margin: 40px auto !important;
+  }
   
-  img {
-    box-shadow: 0px 0px 5px 0px rgba(81, 81, 81, 0.47);
+  #about_us {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  
+  .boxx {
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  
+  .containerx {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: relative !important;
+  }
+  
+  .cards {
+    height: 50vh;
+    max-height: 400px;
+    width: 100% !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+  }
+  
+  .cardt {
+    width: 80%;
+    height: 80%;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    position: absolute !important;
+    margin: 0 !important;
+  }
+  
+  /* Side images positioning for mobile */
+  #item-1:checked ~ .cards #col-img-3, 
+  #item-2:checked ~ .cards #col-img-1, 
+  #item-3:checked ~ .cards #col-img-2 {
+    transform: translate(-50%, -50%) translateX(-45%) scale(0.6) !important;
+    opacity: 0.3;
+  }
+  
+  #item-1:checked ~ .cards #col-img-2, 
+  #item-2:checked ~ .cards #col-img-3, 
+  #item-3:checked ~ .cards #col-img-1 {
+    transform: translate(-50%, -50%) translateX(45%) scale(0.6) !important;
+    opacity: 0.3;
+  }
+  
+  /* Center image positioning for mobile */
+  #item-1:checked ~ .cards #col-img-1, 
+  #item-2:checked ~ .cards #col-img-2, 
+  #item-3:checked ~ .cards #col-img-3 {
+    transform: translate(-50%, -50%) translateX(0) scale(1) !important;
+    opacity: 1;
   }
 }
 
-#item-2:checked ~ .player #test {
-  transform: translateY(0);
-}
-
-#item-2:checked ~ .player #test  {
-  transform: translateY(-40px);
-}
-
-#item-3:checked ~ .player #test  {
-  transform: translateY(-80px);
+@media (max-width: 480px) {
+  #about {
+    padding: 30px 0 !important;
+    width: 100% !important;
+    margin: 30px auto !important;
+  }
+  
+  #about_us {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  
+  .boxx {
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  
+  .containerx {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: relative !important;
+  }
+  
+  .cards {
+    height: 40vh;
+    max-height: 300px;
+    width: 100% !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+  }
+  
+  .cardt {
+    width: 85%;
+    height: 75%;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    position: absolute !important;
+    margin: 0 !important;
+  }
+  
+  /* Side images positioning for small mobile */
+  #item-1:checked ~ .cards #col-img-3, 
+  #item-2:checked ~ .cards #col-img-1, 
+  #item-3:checked ~ .cards #col-img-2 {
+    transform: translate(-50%, -50%) translateX(-40%) scale(0.5) !important;
+    opacity: 0.2;
+  }
+  
+  #item-1:checked ~ .cards #col-img-2, 
+  #item-2:checked ~ .cards #col-img-3, 
+  #item-3:checked ~ .cards #col-img-1 {
+    transform: translate(-50%, -50%) translateX(40%) scale(0.5) !important;
+    opacity: 0.2;
+  }
+  
+  /* Center image positioning for small mobile */
+  #item-1:checked ~ .cards #col-img-1, 
+  #item-2:checked ~ .cards #col-img-2, 
+  #item-3:checked ~ .cards #col-img-3 {
+    transform: translate(-50%, -50%) translateX(0) scale(1) !important;
+    opacity: 1;
+  }
 }
 
 /* Map styles moved to /client/css/map.css for better organization */
