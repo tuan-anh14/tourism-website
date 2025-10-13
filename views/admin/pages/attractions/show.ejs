@@ -43,18 +43,11 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label fw-bold">Danh mục:</label>
-                            <p class="mb-0">
+                    <p class="mb-0">
                                 <% 
                                     const categoryLabels = {
-                                        'van-hoa': 'Văn hóa',
-                                        'lich-su': 'Lịch sử',
-                                        'tu-nhien': 'Tự nhiên',
-                                        'ton-giao': 'Tôn giáo',
-                                        'bao-tang': 'Bảo tàng',
-                                        'lang-nghe': 'Làng nghề',
-                                        'pho-co': 'Phố cổ',
-                                        'khu-vui-choi': 'Khu vui chơi',
-                                        'le-hoi': 'Lễ hội'
+                                        'nhan-van': 'Điểm tham quan nhân văn',
+                                        'tu-nhien': 'Điểm đến tham quan tự nhiên'
                                     };
                                 %>
                                 <span class="badge bg-info">
@@ -102,7 +95,7 @@
     </div>
 
     <!-- === GIÁ VÉ === -->
-    <% if (attraction.ticket_info && (attraction.ticket_info.normal || attraction.ticket_info.student || attraction.ticket_info.child || attraction.ticket_info.senior)) { %>
+    <% if (attraction.ticket_info) { %>
     <div class="col-12">
         <div class="card mb-4">
             <div class="card-header">
@@ -112,40 +105,7 @@
                 </h5>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <% if (attraction.ticket_info.normal) { %>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Người lớn:</label>
-                                <p class="mb-0"><%= attraction.ticket_info.normal.toLocaleString() %> VNĐ</p>
-                            </div>
-                        </div>
-                    <% } %>
-                    <% if (attraction.ticket_info.student) { %>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Học sinh:</label>
-                                <p class="mb-0"><%= attraction.ticket_info.student.toLocaleString() %> VNĐ</p>
-                            </div>
-                        </div>
-                    <% } %>
-                    <% if (attraction.ticket_info.child) { %>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Trẻ em:</label>
-                                <p class="mb-0"><%= attraction.ticket_info.child.toLocaleString() %> VNĐ</p>
-                            </div>
-                        </div>
-                    <% } %>
-                    <% if (attraction.ticket_info.senior) { %>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Người cao tuổi:</label>
-                                <p class="mb-0"><%= attraction.ticket_info.senior.toLocaleString() %> VNĐ</p>
-                            </div>
-                        </div>
-                    <% } %>
-                </div>
+                <pre class="mb-0" style="white-space: pre-wrap;"><%= attraction.ticket_info %></pre>
             </div>
         </div>
     </div>

@@ -19,7 +19,7 @@ const attractionSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['van-hoa', 'lich-su', 'tu-nhien', 'ton-giao', 'bao-tang', 'lang-nghe', 'pho-co', 'khu-vui-choi', 'le-hoi'],
+    enum: ['nhan-van', 'tu-nhien'],
     index: true
   },
   address: {
@@ -38,10 +38,8 @@ const attractionSchema = new mongoose.Schema({
     trim: true
   },
   ticket_info: {
-    normal: { type: Number },
-    student: { type: Number },
-    child: { type: Number },
-    senior: { type: Number }
+    type: String,
+    trim: true
   },
   intro: {
     type: String,

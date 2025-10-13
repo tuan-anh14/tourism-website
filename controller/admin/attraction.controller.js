@@ -71,15 +71,8 @@ module.exports.index = async (req, res) => {
       status,
       req: req, // Truyền req vào view
       categories: [
-        { value: 'van-hoa', label: 'Văn hóa' },
-        { value: 'lich-su', label: 'Lịch sử' },
-        { value: 'tu-nhien', label: 'Tự nhiên' },
-        { value: 'ton-giao', label: 'Tôn giáo' },
-        { value: 'bao-tang', label: 'Bảo tàng' },
-        { value: 'lang-nghe', label: 'Làng nghề' },
-        { value: 'pho-co', label: 'Phố cổ' },
-        { value: 'khu-vui-choi', label: 'Khu vui chơi' },
-        { value: 'le-hoi', label: 'Lễ hội' }
+        { value: 'nhan-van', label: 'Điểm tham quan nhân văn' },
+        { value: 'tu-nhien', label: 'Điểm đến tham quan tự nhiên' }
       ],
       body: 'admin/pages/attractions/index'
     });
@@ -110,15 +103,8 @@ module.exports.create = (req, res) => {
     body: 'admin/pages/attractions/create',
     user: req.user,
     categories: [
-      { value: 'van-hoa', label: 'Văn hóa' },
-      { value: 'lich-su', label: 'Lịch sử' },
-      { value: 'tu-nhien', label: 'Tự nhiên' },
-      { value: 'ton-giao', label: 'Tôn giáo' },
-      { value: 'bao-tang', label: 'Bảo tàng' },
-      { value: 'lang-nghe', label: 'Làng nghề' },
-      { value: 'pho-co', label: 'Phố cổ' },
-      { value: 'khu-vui-choi', label: 'Khu vui chơi' },
-      { value: 'le-hoi', label: 'Lễ hội' }
+      { value: 'nhan-van', label: 'Điểm tham quan nhân văn' },
+      { value: 'tu-nhien', label: 'Điểm đến tham quan tự nhiên' }
     ]
   });
 };
@@ -199,15 +185,9 @@ module.exports.store = async (req, res) => {
     data.isActive = data.isActive === 'on' || data.isActive === true;
     data.featured = data.featured === 'on' || data.featured === true;
 
-    // Xử lý ticket_info
-    if (data.ticket_info) {
-      Object.keys(data.ticket_info).forEach(key => {
-        if (data.ticket_info[key] && data.ticket_info[key] !== '') {
-          data.ticket_info[key] = parseFloat(data.ticket_info[key]);
-        } else {
-          delete data.ticket_info[key];
-        }
-      });
+    // ticket_info now is free text string; trim it
+    if (typeof data.ticket_info === 'string') {
+      data.ticket_info = data.ticket_info.trim();
     }
 
     // Xử lý map coordinates
@@ -332,15 +312,8 @@ module.exports.edit = async (req, res) => {
       user: req.user,
       attraction,
       categories: [
-        { value: 'van-hoa', label: 'Văn hóa' },
-        { value: 'lich-su', label: 'Lịch sử' },
-        { value: 'tu-nhien', label: 'Tự nhiên' },
-        { value: 'ton-giao', label: 'Tôn giáo' },
-        { value: 'bao-tang', label: 'Bảo tàng' },
-        { value: 'lang-nghe', label: 'Làng nghề' },
-        { value: 'pho-co', label: 'Phố cổ' },
-        { value: 'khu-vui-choi', label: 'Khu vui chơi' },
-        { value: 'le-hoi', label: 'Lễ hội' }
+        { value: 'nhan-van', label: 'Điểm tham quan nhân văn' },
+        { value: 'tu-nhien', label: 'Điểm đến tham quan tự nhiên' }
       ]
     });
   } catch (error) {
@@ -392,15 +365,9 @@ module.exports.editPatch = async (req, res) => {
       }
     });
 
-    // Normalize ticket_info numeric values
-    if (data.ticket_info) {
-      Object.keys(data.ticket_info).forEach((key) => {
-        if (data.ticket_info[key] !== '' && data.ticket_info[key] !== undefined) {
-          data.ticket_info[key] = parseFloat(data.ticket_info[key]);
-        } else {
-          delete data.ticket_info[key];
-        }
-      });
+    // ticket_info now is free text string; trim it
+    if (typeof data.ticket_info === 'string') {
+      data.ticket_info = data.ticket_info.trim();
     }
 
     // Normalize map coordinates
@@ -497,15 +464,9 @@ module.exports.update = async (req, res) => {
     data.isActive = data.isActive === 'on' || data.isActive === true;
     data.featured = data.featured === 'on' || data.featured === true;
 
-    // Xử lý ticket_info
-    if (data.ticket_info) {
-      Object.keys(data.ticket_info).forEach(key => {
-        if (data.ticket_info[key] && data.ticket_info[key] !== '') {
-          data.ticket_info[key] = parseFloat(data.ticket_info[key]);
-        } else {
-          delete data.ticket_info[key];
-        }
-      });
+    // ticket_info now is free text string; trim it
+    if (typeof data.ticket_info === 'string') {
+      data.ticket_info = data.ticket_info.trim();
     }
 
     // Xử lý map coordinates

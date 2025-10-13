@@ -467,8 +467,19 @@ body.dark textarea { background: rgba(38,38,40,0.9); border-color: rgba(255,255,
     margin-bottom: 20px;
 }
 
+/* Make Experiences block match Guidelines visually */
+.itinerary-day__experiences {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
 .itinerary-day__guidelines h3,
-.itinerary-day__tips h3 {
+.itinerary-day__tips h3,
+.itinerary-day__experiences h3 {
     font-family: var(--ff-heading);
     font-size: 18px;
     font-weight: 600;
@@ -572,6 +583,7 @@ body.dark textarea { background: rgba(38,38,40,0.9); border-color: rgba(255,255,
 body.dark .experience-card,
 body.dark .itinerary-day__guidelines,
 body.dark .itinerary-day__tips,
+body.dark .itinerary-day__experiences,
 body.dark .itinerary-day__amenities {
     background: rgba(20, 20, 22, 0.9);
     border-color: rgba(255, 255, 255, 0.1);
@@ -580,6 +592,7 @@ body.dark .itinerary-day__amenities {
 body.dark .experience-content h4,
 body.dark .itinerary-day__guidelines h3,
 body.dark .itinerary-day__tips h3,
+body.dark .itinerary-day__experiences h3,
 body.dark .itinerary-day__amenities h3 {
     color: var(--white);
 }
@@ -588,6 +601,28 @@ body.dark .experience-content p,
 body.dark .itinerary-day__notes-list li,
 body.dark .itinerary-day__tips-list li {
     color: #cbd5e1;
+}
+
+/* Ticket info text styling */
+.ticket-info-text {
+    margin-top: 6px;
+}
+.ticket-info-text pre {
+    font-family: var(--ff-primary);
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--medium-gray);
+    background: transparent;
+    border: none;
+    padding: 0;
+    white-space: pre-wrap;
+}
+
+@media (max-width: 768px) {
+    .ticket-info-text pre {
+        font-size: 13.5px;
+        line-height: 1.65;
+    }
 }
 
 body.dark .itinerary-day__notes-list li,

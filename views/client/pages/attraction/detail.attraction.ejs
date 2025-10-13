@@ -26,19 +26,13 @@
              This ensures clean separation of concerns
              =========================================== */ %>
         <% var attraction = (typeof attraction !== 'undefined' && attraction) ? attraction : null; %>
+        <% const bannerUrl = (attraction && (attraction.heroImage || (attraction.images && attraction.images[0] && attraction.images[0].url))) || '/client/img/header-bg.jfif'; %>
         <!-- Banner -->
-        <header class="page-header attraction-banner" style="background-image: url('<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0] && attraction.images[0].url))) || '/client/img/header-bg.jfif' %>');">
+        <header class="page-header attraction-banner" style="background-image: url('<%= bannerUrl %>');">
             <div class="header-content">
                 <h2 id="quote">
-                    <%= attraction && attraction.category === 'di-tich-lich-su' ? 'Di tích & Lịch sử' :
-                        attraction.category === 'bao-tang' ? 'Bảo tàng & Triển lãm' :
-                        attraction.category === 'pho-co' ? 'Phố cổ & Văn hóa' :
-                        attraction.category === 'lang-nghe' ? 'Làng nghề & Thủ công' :
-                        attraction.category === 'khu-vui-choi' ? 'Giải trí & Vui chơi' :
-                        attraction.category === 'le-hoi' ? 'Lễ hội & Sự kiện' :
-                        attraction.category === 'van-hoa' ? 'Văn hóa & Nghệ thuật' :
-                        attraction.category === 'tu-nhien' ? 'Thiên nhiên & Cảnh quan' :
-                        attraction.category === 'ton-giao' ? 'Tôn giáo & Tâm linh' : 'Điểm tham quan' %>
+                    <%= attraction && attraction.category === 'nhan-van' ? 'Điểm tham quan nhân văn' :
+                        attraction && attraction.category === 'tu-nhien' ? 'Điểm đến tham quan tự nhiên' : 'Điểm tham quan' %>
                 </h2>
                 <div class="line"></div>
                 <h1><%= (attraction && (attraction.title || attraction.name)) || 'Điểm tham quan' %></h1>
@@ -157,6 +151,8 @@
                                                     <% } %>
                                                 </ul>
                                             </li>
+                                            <% } else if (attraction && attraction.opening_hours) { %>
+                                            <li><strong>Giờ mở cửa</strong>: <%= attraction.opening_hours %></li>
                                             <% } else { %>
                                             <li><strong>Giờ mở cửa</strong>: Thông tin chưa cập nhật</li>
                                             <% } %>
@@ -190,6 +186,10 @@
                                                     <% } %>
                                                 </ul>
                                             </li>
+                                            <% } else if (attraction && attraction.ticketInfoText) { %>
+                                            <li><strong>Giá vé tham quan</strong>:
+                                                <div class="ticket-info-text"><pre style="white-space: pre-wrap; margin: 0;"> <%= attraction.ticketInfoText %></pre></div>
+                                            </li>
                                             <% } else { %>
                                             <li><strong>Giá vé tham quan</strong>: Thông tin chưa cập nhật</li>
                                             <% } %>
@@ -200,17 +200,6 @@
 
                             <!-- Additional Info Row -->
                             <div class="additional-info-row">
-                                <% if (attraction && attraction.highlights && attraction.highlights.length > 0) { %>
-                                <div class="itinerary-day__highlights">
-                                    <h3>Điểm nổi bật</h3>
-                                    <ul class="itinerary-day__highlights-list">
-                                        <% attraction.highlights.forEach(function(highlight) { %>
-                                        <li><%= highlight %></li>
-                                        <% }); %>
-                                    </ul>
-                                </div>
-                                <% } %>
-
                                 <% if (attraction && attraction.amenities && attraction.amenities.length > 0) { %>
                                 <div class="itinerary-day__amenities">
                                     <h3>Tiện ích</h3>
@@ -276,10 +265,14 @@
                                             </div>
                                             <% }); %>
                                         </div>
+                                        <% } else if (attraction && attraction.highlights && attraction.highlights.length > 0) { %>
+                                        <ul class="itinerary-day__notes-list">
+                                            <% attraction.highlights.forEach(function(highlight) { %>
+                                            <li><%= highlight %></li>
+                                            <% }); %>
+                                        </ul>
                                         <% } else { %>
-                                        <div class="no-experiences">
-                                            <p>Thông tin trải nghiệm đang được cập nhật. Vui lòng quay lại sau.</p>
-                                        </div>
+                                        <div class="no-experiences"><p>Thông tin trải nghiệm đang được cập nhật. Vui lòng quay lại sau.</p></div>
                                         <% } %>
                                     </div>
                                 </div>
@@ -287,7 +280,7 @@
                                 <!-- RIGHT COLUMN: Guidelines & Rules -->
                                 <div class="itinerary-day__column-right">
                                     <div class="itinerary-day__guidelines">
-                                        <h3>Hướng dẫn tham quan</h3>
+                                        <h3>Lưu ý tham quan cho du khách</h3>
                                         <% if (attraction && attraction.rules && attraction.rules.length > 0) { %>
                                         <ul class="itinerary-day__notes-list">
                                             <% attraction.rules.forEach(function(rule) { %>

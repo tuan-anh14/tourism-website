@@ -86,31 +86,9 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="ticket_info[normal]" class="form-label">Người lớn</label>
-                                <input type="number" class="form-control" id="ticket_info[normal]" name="ticket_info[normal]" value="<%= attraction.ticket_info?.normal || '' %>" placeholder="VNĐ">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="ticket_info[student]" class="form-label">Học sinh</label>
-                                <input type="number" class="form-control" id="ticket_info[student]" name="ticket_info[student]" value="<%= attraction.ticket_info?.student || '' %>" placeholder="VNĐ">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="ticket_info[child]" class="form-label">Trẻ em</label>
-                                <input type="number" class="form-control" id="ticket_info[child]" name="ticket_info[child]" value="<%= attraction.ticket_info?.child || '' %>" placeholder="VNĐ">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="ticket_info[senior]" class="form-label">Người cao tuổi</label>
-                                <input type="number" class="form-control" id="ticket_info[senior]" name="ticket_info[senior]" value="<%= attraction.ticket_info?.senior || '' %>" placeholder="VNĐ">
-                            </div>
-                        </div>
+                    <div class="mb-3">
+                        <label for="ticket_info" class="form-label">Giá vé tham quan</label>
+                        <textarea class="form-control" id="ticket_info" name="ticket_info" rows="5" placeholder="Nhập thông tin giá vé chi tiết..."><%= attraction.ticket_info || '' %></textarea>
                     </div>
                 </div>
             </div>
