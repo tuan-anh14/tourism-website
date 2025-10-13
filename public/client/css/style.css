@@ -40,6 +40,13 @@
 img {
   max-width: 100%;
   display: block;
+  height: auto;
+}
+
+/* Ensure all images in the site are responsive */
+img:not(.image-gallery img) {
+  max-width: 100%;
+  height: auto;
 }
 
 
@@ -143,7 +150,7 @@ html {
 header {
   width: 100vw;
   height: 100vh;
-  background-image: url("../img/bg.png");
+  background-image: url("../img/banner-home.jpg");
   background-position: bottom;
   background-attachment: fixed;
   background-size: cover;
@@ -341,10 +348,36 @@ section {
   grid-template-columns: repeat(2, 1fr);
   justify-content: center;
   padding: 1rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+.image-gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.image-gallery img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .tours .row {
   gap: 4rem;
+  align-items: flex-start;
+}
+
+.image-col {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .content-col {
@@ -915,6 +948,7 @@ body.dark{
   background-repeat: no-repeat;
   background-size: 80%;
   animation: animate 8s linear infinite;
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: rgba(255, 255, 255, 0);
 }
