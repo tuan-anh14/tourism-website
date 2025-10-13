@@ -435,11 +435,13 @@ function setupSidebar() {
     toggleBtn.addEventListener('click', function() {
         sidebar.classList.add('open');
         toggleBtn.classList.add('hidden');
+        handleSidebarOpen();
     });
     
     closeBtn.addEventListener('click', function() {
         sidebar.classList.remove('open');
         toggleBtn.classList.remove('hidden');
+        handleSidebarClose();
     });
     
     // Search functionality
@@ -804,6 +806,54 @@ function getTypeLabel(type) {
         'leisure': 'Giải trí, thể thao'
     };
     return labels[type] || 'Điểm tham quan';
+}
+
+// ===========================================
+// RESPONSIVE HANDLING
+// ===========================================
+function handleSidebarOpen() {
+    if (window.innerWidth >= 1200) {
+        // Large screens - CSS will handle the positioning and width
+        // Trigger map resize after a short delay to allow CSS transition
+        setTimeout(() => {
+            forceMapResize();
+        }, 300);
+    }
+}
+
+function handleSidebarClose() {
+    // CSS will handle the reset automatically
+    // Trigger map resize after a short delay to allow CSS transition
+    setTimeout(() => {
+        forceMapResize();
+    }, 300);
+}
+
+// Handle window resize
+function handleWindowResize() {
+    // CSS will handle the responsive behavior automatically
+    // Trigger map resize on window resize
+    setTimeout(() => {
+        forceMapResize();
+    }, 100);
+}
+
+// Add resize listener
+window.addEventListener('resize', handleWindowResize);
+
+// Force map resize function
+function forceMapResize() {
+    if (hanoiMap) {
+        // Force immediate resize
+        hanoiMap.resize();
+        
+        // Also trigger a second resize after a short delay to ensure it works
+        setTimeout(() => {
+            if (hanoiMap) {
+                hanoiMap.resize();
+            }
+        }, 50);
+    }
 }
 
 // ===========================================

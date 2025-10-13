@@ -8,6 +8,7 @@
   100% { transform: rotate(360deg); }
 }
 
+
 /* Enhanced popup styles */
 .popup-actions {
   margin-top: 10px;
@@ -102,6 +103,7 @@
   min-height: 600px;
   background: #f8f9fa;
   overflow: hidden;
+  width: 100%;
 }
 
 .map-title-overlay {
@@ -146,12 +148,16 @@
   position: relative;
   width: 100%;
   height: 100%;
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+  overflow: hidden;
 }
 
 #hanoi-map {
   width: 100%;
   height: 100%;
   border: none;
+  overflow: hidden;
 }
 
 /* Map Controls */
@@ -567,22 +573,54 @@
   display: none;
 }
 
-/* Responsive Design for Map */
+/* Ensure sidebar toggle button is always visible on mobile */
+@media (max-width: 768px) {
+  .sidebar-toggle-btn {
+    display: flex !important;
+    z-index: 1001;
+  }
+}
+
+/* ===========================================
+   RESPONSIVE DESIGN - PROFESSIONAL FIX
+   =========================================== */
+
+/* Large screens - Sidebar can be open alongside map */
+@media (min-width: 1200px) {
+  .map-sidebar.open + .map-container {
+    margin-left: 350px;
+    width: calc(100% - 350px);
+  }
+}
+
+/* Medium screens - Sidebar overlays map */
+@media (max-width: 1199px) {
+  .map-sidebar {
+    position: absolute;
+    width: 350px;
+  }
+  
+  .map-container {
+    margin-left: 0;
+  }
+}
+
+/* Small screens - Full width sidebar */
 @media (max-width: 768px) {
   .map-section {
-    height: 80vh;
-    min-height: 500px;
+    height: 100vh;
+    min-height: 600px;
   }
   
   #hanoi-map {
-    height: 80vh;
-    min-height: 500px;
+    height: 100vh;
+    min-height: 600px;
   }
   
   .map-title-overlay {
     top: 40px;
-    padding: 0;
-    max-width: 400px;
+    padding: 15px 20px;
+    max-width: 90%;
   }
   
   .map-title-overlay h1 {
@@ -593,9 +631,35 @@
     font-size: 0.9rem;
   }
   
+  .map-controls {
+    top: 15px;
+    right: 15px;
+  }
+  
+  .map-control-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+  
+  .area-navigation {
+    display: none;
+  }
+  
+  .map-legend {
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+    max-width: none;
+  }
+  
+  .legend-item {
+    font-size: 0.8rem;
+  }
+  
   .map-sidebar {
     width: 100%;
-    max-width: 300px;
+    max-width: 100%;
   }
   
   .search-box {
@@ -614,27 +678,37 @@
     padding: 6px 10px;
     font-size: 11px;
   }
+  
+  .data-controls {
+    padding: 10px 15px;
+  }
+  
+  .refresh-btn {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
 }
 
+/* Extra small screens */
 @media (max-width: 480px) {
   .map-section {
-    height: 70vh;
-    min-height: 400px;
+    height: 100vh;
+    min-height: 500px;
   }
   
   #hanoi-map {
-    height: 70vh;
-    min-height: 400px;
+    height: 100vh;
+    min-height: 500px;
   }
   
   .map-title-overlay {
-    top: 30px;
-    padding: 0;
-    max-width: 350px;
+    top: 20px;
+    padding: 10px 15px;
+    max-width: 95%;
   }
   
   .map-title-overlay h1 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
   
   .map-title-overlay .line {
@@ -644,5 +718,42 @@
   
   .map-title-overlay p {
     font-size: 0.8rem;
+  }
+  
+  .map-controls {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .map-control-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 12px;
+  }
+  
+  .map-legend {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 10px;
+  }
+  
+  .legend-item {
+    font-size: 0.7rem;
+  }
+  
+  .legend-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+  }
+  
+  .data-controls {
+    padding: 8px 12px;
+  }
+  
+  .refresh-btn {
+    padding: 6px 10px;
+    font-size: 0.7rem;
   }
 }
