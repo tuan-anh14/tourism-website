@@ -20,7 +20,7 @@
         <%- include('../../partials/header') %>
 
         <!-- Banner -->
-        <header class="page-header attraction-banner" style="background-image: url('/client/img/header-bg.jfif');">
+        <header class="page-header attraction-banner" style="background-image: url('/client/img/banner-attraction.jpg');">
             <div class="header-content">
                 <h2 id="quote">Khám phá Hà Nội – Di sản và nhịp sống</h2>
                 <div class="line"></div>
@@ -45,22 +45,7 @@
                             </button>
                         </div>
                         
-                        <div class="search-divider"></div>
-                        
-                        <div class="popular-now-section">
-                            <p class="popular-now-label">Phổ biến</p>
-                            <div class="popular-suggestions">
-                                <button type="button" class="popular-suggestion" data-category="historic">
-                                    <span>Di tích lịch sử</span>
-                                </button>
-                                <button type="button" class="popular-suggestion" data-category="museum">
-                                    <span>Bảo tàng</span>
-                                </button>
-                                <button type="button" class="popular-suggestion" data-category="oldquarter">
-                                    <span>Phố cổ</span>
-                                </button>
-                            </div>
-                        </div>
+                        <!-- Popular section removed for cleaner mobile UI -->
                         
                         <div class="search-suggestions" id="search-suggestions" role="listbox" aria-label="Gợi ý tìm kiếm">
                             <!-- Suggestions will be populated by JavaScript -->
@@ -80,14 +65,15 @@
                             <% if (categories && categories.length > 0) { %>
                                 <% categories.forEach(category => { %>
                                     <option value="<%= category %>" <%= filters.category === category ? 'selected' : '' %>>
-                                        <%= category === 'di-tich-lich-su' ? 'Di tích lịch sử' : 
+                                        <%= category === 'di-tich-lich-su' ? 'Di tích lịch sử' :
                                             category === 'bao-tang' ? 'Bảo tàng' :
                                             category === 'pho-co' ? 'Phố cổ' :
                                             category === 'lang-nghe' ? 'Làng nghề' :
                                             category === 'khu-vui-choi' ? 'Khu vui chơi' :
                                             category === 'le-hoi' ? 'Lễ hội' :
                                             category === 'van-hoa' ? 'Văn hóa' :
-                                            category === 'tu-nhien' ? 'Tự nhiên' :
+                                            category === 'tu-nhien' ? 'Điểm tham quan tự nhiên' :
+        										category === 'nhan-van' ? 'Điểm tham quan nhân văn' :
                                             category === 'ton-giao' ? 'Tôn giáo' : category %>
                                     </option>
                                 <% }); %>
@@ -97,24 +83,6 @@
                 </div>
             </div>
 
-            <div class="attraction-pills" aria-label="Chọn nhanh theo nhóm">
-                <div class="pill <%= !filters.category || filters.category === 'all' ? 'active' : '' %>" data-category="all">Tất cả</div>
-                <% if (categories && categories.length > 0) { %>
-                    <% categories.forEach(category => { %>
-                        <div class="pill <%= filters.category === category ? 'active' : '' %>" data-category="<%= category %>">
-                            <%= category === 'di-tich-lich-su' ? 'Di tích lịch sử' : 
-                                category === 'bao-tang' ? 'Bảo tàng' :
-                                category === 'pho-co' ? 'Phố cổ' :
-                                category === 'lang-nghe' ? 'Làng nghề' :
-                                category === 'khu-vui-choi' ? 'Khu vui chơi' :
-                                category === 'le-hoi' ? 'Lễ hội' :
-                                category === 'van-hoa' ? 'Văn hóa' :
-                                category === 'tu-nhien' ? 'Tự nhiên' :
-                                category === 'ton-giao' ? 'Tôn giáo' : category %>
-                        </div>
-                    <% }); %>
-                <% } %>
-            </div>
 
             <!-- Grid -->
             <section class="attraction-grid" aria-label="Danh sách điểm tham quan">
@@ -153,20 +121,17 @@
                                                 <i class="fa fa-star <%= i <= Math.round(attraction.rating?.average || 0) ? 'active' : '' %>"></i>
                                             <% } %>
                                         </div>
-                                        <span class="rating-text">
-                                            <%= (attraction.rating?.average || 0).toFixed(1) %> 
-                                            (<%= attraction.rating?.count || 0 %> đánh giá)
-                                        </span>
                                     </div>
                                     <div class="category-badge">
-                                        <%= attraction.category === 'di-tich-lich-su' ? 'Di tích lịch sử' : 
+                                        <%= attraction.category === 'di-tich-lich-su' ? 'Di tích lịch sử' :
                                             attraction.category === 'bao-tang' ? 'Bảo tàng' :
                                             attraction.category === 'pho-co' ? 'Phố cổ' :
                                             attraction.category === 'lang-nghe' ? 'Làng nghề' :
                                             attraction.category === 'khu-vui-choi' ? 'Khu vui chơi' :
                                             attraction.category === 'le-hoi' ? 'Lễ hội' :
                                             attraction.category === 'van-hoa' ? 'Văn hóa' :
-                                            attraction.category === 'tu-nhien' ? 'Tự nhiên' :
+                                            attraction.category === 'tu-nhien' ? 'Điểm tham quan tự nhiên' :
+        										attraction.category === 'nhan-van' ? 'Điểm tham quan nhân văn' :
                                             attraction.category === 'ton-giao' ? 'Tôn giáo' : attraction.category %>
                                     </div>
                                 </div>

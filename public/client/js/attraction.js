@@ -14,30 +14,44 @@
     var popularTimerId;
     
     // Search data
+    // Use category codes consistent with cards/select options
     var attractionsData = [
-        { title: "Hoàng thành Thăng Long", category: "historic", icon: "fa-landmark" },
-        { title: "Văn Miếu - Quốc Tử Giám", category: "historic", icon: "fa-university" },
-        { title: "Bảo tàng Dân tộc học Việt Nam", category: "museum", icon: "fa-museum" },
-        { title: "Phố cổ Hà Nội", category: "oldquarter", icon: "fa-home" },
-        { title: "Làng gốm Bát Tràng", category: "craft", icon: "fa-palette" },
-        { title: "Công viên Thống Nhất", category: "park", icon: "fa-tree" },
-        { title: "Lễ hội Gióng", category: "festival", icon: "fa-calendar" },
-        { title: "Hồ Hoàn Kiếm", category: "historic", icon: "fa-water" },
-        { title: "Chùa Một Cột", category: "historic", icon: "fa-temple-buddhist" },
-        { title: "Nhà hát Lớn Hà Nội", category: "historic", icon: "fa-theater-masks" }
+        { title: "Hoàng thành Thăng Long", category: "di-tich-lich-su", icon: "fa-landmark" },
+        { title: "Văn Miếu - Quốc Tử Giám", category: "di-tich-lich-su", icon: "fa-university" },
+        { title: "Bảo tàng Dân tộc học Việt Nam", category: "bao-tang", icon: "fa-museum" },
+        { title: "Phố cổ Hà Nội", category: "pho-co", icon: "fa-home" },
+        { title: "Làng gốm Bát Tràng", category: "lang-nghe", icon: "fa-palette" },
+        { title: "Công viên Thống Nhất", category: "khu-vui-choi", icon: "fa-tree" },
+        { title: "Lễ hội Gióng", category: "le-hoi", icon: "fa-calendar" },
+        { title: "Hồ Hoàn Kiếm", category: "di-tich-lich-su", icon: "fa-water" },
+        { title: "Chùa Một Cột", category: "di-tich-lich-su", icon: "fa-temple-buddhist" },
+        { title: "Nhà hát Lớn Hà Nội", category: "van-hoa", icon: "fa-theater-masks" }
     ];
     
+    // Map all categories to two groups for suggestion labels
     var categoryLabels = {
-        historic: "Di tích lịch sử",
-        museum: "Bảo tàng", 
-        oldquarter: "Phố cổ",
-        craft: "Làng nghề",
-        park: "Khu vui chơi",
-        festival: "Lễ hội"
+        'di-tich-lich-su': "Điểm tham quan nhân văn",
+        'bao-tang': "Điểm tham quan nhân văn", 
+        'pho-co': "Điểm tham quan nhân văn",
+        'lang-nghe': "Điểm tham quan nhân văn",
+        'khu-vui-choi': "Điểm tham quan nhân văn",
+        'le-hoi': "Điểm tham quan nhân văn",
+        'van-hoa': 'Điểm tham quan nhân văn',
+        'tu-nhien': 'Điểm tham quan tự nhiên',
+        'nhan-van': 'Điểm tham quan nhân văn',
+        'ton-giao': 'Điểm tham quan nhân văn'
     };
 
     function normalize(str) {
-        return (str || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+        // Lowercase, strip diacritics, remove punctuation/dash variants, collapse spaces
+        return (str || "")
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/\p{Diacritic}/gu, "")
+            .replace(/[\-–—]/g, " ")
+            .replace(/[^a-z0-9\s]/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
     }
 
     function getCardData(card) {
@@ -48,12 +62,15 @@
     }
 
     function applyFilters() {
-        var q = normalize(searchInput ? searchInput.value : '');
+        // Use hero search input as fallback for text filtering
+        var textSource = searchInput && searchInput.value ? searchInput.value : (heroSearchInput ? heroSearchInput.value : '');
+        var q = normalize(textSource || '');
         var selected = categorySelect ? categorySelect.value : 'all';
         var activePill = pillContainer ? pillContainer.querySelector('.pill.active') : null;
         var pillCategory = activePill ? activePill.getAttribute('data-category') : 'all';
 
-        var category = selected !== 'all' ? selected : pillCategory;
+        // Only apply category when there is no text query; keep them independent
+        var category = q ? 'all' : (selected !== 'all' ? selected : pillCategory);
 
         cards.forEach(function (card) {
             var data = getCardData(card);
@@ -136,14 +153,14 @@
         }
         hideSuggestions();
         
-        // Update filters to show this attraction
+        // Update filters to show this attraction (use text match; keep category = all to avoid code mismatches)
         if (searchInput) searchInput.value = title;
-        if (categorySelect) categorySelect.value = category;
+        if (categorySelect) categorySelect.value = 'all';
         
         // Update pills
         if (pillContainer) {
             pillContainer.querySelectorAll('.pill').forEach(function(p) { p.classList.remove('active'); });
-            var targetPill = pillContainer.querySelector('[data-category="' + category + '"]');
+            var targetPill = pillContainer.querySelector('[data-category="all"]');
             if (targetPill) targetPill.classList.add('active');
         }
         
@@ -277,7 +294,10 @@
             if (pillContainer) pillContainer.querySelectorAll('.pill').forEach(function (p) { p.classList.remove('active'); });
             applyFilters();
         });
-        if (pillContainer) pillContainer.addEventListener('click', onPillClick);
+        // Pills are removed on listing page to avoid duplication; guard listener
+        if (pillContainer && pillContainer.offsetParent !== null) {
+            pillContainer.addEventListener('click', onPillClick);
+        }
         
         // Hero search event listeners
         if (heroSearchInput) {
@@ -298,15 +318,7 @@
             searchClearBtn.addEventListener('click', onSearchClear);
         }
         
-        if (popularSuggestions) {
-            popularSuggestions.forEach(function(button) {
-                button.addEventListener('click', onPopularSuggestionClick);
-            });
-            // start rotation, show one at a time
-            rotatePopularSuggestion();
-            if (popularTimerId) clearInterval(popularTimerId);
-            popularTimerId = setInterval(rotatePopularSuggestion, 2000);
-        }
+        // Popular suggestions removed in UI
         
         // Global click listener for hiding suggestions
         document.addEventListener('click', onDocumentClick);
