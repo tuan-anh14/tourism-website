@@ -151,6 +151,44 @@
 .map-overview .itinerary-overview__map-gradient-vertical { display: none; }
 .map-overview .itinerary-overview__map-gradient-horizontal { display: none; }
 
+/* MapLibre controls and popup clarity tweaks */
+/* Improve visibility of popup close button (the “X”) */
+.mapboxgl-popup-close-button,
+.maplibregl-popup-close-button {
+    top: -10px;
+    right: -10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #111 !important;
+    color: #fff !important;
+    border: 0;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    opacity: 1;
+}
+.mapboxgl-popup-close-button:hover,
+.maplibregl-popup-close-button:hover { background: var(--primary-color) !important; }
+
+/* Ensure + / − icons always show even if default icon fonts are overridden */
+.mapboxgl-ctrl button,
+.maplibregl-ctrl button { 
+    width: 36px; height: 36px; border-radius: 10px; background: #fff; 
+    border: 1px solid rgba(0,0,0,0.12); box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon,
+.maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon,
+.mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon,
+.maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon { background: none !important; width: auto; height: auto; }
+.mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon::before,
+.maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon::before { content: "+"; font-size: 20px; font-weight: 700; color: #111; line-height: 1; }
+.mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon::before,
+.maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon::before { content: "−"; font-size: 20px; font-weight: 700; color: #111; line-height: 1; }
+
+@media (max-width: 768px) {
+  .mapboxgl-ctrl button,
+  .maplibregl-ctrl button { width: 34px; height: 34px; }
+}
+
 @media (max-width: 768px) {
     .map-overview .itinerary-overview__map-container { border-radius: 16px; }
 }
@@ -814,6 +852,8 @@ body.dark .description-content p {
     min-width: 120px;
     font-size: 18px; /* same visual weight as intro title */
     font-family: var(--ff-heading); /* match intro heading font */
+    white-space: nowrap; /* keep label and following colon on one line */
+    margin-right: 6px; /* spacing before the colon/text */
 }
 
 /* Nested lists styling */
@@ -885,11 +925,12 @@ body.dark .description-content p {
     .info-section .itinerary-day__info-card {
         padding: 1rem;
     }
-    
+    /* Keep label inline on mobile so the ':' never wraps to next line */
     .info-section .itinerary-day__info-list li strong {
-        min-width: 100px;
-        display: block;
-        margin-bottom: 0.25rem;
+        min-width: unset;
+        display: inline;
+        margin: 0 6px 0 0;
+        white-space: nowrap;
     }
     
     .info-section .itinerary-day__info-list li {
