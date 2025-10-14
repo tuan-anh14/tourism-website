@@ -266,34 +266,86 @@
                         </div>
                     </div>
                 </section>
-                <!-- Gallery Section -->
-                <section id="gallery" class="content-section">
-                    <div class="section-header">
-                        <h2>Hình ảnh</h2>
-                        <p>Khám phá vẻ đẹp qua những bức ảnh</p>
+                <!-- Media Showcase Section (Hero + Thumbnails) -->
+                <section id="media-showcase" class="content-section media-showcase">
+                    <% 
+                        const images = (attraction && attraction.images) || []; 
+                        const heroImg = images[0] && images[0].url ? images[0].url : '/client/img/carousel-img3.jpg';
+                        const thumbs = images.slice(0, 6);
+                    %>
+                    <div class="media-hero-wrapper">
+                    <div class="media-hero" style="background-image: url('<%= heroImg %>');" data-images='[<%=(images && images.length ? images.map(i=>`"${i.url}"`).join(',') : '')%>]' data-index="0">
+                        <div class="media-hero__overlay"></div>
+                        <div class="media-hero__content">
+                            <h2 class="media-hero__title">Hình ảnh</h2>
+                            <p class="media-hero__subtitle">Khám phá vẻ đẹp qua những bức ảnh nổi bật của địa điểm này</p>
+                        </div>
+                        <button class="media-hero__nav prev" type="button" aria-label="Ảnh trước"><i class="fa fa-chevron-left"></i></button>
+                        <button class="media-hero__nav next" type="button" aria-label="Ảnh sau"><i class="fa fa-chevron-right"></i></button>
+                        <button class="media-hero__zoom" type="button" aria-label="Phóng to"><i class="fa fa-search-plus"></i></button>
                     </div>
-                    
-                    <div class="gallery-grid">
-                        <% if (attraction && attraction.images && attraction.images.length > 0) { %>
-                            <% attraction.images.forEach(function(img, index) { %>
-                                <div class="gallery-item" data-index="<%= index %>">
-                                    <img src="<%= img.url %>" 
-                                         alt="<%= img.alt || img.caption || 'Hình ảnh điểm tham quan' %>" 
-                                         loading="lazy" />
-                                    <div class="gallery-overlay">
-                                        <button class="gallery-btn" type="button">
-                                            <i class="fa fa-search-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            <% }); %>
-                        <% } else { %>
-                            <div class="no-gallery">
-                                <p>Hình ảnh đang được cập nhật</p>
-                            </div>
-                        <% } %>
+                    </div>
+                    <div class="media-thumbs">
+                        <div class="media-thumbs__header"></div>
+                        <div class="media-thumbs__grid">
+                            <% if (thumbs.length > 0) { %>
+                                <% thumbs.forEach(function(img){ %>
+                                    <button class="thumb" type="button" data-src="<%= img.url %>">
+                                        <span class="thumb__img" style="background-image:url('<%= img.url %>')"></span>
+                                    </button>
+                                <% }); %>
+                            <% } else { %>
+                                <div class="no-gallery"><p>Hình ảnh đang được cập nhật</p></div>
+                            <% } %>
+                        </div>
                     </div>
                 </section>
+
+                <script>
+                document.addEventListener('DOMContentLoaded', function(){
+                  var heroEl = document.querySelector('#media-showcase .media-hero');
+                  if(!heroEl) return;
+                  var images = (heroEl.getAttribute('data-images')||'').replace(/&quot;/g,'"');
+                  try { images = JSON.parse(images); } catch(e){ images = []; }
+                  var idx = 0;
+                  function setHero(src){ heroEl.style.transition = 'background-image .35s ease'; heroEl.style.backgroundImage = 'url("'+src+'")'; }
+                  function show(i){ if(!images.length) return; idx = (i+images.length)%images.length; setHero(images[idx]); }
+                  document.querySelectorAll('#media-showcase .thumb').forEach(function(btn){
+                    btn.addEventListener('click', function(){ var s=this.getAttribute('data-src'); var i = images.indexOf(s); if(i>-1){ show(i); } else { setHero(s); }
+                    });
+                  });
+                  var prevBtn = document.querySelector('#media-showcase .media-hero__nav.prev');
+                  var nextBtn = document.querySelector('#media-showcase .media-hero__nav.next');
+                  if(prevBtn) prevBtn.addEventListener('click', function(){ show(idx-1); });
+                  if(nextBtn) nextBtn.addEventListener('click', function(){ show(idx+1); });
+                  // Zoom in-place using existing modal
+                  var zoomBtn = document.querySelector('#media-showcase .media-hero__zoom');
+                  var modal = document.getElementById('galleryModal');
+                  var modalImg = modal ? modal.querySelector('.modal-image img') : null;
+                  var modalClose = modal ? modal.querySelector('.modal-close') : null;
+                  var modalPrev = modal ? modal.querySelector('.nav-prev') : null;
+                  var modalNext = modal ? modal.querySelector('.nav-next') : null;
+                  var modalCounter = modal ? modal.querySelector('.image-counter') : null;
+
+                  function srcFromBg(){
+                    var s = heroEl.style.backgroundImage || '';
+                    return s.replace(/^url\("|"\)$/g,'');
+                  }
+                  function openModal(){
+                    if(!modal || !modalImg) return;
+                    if(!images.length){ modalImg.src = srcFromBg(); }
+                    else { modalImg.src = images[idx]; }
+                    if(modalCounter){ modalCounter.textContent = (idx+1)+' / '+(images.length||1); }
+                    modal.classList.add('active');
+                  }
+                  function closeModal(){ if(modal) modal.classList.remove('active'); }
+
+                  if(zoomBtn) zoomBtn.addEventListener('click', openModal);
+                  if(modalClose) modalClose.addEventListener('click', closeModal);
+                  if(modalPrev) modalPrev.addEventListener('click', function(){ show(idx-1); if(modalImg){ modalImg.src = images[idx]; if(modalCounter){ modalCounter.textContent = (idx+1)+' / '+images.length; } } });
+                  if(modalNext) modalNext.addEventListener('click', function(){ show(idx+1); if(modalImg){ modalImg.src = images[idx]; if(modalCounter){ modalCounter.textContent = (idx+1)+' / '+images.length; } } });
+                });
+                </script>
 
                 <!-- Reviews Section (Pro) -->
                 <section id="reviews" class="content-section reviews-pro">
