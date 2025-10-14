@@ -59,7 +59,10 @@ function mapAttractionToView(attractionDoc) {
         amenities: Array.isArray(doc.amenities) ? doc.amenities : [],
         notes: Array.isArray(doc.visitor_notes) ? doc.visitor_notes : (Array.isArray(doc.notes) ? doc.notes : []),
         tags: Array.isArray(doc.tags) ? doc.tags : [],
-        route: Array.isArray(doc.route) ? doc.route : []
+        route: Array.isArray(doc.route) ? doc.route : [],
+        // Review widget script
+        reviewWidgetScript: doc.reviewWidgetScript || '',
+        hasReviewWidget: !!(doc.reviewWidgetScript && doc.reviewWidgetScript.trim())
     };
 }
 module.exports.attractions = async (req, res) => {

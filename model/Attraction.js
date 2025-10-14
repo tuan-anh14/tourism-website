@@ -67,26 +67,10 @@ const attractionSchema = new mongoose.Schema({
     lng: { type: Number },
     link: { type: String }
   },
-  reviews: [{
-    user: {
-      type: String,
-      required: true
-    },
-    rating: {
-      type: Number,
-      min: 1,
-      max: 5,
-      required: true
-    },
-    comment: {
-      type: String,
-      trim: true
-    },
-    date: {
-      type: Date,
-      default: Date.now
-    }
-  }],
+  reviewWidgetScript: {
+    type: String,
+    trim: true
+  },
   isActive: {
     type: Boolean,
     default: true,
@@ -138,17 +122,15 @@ attractionSchema.virtual('mainImage').get(function() {
   return this.images?.[0] || null;
 });
 
-// Virtual: Đánh giá trung bình
-attractionSchema.virtual('averageRating').get(function() {
-  if (this.reviews?.length === 0) return 0;
-  const sum = this.reviews?.reduce((acc, review) => acc + review.rating, 0) || 0;
-  return (sum / this.reviews?.length).toFixed(1);
+// Virtual: Có review widget hay không
+attractionSchema.virtual('hasReviewWidget').get(function() {
+  return !!(this.reviewWidgetScript && this.reviewWidgetScript.trim());
 });
 
 // === INSTANCE METHODS ===
-// Cập nhật đánh giá
-attractionSchema.methods.addReview = function(reviewData) {
-  this.reviews.push(reviewData);
+// Cập nhật review widget script
+attractionSchema.methods.updateReviewWidget = function(script) {
+  this.reviewWidgetScript = script;
   return this.save();
 };
 

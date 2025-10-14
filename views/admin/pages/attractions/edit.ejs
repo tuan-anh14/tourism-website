@@ -280,6 +280,28 @@
             </div>
         </div>
 
+        <!-- === REVIEW WIDGET === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-star me-2"></i>
+                        Đoạn mã nhúng Google Review
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="reviewWidgetScript" class="form-label">Mã nhúng widget đánh giá</label>
+                        <textarea class="form-control" id="reviewWidgetScript" name="reviewWidgetScript" rows="8" placeholder="Dán đoạn mã nhúng từ EmbedSocial, Google Reviews hoặc dịch vụ tương tự..."><%= attraction.reviewWidgetScript || '' %></textarea>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Dán toàn bộ đoạn script/iframe từ EmbedSocial hoặc Google Reviews. Hệ thống sẽ tự động hiển thị widget đánh giá trên trang chi tiết.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- === TRẠNG THÁI === -->
         <div class="col-12">
             <div class="card mb-4">

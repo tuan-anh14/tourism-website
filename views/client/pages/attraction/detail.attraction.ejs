@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="/client/css/responsive.css" />
         <link rel="stylesheet" href="/client/css/harmony.css" />
         <link rel="stylesheet" href="/client/css/attraction-detail.css" />
+        <link rel="stylesheet" href="/client/css/review-widgets.css" />
         <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" />
         <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
@@ -39,16 +40,17 @@
                 <p class="font-color">
                     <%= (attraction && attraction.shortDescription) || 'Khám phá vẻ đẹp văn hóa Hà Nội' %>
                 </p>
-                <% if (attraction && attraction.rating && attraction.rating.average > 0) { %>
+                <% if (attraction && attraction.hasReviewWidget) { %>
                     <div class="banner-rating">
                         <div class="stars">
-                            <% for (let i = 1; i <= 5; i++) { %>
-                                <i class="fa fa-star <%= i <= Math.round(attraction.rating.average) ? 'active' : '' %>"></i>
-                            <% } %>
+                            <i class="fa fa-star active"></i>
+                            <i class="fa fa-star active"></i>
+                            <i class="fa fa-star active"></i>
+                            <i class="fa fa-star active"></i>
+                            <i class="fa fa-star active"></i>
                         </div>
                         <span class="rating-text">
-                            <%= attraction.rating.average.toFixed(1) %> 
-                            (<%= attraction.rating.count %> đánh giá)
+                            Đánh giá từ Google Reviews
                         </span>
                     </div>
                 <% } %>
@@ -351,60 +353,32 @@
                             <h2>Đừng chỉ nghe chúng tôi, hãy nghe du khách</h2>
                             <p class="subheading">Chúng tôi yêu du khách của mình – và rất vui vì điều đó là tương hỗ.</p>
                         </div>
-                        <div class="reviews-pro__provider">
-                            <img class="reviews-pro__provider-icon" src="/client/img/google.svg" alt="Google reviews" />
-                            <div class="reviews-pro__provider-stats">
-                                <span class="overall"><%= (attraction && attraction.rating && attraction.rating.average) ? attraction.rating.average.toFixed(1) : '0.0' %></span>
-                                <span class="stars" aria-label="<%= (attraction && attraction.rating && attraction.rating.average) ? Math.round(attraction.rating.average) : 0 %> sao">
-                                    <% for (let i = 1; i <= 5; i++) { %>
-                                        <i class="fa fa-star <%= i <= Math.round((attraction && attraction.rating && attraction.rating.average) || 0) ? 'active' : '' %>"></i>
-                                    <% } %>
-                                </span>
-                                <a class="reviews-pro__link" href="#reviews" rel="noreferrer">Xem tất cả đánh giá</a>
-                                <span class="total">(<%= (attraction && attraction.rating && attraction.rating.count) || 0 %>)</span>
-                            </div>
-                        </div>
                     </div>
 
-                    <div class="reviews-pro__slider">
-                        <button class="reviews-pro__nav prev" type="button" aria-label="Trước">&#10094;</button>
-                        <div class="reviews-pro__viewport">
-                            <div class="reviews-pro__track">
-                                <% if (attraction && attraction.reviews && attraction.reviews.length > 0) { %>
-                                    <% attraction.reviews.forEach(function(review) { %>
-                                    <div class="reviews-pro__card">
-                                        <img class="reviews-pro__quote" src="/client/img/quote.svg" alt="Quote" />
-                                        <div class="reviews-pro__text"><%= review.comment || review.content || 'Đánh giá từ khách du lịch' %></div>
-                                        <div class="reviews-pro__stars">
-                                            <% for (var i=0;i<review.rating;i++){ %><i class="fa fa-star"></i><% } %>
-                                        </div>
-                                        <div class="reviews-pro__meta">
-                                            <span class="name"><%= review.user %></span>
-                                            <span class="dot"></span>
-                                            <span class="country"><%= review.country || 'Việt Nam' %></span>
-                                        </div>
-                                    </div>
-                                    <% }); %>
-                                <% } else { %>
-                                    <div class="no-reviews">
-                                        <div class="reviews-pro__card">
-                                            <img class="reviews-pro__quote" src="/client/img/quote.svg" alt="Quote" />
-                                            <div class="reviews-pro__text">Chưa có đánh giá nào. Hãy là người đầu tiên chia sẻ trải nghiệm của bạn!</div>
-                                            <div class="reviews-pro__stars">
-                                                <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                            </div>
-                                            <div class="reviews-pro__meta">
-                                                <span class="name">Khách du lịch</span>
-                                                <span class="dot"></span>
-                                                <span class="country">Việt Nam</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <% } %>
+                    <!-- Review Widget Container -->
+                    <div class="reviews-widget-container">
+                        <% if (attraction && attraction.reviewWidgetScript && attraction.reviewWidgetScript.trim()) { %>
+                            <!-- Render the review widget script (Shapo, EmbedSocial, etc.) -->
+                            <div class="widget-wrapper">
+                                <%- attraction.reviewWidgetScript %>
                             </div>
-                        </div>
-                        <div class="reviews-pro__dots" role="tablist" aria-label="Chuyển trang đánh giá"></div>
-                        <button class="reviews-pro__nav next" type="button" aria-label="Sau">&#10095;</button>
+                        <% } else { %>
+                            <!-- Fallback: No reviews message -->
+                            <div class="no-reviews-widget">
+                                <div class="reviews-pro__card">
+                                    <img class="reviews-pro__quote" src="/client/img/quote.svg" alt="Quote" />
+                                    <div class="reviews-pro__text">Chưa có đánh giá nào. Hãy là người đầu tiên chia sẻ trải nghiệm của bạn!</div>
+                                    <div class="reviews-pro__stars">
+                                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="reviews-pro__meta">
+                                        <span class="name">Khách du lịch</span>
+                                        <span class="dot"></span>
+                                        <span class="country">Việt Nam</span>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
                     </div>
                 </section>
             </div>
@@ -434,43 +408,6 @@
             </div>
         </div>
 
-        <!-- Review Modal -->
-        <div class="review-modal" id="reviewModal">
-            <div class="modal-overlay"></div>
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Viết đánh giá</h3>
-                    <button class="modal-close" type="button">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-                <form class="review-form">
-                    <div class="form-group">
-                        <label>Đánh giá của bạn</label>
-                        <div class="rating-input">
-                            <input type="radio" name="rating" value="5" id="star5" />
-                            <label for="star5"><i class="fa fa-star"></i></label>
-                            <input type="radio" name="rating" value="4" id="star4" />
-                            <label for="star4"><i class="fa fa-star"></i></label>
-                            <input type="radio" name="rating" value="3" id="star3" />
-                            <label for="star3"><i class="fa fa-star"></i></label>
-                            <input type="radio" name="rating" value="2" id="star2" />
-                            <label for="star2"><i class="fa fa-star"></i></label>
-                            <input type="radio" name="rating" value="1" id="star1" />
-                            <label for="star1"><i class="fa fa-star"></i></label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="reviewText">Nhận xét</label>
-                        <textarea id="reviewText" placeholder="Chia sẻ trải nghiệm của bạn..." rows="4"></textarea>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn-outline" id="cancelReview">Hủy</button>
-                        <button type="submit" class="btn-primary">Gửi đánh giá</button>
-                    </div>
-                </form>
-            </div>
-        </div>
 
         <!-- up scroll -->
         <i class="arrow" onclick="topFunction()" id="upbtn"></i>
@@ -490,6 +427,49 @@
         <script>
             // Initialize attraction data with server data
             window.AttractionData.initialize(null);
+            
+            // Initialize review widgets
+            document.addEventListener('DOMContentLoaded', function() {
+                initializeReviewWidgets();
+            });
+            
+            function initializeReviewWidgets() {
+                const widgetWrapper = document.querySelector('.widget-wrapper');
+                if (!widgetWrapper) return;
+                
+                // Add loading class initially
+                widgetWrapper.classList.add('loading');
+                
+                // Check for Shapo widget
+                const shapoWidget = document.getElementById('shapo-widget-5e8084e2fdcaa2cd9b10');
+                if (shapoWidget) {
+                    // Monitor when Shapo widget loads
+                    const observer = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                                widgetWrapper.classList.remove('loading');
+                                widgetWrapper.classList.add('loaded');
+                            }
+                        });
+                    });
+                    
+                    observer.observe(shapoWidget, {
+                        childList: true,
+                        subtree: true
+                    });
+                    
+                    // Fallback timeout
+                    setTimeout(function() {
+                        if (widgetWrapper.classList.contains('loading')) {
+                            widgetWrapper.classList.remove('loading');
+                            widgetWrapper.classList.add('loaded');
+                        }
+                    }, 5000);
+                } else {
+                    // No widget found, remove loading state
+                    widgetWrapper.classList.remove('loading');
+                }
+            }
         </script>
     </body>
     </html>
