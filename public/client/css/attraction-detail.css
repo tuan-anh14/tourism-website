@@ -340,7 +340,7 @@ body.dark textarea { background: rgba(38,38,40,0.9); border-color: rgba(255,255,
 
 .itinerary-day__content-container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 .itinerary-day__columns { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; align-items: start; }
-.itinerary-day__description-card, .itinerary-day__info-card, .itinerary-day__highlights, .itinerary-day__notes { background: rgba(255,255,255,0.96); border-radius: 16px; box-shadow: var(--shadow-light); padding: 16px; }
+.itinerary-day__description-card, .itinerary-day__info-card, .itinerary-day__highlights, .itinerary-day__notes { background: rgba(255,255,255,0.96); border-radius: 16px; box-shadow: var(--shadow-light); padding: 20px; border: 1px solid rgba(0,0,0,0.05); }
 .itinerary-day__info-list, .itinerary-day__highlights-list, .itinerary-day__notes-list { margin: 0; padding-left: 18px; }
 .itinerary-day__info-list .note { color: var(--medium-gray); font-size: 13px; list-style: none; padding-left: 0; }
 /* Improved readability */
@@ -475,6 +475,16 @@ body.dark textarea { background: rgba(38,38,40,0.9); border-color: rgba(255,255,
     box-shadow: var(--shadow-light);
     border: 1px solid rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
+}
+
+/* Intro and Info headings to match other cards */
+.intro-section h3,
+.info-section h3 {
+    font-family: var(--ff-heading);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin: 0 0 16px 0;
 }
 
 .itinerary-day__guidelines h3,
@@ -711,4 +721,134 @@ body.dark .itinerary-day__amenities-list li {
 /* Dark Mode Support for New Layout */
 body.dark .description-content p {
     color: #e5e7eb;
+}
+
+/* ===========================================
+   ATTRACTION DETAIL INFO SECTION STYLING
+   =========================================== */
+
+/* Style info section to match guidelines/experiences cards */
+.info-section .itinerary-day__info-card {
+    background: var(--white);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+    margin-bottom: 1rem;
+}
+
+.info-section .itinerary-day__info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-section .itinerary-day__info-list li {
+    padding: 0.5rem 0;
+    border-bottom: none; /* keep clean, no divided blocks */
+    font-size: 16px; /* match intro paragraph size */
+    line-height: 1.7;
+    color: var(--dark-gray);
+    font-family: var(--ff-primary);
+}
+
+.info-section .itinerary-day__info-list li:last-child {
+    border-bottom: none;
+}
+
+.info-section .itinerary-day__info-list li strong {
+    color: var(--secondary-color);
+    font-weight: 600;
+    display: inline-block;
+    min-width: 120px;
+    font-size: 18px; /* same visual weight as intro title */
+    font-family: var(--ff-heading); /* match intro heading font */
+}
+
+/* Nested lists styling */
+.info-section .itinerary-day__info-list ul {
+    margin: 0.25rem 0 0 0;
+    padding-left: 0; /* flush with content, bullets handled by pseudo */
+    list-style: none;
+}
+
+.info-section .itinerary-day__info-list ul li {
+    padding: 0.25rem 0 0.25rem 20px; /* small, consistent indent for bullet */
+    border-bottom: none;
+    font-size: 16px; /* match intro paragraph size */
+    color: var(--dark-gray);
+    position: relative;
+    font-family: var(--ff-primary);
+}
+
+.info-section .itinerary-day__info-list ul li:before {
+    content: "•";
+    color: var(--primary-color);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+/* Ticket info text styling */
+.ticket-info-text {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin-top: 0.25rem;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.ticket-info-text pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: var(--ff-primary);
+    font-size: 16px; /* match intro paragraph size */
+    color: var(--dark-gray);
+}
+
+/* Opening hours text styling */
+.opening-hours-text {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin-top: 0.25rem;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.opening-hours-text pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: var(--ff-primary);
+    font-size: 16px; /* match intro paragraph size */
+    color: var(--dark-gray);
+}
+
+/* Responsive adjustments for info section */
+@media (max-width: 768px) {
+    .info-section .itinerary-day__info-card {
+        padding: 1rem;
+    }
+    
+    .info-section .itinerary-day__info-list li strong {
+        min-width: 100px;
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+    
+    .info-section .itinerary-day__info-list li {
+        padding: 0.5rem 0;
+    }
+}
+
+/* Dark mode alignment for intro/info cards */
+body.dark .itinerary-day__description-card,
+body.dark .itinerary-day__info-card {
+    background: rgba(20, 20, 22, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
 }
