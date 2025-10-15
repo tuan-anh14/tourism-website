@@ -71,7 +71,7 @@
             </div>
 
             <!-- Entertainment Grid (single grid like attractions) -->
-            <section class="entertainment-grid" aria-label="Danh sách địa điểm giải trí">
+            <div class="entertainment-grid" aria-label="Danh sách địa điểm giải trí">
                 <% entertainments.forEach(function(entertainment){ %>
                     <article class="standard-card entertainment-item" data-zone="<%= entertainment.zone %>">
                         <div class="card-image-container">
@@ -106,7 +106,7 @@
                         </div>
                     </article>
                 <% }) %>
-            </section>
+            </div>
         </section>
 
         <!-- up scroll -->
