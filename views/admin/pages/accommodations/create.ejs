@@ -64,8 +64,12 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="priceFrom" class="form-label">Giá từ (VNĐ) <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="priceFrom" name="priceFrom" min="0" required>
+                                <label for="priceFromDisplay" class="form-label">Giá từ (VNĐ) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="text" inputmode="numeric" pattern="[0-9.,\s]*" class="form-control" id="priceFromDisplay" placeholder="VD: 1.200.000" aria-describedby="vnd-addon" required>
+                                    <span class="input-group-text" id="vnd-addon">VNĐ</span>
+                                </div>
+                                <input type="hidden" id="priceFrom" name="priceFrom" value="">
                             </div>
                         </div>
                         <div class="col-12">
@@ -421,10 +425,36 @@ function removeField(button) {
 }
 
 // Form validation
+// Currency helpers (VNĐ)
+function parseCurrencyToNumber(value) {
+    if (!value) return '';
+    var digits = String(value).replace(/[^0-9]/g, '');
+    return digits ? String(parseInt(digits, 10)) : '';
+}
+
+function formatVND(value) {
+    if (!value) return '';
+    try { return Number(value).toLocaleString('vi-VN'); } catch { return value; }
+}
+
+const priceDisplay = document.getElementById('priceFromDisplay');
+const priceHidden = document.getElementById('priceFrom');
+
+priceDisplay.addEventListener('input', function() {
+    var raw = parseCurrencyToNumber(this.value);
+    priceHidden.value = raw;
+});
+
+priceDisplay.addEventListener('blur', function(){
+    var raw = parseCurrencyToNumber(this.value);
+    this.value = formatVND(raw);
+});
+
 document.getElementById('accommodationForm').addEventListener('submit', function(e) {
     const name = document.getElementById('name').value.trim();
     const type = document.getElementById('type').value;
-    const priceFrom = document.getElementById('priceFrom').value;
+    const priceFrom = priceHidden.value || parseCurrencyToNumber(priceDisplay.value);
+    priceHidden.value = priceFrom;
     const description = document.getElementById('description').value.trim();
     const street = document.getElementById('address[street]').value.trim();
     const district = document.getElementById('address[district]').value.trim();
@@ -435,9 +465,9 @@ document.getElementById('accommodationForm').addEventListener('submit', function
         return false;
     }
 
-    if (parseFloat(priceFrom) < 0) {
+    if (!priceFrom || parseFloat(priceFrom) < 0) {
         e.preventDefault();
-        alert('Giá từ phải là số dương!');
+        alert('Giá từ (VNĐ) phải là số dương!');
         return false;
     }
 });

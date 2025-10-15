@@ -6,14 +6,10 @@ const entertainmentSchema = new mongoose.Schema({
     required: true,
     trim: true,
     enum: [
-      'Khu văn hóa - nghệ thuật',
-      'Công viên ngoài trời', 
-      'Trung tâm thương mại - vui chơi trong nhà',
-      'Khu vui chơi tổng hợp',
-      'Khu thể thao - giải trí',
-      'Khu ẩm thực - giải trí',
-      'Khu du lịch sinh thái',
-      'Khu vui chơi trẻ em'
+      'Khu văn hoá – nghệ thuật',
+      'Địa điểm ngoài trời – công viên',
+      'Trung tâm thương mại – Khu vui chơi trong nhà',
+      'Khu vui chơi giải trí quy mô lớn'
     ]
   },
   name: {
@@ -29,17 +25,9 @@ const entertainmentSchema = new mongoose.Schema({
     trim: true,
     enum: [
       'Nhà hát - Biểu diễn nghệ thuật',
-      'Rạp chiếu phim',
-      'Karaoke - Quán bar',
-      'Công viên giải trí',
-      'Trung tâm thương mại',
-      'Khu vui chơi trẻ em',
-      'Sân vận động - Thể thao',
-      'Bảo tàng - Triển lãm',
-      'Khu ẩm thực - Giải trí',
-      'Công viên nước',
-      'Khu du lịch sinh thái',
-      'Khu vui chơi tổng hợp'
+      'Công viên ngoài trời',
+      'Trung tâm thương mại - vui chơi trong nhà',
+      'Khu vui chơi giải trí quy mô lớn'
     ]
   },
   address: {

@@ -32,7 +32,7 @@
         />
         <link rel="manifest" href="/site.webmanifest" />
     </head>
-    <body
+    <body class="entertainment"
         onload='if (window.location.href.substr(window.location.href.length - 6) == "#about") { introAboutLogoTransition(); }'
     >
         <!--navbar-->
@@ -51,177 +51,62 @@
 
         <!--Entertainment Venues Section-->
         <section class="page-section" id="entertainments">
-            <div class="title">
-                <h1 class="dark">Địa điểm giải trí</h1>
-                <div class="line"></div>
-            </div>
+            <!-- Removed page title per request -->
             
-            <!-- Filter Section -->
-            <div class="filter-section mb-4">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8">
-                            <div class="filter-buttons text-center">
-                                <button class="filter-btn active" data-zone="all">Tất cả</button>
-                                <% zones.forEach(function(zone){ %>
-                                    <button class="filter-btn" data-zone="<%= zone %>"><%= zone %></button>
-                                <% }) %>
-                            </div>
-                        </div>
+            <!-- Filters (aligned like attractions) -->
+            <div class="entertainment-filters" aria-label="Bộ lọc giải trí">
+                <div class="filter-row">
+                    <div class="box" role="search">
+                        <i class="fa fa-search" aria-hidden="true" style="margin-right:8px"></i>
+                        <input id="ent-search" type="text" placeholder="Tìm theo tên địa điểm..." aria-label="Tìm theo tên" />
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-zone="all">Tất cả</button>
+                        <button class="filter-btn" data-zone="Khu văn hoá – nghệ thuật">Khu văn hoá – nghệ thuật</button>
+                        <button class="filter-btn" data-zone="Địa điểm ngoài trời – công viên">Địa điểm ngoài trời – công viên</button>
+                        <button class="filter-btn" data-zone="Trung tâm thương mại – Khu vui chơi trong nhà">Trung tâm thương mại – Khu vui chơi trong nhà</button>
+                        <button class="filter-btn" data-zone="Khu vui chơi giải trí quy mô lớn">Khu vui chơi giải trí quy mô lớn</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Entertainment Grid -->
-            <div class="entertainment-grid">
-                <div class="standard-row" id="entertainmentRow1">
-                    <% entertainments.slice(0, 3).forEach(function(entertainment){ %>
-                        <article class="standard-card col entertainment-item" data-zone="<%= entertainment.zone %>">
-                            <div class="card-image-container">
-                                <img src="<%= entertainment.images && entertainment.images.length > 0 ? entertainment.images[0] : '/client/img/header-bg.jfif' %>" alt="<%= entertainment.name %>" />
-                                <% if (entertainment.featured) { %>
-                                    <div class="featured-badge">
-                                        <i class="fa fa-star"></i> Nổi bật
-                                    </div>
-                                <% } %>
-                            </div>
-                            <div class="card-content">
-                                <h4 class="dark"><%= entertainment.name %></h4>
-                                <p class="font-color">
-                                    <%= entertainment.activities && entertainment.activities.length > 0 
-                                        ? entertainment.activities.slice(0, 2).join(', ') + (entertainment.activities.length > 2 ? '...' : '')
-                                        : entertainment.type %>
-                                </p>
-                                <div class="entertainment-details">
-                                    <p><strong>Khu vực:</strong> <%= entertainment.zone %></p>
-                                    <p><strong>Loại hình:</strong> <%= entertainment.type %></p>
-                                    <p><strong>Giá vé:</strong> <%= entertainment.ticket %></p>
-                                    <% if (entertainment.averageRating > 0) { %>
-                                        <p><strong>Đánh giá:</strong> 
-                                            <% for (let i = 1; i <= 5; i++) { %>
-                                                <i class="fa fa-star <%= i <= entertainment.averageRating ? 'text-warning' : 'text-muted' %>"></i>
-                                            <% } %>
-                                            (<%= entertainment.reviewCount %>)
-                                        </p>
-                                    <% } %>
+            <!-- Entertainment Grid (single grid like attractions) -->
+            <section class="entertainment-grid" aria-label="Danh sách địa điểm giải trí">
+                <% entertainments.forEach(function(entertainment){ %>
+                    <article class="standard-card entertainment-item" data-zone="<%= entertainment.zone %>">
+                        <div class="card-image-container">
+                            <img src="<%= entertainment.images && entertainment.images.length > 0 ? entertainment.images[0] : '/client/img/header-bg.jfif' %>" alt="<%= entertainment.name %>" />
+                            <% if (entertainment.featured) { %>
+                                <div class="featured-badge">
+                                    <i class="fa fa-star"></i> Nổi bật
                                 </div>
-                                <a href="/entertainment/<%= entertainment._id %>" class="ctn">Xem chi tiết</a>
-                            </div>
-                        </article>
-                    <% }) %>
-                </div>
-
-                <!-- Additional Entertainment Row -->
-                <div class="standard-row" style="margin-top: 60px;" id="entertainmentRow2">
-                    <% entertainments.slice(3, 6).forEach(function(entertainment){ %>
-                        <article class="standard-card col entertainment-item" data-zone="<%= entertainment.zone %>">
-                            <div class="card-image-container">
-                                <img src="<%= entertainment.images && entertainment.images.length > 0 ? entertainment.images[0] : '/client/img/header-bg.jfif' %>" alt="<%= entertainment.name %>" />
-                                <% if (entertainment.featured) { %>
-                                    <div class="featured-badge">
-                                        <i class="fa fa-star"></i> Nổi bật
-                                    </div>
-                                <% } %>
-                            </div>
-                            <div class="card-content">
-                                <h4 class="dark"><%= entertainment.name %></h4>
-                                <p class="font-color">
-                                    <%= entertainment.activities && entertainment.activities.length > 0 
-                                        ? entertainment.activities.slice(0, 2).join(', ') + (entertainment.activities.length > 2 ? '...' : '')
-                                        : entertainment.type %>
-                                </p>
-                                <div class="entertainment-details">
-                                    <p><strong>Khu vực:</strong> <%= entertainment.zone %></p>
-                                    <p><strong>Loại hình:</strong> <%= entertainment.type %></p>
-                                    <p><strong>Giá vé:</strong> <%= entertainment.ticket %></p>
-                                    <% if (entertainment.averageRating > 0) { %>
-                                        <p><strong>Đánh giá:</strong> 
-                                            <% for (let i = 1; i <= 5; i++) { %>
-                                                <i class="fa fa-star <%= i <= entertainment.averageRating ? 'text-warning' : 'text-muted' %>"></i>
-                                            <% } %>
-                                            (<%= entertainment.reviewCount %>)
-                                        </p>
-                                    <% } %>
-                                </div>
-                                <a href="/entertainment/<%= entertainment._id %>" class="ctn">Xem chi tiết</a>
-                            </div>
-                        </article>
-                    <% }) %>
-                </div>
-            </div>
-        </section>
-
-        <!--Events Section-->
-        <section class="page-section" id="events">
-            <div class="title">
-                <h1 class="dark">Sự kiện nổi bật</h1>
-                <div class="line"></div>
-            </div>
-            <div class="standard-row">
-                <% events.slice(0, 3).forEach(function(event){ %>
-                    <article class="standard-card col">
-                        <img src="<%= event.image %>" alt="<%= event.title %>" />
+                            <% } %>
+                        </div>
                         <div class="card-content">
-                            <h4 class="dark"><%= event.title %></h4>
-                            <p class="font-color"><%= event.description %></p>
-                            <div class="event-details">
-                                <p><strong>Thời gian:</strong> <%= event.details.time %></p>
-                                <p><strong>Địa điểm:</strong> <%= event.details.location %></p>
-                                <% if (event.details.language) { %>
-                                    <p><strong>Ngôn ngữ:</strong> <%= event.details.language %></p>
-                                <% } %>
-                                <p><strong><%= event.details.price.includes('Miễn') ? 'Phí:' : 'Giá vé:' %></strong> <%= event.details.price %></p>
-                                <% if (event.startDate) { %>
-                                    <p><strong>Ngày:</strong> <%= new Date(event.startDate).toLocaleDateString('vi-VN') %></p>
+                            <h3 class="title dark"><%= entertainment.name %></h3>
+                            <p class="font-color">
+                                <%= entertainment.activities && entertainment.activities.length > 0 
+                                    ? entertainment.activities.slice(0, 2).join(', ') + (entertainment.activities.length > 2 ? '...' : '')
+                                    : entertainment.type %>
+                            </p>
+                            <div class="entertainment-details">
+                                <p><strong>Khu vực:</strong> <%= entertainment.zone %></p>
+                                <p><strong>Loại hình:</strong> <%= entertainment.type %></p>
+                                <p><strong>Giá vé:</strong> <%= entertainment.ticket %></p>
+                                <% if (entertainment.averageRating > 0) { %>
+                                    <p><strong>Đánh giá:</strong> 
+                                        <% for (let i = 1; i <= 5; i++) { %>
+                                            <i class="fa fa-star <%= i <= entertainment.averageRating ? 'text-warning' : 'text-muted' %>"></i>
+                                        <% } %>
+                                        (<%= entertainment.reviewCount %>)
+                                    </p>
                                 <% } %>
                             </div>
-                            <a href="<%= event.action.href %>" class="ctn"><%= event.action.label %></a>
+                            <a href="/entertainment/<%= entertainment._id %>" class="ctn">Xem chi tiết</a>
                         </div>
                     </article>
                 <% }) %>
-            </div>
-
-            <!-- Additional Events Row -->
-            <div class="standard-row" style="margin-top: 60px;">
-                <% events.slice(3, 6).forEach(function(event){ %>
-                    <article class="standard-card col">
-                        <img src="<%= event.image %>" alt="<%= event.title %>" />
-                        <div class="card-content">
-                            <h4 class="dark"><%= event.title %></h4>
-                            <p class="font-color"><%= event.description %></p>
-                            <div class="event-details">
-                                <p><strong>Thời gian:</strong> <%= event.details.time %></p>
-                                <p><strong>Địa điểm:</strong> <%= event.details.location %></p>
-                                <% if (event.details.language) { %>
-                                    <p><strong>Ngôn ngữ:</strong> <%= event.details.language %></p>
-                                <% } %>
-                                <p><strong><%= event.details.price.includes('Miễn') ? 'Phí:' : 'Giá vé:' %></strong> <%= event.details.price %></p>
-                                <% if (event.startDate) { %>
-                                    <p><strong>Ngày:</strong> <%= new Date(event.startDate).toLocaleDateString('vi-VN') %></p>
-                                <% } %>
-                            </div>
-                            <a href="<%= event.action.href %>" class="ctn"><%= event.action.label %></a>
-                        </div>
-                    </article>
-                <% }) %>
-            </div>
-        </section>
-
-        <!-- Event Categories -->
-        <section class="page-section event-categories">
-            <div class="title">
-                <h1 class="dark">Chủ đề giải trí</h1>
-                <div class="line"></div>
-            </div>
-            <div class="standard-row">
-                <% categories.forEach(function(category){ %>
-                    <div class="feature-card">
-                        <i class="fa <%= category.icon %>"></i>
-                        <h3><%= category.title %></h3>
-                        <p><%= category.description %></p>
-                    </div>
-                <% }) %>
-            </div>
+            </section>
         </section>
 
         <!-- up scroll -->
@@ -234,127 +119,52 @@
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="/client/js/includes.js"></script>
         <script src="/client/js/script.js"></script>
-        
         <script>
-        // Entertainment filtering functionality
+        // Entertainment filtering functionality (smooth, class-based like attractions)
         document.addEventListener('DOMContentLoaded', function() {
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            const entertainmentItems = document.querySelectorAll('.entertainment-item');
-            
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Remove active class from all buttons
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    // Add active class to clicked button
-                    this.classList.add('active');
-                    
-                    const selectedZone = this.getAttribute('data-zone');
-                    
-                    // Filter entertainment items
-                    entertainmentItems.forEach(item => {
-                        const itemZone = item.getAttribute('data-zone');
-                        
-                        if (selectedZone === 'all' || itemZone === selectedZone) {
-                            item.style.display = 'block';
-                            item.style.animation = 'fadeIn 0.5s ease-in';
+            var filterButtons = Array.prototype.slice.call(document.querySelectorAll('.filter-btn'));
+            var items = Array.prototype.slice.call(document.querySelectorAll('.entertainment-item'));
+            var searchInput = document.getElementById('ent-search');
+
+            function normalize(str){ return (str||'').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,''); }
+
+            function applyFilter(zone) {
+                items.forEach(function(item){
+                    var itemZone = item.getAttribute('data-zone');
+                    var title = normalize(item.querySelector('.title').textContent);
+                    var q = normalize(searchInput ? searchInput.value : '');
+                    var matchText = q ? title.includes(q) : true;
+                    var visible = matchText && (zone === 'all' || itemZone === zone);
+                    if (visible) {
+                        if (item.classList.contains('is-hidden')) {
+                            item.classList.remove('is-hidden');
+                            requestAnimationFrame(function(){ item.classList.remove('is-hiding'); });
                         } else {
-                            item.style.display = 'none';
+                            item.classList.remove('is-hiding');
                         }
-                    });
+                    } else {
+                        if (!item.classList.contains('is-hidden')) {
+                            item.classList.add('is-hiding');
+                            setTimeout(function(){ item.classList.add('is-hidden'); }, 160);
+                        }
+                    }
+                });
+            }
+
+            filterButtons.forEach(function(btn){
+                btn.addEventListener('click', function(){
+                    filterButtons.forEach(function(b){ b.classList.remove('active'); });
+                    this.classList.add('active');
+                    applyFilter(this.getAttribute('data-zone'));
                 });
             });
+
+            if (searchInput) searchInput.addEventListener('input', function(){
+                var active = document.querySelector('.filter-btn.active');
+                var zone = active ? active.getAttribute('data-zone') : 'all';
+                applyFilter(zone);
+            });
         });
-        
-        // Add CSS animations
-        const style = document.createElement('style');
-        style.textContent = `
-            .filter-section {
-                margin: 40px 0;
-            }
-            
-            .filter-buttons {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                justify-content: center;
-            }
-            
-            .filter-btn {
-                padding: 8px 16px;
-                border: 2px solid #ddd;
-                background: white;
-                color: #333;
-                border-radius: 25px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                font-size: 14px;
-                white-space: nowrap;
-            }
-            
-            .filter-btn:hover {
-                border-color: #007bff;
-                color: #007bff;
-            }
-            
-            .filter-btn.active {
-                background: #007bff;
-                border-color: #007bff;
-                color: white;
-            }
-            
-            .card-image-container {
-                position: relative;
-                overflow: hidden;
-            }
-            
-            .featured-badge {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                background: linear-gradient(45deg, #ff6b6b, #ffa500);
-                color: white;
-                padding: 4px 8px;
-                border-radius: 15px;
-                font-size: 12px;
-                font-weight: bold;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            }
-            
-            .entertainment-details {
-                font-size: 14px;
-                line-height: 1.4;
-            }
-            
-            .entertainment-details p {
-                margin-bottom: 5px;
-            }
-            
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(20px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            
-            @media (max-width: 768px) {
-                .filter-buttons {
-                    flex-direction: column;
-                    align-items: center;
-                }
-                
-                .filter-btn {
-                    width: 200px;
-                    margin: 5px 0;
-                }
-                
-                .standard-row {
-                    flex-direction: column;
-                }
-                
-                .standard-card {
-                    margin-bottom: 30px;
-                }
-            }
-        `;
-        document.head.appendChild(style);
         </script>
     </body>
 </html>

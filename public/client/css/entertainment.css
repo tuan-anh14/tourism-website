@@ -1,14 +1,21 @@
+/* Grid align like attractions */
+.entertainment .entertainment-grid { max-width: 1200px; margin: 0 auto 80px; padding: 0 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+@media (max-width: 1024px) { .entertainment .entertainment-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .entertainment .entertainment-grid { grid-template-columns: 1fr; } }
+
+/* Card spacing parity with attractions */
+.entertainment .standard-card { background: rgba(255,255,255,0.9); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); display: flex; flex-direction: column; }
+.entertainment .standard-card .card-content { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.entertainment .standard-card .title { font-size: 18px; margin: 0; }
 /* ===== ENTERTAINMENT PAGE STYLES ===== */
 
-/* Filter Section */
-.filter-section {
-    margin: 40px 0;
-    padding: 20px 0;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 15px;
-}
+/* Filter Section (align with attraction page) */
+.entertainment .entertainment-filters { max-width: 1200px; margin: 28px auto 16px; padding: 0 16px; }
+.entertainment .entertainment-filters .filter-row { display: grid; grid-template-columns: 1fr; }
+.entertainment .entertainment-filters .box { background: rgba(255,255,255,0.9); border-radius: 12px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); padding: 10px 12px; display: flex; align-items: center; margin-bottom: 12px; }
+.entertainment .entertainment-filters .box input { width: 100%; background: transparent; border: none; outline: none; color: inherit; height: 40px; font-size: 15px; }
 
-.filter-buttons {
+.entertainment .filter-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -16,7 +23,7 @@
     align-items: center;
 }
 
-.filter-btn {
+.entertainment .filter-btn {
     padding: 10px 20px;
     border: 2px solid #ddd;
     background: white;
@@ -30,15 +37,15 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.filter-btn:hover {
+.entertainment .filter-btn:hover {
     border-color: #007bff;
     color: #007bff;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,123,255,0.2);
 }
 
-.filter-btn.active {
-    background: linear-gradient(45deg, #007bff, #0056b3);
+.entertainment .filter-btn.active {
+    background: #fc036b;
     border-color: #007bff;
     color: white;
     transform: translateY(-2px);
@@ -132,9 +139,9 @@
     }
 }
 
-.entertainment-item {
-    animation: slideIn 0.6s ease-out;
-}
+.entertainment-item { transition: opacity .18s ease, transform .18s ease; }
+.entertainment-item.is-hiding { opacity: 0; transform: translateY(6px); pointer-events: none; }
+.entertainment-item.is-hidden { display: none !important; }
 
 /* Event Cards */
 .event-details {
