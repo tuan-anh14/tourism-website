@@ -6,8 +6,6 @@ const authController = require('../../controller/admin/auth.controller');
 const attractionController = require('../../controller/admin/attraction.controller');
 const accommodationController = require('../../controller/admin/accommodation.controller');
 const cuisineController = require('../../controller/admin/cuisine.controller');
-const transportationController = require('../../controller/admin/transportation.controller');
-const transportationPageController = require('../../controller/admin/transportationPage.controller');
 const entertainmentController = require('../../controller/admin/entertainment.controller');
 
 const router = express.Router();
@@ -75,20 +73,6 @@ router.get('/cuisines/edit/:id', requireAuth, requireEditor, cuisineController.e
 router.patch('/cuisines/edit/:id', requireAuth, requireEditor, uploadMultiple, cuisineController.editPatch);
 router.delete('/cuisines/delete/:id', requireAuth, requireEditor, cuisineController.destroy);
 router.post('/cuisines/delete/:id', requireAuth, requireEditor, cuisineController.destroy);
-
-// Transportations routes
-router.get('/transportations', requireAuth, transportationController.index);
-router.get('/transportations/create', requireAuth, requireEditor, transportationController.create);
-router.post('/transportations', requireAuth, requireEditor, uploadMultiple, transportationController.store);
-router.get('/transportations/:id', requireAuth, transportationController.show);
-router.get('/transportations/edit/:id', requireAuth, requireEditor, transportationController.edit);
-router.patch('/transportations/edit/:id', requireAuth, requireEditor, uploadMultiple, transportationController.editPatch);
-router.delete('/transportations/delete/:id', requireAuth, requireEditor, transportationController.destroy);
-router.post('/transportations/delete/:id', requireAuth, requireEditor, transportationController.destroy);
-
-// Transportation page content CMS
-router.get('/transportation-page', requireAuth, requireEditor, transportationPageController.edit);
-router.post('/transportation-page', requireAuth, requireEditor, transportationPageController.update);
 
 // Entertainment routes
 router.get('/entertainments', requireAuth, entertainmentController.index);
