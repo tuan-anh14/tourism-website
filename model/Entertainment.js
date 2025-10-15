@@ -22,13 +22,7 @@ const entertainmentSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    trim: true,
-    enum: [
-      'Nhà hát - Biểu diễn nghệ thuật',
-      'Công viên ngoài trời',
-      'Trung tâm thương mại - vui chơi trong nhà',
-      'Khu vui chơi giải trí quy mô lớn'
-    ]
+    trim: true
   },
   address: {
     type: String,

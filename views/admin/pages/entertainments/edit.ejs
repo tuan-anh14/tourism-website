@@ -56,21 +56,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="type" class="form-label">Loại hình <span class="text-danger">*</span></label>
-                                <select class="form-select" id="type" name="type" required>
-                                    <option value="">Chọn loại hình</option>
-                                    <option value="Nhà hát - Biểu diễn nghệ thuật" <%= entertainment.type === 'Nhà hát - Biểu diễn nghệ thuật' ? 'selected' : '' %>>Nhà hát - Biểu diễn nghệ thuật</option>
-                                    <option value="Rạp chiếu phim" <%= entertainment.type === 'Rạp chiếu phim' ? 'selected' : '' %>>Rạp chiếu phim</option>
-                                    <option value="Karaoke - Quán bar" <%= entertainment.type === 'Karaoke - Quán bar' ? 'selected' : '' %>>Karaoke - Quán bar</option>
-                                    <option value="Công viên giải trí" <%= entertainment.type === 'Công viên giải trí' ? 'selected' : '' %>>Công viên giải trí</option>
-                                    <option value="Trung tâm thương mại" <%= entertainment.type === 'Trung tâm thương mại' ? 'selected' : '' %>>Trung tâm thương mại</option>
-                                    <option value="Khu vui chơi trẻ em" <%= entertainment.type === 'Khu vui chơi trẻ em' ? 'selected' : '' %>>Khu vui chơi trẻ em</option>
-                                    <option value="Sân vận động - Thể thao" <%= entertainment.type === 'Sân vận động - Thể thao' ? 'selected' : '' %>>Sân vận động - Thể thao</option>
-                                    <option value="Bảo tàng - Triển lãm" <%= entertainment.type === 'Bảo tàng - Triển lãm' ? 'selected' : '' %>>Bảo tàng - Triển lãm</option>
-                                    <option value="Khu ẩm thực - Giải trí" <%= entertainment.type === 'Khu ẩm thực - Giải trí' ? 'selected' : '' %>>Khu ẩm thực - Giải trí</option>
-                                    <option value="Công viên nước" <%= entertainment.type === 'Công viên nước' ? 'selected' : '' %>>Công viên nước</option>
-                                    <option value="Khu du lịch sinh thái" <%= entertainment.type === 'Khu du lịch sinh thái' ? 'selected' : '' %>>Khu du lịch sinh thái</option>
-                                    <option value="Khu vui chơi tổng hợp" <%= entertainment.type === 'Khu vui chơi tổng hợp' ? 'selected' : '' %>>Khu vui chơi tổng hợp</option>
-                                </select>
+                                <input type="text" class="form-control" id="type" name="type" value="<%= entertainment.type %>" placeholder="VD: Nhà hát, Công viên, ..." required>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -261,25 +247,25 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="lat" class="form-label">Vĩ độ <span class="text-danger">*</span></label>
-                                <input type="number" step="any" class="form-control" id="lat" name="lat" 
-                                       value="<%= entertainment.map.lat %>" required>
+                                <label for="map[lat]" class="form-label">Vĩ độ (Latitude)</label>
+                                <input type="number" step="any" class="form-control" id="map[lat]" name="map[lat]" 
+                                       value="<%= entertainment && entertainment.map ? entertainment.map.lat : '' %>">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="lng" class="form-label">Kinh độ <span class="text-danger">*</span></label>
-                                <input type="number" step="any" class="form-control" id="lng" name="lng" 
-                                       value="<%= entertainment.map.lng %>" required>
+                                <label for="map[lng]" class="form-label">Kinh độ (Longitude)</label>
+                                <input type="number" step="any" class="form-control" id="map[lng]" name="map[lng]" 
+                                       value="<%= entertainment && entertainment.map ? entertainment.map.lng : '' %>">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="embedUrl" class="form-label">URL nhúng Google Maps <span class="text-danger">*</span></label>
-                                <input type="url" class="form-control" id="embedUrl" name="embedUrl" 
-                                       value="<%= entertainment.map.embedUrl %>" 
-                                       placeholder="https://www.google.com/maps/embed?pb=..." required>
-                                <div class="form-text">Lấy từ Google Maps > Chia sẻ > Nhúng bản đồ</div>
+                                <label for="map[embedUrl]" class="form-label">URL nhúng Google Maps (tuỳ chọn)</label>
+                                <input type="url" class="form-control" id="map[embedUrl]" name="map[embedUrl]" 
+                                       value="<%= entertainment && entertainment.map ? entertainment.map.embedUrl : '' %>" 
+                                       placeholder="https://www.google.com/maps/embed?pb=...">
+                                <div class="form-text">Có thể bỏ trống. Hệ thống dùng lat/lng để hiển thị bản đồ.</div>
                             </div>
                         </div>
                     </div>

@@ -41,35 +41,17 @@
                                 <label for="zone" class="form-label">Khu vực <span class="text-danger">*</span></label>
                                 <select class="form-select" id="zone" name="zone" required>
                                     <option value="">Chọn khu vực</option>
-                                    <option value="Khu văn hóa - nghệ thuật" <%= (entertainment && entertainment.zone === 'Khu văn hóa - nghệ thuật') ? 'selected' : '' %>>Khu văn hóa - nghệ thuật</option>
-                                    <option value="Công viên ngoài trời" <%= (entertainment && entertainment.zone === 'Công viên ngoài trời') ? 'selected' : '' %>>Công viên ngoài trời</option>
-                                    <option value="Trung tâm thương mại - vui chơi trong nhà" <%= (entertainment && entertainment.zone === 'Trung tâm thương mại - vui chơi trong nhà') ? 'selected' : '' %>>Trung tâm thương mại - vui chơi trong nhà</option>
-                                    <option value="Khu vui chơi tổng hợp" <%= (entertainment && entertainment.zone === 'Khu vui chơi tổng hợp') ? 'selected' : '' %>>Khu vui chơi tổng hợp</option>
-                                    <option value="Khu thể thao - giải trí" <%= (entertainment && entertainment.zone === 'Khu thể thao - giải trí') ? 'selected' : '' %>>Khu thể thao - giải trí</option>
-                                    <option value="Khu ẩm thực - giải trí" <%= (entertainment && entertainment.zone === 'Khu ẩm thực - giải trí') ? 'selected' : '' %>>Khu ẩm thực - giải trí</option>
-                                    <option value="Khu du lịch sinh thái" <%= (entertainment && entertainment.zone === 'Khu du lịch sinh thái') ? 'selected' : '' %>>Khu du lịch sinh thái</option>
-                                    <option value="Khu vui chơi trẻ em" <%= (entertainment && entertainment.zone === 'Khu vui chơi trẻ em') ? 'selected' : '' %>>Khu vui chơi trẻ em</option>
+                                    <option value="Khu văn hoá – nghệ thuật">Khu văn hoá – nghệ thuật</option>
+                                    <option value="Địa điểm ngoài trời – công viên">Địa điểm ngoài trời – công viên</option>
+                                    <option value="Trung tâm thương mại – Khu vui chơi trong nhà">Trung tâm thương mại – Khu vui chơi trong nhà</option>
+                                    <option value="Khu vui chơi giải trí quy mô lớn">Khu vui chơi giải trí quy mô lớn</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-12">
                             <div class="mb-3">
                                 <label for="type" class="form-label">Loại hình <span class="text-danger">*</span></label>
-                                <select class="form-select" id="type" name="type" required>
-                                    <option value="">Chọn loại hình</option>
-                                    <option value="Nhà hát - Biểu diễn nghệ thuật" <%= (entertainment && entertainment.type === 'Nhà hát - Biểu diễn nghệ thuật') ? 'selected' : '' %>>Nhà hát - Biểu diễn nghệ thuật</option>
-                                    <option value="Rạp chiếu phim" <%= (entertainment && entertainment.type === 'Rạp chiếu phim') ? 'selected' : '' %>>Rạp chiếu phim</option>
-                                    <option value="Karaoke - Quán bar" <%= (entertainment && entertainment.type === 'Karaoke - Quán bar') ? 'selected' : '' %>>Karaoke - Quán bar</option>
-                                    <option value="Công viên giải trí" <%= (entertainment && entertainment.type === 'Công viên giải trí') ? 'selected' : '' %>>Công viên giải trí</option>
-                                    <option value="Trung tâm thương mại" <%= (entertainment && entertainment.type === 'Trung tâm thương mại') ? 'selected' : '' %>>Trung tâm thương mại</option>
-                                    <option value="Khu vui chơi trẻ em" <%= (entertainment && entertainment.type === 'Khu vui chơi trẻ em') ? 'selected' : '' %>>Khu vui chơi trẻ em</option>
-                                    <option value="Sân vận động - Thể thao" <%= (entertainment && entertainment.type === 'Sân vận động - Thể thao') ? 'selected' : '' %>>Sân vận động - Thể thao</option>
-                                    <option value="Bảo tàng - Triển lãm" <%= (entertainment && entertainment.type === 'Bảo tàng - Triển lãm') ? 'selected' : '' %>>Bảo tàng - Triển lãm</option>
-                                    <option value="Khu ẩm thực - Giải trí" <%= (entertainment && entertainment.type === 'Khu ẩm thực - Giải trí') ? 'selected' : '' %>>Khu ẩm thực - Giải trí</option>
-                                    <option value="Công viên nước" <%= (entertainment && entertainment.type === 'Công viên nước') ? 'selected' : '' %>>Công viên nước</option>
-                                    <option value="Khu du lịch sinh thái" <%= (entertainment && entertainment.type === 'Khu du lịch sinh thái') ? 'selected' : '' %>>Khu du lịch sinh thái</option>
-                                    <option value="Khu vui chơi tổng hợp" <%= (entertainment && entertainment.type === 'Khu vui chơi tổng hợp') ? 'selected' : '' %>>Khu vui chơi tổng hợp</option>
-                                </select>
+                                <input type="text" class="form-control" id="type" name="type" placeholder="VD: Nhà hát, Công viên, ..." required>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-12">
@@ -236,25 +218,25 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="lat" class="form-label">Vĩ độ <span class="text-danger">*</span></label>
-                                <input type="number" step="any" class="form-control" id="lat" name="lat" 
-                                       value="<%= entertainment ? entertainment.map.lat : '' %>" required>
+                                <label for="map[lat]" class="form-label">Vĩ độ (Latitude)</label>
+                                <input type="number" step="any" class="form-control" id="map[lat]" name="map[lat]" 
+                                       value="<%= entertainment && entertainment.map ? entertainment.map.lat : '' %>">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="lng" class="form-label">Kinh độ <span class="text-danger">*</span></label>
-                                <input type="number" step="any" class="form-control" id="lng" name="lng" 
-                                       value="<%= entertainment ? entertainment.map.lng : '' %>" required>
+                                <label for="map[lng]" class="form-label">Kinh độ (Longitude)</label>
+                                <input type="number" step="any" class="form-control" id="map[lng]" name="map[lng]" 
+                                       value="<%= entertainment && entertainment.map ? entertainment.map.lng : '' %>">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="embedUrl" class="form-label">URL nhúng Google Maps <span class="text-danger">*</span></label>
-                                <input type="url" class="form-control" id="embedUrl" name="embedUrl" 
-                                       value="<%= entertainment ? entertainment.map.embedUrl : '' %>" 
-                                       placeholder="https://www.google.com/maps/embed?pb=..." required>
-                                <div class="form-text">Lấy từ Google Maps > Chia sẻ > Nhúng bản đồ</div>
+                                <label for="map[embedUrl]" class="form-label">URL nhúng Google Maps (tuỳ chọn)</label>
+                                <input type="url" class="form-control" id="map[embedUrl]" name="map[embedUrl]" 
+                                       value="<%= entertainment && entertainment.map ? entertainment.map.embedUrl : '' %>" 
+                                       placeholder="https://www.google.com/maps/embed?pb=...">
+                                <div class="form-text">Có thể bỏ trống. Hệ thống dùng lat/lng để hiển thị bản đồ.</div>
                             </div>
                         </div>
                     </div>

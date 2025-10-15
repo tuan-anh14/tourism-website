@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="/client/css/responsive.css" />
         <link rel="stylesheet" href="/client/css/harmony.css" />
         <link rel="stylesheet" href="/client/css/entertainment-detail.css" />
+        <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" />
         <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
@@ -123,11 +124,26 @@
                 </section>
             <% } %>
 
-            <!-- Map -->
+            <!-- Map (MapLibre, tái sử dụng logic giống attractions, nhưng phạm vi nhỏ) -->
             <section class="content-section">
                 <h2 class="dark">Vị trí</h2>
-                <div class="map-container">
-                    <iframe src="<%= detail.mapEmbed %>" allowfullscreen="" loading="lazy"></iframe>
+                <div class="itinerary-overview__map-container">
+                    <div class="itinerary-overview__map-inner">
+                        <div id="entMap"
+                             class="itinerary-overview__map"
+                             data-lat="<%= (entertainment && entertainment.map && entertainment.map.lat) || 21.028511 %>"
+                             data-lng="<%= (entertainment && entertainment.map && entertainment.map.lng) || 105.804817 %>"
+                             data-zoom="<%= (detail && detail.mapZoom) || 14 %>"
+                             data-name="<%= entertainment && entertainment.name %>"
+                             data-address="<%= entertainment && entertainment.address %>"
+                             data-image="<%= (entertainment && entertainment.images && entertainment.images[0]) || '' %>"></div>
+                        <div class="map-overview__heading">
+                            <h2>Bản đồ vị trí</h2>
+                            <p>Vị trí địa điểm giải trí trên bản đồ</p>
+                        </div>
+                    </div>
+                    <div class="itinerary-overview__map-gradient-vertical"></div>
+                    <div class="itinerary-overview__map-gradient-horizontal"></div>
                 </div>
             </section>
 
@@ -150,5 +166,26 @@
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="/client/js/includes.js"></script>
         <script src="/client/js/script.js"></script>
+        <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            var el = document.getElementById('entMap');
+            if(!el || typeof maplibregl === 'undefined') return;
+            var lat = parseFloat(el.getAttribute('data-lat') || '21.028511');
+            var lng = parseFloat(el.getAttribute('data-lng') || '105.804817');
+            var zoom = parseFloat(el.getAttribute('data-zoom') || '14');
+            // Dùng tiles miễn phí từ OpenStreetMap via MapTiler demo (an toàn cho demo). Có thể thay bằng key riêng nếu cần.
+            var styleUrl = 'https://demotiles.maplibre.org/style.json';
+            var map = new maplibregl.Map({ container: 'entMap', style: styleUrl, center: [lng, lat], zoom: zoom, attributionControl: true });
+            map.addControl(new maplibregl.NavigationControl(), 'top-right');
+            // Marker + popup
+            var name = el.getAttribute('data-name') || '';
+            var address = el.getAttribute('data-address') || '';
+            var img = el.getAttribute('data-image') || '';
+            var popupHtml = '<div style="max-width:220px">'+ (img ? '<img src="'+img+'" style="width:100%;height:110px;object-fit:cover;border-radius:6px;margin-bottom:6px" />' : '') +
+                            '<strong>'+name+'</strong><br/>' + address + '</div>';
+            new maplibregl.Marker({ color: '#fc036b' }).setLngLat([lng, lat]).setPopup(new maplibregl.Popup().setHTML(popupHtml)).addTo(map);
+        });
+        </script>
     </body>
     </html>
