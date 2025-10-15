@@ -43,7 +43,19 @@
             var matchesArea = area === 'all' ? true : d.area === area;
             var matchesP = matchesPrice(priceBucket, d.price);
             var visible = matchesText && matchesType && matchesArea && matchesP;
-            if (visible) card.classList.remove('is-hidden'); else card.classList.add('is-hidden');
+            if (visible) {
+                if (card.classList.contains('is-hidden')) {
+                    card.classList.remove('is-hidden');
+                    requestAnimationFrame(function(){ card.classList.remove('is-hiding'); });
+                } else {
+                    card.classList.remove('is-hiding');
+                }
+            } else {
+                if (!card.classList.contains('is-hidden')) {
+                    card.classList.add('is-hiding');
+                    setTimeout(function(){ card.classList.add('is-hidden'); }, 160);
+                }
+            }
         });
     }
 

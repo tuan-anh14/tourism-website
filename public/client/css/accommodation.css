@@ -25,7 +25,7 @@ body.dark .accommodation .navbar .nav-links li a { color: #fff; }
 .accommodation-banner .header-content h1 { color: #fff; }
 
 /* Filters */
-.accommodation-filters { max-width: 1200px; margin: 28px auto 16px; padding: 0 16px; }
+.accommodation .accommodation-filters { width: 100%; max-width: 1200px; margin: 28px auto 16px; padding: 0 16px; box-sizing: border-box; }
 .accommodation-filters .filter-row { display: grid; grid-template-columns: 1fr 180px 180px 200px; gap: 12px; }
 .accommodation-filters .box { background: rgba(255,255,255,0.9); border-radius: 12px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); padding: 10px 12px; display: flex; align-items: center; }
 .accommodation-filters .box input,
@@ -42,23 +42,26 @@ body.dark .accommodation-pills .pill { border-color: rgba(255,255,255,0.2); }
 .accommodation-pills .pill.active, .accommodation-pills .pill:hover { background: #fff; color: #111; }
 
 /* Grid */
-.accommodation-grid { max-width: 1200px; margin: 0 auto 80px; padding: 0 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.accommodation .accommodation-grid { width: 100%; max-width: 1200px; margin: 0 auto 80px; padding: 0 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; box-sizing: border-box; }
 @media (max-width: 1024px) { .accommodation-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .accommodation-filters .filter-row { grid-template-columns: 1fr 1fr; } .accommodation-grid { grid-template-columns: 1fr; } }
 
 /* Card */
-.accommodation-card { background: rgba(255,255,255,0.9); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: transform .2s ease, box-shadow .2s ease; display: flex; flex-direction: column; }
+.accommodation-card { background: rgba(255,255,255,0.9); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: transform .2s ease, box-shadow .2s ease, opacity .18s ease; display: flex; flex-direction: column; opacity: 1; will-change: opacity, transform; }
 body.dark .accommodation-card { background: rgba(20,20,22,0.9); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
 .accommodation-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.12); }
 .accommodation-card .thumb { position: relative; width: 100%; padding-top: 62%; overflow: hidden; }
 .accommodation-card .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
 .accommodation-card:hover .thumb img { transform: scale(1.06); }
+/* Smooth filter states */
+.accommodation-card.is-hiding { opacity: 0; transform: translateY(6px); pointer-events: none; }
+.accommodation-card.is-hidden { display: none !important; }
 
-/* Star badge */
+/* Star badge - align with grid padding (16px) */
 .accommodation-card .star-badge { 
     position: absolute; 
     top: 12px; 
-    right: 12px; 
+    left: 0; 
     background: rgba(255, 193, 7, 0.95); 
     color: #fff; 
     padding: 4px 8px; 
@@ -155,5 +158,4 @@ body.dark .accommodation-card .amenities .tag { background: rgba(255,255,255,0.0
     font-size: 14px; 
 }
 
-/* Visibility helper */
-.accommodation-card.is-hidden { display: none !important; }
+/* Visibility helper moved above for transitions */
