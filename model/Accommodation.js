@@ -1,28 +1,5 @@
 const mongoose = require('mongoose');
 
-// Review Schema for accommodation reviews
-const ReviewSchema = new mongoose.Schema({
-  user: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'User' 
-  },
-  rating: { 
-    type: Number, 
-    min: 1, 
-    max: 5,
-    required: true
-  },
-  comment: {
-    type: String,
-    trim: true
-  },
-  images: [String],
-  createdAt: { 
-    type: Date, 
-    default: Date.now 
-  }
-});
-
 const accommodationSchema = new mongoose.Schema({
   // Basic Information
   name: { 
@@ -116,17 +93,10 @@ const accommodationSchema = new mongoose.Schema({
     }
   },
   
-  // Reviews and Rating
-  reviews: [ReviewSchema],
-  avgRating: { 
-    type: Number, 
-    min: 0, 
-    max: 5,
-    default: 0
-  },
-  reviewCount: { 
-    type: Number, 
-    default: 0 
+  // Review Widget Script (Google Reviews, EmbedSocial, etc.)
+  reviewWidgetScript: {
+    type: String,
+    trim: true
   },
   
   // Status and Metadata
@@ -157,10 +127,105 @@ const accommodationSchema = new mongoose.Schema({
     }
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
-// Index for better query performance
+// === PRE-SAVE MIDDLEWARE ===
+// Auto-generate slug from name
+accommodationSchema.pre('save', function(next) {
+  if (this.name && (!this.slug || this.isModified('name'))) {
+    let baseSlug = this.name
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+      .replace(/[^a-z0-9\s-]/g, '') // Keep only letters, numbers, spaces, dashes
+      .replace(/\s+/g, '-') // Replace spaces with dashes
+      .replace(/-+/g, '-') // Remove duplicate dashes
+      .trim('-'); // Remove leading/trailing dashes
+    
+    this.slug = baseSlug;
+    
+    // If slug is empty, create slug from timestamp
+    if (!this.slug) {
+      this.slug = 'accommodation-' + Date.now();
+    }
+  }
+  next();
+});
+
+// === VIRTUAL FIELDS ===
+// Full URL
+accommodationSchema.virtual('url').get(function() {
+  return `/accommodation/${this.slug}`;
+});
+
+// Main image
+accommodationSchema.virtual('mainImage').get(function() {
+  return this.images?.[0] || null;
+});
+
+// Has review widget
+accommodationSchema.virtual('hasReviewWidget').get(function() {
+  return !!(this.reviewWidgetScript && this.reviewWidgetScript.trim());
+});
+
+// === INSTANCE METHODS ===
+// Update review widget script
+accommodationSchema.methods.updateReviewWidget = function(script) {
+  this.reviewWidgetScript = script;
+  return this.save();
+};
+
+// === STATIC METHODS ===
+// Search by keyword
+accommodationSchema.statics.search = function(query, options = {}) {
+  const searchQuery = {
+    $or: [
+      { name: { $regex: query, $options: 'i' } },
+      { description: { $regex: query, $options: 'i' } }
+    ],
+    isActive: true
+  };
+
+  return this.find(searchQuery)
+    .sort(options.sort || { featured: -1, createdAt: -1 })
+    .limit(options.limit || 20)
+    .skip(options.skip || 0);
+};
+
+// Get featured accommodations
+accommodationSchema.statics.getFeatured = function(limit = 6) {
+  return this.find({ 
+    featured: true, 
+    isActive: true 
+  })
+  .sort({ createdAt: -1 })
+  .limit(limit);
+};
+
+// Get by type
+accommodationSchema.statics.getByType = function(type, limit = 10) {
+  return this.find({ 
+    type, 
+    isActive: true 
+  })
+  .sort({ createdAt: -1 })
+  .limit(limit);
+};
+
+// Get by district
+accommodationSchema.statics.getByDistrict = function(district, limit = 10) {
+  return this.find({ 
+    'address.district': district, 
+    isActive: true 
+  })
+  .sort({ createdAt: -1 })
+  .limit(limit);
+};
+
+// === INDEXES ===
 accommodationSchema.index({ name: 'text', description: 'text' });
 accommodationSchema.index({ type: 1 });
 accommodationSchema.index({ 'address.district': 1 });
@@ -168,5 +233,6 @@ accommodationSchema.index({ priceFrom: 1 });
 accommodationSchema.index({ status: 1 });
 accommodationSchema.index({ isActive: 1 });
 accommodationSchema.index({ featured: 1 });
+accommodationSchema.index({ slug: 1 });
 
 module.exports = mongoose.model('Accommodation', accommodationSchema);

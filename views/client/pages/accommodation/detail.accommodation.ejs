@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="/client/css/responsive.css" />
         <link rel="stylesheet" href="/client/css/harmony.css" />
         <link rel="stylesheet" href="/client/css/accommodation-detail.css" />
+        <link rel="stylesheet" href="/client/css/review-widgets.css" />
         <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" />
         <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
@@ -20,7 +21,9 @@
     <body class="accommodation-detail-page">
         <%- include('../../partials/header') %>
 
-        <!-- Banner -->
+        <!-- ===========================================
+             BANNER
+             =========================================== -->
         <header class="page-header accommodation-banner" style="background-image: url('<%= (acc && (acc.images && acc.images[0])) || '/client/img/header-bg.jfif' %>');">
             <div class="header-content">
                 <h2 id="quote">Lưu trú & Nghỉ dưỡng</h2>
@@ -30,9 +33,14 @@
             </div>
         </header>
 
+        <!-- ===========================================
+             MAIN CONTENT
+             =========================================== -->
         <main class="acc-detail main">
             <div class="container main-content">
-                <!-- Gallery -->
+                <!-- ===========================================
+                     GALLERY SECTION
+                     =========================================== -->
                 <section class="image-gallery" id="gallery">
                     <% 
                         var imgs = (acc && acc.images && acc.images.length) ? acc.images : ['/client/img/carousel-img2.jpg','/client/img/carousel-img3.jpg','/client/img/img1.jfif','/client/img/img2.jfif','/client/img/img3.png']; 
@@ -40,26 +48,26 @@
                     %>
                     <% if (hasImages) { %>
                         <% imgs.slice(0, 5).forEach(function(img, idx){ %>
-                        <div class="gallery-item" data-index="<%= idx %>">
+                        <div class="gallery-item" data-index="<%= idx %>" role="button" tabindex="0" aria-label="Xem ảnh <%= idx + 1 %>">
                             <img src="<%= img %>" alt="<%= (acc && acc.name) || 'Hình ảnh lưu trú' %>" loading="lazy" />
-                            <% if (idx === 0 && imgs.length > 1) { %>
-                            <button class="show-all-photos" type="button">
-                                <i class="fa fa-images"></i> Xem tất cả ảnh (<%= imgs.length %>)
-                            </button>
-                            <% } %>
                         </div>
                         <% }) %>
                     <% } else { %>
-                        <div class="gallery-item" data-index="0">
+                        <div class="gallery-item" data-index="0" role="button" tabindex="0" aria-label="Xem ảnh">
                             <img src="/client/img/carousel-img2.jpg" alt="<%= (acc && acc.name) || 'Hình ảnh lưu trú' %>" loading="lazy" />
                         </div>
                     <% } %>
                 </section>
 
-                
+                <!-- ===========================================
+                     CONTENT GRID
+                     =========================================== -->
                 <div class="content-grid">
+                    <!-- ===========================================
+                         LEFT COLUMN: Main Content
+                         =========================================== -->
                     <div>
-                        <!-- Intro -->
+                        <!-- Intro Section -->
                         <section class="main-section">
                             <h2 class="section-title">Giới thiệu</h2>
                             <div class="description">
@@ -92,7 +100,7 @@
                             <% } %>
                         </section>
 
-                        <!-- Services -->
+                        <!-- Services Section -->
                         <section class="services-section">
                             <h2 class="section-title">Dịch vụ & Tiện ích</h2>
                             <% if (acc && acc.services && acc.services.length) { %>
@@ -108,7 +116,7 @@
                             <% } %>
                         </section>
 
-                        <!-- Rules -->
+                        <!-- Rules Section -->
                         <% if (acc && acc.rules && acc.rules.length) { %>
                         <section class="rules-section">
                             <h2 class="section-title">Quy định & Chính sách</h2>
@@ -119,52 +127,13 @@
                             </div>
                         </section>
                         <% } %>
-
-                        <!-- Map moved below to span full width -->
                     </div>
 
+                    <!-- ===========================================
+                         RIGHT COLUMN: Contact Info Sidebar
+                         =========================================== -->
                     <aside class="sidebar">
-                        <!-- Booking card (placeholder form) -->
-                        <section class="booking-card">
-                            <h3><i class="fa fa-calendar-check-o"></i> Đặt phòng</h3>
-                            <form>
-                                <div class="form-group">
-                                    <label><i class="fa fa-calendar"></i> Ngày nhận phòng</label>
-                                    <input type="date" required />
-                                </div>
-                                <div class="form-group">
-                                    <label><i class="fa fa-calendar"></i> Ngày trả phòng</label>
-                                    <input type="date" required />
-                                </div>
-                                <div class="form-group">
-                                    <label><i class="fa fa-users"></i> Số khách</label>
-                                    <select>
-                                        <option>1 người</option>
-                                        <option>2 người</option>
-                                        <option>3 người</option>
-                                        <option>4 người</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label><i class="fa fa-door-open"></i> Loại phòng</label>
-                                    <select>
-                                        <option>Studio Standard</option>
-                                        <option>Studio Deluxe</option>
-                                        <option>Studio Premium</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn-primary">
-                                    <i class="fa fa-paper-plane"></i> Đặt phòng ngay
-                                </button>
-                            </form>
-                            <div class="benefits-box">
-                                <div class="benefit-item"><i class="fa fa-check-circle"></i><span>Đặt phòng an toàn</span></div>
-                                <div class="benefit-item"><i class="fa fa-check-circle"></i><span>Xác nhận tức thì</span></div>
-                                <div class="benefit-item"><i class="fa fa-check-circle"></i><span>Hỗ trợ 24/7</span></div>
-                            </div>
-                        </section>
-
-                        <!-- Contact info -->
+                        <!-- Contact Info -->
                         <section class="contact-info">
                             <h3><i class="fa fa-address-book"></i> Thông tin liên hệ</h3>
                             <% if (acc && acc.contact && acc.contact.phone) { %>
@@ -207,7 +176,9 @@
                     </aside>
                 </div>
 
-                <!-- Map (full-width) -->
+                <!-- ===========================================
+                     MAP SECTION (Full Width)
+                     =========================================== -->
                 <section class="map-container">
                     <h2 class="section-title">Vị trí trên bản đồ</h2>
                     <div id="accMap"
@@ -229,58 +200,36 @@
         <!-- up scroll -->
         <i class="arrow" onclick="topFunction()" id="upbtn"></i>
 
-        <!-- Reviews Section (similar to attraction) - at bottom -->
-        <section id="reviews" class="content-section reviews-pro">
-            <div class="reviews-pro__header">
-                <div class="reviews-pro__heading">
-                    <h2>Đừng chỉ nghe chúng tôi, hãy nghe du khách</h2>
-                    <p class="subheading">Dưới đây là 10 bình luận gần đây trong tổng số review của khách du lịch trên Google</p>
+        <!-- ===========================================
+             GALLERY MODAL
+             =========================================== -->
+        <div class="gallery-modal" id="galleryModal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <button class="modal-close" type="button" aria-label="Đóng">
+                    <i class="fa fa-times"></i>
+                </button>
+                <div class="modal-nav">
+                    <button class="nav-prev" type="button" aria-label="Ảnh trước">
+                        <i class="fa fa-chevron-left"></i>
+                    </button>
+                    <button class="nav-next" type="button" aria-label="Ảnh sau">
+                        <i class="fa fa-chevron-right"></i>
+                    </button>
                 </div>
-                <div class="reviews-pro__provider">
-                    <img class="reviews-pro__provider-icon" src="/client/img/google.svg" alt="Google reviews" />
-                    <div class="reviews-pro__provider-stats">
-                        <span class="overall"><%= (acc && acc.avgRating) || '4.8' %></span>
-                        <span class="stars" aria-label="5 sao">
-                            <% var rating = (acc && acc.avgRating) || 4.8; %>
-                            <% for (var i = 1; i <= 5; i++) { %>
-                            <i class="fa fa-star<%= i <= Math.round(rating) ? '' : '-o' %>"></i>
-                            <% } %>
-                        </span>
-                        <a class="reviews-pro__link" href="#" target="_blank" rel="noreferrer">Xem tất cả đánh giá</a>
-                        <span class="total">(<%= (acc && acc.reviewCount) || '0' %>)</span>
-                    </div>
+                <div class="modal-image">
+                    <img src="" alt="Gallery image" />
+                </div>
+                <div class="modal-info">
+                    <span class="image-counter">1 / 4</span>
                 </div>
             </div>
+        </div>
 
-            <div class="reviews-pro__slider">
-                <button class="reviews-pro__nav prev" type="button" aria-label="Trước">&#10094;</button>
-                <div class="reviews-pro__viewport">
-                    <div class="reviews-pro__track">
-                        <% var rv = (acc && acc.reviews && acc.reviews.length) ? acc.reviews : [
-                            { user: { name: 'Linh' }, rating: 5, comment: 'Phòng sạch, spa tuyệt vời.' },
-                            { user: { name: 'An' }, rating: 5, comment: 'Vị trí tiện đi lại, nhân viên thân thiện.' },
-                            { user: { name: 'Jade' }, rating: 4, comment: 'Rất ổn so với tầm giá.' },
-                            { user: { name: 'Minh' }, rating: 5, comment: 'Không gian yên tĩnh, decor đẹp.' }
-                        ]; rv.forEach(function(r){ %>
-                        <div class="reviews-pro__card">
-                            <img class="reviews-pro__quote" src="/client/img/quote.svg" alt="Quote" />
-                            <div class="reviews-pro__text"><%= r.comment || r.text %></div>
-                            <div class="reviews-pro__stars">
-                                <% for (var i=0;i<r.rating;i++){ %><i class="fa fa-star"></i><% } %>
-                            </div>
-                            <div class="reviews-pro__meta">
-                                <span class="name"><%= r.user && r.user.name ? r.user.name : 'Khách hàng' %></span>
-                                <span class="dot"></span>
-                                <span class="country">Việt Nam</span>
-                            </div>
-                        </div>
-                        <% }); %>
-                    </div>
-                </div>
-                <div class="reviews-pro__dots" role="tablist" aria-label="Chuyển trang đánh giá"></div>
-                <button class="reviews-pro__nav next" type="button" aria-label="Sau">&#10095;</button>
-            </div>
-        </section>
+        <!-- ===========================================
+             REVIEWS SECTION (Using Review Widget Component)
+             =========================================== -->
+        <%- include('../../components/review-widget', { item: acc }) %>
 
         <!--footer-->
         <%- include('../../partials/footer') %>
@@ -291,6 +240,52 @@
         <script src="/client/js/script.js"></script>
         <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
         <script src="/client/js/accommodation-detail.js"></script>
+        
+        <!-- Initialize Review Widgets -->
+        <script>
+            // Initialize review widgets
+            document.addEventListener('DOMContentLoaded', function() {
+                initializeReviewWidgets();
+            });
+            
+            function initializeReviewWidgets() {
+                const widgetWrapper = document.querySelector('.widget-wrapper');
+                if (!widgetWrapper) return;
+                
+                // Add loading class initially
+                widgetWrapper.classList.add('loading');
+                
+                // Check for Shapo widget
+                const shapoWidget = document.getElementById('shapo-widget-5e8084e2fdcaa2cd9b10');
+                if (shapoWidget) {
+                    // Monitor when Shapo widget loads
+                    const observer = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                                widgetWrapper.classList.remove('loading');
+                                widgetWrapper.classList.add('loaded');
+                            }
+                        });
+                    });
+                    
+                    observer.observe(shapoWidget, {
+                        childList: true,
+                        subtree: true
+                    });
+                    
+                    // Fallback timeout
+                    setTimeout(function() {
+                        if (widgetWrapper.classList.contains('loading')) {
+                            widgetWrapper.classList.remove('loading');
+                            widgetWrapper.classList.add('loaded');
+                        }
+                    }, 5000);
+                } else {
+                    // No widget found, remove loading state
+                    widgetWrapper.classList.remove('loading');
+                }
+            }
+        </script>
     </body>
     </html>
 
