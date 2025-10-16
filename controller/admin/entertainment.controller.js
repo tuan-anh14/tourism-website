@@ -24,14 +24,10 @@ module.exports.index = async (req, res) => {
         
         // Define fixed zones and types for filter dropdowns
         const zones = [
-            'Khu văn hóa - nghệ thuật',
-            'Công viên ngoài trời', 
-            'Trung tâm thương mại - vui chơi trong nhà',
-            'Khu vui chơi tổng hợp',
-            'Khu thể thao - giải trí',
-            'Khu ẩm thực - giải trí',
-            'Khu du lịch sinh thái',
-            'Khu vui chơi trẻ em'
+            'Khu văn hoá – nghệ thuật',
+            'Địa điểm ngoài trời – công viên', 
+            'Trung tâm thương mại – Khu vui chơi trong nhà',
+            'Khu vui chơi giải trí quy mô lớn'
         ];
         const types = [
             'Nhà hát - Biểu diễn nghệ thuật',
@@ -81,14 +77,10 @@ module.exports.index = async (req, res) => {
 module.exports.create = async (req, res) => {
     try {
         const zones = [
-            'Khu văn hóa - nghệ thuật',
-            'Công viên ngoài trời', 
-            'Trung tâm thương mại - vui chơi trong nhà',
-            'Khu vui chơi tổng hợp',
-            'Khu thể thao - giải trí',
-            'Khu ẩm thực - giải trí',
-            'Khu du lịch sinh thái',
-            'Khu vui chơi trẻ em'
+            'Khu văn hoá – nghệ thuật',
+            'Địa điểm ngoài trời – công viên', 
+            'Trung tâm thương mại – Khu vui chơi trong nhà',
+            'Khu vui chơi giải trí quy mô lớn'
         ];
         const types = [
             'Nhà hát - Biểu diễn nghệ thuật',
@@ -168,13 +160,12 @@ module.exports.store = async (req, res) => {
         }
 
         const {
-            activities, audience, history, architecture,
+            history, architecture,
             experience, notes, reviewWidgetScript
         } = req.body;
 
         // Process arrays
-        const activitiesArray = activities ? activities.split('\n').filter(item => item.trim()) : ['Tham quan và khám phá'];
-        const audienceArray = audience ? audience.split('\n').filter(item => item.trim()) : [];
+        // Removed activities and audience
         const experienceArray = experience ? experience.split('\n').filter(item => item.trim()) : [];
         const notesArray = notes ? notes.split('\n').filter(item => item.trim()) : [];
         
@@ -195,8 +186,7 @@ module.exports.store = async (req, res) => {
             address,
             openHours,
             ticket,
-            activities: activitiesArray,
-            audience: audienceArray,
+            
             history: history || null,
             architecture: architecture || null,
             experience: experienceArray,
@@ -342,15 +332,14 @@ module.exports.update = async (req, res) => {
         }
 
         const {
-            activities, audience, history, architecture,
+            history, architecture,
             experience, notes,
             isActive, featured, removeImages,
             reviewWidgetScript
         } = req.body;
 
         // Process arrays
-        const activitiesArray = activities ? activities.split('\n').filter(item => item.trim()) : ['Tham quan và khám phá'];
-        const audienceArray = audience ? audience.split('\n').filter(item => item.trim()) : [];
+        // Removed activities and audience
         const experienceArray = experience ? experience.split('\n').filter(item => item.trim()) : [];
         const notesArray = notes ? notes.split('\n').filter(item => item.trim()) : [];
         
@@ -364,11 +353,7 @@ module.exports.update = async (req, res) => {
         let imagesArray = [...existingEntertainment.images];
         
         // If no activities provided, use existing ones or default
-        if (activitiesArray.length === 0 && existingEntertainment.activities.length > 0) {
-            activitiesArray.push(...existingEntertainment.activities);
-        } else if (activitiesArray.length === 0) {
-            activitiesArray.push('Tham quan và khám phá');
-        }
+        // No activities fallback
         
         // Remove selected images
         if (removeImages) {
@@ -395,8 +380,7 @@ module.exports.update = async (req, res) => {
             address,
             openHours,
             ticket,
-            activities: activitiesArray,
-            audience: audienceArray,
+            
             history: history || null,
             architecture: architecture || null,
             experience: experienceArray,

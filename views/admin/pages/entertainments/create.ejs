@@ -106,37 +106,7 @@
             </div>
         </div>
 
-        <!-- === HOẠT ĐỘNG VÀ ĐỐI TƯỢNG === -->
-        <div class="col-12">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0">
-                        <i class="fas fa-list me-2"></i>
-                        Hoạt động và đối tượng
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="activities" class="form-label">Hoạt động chính</label>
-                                <textarea class="form-control" id="activities" name="activities" rows="4" 
-                                          placeholder="Mỗi hoạt động trên một dòng"><%= entertainment ? (Array.isArray(entertainment.activities) ? entertainment.activities.join('\n') : (typeof entertainment.activities === 'string' ? entertainment.activities : '')) : '' %></textarea>
-                                <div class="form-text">Mỗi hoạt động trên một dòng riêng</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="audience" class="form-label">Đối tượng phù hợp</label>
-                                <textarea class="form-control" id="audience" name="audience" rows="4" 
-                                          placeholder="Mỗi đối tượng trên một dòng"><%= entertainment ? (Array.isArray(entertainment.audience) ? entertainment.audience.join('\n') : (typeof entertainment.audience === 'string' ? entertainment.audience : '')) : '' %></textarea>
-                                <div class="form-text">Mỗi đối tượng trên một dòng riêng</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
 
         <!-- === LỊCH SỬ VÀ KIẾN TRÚC === -->
         <div class="col-12">

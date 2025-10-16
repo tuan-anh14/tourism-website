@@ -43,16 +43,6 @@ const entertainmentSchema = new mongoose.Schema({
     trim: true,
     maxlength: 100
   },
-  activities: [{
-    type: String,
-    trim: true,
-    maxlength: 100
-  }],
-  audience: [{
-    type: String,
-    trim: true,
-    maxlength: 50
-  }],
   history: {
     type: String,
     default: null,
@@ -161,14 +151,6 @@ entertainmentSchema.index({ name: 'text', address: 'text' });
 entertainmentSchema.set('toJSON', { virtuals: true });
 entertainmentSchema.set('toObject', { virtuals: true });
 
-// Add pre-save middleware for data validation
-entertainmentSchema.pre('save', function(next) {
-  // Set default activities if empty
-  if (!this.activities || this.activities.length === 0) {
-    this.activities = ['Tham quan và khám phá'];
-  }
-  
-  next();
-});
+// No pre-save hooks required at the moment
 
 module.exports = mongoose.model('Entertainment', entertainmentSchema);
