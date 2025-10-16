@@ -73,10 +73,17 @@ const entertainmentSchema = new mongoose.Schema({
     trim: true,
     maxlength: 200
   }],
+  // Align with attractions: images stored as string URLs, normalized in controllers
   images: [{
     type: String,
     trim: true
   }],
+  // Optional review widget script (e.g., Google/Shapo) like attractions
+  reviewWidgetScript: {
+    type: String,
+    trim: true,
+    default: ''
+  },
   map: {
     lat: {
       type: Number,

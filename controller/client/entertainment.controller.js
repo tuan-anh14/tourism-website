@@ -96,13 +96,25 @@ module.exports.detail = async (req, res) => {
     try {
         const { id } = req.params;
         
-        const entertainment = await Entertainment.findById(id);
-        if (!entertainment || !entertainment.isActive) {
+        const entertainmentDoc = await Entertainment.findById(id);
+        if (!entertainmentDoc || !entertainmentDoc.isActive) {
             return res.status(404).render('errors/404', {
                 pageTitle: 'Không tìm thấy',
                 message: 'Không tìm thấy địa điểm giải trí này'
             });
         }
+
+        // Normalize for view (align with attractions image structure and widget)
+        const normalizedImages = Array.isArray(entertainmentDoc.images)
+            ? entertainmentDoc.images.filter(Boolean).map(url => ({ url }))
+            : [];
+        const entertainment = {
+            ...entertainmentDoc.toObject(),
+            images: normalizedImages,
+            heroImage: entertainmentDoc.heroImage || (normalizedImages[0] ? normalizedImages[0].url : ''),
+            hasReviewWidget: !!(entertainmentDoc.reviewWidgetScript && entertainmentDoc.reviewWidgetScript.trim()),
+            reviewWidgetScript: entertainmentDoc.reviewWidgetScript || ''
+        };
 
         // Transform data for the view
         const detail = {
@@ -113,7 +125,7 @@ module.exports.detail = async (req, res) => {
                 { label: entertainment.zone, href: "/entertainment" }
             ],
             heroImage: entertainment.images && entertainment.images.length > 0 
-                ? entertainment.images[0] 
+                ? (entertainment.images[0].url || entertainment.images[0])
                 : "/client/img/header-bg.jfif",
             quickInfo: [
                 { icon: "📍", label: "Địa chỉ", value: entertainment.address },
@@ -184,10 +196,10 @@ module.exports.detail = async (req, res) => {
             };
         }
 
-        // Gallery
+        // Gallery (align with attractions: array of {url})
         detail.gallery = entertainment.images && entertainment.images.length > 0 
             ? entertainment.images.map((img, index) => ({
-                src: img,
+                src: img.url || img,
                 alt: `${entertainment.name} - Hình ${index + 1}`
             }))
             : [

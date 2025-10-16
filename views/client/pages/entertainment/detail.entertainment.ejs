@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="/client/css/style.css" />
         <link rel="stylesheet" href="/client/css/responsive.css" />
         <link rel="stylesheet" href="/client/css/harmony.css" />
+        <link rel="stylesheet" href="/client/css/review-widgets.css" />
         <link rel="stylesheet" href="/client/css/entertainment-detail.css" />
         <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" />
         <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
@@ -96,33 +97,8 @@
                 </section>
             <% } %>
 
-            <!-- Reviews -->
-            <% if (entertainment.reviews && entertainment.reviews.length > 0) { %>
-                <section class="content-section">
-                    <h2 class="dark">Đánh giá từ khách hàng</h2>
-                    <div class="reviews-container">
-                        <% entertainment.reviews.slice(0, 3).forEach(function(review){ %>
-                            <div class="review-item">
-                                <div class="review-header">
-                                    <h4><%= review.author %></h4>
-                                    <div class="review-rating">
-                                        <% for (let i = 1; i <= 5; i++) { %>
-                                            <i class="fa fa-star <%= i <= review.rating ? 'text-warning' : 'text-muted' %>"></i>
-                                        <% } %>
-                                        <span class="review-date"><%= new Date(review.createdAt).toLocaleDateString('vi-VN') %></span>
-                                    </div>
-                                </div>
-                                <p class="font-color"><%= review.comment %></p>
-                            </div>
-                        <% }) %>
-                        <% if (entertainment.reviews.length > 3) { %>
-                            <p class="text-center">
-                                <a href="#" class="btn btn-outline-primary">Xem thêm <%= entertainment.reviews.length - 3 %> đánh giá</a>
-                            </p>
-                        <% } %>
-                    </div>
-                </section>
-            <% } %>
+             <!-- Reviews (shared review widget) -->
+             <%- include('../../components/review-widget', { item: entertainment }) %>
 
             <!-- Map (MapLibre, tái sử dụng logic giống attractions, nhưng phạm vi nhỏ) -->
             <section class="content-section">
@@ -136,7 +112,7 @@
                              data-zoom="<%= (detail && detail.mapZoom) || 14 %>"
                              data-name="<%= entertainment && entertainment.name %>"
                              data-address="<%= entertainment && entertainment.address %>"
-                             data-image="<%= (entertainment && entertainment.images && entertainment.images[0]) || '' %>"></div>
+                             data-image="<%= (entertainment && entertainment.images && entertainment.images[0] && entertainment.images[0].url) || '' %>"></div>
                         <div class="map-overview__heading">
                             <h2>Bản đồ vị trí</h2>
                             <p>Vị trí địa điểm giải trí trên bản đồ</p>
@@ -156,6 +132,8 @@
                 <% }) %>
             </section>
         </section>
+
+        
 
         <!-- up scroll -->
         <i class="arrow" onclick="topFunction()" id="upbtn"></i>
@@ -186,6 +164,42 @@
                             '<strong>'+name+'</strong><br/>' + address + '</div>';
             new maplibregl.Marker({ color: '#fc036b' }).setLngLat([lng, lat]).setPopup(new maplibregl.Popup().setHTML(popupHtml)).addTo(map);
         });
+        </script>
+
+        <!-- Initialize Review Widgets -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeReviewWidgets();
+        });
+
+        function initializeReviewWidgets() {
+            var widgetWrapper = document.querySelector('.widget-wrapper');
+            if (!widgetWrapper) return;
+
+            widgetWrapper.classList.add('loading');
+
+            var shapoWidget = document.getElementById('shapo-widget-5e8084e2fdcaa2cd9b10');
+            if (shapoWidget) {
+                var observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                            widgetWrapper.classList.remove('loading');
+                            widgetWrapper.classList.add('loaded');
+                        }
+                    });
+                });
+                observer.observe(shapoWidget, { childList: true, subtree: true });
+
+                setTimeout(function() {
+                    if (widgetWrapper.classList.contains('loading')) {
+                        widgetWrapper.classList.remove('loading');
+                        widgetWrapper.classList.add('loaded');
+                    }
+                }, 5000);
+            } else {
+                widgetWrapper.classList.remove('loading');
+            }
+        }
         </script>
     </body>
     </html>

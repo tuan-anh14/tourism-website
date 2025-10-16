@@ -89,6 +89,28 @@
             </div>
         </div>
 
+        <!-- === REVIEW WIDGET === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-star me-2"></i>
+                        Đoạn mã nhúng Google Review
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="reviewWidgetScript" class="form-label">Mã nhúng widget đánh giá</label>
+                        <textarea class="form-control" id="reviewWidgetScript" name="reviewWidgetScript" rows="8" placeholder="Dán đoạn mã nhúng từ EmbedSocial, Google Reviews hoặc dịch vụ tương tự..."><%= entertainment.reviewWidgetScript || '' %></textarea>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Dán toàn bộ đoạn script/iframe từ EmbedSocial hoặc Google Reviews. Hệ thống sẽ tự động hiển thị widget đánh giá trên trang chi tiết.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- === HOẠT ĐỘNG VÀ ĐỐI TƯỢNG === -->
         <div class="col-12">
             <div class="card mb-4">
@@ -104,7 +126,7 @@
                             <div class="mb-3">
                                 <label for="activities" class="form-label">Hoạt động chính</label>
                                 <textarea class="form-control" id="activities" name="activities" rows="4" 
-                                          placeholder="Mỗi hoạt động trên một dòng"><%= entertainment.activities ? entertainment.activities.join('\n') : '' %></textarea>
+                                          placeholder="Mỗi hoạt động trên một dòng"><%= Array.isArray(entertainment.activities) ? entertainment.activities.join('\n') : (typeof entertainment.activities === 'string' ? entertainment.activities : '') %></textarea>
                                 <div class="form-text">Mỗi hoạt động trên một dòng riêng</div>
                             </div>
                         </div>
@@ -112,7 +134,7 @@
                             <div class="mb-3">
                                 <label for="audience" class="form-label">Đối tượng phù hợp</label>
                                 <textarea class="form-control" id="audience" name="audience" rows="4" 
-                                          placeholder="Mỗi đối tượng trên một dòng"><%= entertainment.audience ? entertainment.audience.join('\n') : '' %></textarea>
+                                          placeholder="Mỗi đối tượng trên một dòng"><%= Array.isArray(entertainment.audience) ? entertainment.audience.join('\n') : (typeof entertainment.audience === 'string' ? entertainment.audience : '') %></textarea>
                                 <div class="form-text">Mỗi đối tượng trên một dòng riêng</div>
                             </div>
                         </div>
@@ -166,7 +188,7 @@
                             <div class="mb-3">
                                 <label for="experience" class="form-label">Trải nghiệm nổi bật</label>
                                 <textarea class="form-control" id="experience" name="experience" rows="4" 
-                                          placeholder="Mỗi trải nghiệm trên một dòng"><%= entertainment.experience ? entertainment.experience.join('\n') : '' %></textarea>
+                                          placeholder="Mỗi trải nghiệm trên một dòng"><%= Array.isArray(entertainment.experience) ? entertainment.experience.join('\n') : (typeof entertainment.experience === 'string' ? entertainment.experience : '') %></textarea>
                                 <div class="form-text">Mỗi trải nghiệm trên một dòng riêng</div>
                             </div>
                         </div>
@@ -174,7 +196,7 @@
                             <div class="mb-3">
                                 <label for="notes" class="form-label">Lưu ý cần biết</label>
                                 <textarea class="form-control" id="notes" name="notes" rows="4" 
-                                          placeholder="Mỗi lưu ý trên một dòng"><%= entertainment.notes ? entertainment.notes.join('\n') : '' %></textarea>
+                                          placeholder="Mỗi lưu ý trên một dòng"><%= Array.isArray(entertainment.notes) ? entertainment.notes.join('\n') : (typeof entertainment.notes === 'string' ? entertainment.notes : '') %></textarea>
                                 <div class="form-text">Mỗi lưu ý trên một dòng riêng</div>
                             </div>
                         </div>

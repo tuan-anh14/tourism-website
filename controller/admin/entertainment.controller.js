@@ -124,8 +124,12 @@ module.exports.create = async (req, res) => {
 // Store new entertainment
 module.exports.store = async (req, res) => {
     try {
-        // Basic validation
-        const { zone, name, type, address, openHours, ticket, lat, lng, embedUrl } = req.body;
+        // Basic validation (support bracket notation map[lat]/map[lng]/map[embedUrl])
+        const { zone, name, type, address, openHours, ticket } = req.body;
+        const mapBodyCreate = (req.body && req.body.map) || {};
+        const lat = req.body.lat || mapBodyCreate.lat;
+        const lng = req.body.lng || mapBodyCreate.lng;
+        const embedUrl = req.body.embedUrl || mapBodyCreate.embedUrl;
         if (!zone || !name || !type || !address || !openHours || !ticket || !lat || !lng || !embedUrl) {
             const zones = [
                 'Khu văn hóa - nghệ thuật',
@@ -158,14 +162,14 @@ module.exports.store = async (req, res) => {
                 body: 'admin/pages/entertainments/create',
                 zones,
                 types,
-                entertainment: req.body,
+                entertainment: { ...req.body, reviewWidgetScript: req.body.reviewWidgetScript },
                 errors: [{ msg: 'Vui lòng điền đầy đủ các trường bắt buộc' }]
             });
         }
 
         const {
             activities, audience, history, architecture,
-            experience, notes
+            experience, notes, reviewWidgetScript
         } = req.body;
 
         // Process arrays
@@ -198,6 +202,7 @@ module.exports.store = async (req, res) => {
             experience: experienceArray,
             notes: notesArray,
             images: imagesArray,
+            reviewWidgetScript: typeof reviewWidgetScript === 'string' ? reviewWidgetScript.trim() : '',
             map: {
                 lat: parseFloat(lat),
                 lng: parseFloat(lng),
@@ -292,8 +297,12 @@ module.exports.edit = async (req, res) => {
 // Update entertainment
 module.exports.update = async (req, res) => {
     try {
-        // Basic validation
-        const { zone, name, type, address, openHours, ticket, lat, lng, embedUrl } = req.body;
+        // Basic validation (support bracket notation map[lat]/map[lng]/map[embedUrl])
+        const { zone, name, type, address, openHours, ticket } = req.body;
+        const mapBodyUpdate = (req.body && req.body.map) || {};
+        const lat = req.body.lat || mapBodyUpdate.lat;
+        const lng = req.body.lng || mapBodyUpdate.lng;
+        const embedUrl = req.body.embedUrl || mapBodyUpdate.embedUrl;
         if (!zone || !name || !type || !address || !openHours || !ticket || !lat || !lng || !embedUrl) {
             const entertainment = await Entertainment.findById(req.params.id);
             const zones = [
@@ -325,7 +334,7 @@ module.exports.update = async (req, res) => {
                 pageTitle: `Chỉnh sửa - ${entertainment.name}`,
                 page: 'entertainments',
                 body: 'admin/pages/entertainments/edit',
-                entertainment: { ...entertainment.toObject(), ...req.body },
+                entertainment: { ...entertainment.toObject(), ...req.body, reviewWidgetScript: req.body.reviewWidgetScript },
                 zones,
                 types,
                 errors: [{ msg: 'Vui lòng điền đầy đủ các trường bắt buộc' }]
@@ -335,7 +344,8 @@ module.exports.update = async (req, res) => {
         const {
             activities, audience, history, architecture,
             experience, notes,
-            isActive, featured, removeImages
+            isActive, featured, removeImages,
+            reviewWidgetScript
         } = req.body;
 
         // Process arrays
@@ -398,7 +408,8 @@ module.exports.update = async (req, res) => {
                 embedUrl
             },
             isActive: isActive === 'on',
-            featured: featured === 'on'
+            featured: featured === 'on',
+            reviewWidgetScript: typeof reviewWidgetScript === 'string' ? reviewWidgetScript.trim() : (existingEntertainment.reviewWidgetScript || '')
         };
 
         await Entertainment.findByIdAndUpdate(req.params.id, updateData);
