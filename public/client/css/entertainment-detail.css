@@ -40,6 +40,7 @@
 .highlight-box { background: #fff9fe; border-left: 4px solid var(--accent); padding: 16px; border-radius: 8px; }
 .highlight-box h4 { margin: 0 0 8px 0; color: var(--accent); }
 
+/* Legacy gallery (kept for compatibility, no longer used) */
 .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 12px; }
 .gallery-item { height: 220px; overflow: hidden; border-radius: 10px; }
 .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .25s ease; }
@@ -47,6 +48,20 @@
 
 .map-container { border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
 .map-container iframe { width: 100%; height: 380px; border: 0; display: block; }
+
+/* Map overview (works with standalone container) */
+.itinerary-overview__map-container { position: relative; border-radius: 0; overflow: hidden; width: 100vw; margin-left: calc(50% - 50vw); }
+.itinerary-overview__map-inner { position: relative; height: clamp(420px, 70vh, 680px); background: #eef2f5; }
+.itinerary-overview__map { position: absolute; inset: 0; z-index: 1; }
+.map-overview__heading { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 2; text-align: center; color: #111; padding: 0; background: transparent; box-shadow: none; margin: 0; pointer-events: none; }
+.map-overview__heading h2 { margin: 0; font-size: 24px; line-height: 1.2; text-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.map-overview__heading p { margin: 6px 0 0 0; font-size: 13px; color: var(--muted); text-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+.itinerary-overview__map-gradient-vertical { display: none; }
+.itinerary-overview__map-gradient-horizontal { display: none; }
+
+/* Ensure map is fully interactive */
+.itinerary-overview__map canvas { cursor: grab; }
+.mapboxgl-canvas, .maplibregl-canvas { touch-action: auto !important; }
 
 /* Reviews Section */
 .reviews-container { display: grid; gap: 16px; }
@@ -82,9 +97,7 @@
 .media-hero__nav.prev { left: 12px; }
 .media-hero__nav.next { right: 12px; }
 .media-hero__zoom { position: absolute; right: 12px; bottom: 12px; background: var(--accent); color: #fff; border: none; width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(0,0,0,.25); }
-.media-thumbs { background: #fff; }
-.media-thumbs__header { height: 10px; }
-.media-thumbs__grid { max-width: 1200px; margin: 0 auto; padding: 0 12px 20px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+.media-thumbs__grid { max-width: 1200px; margin: 0 auto; padding: 12px 12px 20px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; background: #fff; }
 .thumb { display: block; width: 100%; border-radius: 10px; overflow: hidden; }
 .thumb__img { display: block; width: 100%; padding-top: 100%; background-size: cover; background-position: center; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 1px 4px rgba(0,0,0,.08); transition: transform .25s ease; }
 .thumb:hover .thumb__img { transform: scale(1.04); }
