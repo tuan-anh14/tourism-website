@@ -127,32 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize sharing
   initializeSharing();
 
-  // Reading progress indicator
-  function initializeReadingProgress() {
-    const progressBar = document.createElement("div");
-    progressBar.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 3px;
-            background: linear-gradient(90deg, #fc036b, #ff6b9d);
-            z-index: 9999;
-            transition: width 0.1s ease;
-        `;
-    document.body.appendChild(progressBar);
-
-    window.addEventListener("scroll", () => {
-      const scrollTop = window.pageYOffset;
-      const docHeight = document.body.scrollHeight - window.innerHeight;
-      const scrollPercent = (scrollTop / docHeight) * 100;
-
-      progressBar.style.width = scrollPercent + "%";
-    });
-  }
-
-  // Initialize reading progress
-  initializeReadingProgress();
+  // Reading progress is now provided globally via reading-progress.js
 
   console.log("Blog page JavaScript loaded successfully");
 });
