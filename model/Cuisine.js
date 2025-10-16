@@ -22,10 +22,8 @@ const CuisinePlaceSchema = new mongoose.Schema({
 const CuisineSchema = new mongoose.Schema({
   // Basic info
   name: { type: String, required: true, trim: true, index: true },
-  nameEn: { type: String, trim: true },
   slug: { type: String, unique: true, sparse: true, lowercase: true, trim: true, index: true },
   description: { type: String, required: true, trim: true },
-  type: { type: String, trim: true },
   feature: [{ type: String, trim: true }],
 
   // Places
@@ -51,7 +49,6 @@ const CuisineSchema = new mongoose.Schema({
 // Indexes
 CuisinePlaceSchema.index({ location: '2dsphere' });
 CuisineSchema.index({ name: 'text', description: 'text', tags: 'text' });
-CuisineSchema.index({ type: 1 });
 CuisineSchema.index({ featured: 1 });
 
 // Auto-generate slug from name

@@ -18,7 +18,6 @@ module.exports.cuisine = async (req, res) => {
                 title: doc.name,
                 image,
                 area: district || 'all',
-                type: doc.type || 'other',
                 form,
                 rating: doc.avgRating || 0,
                 address,
@@ -73,7 +72,7 @@ module.exports.cuisineDetail = async (req, res) => {
             image: (p.images && p.images[0]) || heroImage || ''
         }));
 
-        const similarDocs = await Cuisine.find({ _id: { $ne: doc._id }, type: doc.type, isActive: true, status: 'published' })
+        const similarDocs = await Cuisine.find({ _id: { $ne: doc._id }, isActive: true, status: 'published' })
             .sort({ featured: -1, createdAt: -1 })
             .limit(3);
         const similar = similarDocs.map(s => ({ name: s.name, href: `/cuisine/${s.slug}` }));

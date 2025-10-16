@@ -68,7 +68,7 @@
             <section class="cuisine-grid" aria-label="Danh sách món/quán">
                 <% var list = (typeof cuisines !== 'undefined' && cuisines && cuisines.length) ? cuisines : []; %>
                 <% if (list.length) { list.forEach(function(item){ %>
-                <article class="cuisine-card" data-title="<%= item.title %>" data-area="<%= item.area %>" data-type="<%= item.type %>" data-form="<%= item.form %>" data-rating="<%= item.rating %>">
+                <article class="cuisine-card" data-title="<%= item.title %>" data-area="<%= item.area %>" data-form="<%= item.form %>" data-rating="<%= item.rating %>">
                     <div class="thumb">
                         <img src="<%= item.image %>" alt="<%= item.title %>" loading="lazy" />
                     </div>

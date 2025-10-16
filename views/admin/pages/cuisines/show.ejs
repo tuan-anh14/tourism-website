@@ -13,8 +13,6 @@
       <div class="card-header"><h5 class="mb-0">Thông tin</h5></div>
       <div class="card-body">
         <div class="mb-3"><strong>Tên:</strong> <%= cuisine.name %></div>
-        <% if (cuisine.nameEn) { %><div class="mb-3"><strong>Tên EN:</strong> <%= cuisine.nameEn %></div><% } %>
-        <% if (cuisine.type) { %><div class="mb-3"><strong>Loại:</strong> <%= cuisine.type %></div><% } %>
         <div class="mb-3"><strong>Mô tả:</strong><div class="text-muted"><%= cuisine.description %></div></div>
         <% if ((cuisine.feature||[]).length) { %>
           <div class="mb-3"><strong>Điểm nhấn:</strong>

@@ -7,19 +7,16 @@ module.exports.index = async (req, res) => {
     const limit = 10;
     const skip = (page - 1) * limit;
     const search = req.query.search || '';
-    const type = req.query.type || '';
     const status = req.query.status || '';
 
     const query = {};
     if (search) {
       query.$or = [
         { name: { $regex: search, $options: 'i' } },
-        { nameEn: { $regex: search, $options: 'i' } },
         { description: { $regex: search, $options: 'i' } },
         { tags: { $in: [new RegExp(search, 'i')] } }
       ];
     }
-    if (type) query.type = type;
     if (status) {
       if (['published', 'draft', 'hidden'].includes(status)) query.status = status;
       if (status === 'active') query.isActive = true;
@@ -41,7 +38,7 @@ module.exports.index = async (req, res) => {
         data: {
           cuisines,
           pagination: { currentPage: page, totalPages, total, limit },
-          filters: { search, type, status }
+          filters: { search, status }
         }
       });
     }
@@ -54,17 +51,8 @@ module.exports.index = async (req, res) => {
       currentPage: page,
       totalPages,
       search,
-      type,
       status,
       req: req,
-      types: [
-        { value: 'streetfood', label: 'Street food' },
-        { value: 'traditional', label: 'Truyền thống' },
-        { value: 'dessert', label: 'Tráng miệng' },
-        { value: 'drink', label: 'Đồ uống' },
-        { value: 'restaurant', label: 'Nhà hàng đặc sản' },
-        { value: 'other', label: 'Khác' }
-      ],
       body: 'admin/pages/cuisines/index'
     });
   } catch (error) {
@@ -77,10 +65,8 @@ module.exports.index = async (req, res) => {
       currentPage: 1,
       totalPages: 0,
       search: '',
-      type: '',
       status: '',
       req: req,
-      types: [],
       body: 'admin/pages/cuisines/index'
     });
   }
@@ -92,15 +78,7 @@ module.exports.create = (req, res) => {
     pageTitle: 'Thêm Ẩm thực',
     page: 'cuisines',
     body: 'admin/pages/cuisines/create',
-    user: req.user,
-    types: [
-      { value: 'streetfood', label: 'Street food' },
-      { value: 'traditional', label: 'Truyền thống' },
-      { value: 'dessert', label: 'Tráng miệng' },
-      { value: 'drink', label: 'Đồ uống' },
-      { value: 'restaurant', label: 'Nhà hàng đặc sản' },
-      { value: 'other', label: 'Khác' }
-    ]
+    user: req.user
   });
 };
 
@@ -247,15 +225,7 @@ module.exports.edit = async (req, res) => {
       page: 'cuisines',
       body: 'admin/pages/cuisines/edit',
       user: req.user,
-      cuisine,
-      types: [
-        { value: 'streetfood', label: 'Street food' },
-        { value: 'traditional', label: 'Truyền thống' },
-        { value: 'dessert', label: 'Tráng miệng' },
-        { value: 'drink', label: 'Đồ uống' },
-        { value: 'restaurant', label: 'Nhà hàng đặc sản' },
-        { value: 'other', label: 'Khác' }
-      ]
+      cuisine
     });
   } catch (error) {
     console.error('Edit cuisine error:', error);

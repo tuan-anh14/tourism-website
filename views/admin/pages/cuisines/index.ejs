@@ -24,18 +24,10 @@
 
 <!-- Filters -->
 <form class="row g-2 mb-3" method="GET" action="/admin/cuisines">
-  <div class="col-md-4">
+  <div class="col-md-6">
     <input type="text" name="search" value="<%= search || '' %>" class="form-control" placeholder="Tìm theo tên, mô tả, tag...">
   </div>
-  <div class="col-md-3">
-    <select name="type" class="form-select">
-      <option value="">Tất cả loại</option>
-      <% (types || []).forEach(t => { %>
-        <option value="<%= t.value %>" <%= type === t.value ? 'selected' : '' %>><%= t.label %></option>
-      <% }) %>
-    </select>
-  </div>
-  <div class="col-md-3">
+  <div class="col-md-4">
     <select name="status" class="form-select">
       <option value="">Tất cả trạng thái</option>
       <option value="published" <%= status==='published'?'selected':'' %>>Công khai</option>
@@ -49,7 +41,7 @@
   <div class="col-md-2 d-grid">
     <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search me-2"></i>Lọc</button>
   </div>
-  </form>
+</form>
 
 <!-- Table -->
 <div class="card">
@@ -60,7 +52,6 @@
           <tr>
             <th style="width:60px">Ảnh</th>
             <th>Tên</th>
-            <th>Loại</th>
             <th>Tags</th>
             <th>Trạng thái</th>
             <th>Hiển thị</th>
@@ -80,9 +71,7 @@
               </td>
               <td>
                 <div class="fw-semibold"><a href="/admin/cuisines/<%= item._id %>"><%= item.name %></a></div>
-                <div class="text-muted small"><%= item.nameEn || '' %></div>
               </td>
-              <td><span class="badge text-bg-info"><%= item.type || '—' %></span></td>
               <td>
                 <% (item.tags || []).slice(0,3).forEach(tag => { %>
                   <span class="badge text-bg-light border me-1"><%= tag %></span>
@@ -121,9 +110,9 @@
     <nav>
       <ul class="pagination mb-0">
         <% const cp = currentPage || 1; const tp = totalPages || 1; %>
-        <li class="page-item <%= cp<=1?'disabled':'' %>"><a class="page-link" href="?page=<%= cp-1 %>&search=<%= search||'' %>&type=<%= type||'' %>&status=<%= status||'' %>">Trước</a></li>
+        <li class="page-item <%= cp<=1?'disabled':'' %>"><a class="page-link" href="?page=<%= cp-1 %>&search=<%= search||'' %>&status=<%= status||'' %>">Trước</a></li>
         <li class="page-item disabled"><span class="page-link">Trang <%= cp %>/<%= tp %></span></li>
-        <li class="page-item <%= cp>=tp?'disabled':'' %>"><a class="page-link" href="?page=<%= cp+1 %>&search=<%= search||'' %>&type=<%= type||'' %>&status=<%= status||'' %>">Sau</a></li>
+        <li class="page-item <%= cp>=tp?'disabled':'' %>"><a class="page-link" href="?page=<%= cp+1 %>&search=<%= search||'' %>&status=<%= status||'' %>">Sau</a></li>
       </ul>
     </nav>
   </div>
