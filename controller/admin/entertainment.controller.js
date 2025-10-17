@@ -171,7 +171,7 @@ module.exports.store = async (req, res) => {
         
         // Process uploaded images
         const imagesArray = req.files && req.files.length > 0 
-            ? req.files.map(file => `/uploads/${file.filename}`)
+            ? req.files.filter(f => f.fieldname === 'images').map(file => `/uploads/${file.filename}`)
             : [];
         
         // If no images uploaded, set default placeholder
@@ -364,8 +364,12 @@ module.exports.update = async (req, res) => {
         
         // Add new uploaded images
         if (req.files && req.files.length > 0) {
-            const newImages = req.files.map(file => `/uploads/${file.filename}`);
-            imagesArray = [...imagesArray, ...newImages];
+            // Filter main images (fieldname = 'images')
+            const mainImages = req.files.filter(f => f.fieldname === 'images');
+            if (mainImages.length > 0) {
+                const newImages = mainImages.map(file => `/uploads/${file.filename}`);
+                imagesArray = [...imagesArray, ...newImages];
+            }
         }
         
         // If no images left, set default placeholder

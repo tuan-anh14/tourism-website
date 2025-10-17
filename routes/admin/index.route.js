@@ -40,15 +40,15 @@ router.get('/logout', authController.logout);
 router.get('/dashboard', requireAuth, authController.showDashboard);
 
 // Import upload middleware
-const { uploadMultiple } = require('../../middleware/upload');
+const { uploadMultiple, uploadDynamic } = require('../../middleware/upload');
 
 // Attractions routes (aligned with ProductManagement pattern)
 router.get('/attractions', requireAuth, attractionController.index);
 router.get('/attractions/create', requireAuth, requireEditor, attractionController.create);
-router.post('/attractions', requireAuth, requireEditor, uploadMultiple, attractionController.store);
+router.post('/attractions', requireAuth, requireEditor, uploadDynamic, attractionController.store);
 router.get('/attractions/:id', requireAuth, attractionController.show);
 router.get('/attractions/edit/:id', requireAuth, requireEditor, attractionController.edit);
-router.patch('/attractions/edit/:id', requireAuth, requireEditor, uploadMultiple, attractionController.editPatch);
+router.patch('/attractions/edit/:id', requireAuth, requireEditor, uploadDynamic, attractionController.editPatch);
 // Accept both DELETE (via method-override) and direct POST for compatibility
 router.delete('/attractions/delete/:id', requireAuth, requireEditor, attractionController.destroy);
 router.post('/attractions/delete/:id', requireAuth, requireEditor, attractionController.destroy);
@@ -56,10 +56,10 @@ router.post('/attractions/delete/:id', requireAuth, requireEditor, attractionCon
 // Accommodations routes (aligned with ProductManagement pattern)
 router.get('/accommodations', requireAuth, accommodationController.index);
 router.get('/accommodations/create', requireAuth, requireEditor, accommodationController.create);
-router.post('/accommodations', requireAuth, requireEditor, uploadMultiple, accommodationController.store);
+router.post('/accommodations', requireAuth, requireEditor, uploadDynamic, accommodationController.store);
 router.get('/accommodations/:id', requireAuth, accommodationController.show);
 router.get('/accommodations/edit/:id', requireAuth, requireEditor, accommodationController.edit);
-router.patch('/accommodations/edit/:id', requireAuth, requireEditor, uploadMultiple, accommodationController.editPatch);
+router.patch('/accommodations/edit/:id', requireAuth, requireEditor, uploadDynamic, accommodationController.editPatch);
 // Accept both DELETE (via method-override) and direct POST for compatibility
 router.delete('/accommodations/delete/:id', requireAuth, requireEditor, accommodationController.destroy);
 router.post('/accommodations/delete/:id', requireAuth, requireEditor, accommodationController.destroy);
@@ -67,22 +67,22 @@ router.post('/accommodations/delete/:id', requireAuth, requireEditor, accommodat
 // Cuisines routes
 router.get('/cuisines', requireAuth, cuisineController.index);
 router.get('/cuisines/create', requireAuth, requireEditor, cuisineController.create);
-router.post('/cuisines', requireAuth, requireEditor, uploadMultiple, cuisineController.store);
+router.post('/cuisines', requireAuth, requireEditor, uploadDynamic, cuisineController.store);
 router.get('/cuisines/:id', requireAuth, cuisineController.show);
 router.get('/cuisines/edit/:id', requireAuth, requireEditor, cuisineController.edit);
-router.patch('/cuisines/edit/:id', requireAuth, requireEditor, uploadMultiple, cuisineController.editPatch);
+router.patch('/cuisines/edit/:id', requireAuth, requireEditor, uploadDynamic, cuisineController.editPatch);
 router.delete('/cuisines/delete/:id', requireAuth, requireEditor, cuisineController.destroy);
 router.post('/cuisines/delete/:id', requireAuth, requireEditor, cuisineController.destroy);
 
 // Entertainment routes
 router.get('/entertainments', requireAuth, entertainmentController.index);
 router.get('/entertainments/create', requireAuth, requireEditor, entertainmentController.create);
-router.post('/entertainments', requireAuth, requireEditor, uploadMultiple, entertainmentController.store);
+router.post('/entertainments', requireAuth, requireEditor, uploadDynamic, entertainmentController.store);
 router.get('/entertainments/edit/:id', requireAuth, requireEditor, entertainmentController.edit);
 router.get('/entertainments/:id', requireAuth, entertainmentController.show);
-router.put('/entertainments/:id', requireAuth, requireEditor, uploadMultiple, entertainmentController.update);
-router.patch('/entertainments/:id', requireAuth, requireEditor, uploadMultiple, entertainmentController.update);
-router.post('/entertainments/:id', requireAuth, requireEditor, uploadMultiple, entertainmentController.update);
+router.put('/entertainments/:id', requireAuth, requireEditor, uploadDynamic, entertainmentController.update);
+router.patch('/entertainments/:id', requireAuth, requireEditor, uploadDynamic, entertainmentController.update);
+router.post('/entertainments/:id', requireAuth, requireEditor, uploadDynamic, entertainmentController.update);
 router.post('/entertainments/:id/toggle-active', requireAuth, requireEditor, entertainmentController.toggleActive);
 router.post('/entertainments/:id/toggle-featured', requireAuth, requireEditor, entertainmentController.toggleFeatured);
 router.delete('/entertainments/:id', requireAuth, requireEditor, entertainmentController.destroy);

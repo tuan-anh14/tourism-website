@@ -46,8 +46,12 @@ const uploadMultiple = upload.array('images', 10);
 // Middleware để upload một ảnh
 const uploadSingle = upload.single('image');
 
+// Middleware để upload với field names động (cho places images)
+const uploadDynamic = upload.any();
+
 module.exports = {
   uploadMultiple,
   uploadSingle,
+  uploadDynamic,
   upload
 };

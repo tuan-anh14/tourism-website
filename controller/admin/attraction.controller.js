@@ -166,7 +166,11 @@ module.exports.store = async (req, res) => {
     
     // Xử lý images nếu có
     if (req.files && req.files.length > 0) {
-      data.images = req.files.map(file => `/uploads/${file.filename}`);
+      // Filter main images (fieldname = 'images')
+      const mainImages = req.files.filter(f => f.fieldname === 'images');
+      if (mainImages.length > 0) {
+        data.images = mainImages.map(file => `/uploads/${file.filename}`);
+      }
     }
 
     // Xử lý arrays - loại bỏ empty values
@@ -345,8 +349,12 @@ module.exports.editPatch = async (req, res) => {
 
     // add new images
     if (req.files && req.files.length > 0) {
-      const newImages = req.files.map(file => `/uploads/${file.filename}`);
-      attraction.images = [ ...(attraction.images || []), ...newImages ];
+      // Filter main images (fieldname = 'images')
+      const mainImages = req.files.filter(f => f.fieldname === 'images');
+      if (mainImages.length > 0) {
+        const newImages = mainImages.map(file => `/uploads/${file.filename}`);
+        attraction.images = [ ...(attraction.images || []), ...newImages ];
+      }
     }
 
     // Normalize booleans (checkbox sends 'on' when checked, undefined when unchecked)
@@ -444,8 +452,12 @@ module.exports.update = async (req, res) => {
 
     // Xử lý images mới nếu có
     if (req.files && req.files.length > 0) {
-      const newImages = req.files.map(file => `/uploads/${file.filename}`);
-      attraction.images = [...attraction.images, ...newImages];
+      // Filter main images (fieldname = 'images')
+      const mainImages = req.files.filter(f => f.fieldname === 'images');
+      if (mainImages.length > 0) {
+        const newImages = mainImages.map(file => `/uploads/${file.filename}`);
+        attraction.images = [...attraction.images, ...newImages];
+      }
     }
 
     // Xử lý arrays - loại bỏ empty values
@@ -477,8 +489,12 @@ module.exports.update = async (req, res) => {
 
     // Thêm ảnh mới nếu upload từ form và giữ ảnh cũ
     if (req.files && req.files.length > 0) {
-      const newImages = req.files.map(file => `/uploads/${file.filename}`);
-      attraction.images = [ ...(attraction.images || []), ...newImages ];
+      // Filter main images (fieldname = 'images')
+      const mainImages = req.files.filter(f => f.fieldname === 'images');
+      if (mainImages.length > 0) {
+        const newImages = mainImages.map(file => `/uploads/${file.filename}`);
+        attraction.images = [ ...(attraction.images || []), ...newImages ];
+      }
     }
     // Cập nhật images vào data (giữ ảnh cũ nếu không upload mới)
     if (!data.images) data.images = attraction.images;

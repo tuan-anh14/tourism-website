@@ -14,18 +14,9 @@
       <div class="card-body">
         <div class="mb-3"><strong>Tên:</strong> <%= cuisine.name %></div>
         <div class="mb-3"><strong>Mô tả:</strong><div class="text-muted"><%= cuisine.description %></div></div>
-        <% if ((cuisine.feature||[]).length) { %>
-          <div class="mb-3"><strong>Điểm nhấn:</strong>
-            <% cuisine.feature.forEach(f=>{ %>
-              <span class="badge text-bg-light border me-1"><%= f %></span>
-            <% }) %>
-          </div>
-        <% } %>
-        <% if ((cuisine.tags||[]).length) { %>
-          <div class="mb-3"><strong>Tags:</strong>
-            <% cuisine.tags.forEach(t=>{ %>
-              <span class="badge text-bg-secondary me-1"><%= t %></span>
-            <% }) %>
+        <% if (cuisine.recipe) { %>
+          <div class="mb-3"><strong>Công thức nấu:</strong>
+            <div class="text-muted small"><%= cuisine.recipe.slice(0, 200) %><% if (cuisine.recipe.length > 200) { %>...<% } %></div>
           </div>
         <% } %>
       </div>
@@ -44,20 +35,13 @@
               <div class="fw-semibold mb-1"><%= p.name %></div>
               <% if (p.address) { %>
                 <div class="text-muted small mb-1">
-                  <%= [p.address.street,p.address.ward,p.address.district,p.address.city].filter(Boolean).join(', ') %>
+                  <%= p.address %>
                 </div>
               <% } %>
               <% if (p.openingHours) { %><div class="small"><strong>Giờ:</strong> <%= p.openingHours %></div><% } %>
               <% if (p.priceRange) { %><div class="small"><strong>Giá:</strong> <%= p.priceRange %></div><% } %>
               <% if (p.mapLink) { %>
                 <div class="mt-2"><a target="_blank" href="<%= p.mapLink %>" class="btn btn-sm btn-outline-primary"><i class="fas fa-map-marker-alt me-1"></i>Google Maps</a></div>
-              <% } %>
-              <% if ((p.images||[]).length) { %>
-                <div class="d-flex flex-wrap gap-2 mt-2">
-                  <% p.images.slice(0,4).forEach(img=>{ %>
-                    <img src="<%= img %>" style="width:64px;height:64px;object-fit:cover;border-radius:4px;">
-                  <% }) %>
-                </div>
               <% } %>
             </div>
           </div>
@@ -71,16 +55,29 @@
     <div class="card mb-4">
       <div class="card-header"><h5 class="mb-0">Hình ảnh</h5></div>
       <div class="card-body">
-        <% if ((cuisine.mainImages||[]).length===0 && (cuisine.gallery||[]).length===0) { %>
+        <% if ((cuisine.mainImages||[]).length===0) { %>
           <div class="text-muted">Chưa có hình ảnh</div>
         <% } %>
         <div class="d-flex flex-wrap gap-2">
-          <% (cuisine.mainImages||[]).concat(cuisine.gallery||[]).slice(0,12).forEach(img=>{ %>
+          <% (cuisine.mainImages||[]).slice(0,12).forEach(img=>{ %>
             <img src="<%= img %>" style="width:96px;height:96px;object-fit:cover;border-radius:6px;">
           <% }) %>
         </div>
       </div>
     </div>
+
+    <% if ((cuisine.tips||[]).length) { %>
+    <div class="card mb-4">
+      <div class="card-header"><h5 class="mb-0">Mẹo thưởng thức</h5></div>
+      <div class="card-body">
+        <% cuisine.tips.forEach(tip=>{ %>
+          <div class="mb-2">
+            <div class="fw-semibold"><i class="fa fa-lightbulb-o me-2"></i><%= tip %></div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+    <% } %>
 
     <div class="card">
       <div class="card-header"><h5 class="mb-0">Trạng thái</h5></div>

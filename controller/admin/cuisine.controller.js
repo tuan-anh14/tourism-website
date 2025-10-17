@@ -13,8 +13,7 @@ module.exports.index = async (req, res) => {
     if (search) {
       query.$or = [
         { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        { tags: { $in: [new RegExp(search, 'i')] } }
+        { description: { $regex: search, $options: 'i' } }
       ];
     }
     if (status) {
@@ -124,12 +123,33 @@ module.exports.store = async (req, res) => {
 
     // Handle images uploads -> push to mainImages
     if (req.files && req.files.length > 0) {
-      const uploaded = req.files.map((f) => `/uploads/${f.filename}`);
-      data.mainImages = uploaded;
+      // Filter main images (fieldname = 'images')
+      const mainImages = req.files.filter(f => f.fieldname === 'images');
+      if (mainImages.length > 0) {
+        data.mainImages = mainImages.map((f) => `/uploads/${f.filename}`);
+      }
+    }
+
+    // Handle place images uploads
+    if (data.places && Array.isArray(data.places)) {
+      data.places.forEach((place, placeIdx) => {
+        if (place) {
+          // Find files for this specific place
+          const placeFiles = req.files.filter(file => 
+            file.fieldname && file.fieldname.includes(`places[${placeIdx}][images]`)
+          );
+          if (placeFiles.length > 0) {
+            place.images = placeFiles.map(f => `/uploads/${f.filename}`);
+          } else {
+            // Initialize empty array if no images
+            place.images = place.images || [];
+          }
+        }
+      });
     }
 
     // Normalize arrays
-    const arrayFields = ['feature', 'tags', 'mainImages', 'gallery'];
+    const arrayFields = ['mainImages'];
     arrayFields.forEach((field) => {
       if (data[field]) {
         if (Array.isArray(data[field])) {
@@ -139,6 +159,11 @@ module.exports.store = async (req, res) => {
         }
       }
     });
+
+    // Handle tips array
+    if (data.tips && Array.isArray(data.tips)) {
+      data.tips = data.tips.filter(tip => tip && String(tip).trim() !== '');
+    }
 
     // Normalize booleans
     data.isActive = data.isActive === 'on' || data.isActive === true || data.isActive === 'true';
@@ -254,22 +279,51 @@ module.exports.editPatch = async (req, res) => {
 
     // add new uploads
     if (req.files && req.files.length > 0) {
-      const newImages = req.files.map((file) => `/uploads/${file.filename}`);
-      cuisine.mainImages = [ ...(cuisine.mainImages || []), ...newImages ];
+      // Filter main images (fieldname = 'images')
+      const mainImages = req.files.filter(f => f.fieldname === 'images');
+      if (mainImages.length > 0) {
+        const newImages = mainImages.map((file) => `/uploads/${file.filename}`);
+        cuisine.mainImages = [ ...(cuisine.mainImages || []), ...newImages ];
+      }
+    }
+
+    // Handle place images uploads and removals
+    if (data.places && Array.isArray(data.places)) {
+      data.places.forEach((place, placeIdx) => {
+        if (place) {
+          // Handle place image removals
+          if (place.removeImages) {
+            const removeArray = Array.isArray(place.removeImages) ? place.removeImages : [place.removeImages];
+            const removeIndexes = removeArray.map((i) => parseInt(i));
+            if (cuisine.places && cuisine.places[placeIdx]) {
+              cuisine.places[placeIdx].images = (cuisine.places[placeIdx].images || []).filter((_, idx) => !removeIndexes.includes(idx));
+            }
+          }
+
+          // Handle new place image uploads
+          if (place.images && Array.isArray(place.images)) {
+            const placeFiles = req.files.filter(file => 
+              file.fieldname && file.fieldname.includes(`places[${placeIdx}][images]`)
+            );
+            if (placeFiles.length > 0) {
+              const newPlaceImages = placeFiles.map(f => `/uploads/${f.filename}`);
+              if (cuisine.places && cuisine.places[placeIdx]) {
+                cuisine.places[placeIdx].images = [...(cuisine.places[placeIdx].images || []), ...newPlaceImages];
+              }
+            }
+          }
+        }
+      });
     }
 
     // normalize booleans
     data.isActive = data.isActive === 'on' || data.isActive === true || data.isActive === 'true';
     data.featured = data.featured === 'on' || data.featured === true || data.featured === 'true';
 
-    // normalize arrays
-    const arrayFields = ['feature', 'tags', 'gallery'];
-    arrayFields.forEach((field) => {
-      if (data[field]) {
-        if (Array.isArray(data[field])) data[field] = data[field].filter((v) => v && String(v).trim() !== '');
-        else data[field] = [data[field]].filter((v) => v && String(v).trim() !== '');
-      }
-    });
+    // Handle tips array
+    if (data.tips && Array.isArray(data.tips)) {
+      data.tips = data.tips.filter(tip => tip && String(tip).trim() !== '');
+    }
 
     if (data._method) delete data._method;
 
@@ -278,6 +332,17 @@ module.exports.editPatch = async (req, res) => {
       if (key !== 'removeImages' && data[key] !== undefined) setPayload[key] = data[key];
     });
     setPayload.mainImages = cuisine.mainImages;
+    
+    // Update places with their images
+    if (data.places && Array.isArray(data.places)) {
+      setPayload.places = data.places.map((place, placeIdx) => {
+        const existingPlace = cuisine.places && cuisine.places[placeIdx] ? cuisine.places[placeIdx] : {};
+        return {
+          ...place,
+          images: existingPlace.images || []
+        };
+      });
+    }
 
     await Cuisine.updateOne({ _id: id }, { $set: setPayload }, { runValidators: true });
     req.flash('success', 'Đã cập nhật thành công ẩm thực!');
@@ -324,14 +389,10 @@ module.exports.update = async (req, res) => {
     }
     if (!data.mainImages) data.mainImages = cuisine.mainImages;
 
-    // Normalize arrays
-    const arrayFields = ['feature', 'tags', 'gallery'];
-    arrayFields.forEach((field) => {
-      if (data[field]) {
-        if (Array.isArray(data[field])) data[field] = data[field].filter((v) => v && String(v).trim() !== '');
-        else data[field] = [data[field]].filter((v) => v && String(v).trim() !== '');
-      }
-    });
+    // Handle tips array
+    if (data.tips && Array.isArray(data.tips)) {
+      data.tips = data.tips.filter(tip => tip && String(tip).trim() !== '');
+    }
 
     // Normalize booleans
     data.isActive = data.isActive === 'on' || data.isActive === true;

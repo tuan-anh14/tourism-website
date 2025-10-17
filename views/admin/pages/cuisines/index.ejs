@@ -52,7 +52,6 @@
           <tr>
             <th style="width:60px">Ảnh</th>
             <th>Tên</th>
-            <th>Tags</th>
             <th>Trạng thái</th>
             <th>Hiển thị</th>
             <th style="width:170px"></th>
@@ -62,7 +61,7 @@
           <% (cuisines || []).forEach(item => { %>
             <tr>
               <td>
-                <% const thumb = (item.mainImages && item.mainImages[0]) || (item.gallery && item.gallery[0]); %>
+                <% const thumb = (item.mainImages && item.mainImages[0]); %>
                 <% if (thumb) { %>
                   <img src="<%= thumb %>" alt="thumb" class="rounded" style="width:48px;height:48px;object-fit:cover;">
                 <% } else { %>
@@ -71,14 +70,6 @@
               </td>
               <td>
                 <div class="fw-semibold"><a href="/admin/cuisines/<%= item._id %>"><%= item.name %></a></div>
-              </td>
-              <td>
-                <% (item.tags || []).slice(0,3).forEach(tag => { %>
-                  <span class="badge text-bg-light border me-1"><%= tag %></span>
-                <% }) %>
-                <% if ((item.tags || []).length > 3) { %>
-                  <span class="text-muted small">+<%= item.tags.length - 3 %></span>
-                <% } %>
               </td>
               <td>
                 <% const st = item.status || 'published'; %>
@@ -98,7 +89,7 @@
           <% }) %>
           <% if (!cuisines || cuisines.length === 0) { %>
             <tr>
-              <td colspan="7" class="text-center text-muted py-4">Chưa có dữ liệu</td>
+              <td colspan="5" class="text-center text-muted py-4">Chưa có dữ liệu</td>
             </tr>
           <% } %>
         </tbody>
