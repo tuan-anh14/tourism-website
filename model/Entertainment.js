@@ -63,6 +63,16 @@ const entertainmentSchema = new mongoose.Schema({
     trim: true,
     maxlength: 200
   }],
+  // Reviews: minimal fields
+  reviews: [{
+    author: { type: String, trim: true },
+    avatar: { type: String, trim: true },
+    rating: { type: Number, min: 1, max: 5 },
+    text: { type: String, trim: true },
+    verified: { type: Boolean, default: false },
+    date: { type: Date },
+    source: { type: String, default: 'google', trim: true }
+  }],
   // Align with attractions: images stored as string URLs, normalized in controllers
   images: [{
     type: String,

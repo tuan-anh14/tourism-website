@@ -71,6 +71,16 @@ const accommodationSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  // Reviews: minimal fields
+  reviews: [{
+    author: { type: String, trim: true },
+    avatar: { type: String, trim: true },
+    rating: { type: Number, min: 1, max: 5 },
+    text: { type: String, trim: true },
+    verified: { type: Boolean, default: false },
+    date: { type: Date },
+    source: { type: String, default: 'google', trim: true }
+  }],
   
   // Map Information
   map: {

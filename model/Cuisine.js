@@ -11,7 +11,17 @@ const CuisinePlaceSchema = new mongoose.Schema({
   },
   openingHours: { type: String, trim: true },
   priceRange: { type: String, trim: true },
-  images: [{ type: String, trim: true }] // Images specific to this place
+  images: [{ type: String, trim: true }], // Images specific to this place
+  // Reviews for this cuisine place (minimal fields)
+  reviews: [{
+    author: { type: String, trim: true },
+    avatar: { type: String, trim: true },
+    rating: { type: Number, min: 1, max: 5 },
+    text: { type: String, trim: true },
+    verified: { type: Boolean, default: false },
+    date: { type: Date },
+    source: { type: String, default: 'google', trim: true }
+  }]
 });
 
 const CuisineSchema = new mongoose.Schema({
