@@ -22,7 +22,7 @@ function mapAttractionToView(attractionDoc) {
     const reviews = Array.isArray(doc.reviews) ? doc.reviews : [];
     const ratingCount = reviews.length;
     const ratingAverage = ratingCount > 0
-        ? (reviews.reduce((acc, r) => acc + (r.rating || 0), 0) / ratingCount)
+        ? (reviews.reduce((acc, r) => acc + (Number(r.rating) || 0), 0) / ratingCount)
         : 0;
 
     // Short description fallback
@@ -62,7 +62,9 @@ function mapAttractionToView(attractionDoc) {
         route: Array.isArray(doc.route) ? doc.route : [],
         // Review widget script
         reviewWidgetScript: doc.reviewWidgetScript || '',
-        hasReviewWidget: !!(doc.reviewWidgetScript && doc.reviewWidgetScript.trim())
+        hasReviewWidget: !!(doc.reviewWidgetScript && doc.reviewWidgetScript.trim()),
+        reviews,
+        reviewButtonUrl: doc.map && doc.map.link ? doc.map.link : ''
     };
 }
 module.exports.attractions = async (req, res) => {

@@ -1,9 +1,20 @@
 <%# reviews-section partial: include via include('../components/reviews-section', props) %>
 <%
-  const _title = (typeof title !== 'undefined' && title) ? title : "What Our Customers Say";
-  const _rating = (typeof rating !== 'undefined' && rating != null && !isNaN(Number(rating))) ? Number(rating) : 4.7;
-  const _reviewCount = (typeof reviewCount !== 'undefined' && reviewCount != null) ? reviewCount : "16,976";
+  const _title = (typeof title !== 'undefined' && title) ? title : "Đừng chỉ nghe chúng tôi, hãy nghe du khách!";
+  const _rating = (typeof rating !== 'undefined' && rating != null && !isNaN(Number(rating)))
+    ? Number(rating)
+    : (typeof attraction !== 'undefined' && attraction && attraction.rating && !isNaN(Number(attraction.rating.average))
+        ? Number(attraction.rating.average)
+        : 4.7);
+  const _reviewCount = (typeof reviewCount !== 'undefined' && reviewCount != null)
+    ? reviewCount
+    : (typeof attraction !== 'undefined' && attraction && attraction.rating && typeof attraction.rating.count !== 'undefined'
+        ? attraction.rating.count
+        : 0);
   const _showButton = (typeof showButton === 'undefined') ? true : (showButton !== false);
+  const _buttonUrl = (typeof buttonUrl !== 'undefined' && buttonUrl)
+    ? String(buttonUrl)
+    : (typeof attraction !== 'undefined' && attraction && attraction.reviewButtonUrl ? String(attraction.reviewButtonUrl) : '');
 %>
 
 <div class="review-widget-container">
@@ -49,46 +60,26 @@
       </div>
   
       <% if(_showButton) { %>
-        <button class="review-widget-btn">Review us on Google</button>
+        <% if(_buttonUrl) { %>
+          <a href="<%= _buttonUrl %>" target="_blank" rel="noopener" class="review-widget-btn">Review us on Google</a>
+        <% } else { %>
+          <button class="review-widget-btn">Review us on Google</button>
+        <% } %>
       <% } %>
     </div>
   
     <div class="review-widget-carousel">
       <div class="carousel-track">
         <% 
-          const reviewsToShow = (typeof reviews !== 'undefined' && reviews && reviews.length > 0) ? reviews : [
-            {
-              author: "robert newton",
-              rating: 5,
-              text: "Great place with great views and easy to get to with public transportation",
-              date: "8 days ago",
-              verified: true
-            },
-            {
-              author: "volodymyr furman",
-              rating: 5,
-              text: "amazing place",
-              date: "9 days ago",
-              verified: true
-            },
-            {
-              author: "Ken Fox",
-              rating: 5,
-              text: "Great place, beautiful view!",
-              date: "10 days ago",
-              verified: true
-            },
-            {
-              author: "Rene Aparicio",
-              rating: 5,
-              text: "Its a very good experience",
-              date: "13 days ago",
-              verified: true
-            }
-          ];
-          
-          reviewsToShow.forEach((review, idx) => {
-        %>
+          const reviewsToShow = (typeof reviews !== 'undefined' && Array.isArray(reviews))
+            ? reviews
+            : ((typeof attraction !== 'undefined' && attraction && Array.isArray(attraction.reviews)) ? attraction.reviews : []);
+          if (reviewsToShow.length === 0) { %>
+            <div class="review-card">
+              <div class="review-text" style="opacity:0.7">Chưa có đánh giá nào.</div>
+            </div>
+        <% } else { 
+          reviewsToShow.forEach((review, idx) => { %>
           <div class="review-card" data-review="<%= idx %>">
             <div class="review-card-header">
               <div class="reviewer-info">
@@ -120,7 +111,7 @@
             <%= (review.text || '').substring(0, 150) %><% if((review.text || '').length > 150) { %>... <a class="review-read-more" href="#">Read more</a><% } %>
           </div>
           </div>
-        <% }); %>
+        <% }); } %>
       </div>
   
       <button class="carousel-btn carousel-prev">‹</button>

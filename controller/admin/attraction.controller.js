@@ -164,12 +164,50 @@ module.exports.store = async (req, res) => {
       return res.redirect('/admin/attractions/create');
     }
     
+    // Reviews will be processed after file uploads
+
     // Xử lý images nếu có
     if (req.files && req.files.length > 0) {
       // Filter main images (fieldname = 'images')
       const mainImages = req.files.filter(f => f.fieldname === 'images');
       if (mainImages.length > 0) {
         data.images = mainImages.map(file => `/uploads/${file.filename}`);
+      }
+      // Map uploaded avatar files into corresponding review items
+      if (data.reviews) {
+        const raw = Array.isArray(data.reviews) ? data.reviews : Object.values(data.reviews);
+        raw.forEach((r, idx) => {
+          const avatarFile = req.files.find(f => f.fieldname === `reviews[${idx}][avatarFile]`);
+          if (avatarFile) {
+            r.avatar = `/uploads/${avatarFile.filename}`;
+          }
+        });
+        data.reviews = raw;
+      }
+    }
+
+    // Process reviews after file uploads (so avatar files are handled)
+    if (data.reviews) {
+      try {
+        const raw = Array.isArray(data.reviews) ? data.reviews : Object.values(data.reviews);
+        data.reviews = raw
+          .filter(Boolean)
+          .map((r) => ({
+            author: r.author || '',
+            avatar: r.avatar || '',
+            rating: typeof r.rating === 'number' ? r.rating : parseFloat(r.rating) || 0,
+            text: r.text || '',
+            verified: r.verified === 'on' || r.verified === true || r.verified === 'true',
+            date: r.date ? new Date(r.date) : undefined,
+            source: r.source || 'google'
+          }))
+          .filter((r) => r.author || r.text);
+      } catch (e) {
+        if (req.headers.accept && req.headers.accept.includes('application/json')) {
+          return res.status(400).json({ success: false, message: 'reviews gửi từ form không hợp lệ' });
+        }
+        req.flash('error', 'reviews gửi từ form không hợp lệ');
+        return res.redirect('/admin/attractions/create');
       }
     }
 
@@ -355,11 +393,46 @@ module.exports.editPatch = async (req, res) => {
         const newImages = mainImages.map(file => `/uploads/${file.filename}`);
         attraction.images = [ ...(attraction.images || []), ...newImages ];
       }
+      // Map uploaded avatar files into corresponding review items
+      if (data.reviews) {
+        const raw = Array.isArray(data.reviews) ? data.reviews : Object.values(data.reviews);
+        raw.forEach((r, idx) => {
+          const avatarFile = req.files.find(f => f.fieldname === `reviews[${idx}][avatarFile]`);
+          if (avatarFile) {
+            r.avatar = `/uploads/${avatarFile.filename}`;
+          }
+        });
+        data.reviews = raw;
+      }
     }
 
     // Normalize booleans (checkbox sends 'on' when checked, undefined when unchecked)
     data.isActive = data.isActive === 'on' || data.isActive === true || data.isActive === 'true';
     data.featured = data.featured === 'on' || data.featured === true || data.featured === 'true';
+
+    // Process reviews after file uploads (so avatar files are handled)
+    if (data.reviews) {
+      try {
+        const raw = Array.isArray(data.reviews) ? data.reviews : Object.values(data.reviews);
+        attraction.reviews = raw
+          .filter(Boolean)
+          .map((r) => ({
+            author: r.author || '',
+            avatar: r.avatar || '',
+            rating: typeof r.rating === 'number' ? r.rating : parseFloat(r.rating) || 0,
+            text: r.text || '',
+            verified: r.verified === 'on' || r.verified === true || r.verified === 'true',
+            date: r.date ? new Date(r.date) : undefined,
+            source: r.source || 'google'
+          }))
+          .filter((r) => r.author || r.text);
+      } catch (e) {
+        req.flash('error', 'reviews gửi từ form không hợp lệ');
+        return res.redirect('back');
+      }
+    }
+
+    // Bỏ nhập JSON - không xử lý reviewsJson nữa theo yêu cầu
 
     // Normalize arrays - remove empty values
     const arrayFields = ['highlights', 'visitor_notes'];
@@ -388,13 +461,22 @@ module.exports.editPatch = async (req, res) => {
 
     // Remove method-override helper
     if (data._method) delete data._method;
+    
+    // Ensure raw reviews from form do not override normalized reviews
+    if (data.reviews) delete data.reviews;
 
-    // build $set payload from data
+    // build $set payload from data (exclude removeImages and already-handled reviews)
     const setPayload = {};
     Object.keys(data).forEach((key) => {
-      if (key !== 'removeImages' && data[key] !== undefined) setPayload[key] = data[key];
+      if (key !== 'removeImages' && key !== 'reviews' && data[key] !== undefined) {
+        setPayload[key] = data[key];
+      }
     });
     setPayload.images = attraction.images;
+    // Explicitly set normalized reviews
+    if (Array.isArray(attraction.reviews)) {
+      setPayload.reviews = attraction.reviews;
+    }
 
     const pushPayload = {};
     if (req.user && req.user._id) {
@@ -457,6 +539,36 @@ module.exports.update = async (req, res) => {
       if (mainImages.length > 0) {
         const newImages = mainImages.map(file => `/uploads/${file.filename}`);
         attraction.images = [...attraction.images, ...newImages];
+      }
+    }
+
+    // Cập nhật reviews từ form thủ công, gắn avatar upload nếu có
+    if (data.reviews) {
+      try {
+        const raw = Array.isArray(data.reviews) ? data.reviews : Object.values(data.reviews);
+        if (req.files && req.files.length > 0) {
+          raw.forEach((r, idx) => {
+            const avatarFile = req.files.find(f => f.fieldname === `reviews[${idx}][avatarFile]`);
+            if (avatarFile) {
+              r.avatar = `/uploads/${avatarFile.filename}`;
+            }
+          });
+        }
+        attraction.reviews = raw
+          .filter(Boolean)
+          .map((r) => ({
+            author: r.author || '',
+            avatar: r.avatar || '',
+            rating: typeof r.rating === 'number' ? r.rating : parseFloat(r.rating) || 0,
+            text: r.text || '',
+            verified: r.verified === 'on' || r.verified === true || r.verified === 'true',
+            date: r.date ? new Date(r.date) : undefined,
+            source: r.source || 'google'
+          }))
+          .filter((r) => r.author || r.text);
+      } catch (e) {
+        req.flash('error', 'reviews gửi từ form không hợp lệ');
+        return res.redirect('back');
       }
     }
 

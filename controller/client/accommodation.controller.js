@@ -96,10 +96,19 @@ module.exports.accommodationDetail = async (req, res) => {
         .sort({ avgRating: -1 })
         .limit(4);
         
+        // Compute rating from embedded reviews
+        const reviews = Array.isArray(acc.reviews) ? acc.reviews : [];
+        const reviewCount = reviews.length;
+        const rating = reviewCount > 0 ? (reviews.reduce((s, r) => s + (Number(r.rating) || 0), 0) / reviewCount) : 0;
+
         res.render("client/pages/accommodation/detail.accommodation.ejs", {
             pageTitle: acc.name + " | Lưu trú Hà Nội",
             acc,
-            relatedAccommodations
+            relatedAccommodations,
+            reviews,
+            rating,
+            reviewCount,
+            reviewButtonUrl: acc.map && acc.map.mapEmbed ? acc.map.mapEmbed : ''
         });
     } catch (error) {
         console.error('Error fetching accommodation detail:', error);

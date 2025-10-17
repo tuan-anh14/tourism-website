@@ -192,7 +192,7 @@ module.exports.detail = async (req, res) => {
         if (entertainment.reviews && entertainment.reviews.length > 0) {
             detail.highlight = {
                 title: "Đánh giá từ khách hàng",
-                content: `Được đánh giá ${entertainment.averageRating}/5 sao từ ${entertainment.reviewCount} lượt đánh giá.`
+                content: `Có ${entertainment.reviews.length} đánh giá tích cực.`
             };
         }
 
@@ -208,6 +208,9 @@ module.exports.detail = async (req, res) => {
 
         // Map
         detail.mapEmbed = entertainment.map.embedUrl;
+        const reviews = Array.isArray(entertainment.reviews) ? entertainment.reviews : [];
+        const reviewCount = reviews.length;
+        const rating = reviewCount > 0 ? (reviews.reduce((s, r) => s + (Number(r.rating) || 0), 0) / reviewCount) : 0;
 
         // CTA
         detail.cta = {
@@ -222,7 +225,11 @@ module.exports.detail = async (req, res) => {
         res.render("client/pages/entertainment/detail.entertainment.ejs", {
             pageTitle: detail.title,
             detail: detail,
-            entertainment: entertainment
+            entertainment: entertainment,
+            reviews,
+            rating,
+            reviewCount,
+            reviewButtonUrl: entertainment.map && entertainment.map.embedUrl ? entertainment.map.embedUrl : ''
         });
     } catch (error) {
         console.error('Error loading entertainment detail:', error);

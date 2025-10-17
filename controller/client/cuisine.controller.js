@@ -186,10 +186,19 @@ module.exports.restaurantDetail = async (req, res) => {
             reviews: restaurant.reviews || []
         };
 
+        // Compute rating from reviews
+        const reviews = Array.isArray(restaurantData.reviews) ? restaurantData.reviews : [];
+        const reviewCount = reviews.length;
+        const rating = reviewCount > 0 ? (reviews.reduce((s, r) => s + (Number(r.rating) || 0), 0) / reviewCount) : 0;
+
         res.render('client/pages/cuisine/restaurant-detail.ejs', { 
             pageTitle: `${restaurantData.name} - ${cuisine.title} | HÀ NỘI`, 
             cuisine,
-            restaurant: restaurantData
+            restaurant: restaurantData,
+            reviews,
+            rating,
+            reviewCount,
+            reviewButtonUrl: restaurantData.mapUrl || ''
         });
     } catch (error) {
         console.error('Client restaurant detail error:', error);
