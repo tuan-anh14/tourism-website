@@ -93,12 +93,6 @@ const accommodationSchema = new mongoose.Schema({
     }
   },
   
-  // Review Widget Script (Google Reviews, EmbedSocial, etc.)
-  reviewWidgetScript: {
-    type: String,
-    trim: true
-  },
-  
   // Status and Metadata
   status: { 
     type: String, 
@@ -165,18 +159,6 @@ accommodationSchema.virtual('url').get(function() {
 accommodationSchema.virtual('mainImage').get(function() {
   return this.images?.[0] || null;
 });
-
-// Has review widget
-accommodationSchema.virtual('hasReviewWidget').get(function() {
-  return !!(this.reviewWidgetScript && this.reviewWidgetScript.trim());
-});
-
-// === INSTANCE METHODS ===
-// Update review widget script
-accommodationSchema.methods.updateReviewWidget = function(script) {
-  this.reviewWidgetScript = script;
-  return this.save();
-};
 
 // === STATIC METHODS ===
 // Search by keyword

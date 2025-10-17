@@ -1394,3 +1394,29 @@ input[type="radio"] {
 }
 
 /* Map styles moved to /client/css/map.css for better organization */
+/* Overlay variant for transparent readable title */
+.map-title-overlay.transparent {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+/* Map controls visibility and positioning helpers */
+#hanoi-map .maplibregl-ctrl-top-left,
+#hanoi-map .mapboxgl-ctrl-top-left {
+  margin: 10px;
+}
+
+/* Toggle button to enable/disable map interactions */
+.map-interact-toggle {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 5;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(255,255,255,0.9);
+  color: #111;
+  font-family: var(--ff-primary);
+}
+body.dark .map-interact-toggle { background: rgba(0,0,0,0.7); color: #fff; border-color: rgba(255,255,255,0.2); }

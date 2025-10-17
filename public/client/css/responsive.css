@@ -324,6 +324,7 @@
     padding: 20px 30px;
     max-width: 400px;
   }
+  .map-title-overlay.transparent { background: transparent !important; }
   
   .map-title-overlay h1 {
     font-size: var(--fs-headings);

@@ -16,8 +16,7 @@ let attractionsLoaded = false;
 document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('hanoi-map')) {
         initializeHanoiMap();
-        setupMapControls();
-        setupSidebar();
+        setupInteractionToggle();
         loadAttractionsFromOSM();
     }
 });
@@ -347,6 +346,15 @@ function initializeHanoiMap() {
         minZoom: 10 // Giới hạn zoom xa
     });
 
+    // Disable interactions by default so page scroll is not blocked
+    try {
+        hanoiMap.dragPan.disable();
+        hanoiMap.scrollZoom.disable();
+        hanoiMap.touchZoomRotate.disable();
+        hanoiMap.doubleClickZoom.disable();
+        hanoiMap.keyboard.disable();
+    } catch(e) { console.warn('Disable interactions failed', e); }
+
     // Add navigation controls (moved to bottom-right to avoid overlapping custom controls)
     hanoiMap.addControl(new maplibregl.NavigationControl({
         showCompass: true,
@@ -356,46 +364,7 @@ function initializeHanoiMap() {
     // Add fullscreen control (also bottom-right)
     hanoiMap.addControl(new maplibregl.FullscreenControl(), 'bottom-right');
 
-    // Initialize Mapbox GL Draw
-    draw = new MapboxDraw({
-        displayControlsDefault: false,
-        controls: {
-            polygon: true,
-            line_string: true,
-            point: true,
-            trash: true
-        },
-        styles: [
-            // Polygon fill
-            {
-                'id': 'gl-draw-polygon-fill-inactive',
-                'type': 'fill',
-                'filter': ['all', ['==', 'active', 'false'], ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
-                'paint': {
-                    'fill-color': '#3fb1ce',
-                    'fill-outline-color': '#3fb1ce',
-                    'fill-opacity': 0.1
-                }
-            },
-            // Polygon outline
-            {
-                'id': 'gl-draw-polygon-stroke-inactive',
-                'type': 'line',
-                'filter': ['all', ['==', 'active', 'false'], ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
-                'layout': {
-                    'line-cap': 'round',
-                    'line-join': 'round'
-                },
-                'paint': {
-                    'line-color': '#3fb1ce',
-                    'line-width': 2
-                }
-            }
-        ]
-    });
-
-    // Add draw control to map
-    hanoiMap.addControl(draw);
+    // Omit draw controls for clean map
 
     // Enable 3D buildings when style loads
     hanoiMap.on('style.load', () => {
@@ -419,69 +388,43 @@ function enable3DBuildings() {
 }
 
 // ===========================================
-// SIDEBAR FUNCTIONALITY
+// INTERACTION TOGGLE (prevent page scroll lock)
 // ===========================================
-function setupSidebar() {
-    const sidebar = document.getElementById('map-sidebar');
-    const toggleBtn = document.getElementById('sidebar-toggle-btn');
-    const closeBtn = document.getElementById('sidebar-toggle');
-    const searchInput = document.getElementById('search-input');
-    const searchBtn = document.querySelector('.search-btn');
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    
-    // Toggle sidebar
-    toggleBtn.addEventListener('click', function() {
-        sidebar.classList.add('open');
-        toggleBtn.classList.add('hidden');
-        handleSidebarOpen();
+function setupInteractionToggle() {
+    const btn = document.getElementById('map-interact-toggle');
+    if (!btn) return;
+
+    const setEnabled = (enabled) => {
+        try {
+            if (enabled) {
+                hanoiMap.dragPan.enable();
+                hanoiMap.scrollZoom.enable();
+                hanoiMap.touchZoomRotate.enable();
+                hanoiMap.doubleClickZoom.enable();
+                hanoiMap.keyboard.enable();
+                btn.setAttribute('aria-pressed', 'true');
+                btn.innerHTML = '<i class="fa fa-hand-paper-o"></i> Khóa kéo map';
+                btn.title = 'Khóa kéo bản đồ';
+            } else {
+                hanoiMap.dragPan.disable();
+                hanoiMap.scrollZoom.disable();
+                hanoiMap.touchZoomRotate.disable();
+                hanoiMap.doubleClickZoom.disable();
+                hanoiMap.keyboard.disable();
+                btn.setAttribute('aria-pressed', 'false');
+                btn.innerHTML = '<i class="fa fa-hand-rock-o"></i> Kéo bản đồ';
+                btn.title = 'Bật kéo bản đồ';
+            }
+        } catch(e) {}
+    };
+
+    // default disabled
+    setEnabled(false);
+
+    btn.addEventListener('click', function(){
+        const pressed = btn.getAttribute('aria-pressed') === 'true';
+        setEnabled(!pressed);
     });
-    
-    closeBtn.addEventListener('click', function() {
-        sidebar.classList.remove('open');
-        toggleBtn.classList.remove('hidden');
-        handleSidebarClose();
-    });
-    
-    // Search functionality
-    searchBtn.addEventListener('click', performSearch);
-    searchInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            performSearch();
-        }
-    });
-    
-    // Filter functionality
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            // Remove active class from all buttons
-            filterBtns.forEach(b => b.classList.remove('active'));
-            // Add active class to clicked button
-            this.classList.add('active');
-            
-            const filter = this.getAttribute('data-filter');
-            filterMarkers(filter);
-        });
-    });
-    
-    // Load initial results
-    loadAllAttractions();
-    
-    // Refresh data button
-    const refreshBtn = document.getElementById('refresh-data');
-    if (refreshBtn) {
-        refreshBtn.addEventListener('click', function() {
-            this.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Đang tải...';
-            this.disabled = true;
-            
-            refreshAttractionsData();
-            
-            // Reset button after a delay
-            setTimeout(() => {
-                this.innerHTML = '<i class="fa fa-refresh"></i> Làm mới dữ liệu';
-                this.disabled = false;
-            }, 3000);
-        });
-    }
 }
 
 function performSearch() {

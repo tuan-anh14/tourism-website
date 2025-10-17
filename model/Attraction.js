@@ -67,10 +67,6 @@ const attractionSchema = new mongoose.Schema({
     lng: { type: Number },
     link: { type: String }
   },
-  reviewWidgetScript: {
-    type: String,
-    trim: true
-  },
   isActive: {
     type: Boolean,
     default: true,
@@ -121,18 +117,6 @@ attractionSchema.virtual('url').get(function() {
 attractionSchema.virtual('mainImage').get(function() {
   return this.images?.[0] || null;
 });
-
-// Virtual: Có review widget hay không
-attractionSchema.virtual('hasReviewWidget').get(function() {
-  return !!(this.reviewWidgetScript && this.reviewWidgetScript.trim());
-});
-
-// === INSTANCE METHODS ===
-// Cập nhật review widget script
-attractionSchema.methods.updateReviewWidget = function(script) {
-  this.reviewWidgetScript = script;
-  return this.save();
-};
 
 // === STATIC METHODS ===
 // Tìm kiếm theo từ khóa

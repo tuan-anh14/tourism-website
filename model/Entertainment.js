@@ -68,12 +68,6 @@ const entertainmentSchema = new mongoose.Schema({
     type: String,
     trim: true
   }],
-  // Optional review widget script (e.g., Google/Shapo) like attractions
-  reviewWidgetScript: {
-    type: String,
-    trim: true,
-    default: ''
-  },
   map: {
     lat: {
       type: Number,
@@ -92,32 +86,6 @@ const entertainmentSchema = new mongoose.Schema({
       required: true
     }
   },
-  reviews: [{
-    author: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 2,
-      maxlength: 50
-    },
-    rating: {
-      type: Number,
-      required: true,
-      min: 1,
-      max: 5
-    },
-    comment: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 10,
-      maxlength: 500
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now
-    }
-  }],
   isActive: {
     type: Boolean,
     default: true
@@ -128,18 +96,6 @@ const entertainmentSchema = new mongoose.Schema({
   }
 }, {
   timestamps: true
-});
-
-// Add virtual for average rating
-entertainmentSchema.virtual('averageRating').get(function() {
-  if (this.reviews.length === 0) return 0;
-  const sum = this.reviews.reduce((acc, review) => acc + review.rating, 0);
-  return Math.round((sum / this.reviews.length) * 10) / 10;
-});
-
-// Add virtual for review count
-entertainmentSchema.virtual('reviewCount').get(function() {
-  return this.reviews.length;
 });
 
 // Add indexes for better performance
