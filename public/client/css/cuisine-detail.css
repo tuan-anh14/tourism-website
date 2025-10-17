@@ -29,7 +29,7 @@
 }
 
 .cuisine-detail .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
-.main-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; align-items: start; }
+.main-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: start; }
 
 .content-section, .restaurants-section, .tips-section, .info-card { background: rgba(255,255,255,0.96); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border:1px solid rgba(0,0,0,0.06); }
 .section-title { font-size: 22px; margin: 0 0 14px 0; color: #2d3748; border-bottom: 2px solid var(--primary-color, #fc036b); padding-bottom: 8px; display:flex; gap:8px; align-items:center; }
@@ -38,6 +38,7 @@
 .subsection-title i { color: var(--primary-color, #fc036b); }
 .description { color:#4a5568; line-height:1.8; }
 .description p { margin: 8px 0; }
+
 
 .highlight-box { background: linear-gradient(135deg, #fff1f5, #ffe2ec); border-left: 4px solid var(--primary-color, #fc036b); padding: 16px; border-radius: 0 8px 8px 0; margin: 16px 0; }
 .highlight-box h3 { color: var(--primary-color, #fc036b); margin: 0 0 8px 0; display:flex; gap:6px; align-items:center; }
@@ -274,9 +275,12 @@
     overflow: hidden;
 }
 
-.tips-section { margin: 28px 0; }
+.tips-section { margin: 28px 0; text-align: center; }
 .tips-section .section-title { justify-content: center; text-align: center; }
-.tips-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 14px; justify-items: center; }
+.tips-section .line { width: 150px; height: 4px; background:#fc036b; margin:10px auto 0 auto; border-radius:5px; }
+.cuisine-detail-page .tips-section > .container { margin-left:auto !important; margin-right:auto !important; }
+.cuisine-detail-page .tips-section .tips-grid { margin-left:auto; margin-right:auto; }
+.tips-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 14px; justify-items: center; max-width: 1000px; margin: 16px auto 0 auto; }
 .tip-card { background:#f7fafc; padding: 14px; border-radius: 8px; border-left: 4px solid var(--primary-color, #fc036b); width: 100%; max-width: 560px; }
 .tip-card h4 { margin: 0 0 8px 0; display:flex; gap: 6px; align-items:center; color:#2d3748; justify-content: center; }
 .tip-card h4 i { color: var(--primary-color, #fc036b); }
