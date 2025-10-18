@@ -121,16 +121,7 @@
                 <p>Thông tin đang được cập nhật.</p>
                 <% } %>
               </div>
-              <% if (acc && acc.highlights && acc.highlights.length) { %>
-              <div class="highlight-box">
-                <h3><i class="fa fa-award"></i> Điểm nổi bật</h3>
-                <ul>
-                  <% acc.highlights.forEach(function(h){ %>
-                  <li><%= h %></li>
-                  <% }) %>
-                </ul>
-              </div>
-              <% } %> <% if (acc && acc.amenities && acc.amenities.length) { %>
+              <% if (acc && acc.amenities && acc.amenities.length) { %>
               <div class="room-info">
                 <h3><i class="fa fa-bed"></i> Tiện nghi</h3>
                 <div class="room-features-list">
@@ -144,37 +135,6 @@
               <% } %>
             </section>
 
-            <!-- Services Section -->
-            <section class="services-section">
-              <h2 class="section-title">Dịch vụ & Tiện ích</h2>
-              <% if (acc && acc.services && acc.services.length) { %>
-              <div class="service-category">
-                <div class="service-list">
-                  <% acc.services.forEach(function(s){ %>
-                  <div class="service-item">
-                    <i class="fa fa-check"></i><span><%= s %></span>
-                  </div>
-                  <% }) %>
-                </div>
-              </div>
-              <% } else { %>
-              <p class="font-color">Thông tin đang được cập nhật.</p>
-              <% } %>
-            </section>
-
-            <!-- Rules Section -->
-            <% if (acc && acc.rules && acc.rules.length) { %>
-            <section class="rules-section">
-              <h2 class="section-title">Quy định & Chính sách</h2>
-              <div class="rules-list">
-                <% acc.rules.forEach(function(rule){ %>
-                <div class="rule-item">
-                  <i class="fa fa-info-circle"></i><span><%= rule %></span>
-                </div>
-                <% }) %>
-              </div>
-            </section>
-            <% } %>
           </div>
 
           <!-- ===========================================
@@ -203,8 +163,7 @@
                 <i class="fa fa-map-marker"></i>
                 <div>
                   <div class="value">
-                    <%= acc.address.street %>, <%= acc.address.district %>, <%=
-                    acc.address.city %>
+                    <%= acc.address %>
                   </div>
                 </div>
               </div>
@@ -236,14 +195,13 @@
             data-lng="<%= (acc && acc.map && acc.map.coordinates && acc.map.coordinates[0]) || 105.804817 %>"
             data-zoom="14"
             data-name="<%= (acc && acc.name) || '' %>"
-            data-address="<%= (acc && acc.address && (acc.address.street + ', ' + acc.address.district + ', ' + acc.address.city)) || '' %>"
+            data-address="<%= (acc && acc.address) || '' %>"
             data-image="<%= (acc && (acc.images && acc.images[0])) || '' %>"
             data-url="<%= (acc && ('/accommodation/' + (acc.slug || ''))) || '' %>"
           ></div>
           <% if (acc && acc.address) { %>
           <p class="map-address">
-            <strong>Địa chỉ:</strong> <%= acc.address.street %>, <%=
-            acc.address.district %>, <%= acc.address.city %>
+            <strong>Địa chỉ:</strong> <%= acc.address %>
           </p>
           <% } %>
         </section>

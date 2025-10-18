@@ -12,15 +12,6 @@ const accommodationSchema = new mongoose.Schema({
     unique: true,
     trim: true
   },
-  type: { 
-    type: String, 
-    enum: [
-      'hotel', 'homestay', 'apartment', 'resort', 
-      'farmstay', 'bungalow', 'villa', 'hostel', 
-      'guesthouse', 'other'
-    ], 
-    required: true 
-  },
   star: { 
     type: Number, 
     min: 1, 
@@ -29,21 +20,9 @@ const accommodationSchema = new mongoose.Schema({
   
   // Location Information
   address: {
-    street: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    district: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    city: { 
-      type: String, 
-      default: 'Hà Nội',
-      trim: true
-    }
+    type: String,
+    required: true,
+    trim: true
   },
   
   // Pricing
@@ -59,14 +38,10 @@ const accommodationSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  highlights: [String],
   amenities: [String],
-  services: [String],
-  rules: [String],
   
   // Media
   images: [String],
-  videos: [String],
   website: {
     type: String,
     trim: true
@@ -109,7 +84,6 @@ const accommodationSchema = new mongoose.Schema({
     enum: ['public', 'draft', 'hidden'], 
     default: 'public' 
   },
-  tags: [String],
   isActive: {
     type: Boolean,
     default: true
@@ -197,30 +171,10 @@ accommodationSchema.statics.getFeatured = function(limit = 6) {
   .limit(limit);
 };
 
-// Get by type
-accommodationSchema.statics.getByType = function(type, limit = 10) {
-  return this.find({ 
-    type, 
-    isActive: true 
-  })
-  .sort({ createdAt: -1 })
-  .limit(limit);
-};
-
-// Get by district
-accommodationSchema.statics.getByDistrict = function(district, limit = 10) {
-  return this.find({ 
-    'address.district': district, 
-    isActive: true 
-  })
-  .sort({ createdAt: -1 })
-  .limit(limit);
-};
 
 // === INDEXES ===
 accommodationSchema.index({ name: 'text', description: 'text' });
-accommodationSchema.index({ type: 1 });
-accommodationSchema.index({ 'address.district': 1 });
+accommodationSchema.index({ address: 1 });
 accommodationSchema.index({ priceFrom: 1 });
 accommodationSchema.index({ status: 1 });
 accommodationSchema.index({ isActive: 1 });

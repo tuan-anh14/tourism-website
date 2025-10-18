@@ -60,11 +60,7 @@
                         <p class="text-muted mb-3"><%= accommodation.description %></p>
                         
                         <div class="row">
-                            <div class="col-md-6">
-                                <h6><i class="fas fa-tag me-2"></i>Loại hình:</h6>
-                                <p><span class="badge bg-info"><%= accommodation.type %></span></p>
-                            </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <h6><i class="fas fa-money-bill-wave me-2"></i>Giá từ:</h6>
                                 <p class="text-success h5"><%= new Intl.NumberFormat('vi-VN').format(accommodation.priceFrom) %>đ</p>
                             </div>
@@ -119,11 +115,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h6><i class="fas fa-location-dot me-2"></i>Địa chỉ:</h6>
-                        <p>
-                            <%= accommodation.address.street %><br>
-                            <%= accommodation.address.district %><br>
-                            <%= accommodation.address.city %>
-                        </p>
+                        <p><%= accommodation.address %></p>
                         
                         <% if (accommodation.map?.locationText) { %>
                             <h6><i class="fas fa-info-circle me-2"></i>Mô tả vị trí:</h6>
@@ -185,64 +177,30 @@
     </div>
     <% } %>
 
-    <!-- === TIỆN NGHI & DỊCH VỤ === -->
+    <!-- === TIỆN NGHI === -->
+    <% if (accommodation.amenities && accommodation.amenities.length > 0) { %>
     <div class="col-12">
         <div class="card mb-4">
             <div class="card-header">
                 <h5 class="mb-0">
                     <i class="fas fa-concierge-bell me-2"></i>
-                    Tiện nghi & Dịch vụ
+                    Tiện nghi
                 </h5>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <% if (accommodation.highlights && accommodation.highlights.length > 0) { %>
-                    <div class="col-md-6">
-                        <h6><i class="fas fa-star me-2"></i>Điểm nổi bật:</h6>
-                        <ul class="list-unstyled">
-                            <% accommodation.highlights.forEach(highlight => { %>
-                                <li><i class="fas fa-check text-success me-2"></i><%= highlight %></li>
-                            <% }); %>
-                        </ul>
-                    </div>
-                    <% } %>
-                    
-                    <% if (accommodation.amenities && accommodation.amenities.length > 0) { %>
-                    <div class="col-md-6">
-                        <h6><i class="fas fa-wifi me-2"></i>Tiện nghi:</h6>
+                    <div class="col-12">
                         <ul class="list-unstyled">
                             <% accommodation.amenities.forEach(amenity => { %>
                                 <li><i class="fas fa-check text-success me-2"></i><%= amenity %></li>
                             <% }); %>
                         </ul>
                     </div>
-                    <% } %>
-                    
-                    <% if (accommodation.services && accommodation.services.length > 0) { %>
-                    <div class="col-md-6">
-                        <h6><i class="fas fa-concierge-bell me-2"></i>Dịch vụ:</h6>
-                        <ul class="list-unstyled">
-                            <% accommodation.services.forEach(service => { %>
-                                <li><i class="fas fa-check text-success me-2"></i><%= service %></li>
-                            <% }); %>
-                        </ul>
-                    </div>
-                    <% } %>
-                    
-                    <% if (accommodation.rules && accommodation.rules.length > 0) { %>
-                    <div class="col-md-6">
-                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Chính sách/Lưu ý:</h6>
-                        <ul class="list-unstyled">
-                            <% accommodation.rules.forEach(rule => { %>
-                                <li><i class="fas fa-info-circle text-info me-2"></i><%= rule %></li>
-                            <% }); %>
-                        </ul>
-                    </div>
-                    <% } %>
                 </div>
             </div>
         </div>
     </div>
+    <% } %>
 
     <!-- === REVIEWS === -->
     <% if (accommodation.reviews && accommodation.reviews.length > 0) { %>
@@ -330,14 +288,6 @@
                     </div>
                     
                     <div class="col-md-6">
-                        <% if (accommodation.tags && accommodation.tags.length > 0) { %>
-                        <h6><i class="fas fa-tags me-2"></i>Tags:</h6>
-                        <div>
-                            <% accommodation.tags.forEach(tag => { %>
-                                <span class="badge bg-secondary me-1 mb-1"><%= tag %></span>
-                            <% }); %>
-                        </div>
-                        <% } %>
                         
                         <h6><i class="fas fa-chart-line me-2"></i>Thống kê:</h6>
                         <ul class="list-unstyled">
@@ -352,35 +302,6 @@
         </div>
     </div>
 
-    <!-- === VIDEO === -->
-    <% if (accommodation.videos && accommodation.videos.length > 0) { %>
-    <div class="col-12">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0">
-                    <i class="fas fa-video me-2"></i>
-                    Video giới thiệu
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <% accommodation.videos.forEach((video, index) => { %>
-                        <div class="col-md-6 mb-3">
-                            <div class="ratio ratio-16x9">
-                                <iframe src="<%= video %>" 
-                                        title="<%= accommodation.name %> - Video <%= index + 1 %>"
-                                        frameborder="0" 
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                        allowfullscreen>
-                                </iframe>
-                            </div>
-                        </div>
-                    <% }); %>
-                </div>
-            </div>
-        </div>
-    </div>
-    <% } %>
 </div>
 
 <!-- Actions -->

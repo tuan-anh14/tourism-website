@@ -7,7 +7,6 @@ module.exports.index = async (req, res) => {
     const limit = 10;
     const skip = (page - 1) * limit;
     const search = req.query.search || '';
-    const type = req.query.type || '';
     const status = req.query.status || '';
 
     let query = {};
@@ -16,9 +15,6 @@ module.exports.index = async (req, res) => {
         { name: { $regex: search, $options: 'i' } },
         { description: { $regex: search, $options: 'i' } }
       ];
-    }
-    if (type) {
-      query.type = type;
     }
     if (status) {
       if (status === 'active') {
@@ -58,7 +54,6 @@ module.exports.index = async (req, res) => {
           },
           filters: {
             search,
-            type,
             status
           }
         }
@@ -73,21 +68,8 @@ module.exports.index = async (req, res) => {
       currentPage: page,
       totalPages,
       search,
-      type,
       status,
       req: req,
-      types: [
-        { value: 'hotel', label: 'Khách sạn' },
-        { value: 'homestay', label: 'Homestay' },
-        { value: 'apartment', label: 'Căn hộ' },
-        { value: 'resort', label: 'Resort' },
-        { value: 'farmstay', label: 'Farmstay' },
-        { value: 'bungalow', label: 'Bungalow' },
-        { value: 'villa', label: 'Villa' },
-        { value: 'hostel', label: 'Hostel' },
-        { value: 'guesthouse', label: 'Nhà nghỉ' },
-        { value: 'other', label: 'Khác' }
-      ],
       body: 'admin/pages/accommodations/index'
     });
   } catch (error) {
@@ -100,10 +82,8 @@ module.exports.index = async (req, res) => {
       currentPage: 1,
       totalPages: 0,
       search: '',
-      type: '',
       status: '',
       req: req,
-      types: [],
       body: 'admin/pages/accommodations/index'
     });
   }
@@ -116,18 +96,6 @@ module.exports.create = (req, res) => {
     page: 'accommodations',
     body: 'admin/pages/accommodations/create',
     user: req.user,
-    types: [
-      { value: 'hotel', label: 'Khách sạn' },
-      { value: 'homestay', label: 'Homestay' },
-      { value: 'apartment', label: 'Căn hộ' },
-      { value: 'resort', label: 'Resort' },
-      { value: 'farmstay', label: 'Farmstay' },
-      { value: 'bungalow', label: 'Bungalow' },
-      { value: 'villa', label: 'Villa' },
-      { value: 'hostel', label: 'Hostel' },
-      { value: 'guesthouse', label: 'Nhà nghỉ' },
-      { value: 'other', label: 'Khác' }
-    ]
   });
 };
 
@@ -139,16 +107,8 @@ const validateAccommodation = (data) => {
     errors.push('Tên lưu trú là bắt buộc');
   }
   
-  if (!data.type) {
-    errors.push('Loại hình lưu trú là bắt buộc');
-  }
-  
-  if (!data.address || !data.address.street || data.address.street.trim() === '') {
-    errors.push('Địa chỉ đường là bắt buộc');
-  }
-  
-  if (!data.address || !data.address.district || data.address.district.trim() === '') {
-    errors.push('Quận/Huyện là bắt buộc');
+  if (!data.address || data.address.trim() === '') {
+    errors.push('Địa chỉ là bắt buộc');
   }
   
   if (!data.description || data.description.trim() === '') {
@@ -235,7 +195,7 @@ module.exports.store = async (req, res) => {
     }
 
     // Xử lý arrays - loại bỏ empty values
-    const arrayFields = ['highlights', 'amenities', 'services', 'rules', 'tags'];
+    const arrayFields = ['amenities'];
     arrayFields.forEach(field => {
       if (data[field]) {
         if (Array.isArray(data[field])) {
@@ -478,7 +438,7 @@ module.exports.editPatch = async (req, res) => {
     data.featured = data.featured === 'on' || data.featured === true || data.featured === 'true';
 
     // Normalize arrays - remove empty values
-    const arrayFields = ['highlights', 'amenities', 'services', 'rules', 'tags'];
+    const arrayFields = ['amenities'];
     arrayFields.forEach((field) => {
       if (data[field]) {
         if (Array.isArray(data[field])) {
@@ -620,7 +580,7 @@ module.exports.update = async (req, res) => {
     }
 
     // Xử lý arrays - loại bỏ empty values
-    const arrayFields = ['highlights', 'amenities', 'services', 'rules', 'tags'];
+    const arrayFields = ['amenities'];
     arrayFields.forEach(field => {
       if (data[field]) {
         if (Array.isArray(data[field])) {

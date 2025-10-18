@@ -38,15 +38,6 @@
                         <input id="acc-search" type="text" placeholder="Tìm theo tên cơ sở lưu trú..." aria-label="Tìm theo tên" />
                     </div>
                     <div class="box">
-                        <select id="acc-type" aria-label="Chọn loại hình">
-                            <option value="all">Tất cả loại hình</option>
-                            <option value="hotel">Khách sạn</option>
-                            <option value="homestay">Homestay</option>
-                            <option value="guesthouse">Nhà nghỉ</option>
-                            <option value="apartment">Căn hộ dịch vụ</option>
-                        </select>
-                    </div>
-                    <div class="box">
                         <select id="acc-price" aria-label="Chọn mức giá">
                             <option value="all">Tất cả mức giá</option>
                             <option value="lt1m">Dưới 1.000.000đ</option>
@@ -76,21 +67,6 @@
                         return String(str).toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
                     }
                     
-                    function getTypeLabel(type) {
-                        var labels = {
-                            'hotel': 'Khách sạn',
-                            'homestay': 'Homestay', 
-                            'apartment': 'Căn hộ dịch vụ',
-                            'resort': 'Resort',
-                            'farmstay': 'Farmstay',
-                            'bungalow': 'Bungalow',
-                            'villa': 'Villa',
-                            'hostel': 'Hostel',
-                            'guesthouse': 'Nhà nghỉ',
-                            'other': 'Khác'
-                        };
-                        return labels[type] || 'Lưu trú';
-                    }
                     
                     function getAreaLabel(district) {
                         var labels = {
@@ -108,7 +84,6 @@
                 <% if (list) { list.forEach(function(item){
                     var title = item.name || 'Cơ sở lưu trú';
                     var img = (item.images && item.images[0]) || '/client/img/carousel-img2.jpg';
-                    var type = item.type || 'hotel';
                     var area = getAreaLabel(item.address && item.address.district) || 'center';
                     var price = item.priceFrom || '';
                     var amenities = (item.amenities && item.amenities.join(',')) || '';
@@ -118,7 +93,7 @@
                     var reviewCount = item.reviewCount || 0;
                     var star = item.star || 0;
                 %>
-                <article class="accommodation-card" data-title="<%= title %>" data-type="<%= type %>" data-area="<%= area %>" data-price="<%= price %>" data-amenities="<%= amenities %>">
+                <article class="accommodation-card" data-title="<%= title %>" data-area="<%= area %>" data-price="<%= price %>" data-amenities="<%= amenities %>">
                     <div class="thumb">
                         <img src="<%= img %>" alt="<%= title %>" loading="lazy" />
                         <% if (star > 0) { %>
@@ -132,7 +107,6 @@
                     <div class="content">
                         <div class="card-header">
                             <h3 class="title dark"><%= title %></h3>
-                            <span class="type-label"><%= getTypeLabel(type) %></span>
                         </div>
                         <% if (desc) { %><p class="desc font-color"><%= desc.length > 120 ? desc.substring(0, 120) + '...' : desc %></p><% } %>
                         <div class="meta">

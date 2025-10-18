@@ -42,17 +42,6 @@
                        value="<%= search %>" placeholder="Tên lưu trú...">
             </div>
             <div class="col-md-3">
-                <label for="type" class="form-label">Loại hình</label>
-                <select class="form-select" id="type" name="type">
-                    <option value="">Tất cả loại hình</option>
-                    <% types.forEach(type => { %>
-                        <option value="<%= type.value %>" <%= type === type.value ? 'selected' : '' %>>
-                            <%= type.label %>
-                        </option>
-                    <% }); %>
-                </select>
-            </div>
-            <div class="col-md-3">
                 <label for="status" class="form-label">Trạng thái</label>
                 <select class="form-select" id="status" name="status">
                     <option value="">Tất cả trạng thái</option>
@@ -96,7 +85,6 @@
                         <tr>
                             <th style="width: 80px;">Hình ảnh</th>
                             <th>Tên</th>
-                            <th style="width: 120px;">Loại hình</th>
                             <th style="width: 200px;">Địa chỉ</th>
                             <th style="width: 100px;">Giá từ</th>
                             <th style="width: 100px;">Đánh giá</th>
@@ -141,14 +129,9 @@
                                     <% } %>
                                 </td>
                                 <td>
-                                    <% const typeLabel = types.find(t => t.value === accommodation.type)?.label || accommodation.type; %>
-                                    <span class="badge bg-info"><%= typeLabel %></span>
-                                </td>
-                                <td>
                                     <div>
-                                        <%= accommodation.address.street %>
+                                        <%= accommodation.address %>
                                     </div>
-                                    <small class="text-muted"><%= accommodation.address.district %></small>
                                 </td>
                                 <td>
                                     <strong class="text-success">
