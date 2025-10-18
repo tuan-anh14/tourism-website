@@ -12,7 +12,7 @@ module.exports.accommodation = async (req, res) => {
         };
         
         if (area && area !== 'all') {
-            filter.address = { $regex: area, $options: 'i' };
+            filter.district = area;
         }
         
         if (price && price !== 'all') {
@@ -38,7 +38,7 @@ module.exports.accommodation = async (req, res) => {
         
         // Get accommodations from database
         const accommodations = await Accommodation.find(filter)
-            .select('name slug star address priceFrom description images amenities avgRating reviewCount')
+            .select('name slug star address district priceFrom description images amenities avgRating reviewCount')
             .sort({ featured: -1, avgRating: -1, createdAt: -1 })
             .limit(50);
         
@@ -87,7 +87,7 @@ module.exports.accommodationDetail = async (req, res) => {
             status: 'public',
             isActive: true
         })
-        .select('name slug address priceFrom images amenities avgRating reviewCount')
+        .select('name slug address district priceFrom images amenities avgRating reviewCount')
         .sort({ avgRating: -1 })
         .limit(4);
         

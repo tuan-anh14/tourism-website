@@ -49,10 +49,18 @@
                     <div class="box">
                         <select id="acc-area" aria-label="Chọn khu vực">
                             <option value="all">Tất cả khu vực</option>
-                            <option value="center">Quận Hoàn Kiếm</option>
-                            <option value="tayho">Quận Tây Hồ</option>
-                            <option value="caugiay">Quận Cầu Giấy</option>
-                            <option value="haibatrung">Quận Hai Bà Trưng</option>
+                            <option value="Hoàn Kiếm">Hoàn Kiếm</option>
+                            <option value="Ba Đình">Ba Đình</option>
+                            <option value="Tây Hồ">Tây Hồ</option>
+                            <option value="Long Biên">Long Biên</option>
+                            <option value="Cầu Giấy">Cầu Giấy</option>
+                            <option value="Đống Đa">Đống Đa</option>
+                            <option value="Hai Bà Trưng">Hai Bà Trưng</option>
+                            <option value="Hoàng Mai">Hoàng Mai</option>
+                            <option value="Thanh Xuân">Thanh Xuân</option>
+                            <option value="Hà Đông">Hà Đông</option>
+                            <option value="Nam Từ Liêm">Nam Từ Liêm</option>
+                            <option value="Bắc Từ Liêm">Bắc Từ Liêm</option>
                         </select>
                     </div>
                 </div>
@@ -69,22 +77,13 @@
                     
                     
                     function getAreaLabel(district) {
-                        var labels = {
-                            'Hoàn Kiếm': 'center',
-                            'Tây Hồ': 'tayho', 
-                            'Cầu Giấy': 'caugiay',
-                            'Hai Bà Trưng': 'haibatrung',
-                            'Ba Đình': 'badinh',
-                            'Đống Đa': 'dongda',
-                            'Thanh Xuân': 'thanhxuan'
-                        };
-                        return labels[district] || 'center';
+                        return district || 'all';
                     }
                 %>
                 <% if (list) { list.forEach(function(item){
                     var title = item.name || 'Cơ sở lưu trú';
                     var img = (item.images && item.images[0]) || '/client/img/carousel-img2.jpg';
-                    var area = getAreaLabel(item.address && item.address.district) || 'center';
+                    var area = getAreaLabel(item.district) || 'all';
                     var price = item.priceFrom || '';
                     var amenities = (item.amenities && item.amenities.join(',')) || '';
                     var desc = item.description || '';

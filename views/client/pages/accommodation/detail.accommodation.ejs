@@ -158,12 +158,15 @@
                   <div class="value"><%= acc.contact.email %></div>
                 </div>
               </div>
-              <% } %> <% if (acc && acc.address) { %>
+              <% } %>               <% if (acc && acc.address) { %>
               <div class="contact-item">
                 <i class="fa fa-map-marker"></i>
                 <div>
                   <div class="value">
                     <%= acc.address %>
+                    <% if (acc.district) { %>
+                    <br><small class="text-muted">Quận/Huyện: <%= acc.district %></small>
+                    <% } %>
                   </div>
                 </div>
               </div>

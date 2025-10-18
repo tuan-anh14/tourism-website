@@ -111,6 +111,10 @@ const validateAccommodation = (data) => {
     errors.push('Địa chỉ là bắt buộc');
   }
   
+  if (!data.district || data.district.trim() === '') {
+    errors.push('Quận/Huyện là bắt buộc');
+  }
+  
   if (!data.description || data.description.trim() === '') {
     errors.push('Mô tả chi tiết là bắt buộc');
   }

@@ -24,6 +24,11 @@ const accommodationSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  district: {
+    type: String,
+    required: true,
+    trim: true
+  },
   
   // Pricing
   priceFrom: { 
@@ -175,6 +180,7 @@ accommodationSchema.statics.getFeatured = function(limit = 6) {
 // === INDEXES ===
 accommodationSchema.index({ name: 'text', description: 'text' });
 accommodationSchema.index({ address: 1 });
+accommodationSchema.index({ district: 1 });
 accommodationSchema.index({ priceFrom: 1 });
 accommodationSchema.index({ status: 1 });
 accommodationSchema.index({ isActive: 1 });

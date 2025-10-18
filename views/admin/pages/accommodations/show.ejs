@@ -117,6 +117,9 @@
                         <h6><i class="fas fa-location-dot me-2"></i>Địa chỉ:</h6>
                         <p><%= accommodation.address %></p>
                         
+                        <h6><i class="fas fa-map-marker-alt me-2"></i>Quận/Huyện:</h6>
+                        <p><span class="badge bg-info"><%= accommodation.district %></span></p>
+                        
                         <% if (accommodation.map?.locationText) { %>
                             <h6><i class="fas fa-info-circle me-2"></i>Mô tả vị trí:</h6>
                             <p><%= accommodation.map.locationText %></p>

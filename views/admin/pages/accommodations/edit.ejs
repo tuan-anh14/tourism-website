@@ -84,10 +84,46 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-md-8">
                             <div class="mb-3">
                                 <label for="address" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="address" name="address" value="<%= accommodation.address %>" required placeholder="VD: 123 Phố Huế, Quận Hai Bà Trưng, Hà Nội">
+                                <input type="text" class="form-control" id="address" name="address" value="<%= accommodation.address %>" required placeholder="VD: 123 Phố Huế, Hà Nội">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="district" class="form-label">Quận/Huyện <span class="text-danger">*</span></label>
+                                <select class="form-select" id="district" name="district" required>
+                                    <option value="">Chọn quận/huyện</option>
+                                    <option value="Hoàn Kiếm" <%= accommodation.district === 'Hoàn Kiếm' ? 'selected' : '' %>>Hoàn Kiếm</option>
+                                    <option value="Ba Đình" <%= accommodation.district === 'Ba Đình' ? 'selected' : '' %>>Ba Đình</option>
+                                    <option value="Tây Hồ" <%= accommodation.district === 'Tây Hồ' ? 'selected' : '' %>>Tây Hồ</option>
+                                    <option value="Long Biên" <%= accommodation.district === 'Long Biên' ? 'selected' : '' %>>Long Biên</option>
+                                    <option value="Cầu Giấy" <%= accommodation.district === 'Cầu Giấy' ? 'selected' : '' %>>Cầu Giấy</option>
+                                    <option value="Đống Đa" <%= accommodation.district === 'Đống Đa' ? 'selected' : '' %>>Đống Đa</option>
+                                    <option value="Hai Bà Trưng" <%= accommodation.district === 'Hai Bà Trưng' ? 'selected' : '' %>>Hai Bà Trưng</option>
+                                    <option value="Hoàng Mai" <%= accommodation.district === 'Hoàng Mai' ? 'selected' : '' %>>Hoàng Mai</option>
+                                    <option value="Thanh Xuân" <%= accommodation.district === 'Thanh Xuân' ? 'selected' : '' %>>Thanh Xuân</option>
+                                    <option value="Hà Đông" <%= accommodation.district === 'Hà Đông' ? 'selected' : '' %>>Hà Đông</option>
+                                    <option value="Nam Từ Liêm" <%= accommodation.district === 'Nam Từ Liêm' ? 'selected' : '' %>>Nam Từ Liêm</option>
+                                    <option value="Bắc Từ Liêm" <%= accommodation.district === 'Bắc Từ Liêm' ? 'selected' : '' %>>Bắc Từ Liêm</option>
+                                    <option value="Thanh Trì" <%= accommodation.district === 'Thanh Trì' ? 'selected' : '' %>>Thanh Trì</option>
+                                    <option value="Gia Lâm" <%= accommodation.district === 'Gia Lâm' ? 'selected' : '' %>>Gia Lâm</option>
+                                    <option value="Đông Anh" <%= accommodation.district === 'Đông Anh' ? 'selected' : '' %>>Đông Anh</option>
+                                    <option value="Sóc Sơn" <%= accommodation.district === 'Sóc Sơn' ? 'selected' : '' %>>Sóc Sơn</option>
+                                    <option value="Mê Linh" <%= accommodation.district === 'Mê Linh' ? 'selected' : '' %>>Mê Linh</option>
+                                    <option value="Hà Nam" <%= accommodation.district === 'Hà Nam' ? 'selected' : '' %>>Hà Nam</option>
+                                    <option value="Phú Xuyên" <%= accommodation.district === 'Phú Xuyên' ? 'selected' : '' %>>Phú Xuyên</option>
+                                    <option value="Thường Tín" <%= accommodation.district === 'Thường Tín' ? 'selected' : '' %>>Thường Tín</option>
+                                    <option value="Mỹ Đức" <%= accommodation.district === 'Mỹ Đức' ? 'selected' : '' %>>Mỹ Đức</option>
+                                    <option value="Ứng Hòa" <%= accommodation.district === 'Ứng Hòa' ? 'selected' : '' %>>Ứng Hòa</option>
+                                    <option value="Chương Mỹ" <%= accommodation.district === 'Chương Mỹ' ? 'selected' : '' %>>Chương Mỹ</option>
+                                    <option value="Thanh Oai" <%= accommodation.district === 'Thanh Oai' ? 'selected' : '' %>>Thanh Oai</option>
+                                    <option value="Thạch Thất" <%= accommodation.district === 'Thạch Thất' ? 'selected' : '' %>>Thạch Thất</option>
+                                    <option value="Quốc Oai" <%= accommodation.district === 'Quốc Oai' ? 'selected' : '' %>>Quốc Oai</option>
+                                    <option value="Ba Vì" <%= accommodation.district === 'Ba Vì' ? 'selected' : '' %>>Ba Vì</option>
+                                    <option value="Sơn Tây" <%= accommodation.district === 'Sơn Tây' ? 'selected' : '' %>>Sơn Tây</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -478,8 +514,9 @@ document.getElementById('accommodationForm').addEventListener('submit', function
     priceHidden.value = priceFrom;
     const description = document.getElementById('description').value.trim();
     const address = document.getElementById('address').value.trim();
+    const district = document.getElementById('district').value;
 
-    if (!name || !priceFrom || !description || !address) {
+    if (!name || !priceFrom || !description || !address || !district) {
         e.preventDefault();
         alert('Vui lòng điền đầy đủ các trường bắt buộc!');
         return false;

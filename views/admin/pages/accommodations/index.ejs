@@ -85,7 +85,8 @@
                         <tr>
                             <th style="width: 80px;">Hình ảnh</th>
                             <th>Tên</th>
-                            <th style="width: 200px;">Địa chỉ</th>
+                            <th style="width: 120px;">Quận/Huyện</th>
+                            <th style="width: 150px;">Địa chỉ</th>
                             <th style="width: 100px;">Giá từ</th>
                             <th style="width: 100px;">Đánh giá</th>
                             <th style="width: 100px;">Trạng thái</th>
@@ -127,6 +128,9 @@
                                             <small class="text-muted"><%= accommodation.description.length > 50 ? accommodation.description.substring(0, 50) + '...' : accommodation.description %></small>
                                         </div>
                                     <% } %>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info"><%= accommodation.district %></span>
                                 </td>
                                 <td>
                                     <div>
@@ -196,7 +200,7 @@
                     <ul class="pagination justify-content-center">
                         <% if (currentPage > 1) { %>
                             <li class="page-item">
-                                <a class="page-link" href="?page=<%= currentPage - 1 %>&search=<%= search %>&type=<%= type %>&status=<%= status %>">
+                                <a class="page-link" href="?page=<%= currentPage - 1 %>&search=<%= search %>&status=<%= status %>">
                                     <i class="fas fa-chevron-left"></i>
                                 </a>
                             </li>
@@ -204,7 +208,7 @@
                         
                         <% for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) { %>
                             <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-                                <a class="page-link" href="?page=<%= i %>&search=<%= search %>&type=<%= type %>&status=<%= status %>">
+                                <a class="page-link" href="?page=<%= i %>&search=<%= search %>&status=<%= status %>">
                                     <%= i %>
                                 </a>
                             </li>
@@ -212,7 +216,7 @@
                         
                         <% if (currentPage < totalPages) { %>
                             <li class="page-item">
-                                <a class="page-link" href="?page=<%= currentPage + 1 %>&search=<%= search %>&type=<%= type %>&status=<%= status %>">
+                                <a class="page-link" href="?page=<%= currentPage + 1 %>&search=<%= search %>&status=<%= status %>">
                                     <i class="fas fa-chevron-right"></i>
                                 </a>
                             </li>
@@ -225,7 +229,7 @@
                 <i class="fas fa-bed fa-3x text-muted mb-3"></i>
                 <h5 class="text-muted">Không có lưu trú nào</h5>
                 <p class="text-muted">
-                    <% if (search || type || status) { %>
+                    <% if (search || status) { %>
                         Không tìm thấy lưu trú phù hợp với bộ lọc của bạn
                     <% } else { %>
                         Hãy thêm lưu trú đầu tiên của bạn
@@ -235,7 +239,7 @@
                     <i class="fas fa-plus me-2"></i>
                     Thêm lưu trú
                 </a>
-                <% if (search || type || status) { %>
+                <% if (search || status) { %>
                     <a href="/admin/accommodations" class="btn btn-outline-secondary ms-2">
                         <i class="fas fa-times me-2"></i>
                         Xóa bộ lọc
