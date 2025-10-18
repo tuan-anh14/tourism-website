@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="/client/css/responsive.css" />
         <link rel="stylesheet" href="/client/css/harmony.css" />
         <link rel="stylesheet" href="/client/css/attraction.css" />
+        <link rel="stylesheet" href="/client/css/components/pagination.css" />
         <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
@@ -153,37 +154,17 @@
                 <% } %>
             </section>
 
-            <!-- Pagination -->
-            <% if (pagination && pagination.totalPages > 1) { %>
-                <div class="pagination-container">
-                    <nav class="pagination" aria-label="Phân trang">
-                        <% if (pagination.hasPrev) { %>
-                            <a href="?page=<%= pagination.currentPage - 1 %>&category=<%= filters.category %>&search=<%= filters.search %>&sort=<%= filters.sort %>" 
-                               class="pagination-btn prev">
-                                <i class="fa fa-chevron-left"></i>
-                                Trước
-                            </a>
-                        <% } %>
-                        
-                        <div class="pagination-pages">
-                            <% for (let i = Math.max(1, pagination.currentPage - 2); i <= Math.min(pagination.totalPages, pagination.currentPage + 2); i++) { %>
-                                <a href="?page=<%= i %>&category=<%= filters.category %>&search=<%= filters.search %>&sort=<%= filters.sort %>" 
-                                   class="pagination-page <%= i === pagination.currentPage ? 'active' : '' %>">
-                                    <%= i %>
-                                </a>
-                            <% } %>
-                        </div>
-                        
-                        <% if (pagination.hasNext) { %>
-                            <a href="?page=<%= pagination.currentPage + 1 %>&category=<%= filters.category %>&search=<%= filters.search %>&sort=<%= filters.sort %>" 
-                               class="pagination-btn next">
-                                Sau
-                                <i class="fa fa-chevron-right"></i>
-                            </a>
-                        <% } %>
-                    </nav>
-                </div>
-            <% } %>
+            <!-- Pagination Component -->
+            <%- include('../../components/pagination', {
+                pagination: pagination,
+                queryString: (() => {
+                    const params = [];
+                    if (filters.category && filters.category !== 'all') params.push(`category=${filters.category}`);
+                    if (filters.search) params.push(`search=${encodeURIComponent(filters.search)}`);
+                    if (filters.sort) params.push(`sort=${filters.sort}`);
+                    return params.length > 0 ? '&' + params.join('&') : '';
+                })()
+            }) %>
         </section>
 
         <!-- up scroll -->
@@ -196,6 +177,7 @@
         <script src="/client/js/includes.js"></script>
         <script src="/client/js/script.js"></script>
         <script src="/client/js/attraction.js"></script>
+        <script src="/client/js/components/pagination.js"></script>
         <!--footer-->
     </body>
 </html>
