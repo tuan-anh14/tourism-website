@@ -1,4 +1,5 @@
 const Cuisine = require('../../model/Cuisine');
+const CuisinePlace = require('../../model/CuisinePlace');
 
 // [GET] /admin/cuisines
 module.exports.index = async (req, res) => {
@@ -24,6 +25,7 @@ module.exports.index = async (req, res) => {
     }
 
     const cuisines = await Cuisine.find(query)
+      .populate('places')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
@@ -130,23 +132,7 @@ module.exports.store = async (req, res) => {
       }
     }
 
-    // Handle place images uploads
-    if (data.places && Array.isArray(data.places)) {
-      data.places.forEach((place, placeIdx) => {
-        if (place) {
-          // Find files for this specific place
-          const placeFiles = req.files.filter(file => 
-            file.fieldname && file.fieldname.includes(`places[${placeIdx}][images]`)
-          );
-          if (placeFiles.length > 0) {
-            place.images = placeFiles.map(f => `/uploads/${f.filename}`);
-          } else {
-            // Initialize empty array if no images
-            place.images = place.images || [];
-          }
-        }
-      });
-    }
+    // Places are now managed separately
 
     // Normalize arrays
     const arrayFields = ['mainImages'];
@@ -169,6 +155,8 @@ module.exports.store = async (req, res) => {
     data.isActive = data.isActive === 'on' || data.isActive === true || data.isActive === 'true';
     data.featured = data.featured === 'on' || data.featured === true || data.featured === 'true';
 
+    // Places are managed separately
+    
     const cuisine = new Cuisine(data);
     await cuisine.save();
 
@@ -205,7 +193,7 @@ module.exports.store = async (req, res) => {
 // [GET] /admin/cuisines/:id
 module.exports.show = async (req, res) => {
   try {
-    const cuisine = await Cuisine.findById(req.params.id);
+    const cuisine = await Cuisine.findById(req.params.id).populate('places');
     if (!cuisine) {
       if (req.headers.accept && req.headers.accept.includes('application/json')) {
         return res.status(404).json({ success: false, message: 'Không tìm thấy ẩm thực' });
@@ -239,7 +227,7 @@ module.exports.show = async (req, res) => {
 module.exports.edit = async (req, res) => {
   try {
     const id = req.params.id;
-    const cuisine = await Cuisine.findById(id);
+    const cuisine = await Cuisine.findById(id).populate('places');
     if (!cuisine) {
       req.flash('error', 'Không tìm thấy ẩm thực');
       return res.redirect('/admin/cuisines');
@@ -287,34 +275,7 @@ module.exports.editPatch = async (req, res) => {
       }
     }
 
-    // Handle place images uploads and removals
-    if (data.places && Array.isArray(data.places)) {
-      data.places.forEach((place, placeIdx) => {
-        if (place) {
-          // Handle place image removals
-          if (place.removeImages) {
-            const removeArray = Array.isArray(place.removeImages) ? place.removeImages : [place.removeImages];
-            const removeIndexes = removeArray.map((i) => parseInt(i));
-            if (cuisine.places && cuisine.places[placeIdx]) {
-              cuisine.places[placeIdx].images = (cuisine.places[placeIdx].images || []).filter((_, idx) => !removeIndexes.includes(idx));
-            }
-          }
-
-          // Handle new place image uploads
-          if (place.images && Array.isArray(place.images)) {
-            const placeFiles = req.files.filter(file => 
-              file.fieldname && file.fieldname.includes(`places[${placeIdx}][images]`)
-            );
-            if (placeFiles.length > 0) {
-              const newPlaceImages = placeFiles.map(f => `/uploads/${f.filename}`);
-              if (cuisine.places && cuisine.places[placeIdx]) {
-                cuisine.places[placeIdx].images = [...(cuisine.places[placeIdx].images || []), ...newPlaceImages];
-              }
-            }
-          }
-        }
-      });
-    }
+    // Places are now managed separately
 
     // normalize booleans
     data.isActive = data.isActive === 'on' || data.isActive === true || data.isActive === 'true';
@@ -333,16 +294,7 @@ module.exports.editPatch = async (req, res) => {
     });
     setPayload.mainImages = cuisine.mainImages;
     
-    // Update places with their images
-    if (data.places && Array.isArray(data.places)) {
-      setPayload.places = data.places.map((place, placeIdx) => {
-        const existingPlace = cuisine.places && cuisine.places[placeIdx] ? cuisine.places[placeIdx] : {};
-        return {
-          ...place,
-          images: existingPlace.images || []
-        };
-      });
-    }
+    // Places are managed separately
 
     await Cuisine.updateOne({ _id: id }, { $set: setPayload }, { runValidators: true });
     req.flash('success', 'Đã cập nhật thành công ẩm thực!');
@@ -442,6 +394,11 @@ module.exports.destroy = async (req, res) => {
       req.flash('error', 'Không tìm thấy ẩm thực');
       return res.redirect('/admin/cuisines');
     }
+    
+    // Delete related CuisinePlaces
+    await CuisinePlace.deleteMany({ cuisine: req.params.id });
+    
+    // Delete the cuisine
     await Cuisine.findByIdAndDelete(req.params.id);
     if (req.headers.accept && req.headers.accept.includes('application/json')) {
       return res.json({ success: true, message: 'Xóa ẩm thực thành công', data: { id: req.params.id } });

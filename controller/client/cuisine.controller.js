@@ -1,10 +1,12 @@
 const Cuisine = require('../../model/Cuisine');
+const CuisinePlace = require('../../model/CuisinePlace');
 const { createSlug } = require('../../utils/slug');
 
 // [GET] /cuisine
 module.exports.cuisine = async (req, res) => {
     try {
         const docs = await Cuisine.find({ isActive: true, status: 'published' })
+            .populate('places')
             .sort({ featured: -1, createdAt: -1 })
             .limit(60);
 
@@ -53,7 +55,7 @@ module.exports.cuisineDetail = async (req, res) => {
         const findQuery = isObjectId
             ? { $or: [{ slug }, { _id: slug }], isActive: true }
             : { slug, isActive: true };
-        const doc = await Cuisine.findOne(findQuery);
+        const doc = await Cuisine.findOne(findQuery).populate('places');
         if (!doc) {
             return res.status(404).render('client/pages/cuisine/detail.cuisine.ejs', { pageTitle: 'Không tìm thấy món ăn', food: null });
         }
@@ -132,7 +134,7 @@ module.exports.restaurantDetail = async (req, res) => {
             ? { $or: [{ slug: cuisineSlug }, { _id: cuisineSlug }], isActive: true }
             : { slug: cuisineSlug, isActive: true };
         
-        const cuisineDoc = await Cuisine.findOne(findQuery);
+        const cuisineDoc = await Cuisine.findOne(findQuery).populate('places');
         if (!cuisineDoc) {
             return res.status(404).render('client/pages/cuisine/restaurant-detail.ejs', { 
                 pageTitle: 'Không tìm thấy món ăn', 

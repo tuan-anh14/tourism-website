@@ -6,6 +6,7 @@ const authController = require('../../controller/admin/auth.controller');
 const attractionController = require('../../controller/admin/attraction.controller');
 const accommodationController = require('../../controller/admin/accommodation.controller');
 const cuisineController = require('../../controller/admin/cuisine.controller');
+const cuisinePlaceController = require('../../controller/admin/cuisine-place.controller');
 const entertainmentController = require('../../controller/admin/entertainment.controller');
 
 const router = express.Router();
@@ -73,6 +74,17 @@ router.get('/cuisines/edit/:id', requireAuth, requireEditor, cuisineController.e
 router.patch('/cuisines/edit/:id', requireAuth, requireEditor, uploadDynamic, cuisineController.editPatch);
 router.delete('/cuisines/delete/:id', requireAuth, requireEditor, cuisineController.destroy);
 router.post('/cuisines/delete/:id', requireAuth, requireEditor, cuisineController.destroy);
+
+// Cuisine Places routes
+router.get('/cuisine-places', requireAuth, cuisinePlaceController.index);
+router.get('/cuisine-places/create', requireAuth, requireEditor, cuisinePlaceController.create);
+router.post('/cuisine-places', requireAuth, requireEditor, uploadDynamic, cuisinePlaceController.store);
+router.get('/cuisine-places/:id', requireAuth, cuisinePlaceController.show);
+router.get('/cuisine-places/edit/:id', requireAuth, requireEditor, cuisinePlaceController.edit);
+router.patch('/cuisine-places/edit/:id', requireAuth, requireEditor, uploadDynamic, cuisinePlaceController.editPatch);
+router.put('/cuisine-places/:id', requireAuth, requireEditor, uploadDynamic, cuisinePlaceController.update);
+router.delete('/cuisine-places/delete/:id', requireAuth, requireEditor, cuisinePlaceController.destroy);
+router.post('/cuisine-places/delete/:id', requireAuth, requireEditor, cuisinePlaceController.destroy);
 
 // Entertainment routes
 router.get('/entertainments', requireAuth, entertainmentController.index);
