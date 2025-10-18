@@ -373,6 +373,113 @@
             </div>
         </div>
 
+        <!-- === REVIEWS === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-star me-2"></i>
+                        Đánh giá & Nhận xét
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Thêm đánh giá thủ công</label>
+                        <div id="reviews-container">
+                            <% if (accommodation.reviews && accommodation.reviews.length > 0) { %>
+                                <% accommodation.reviews.forEach((review, index) => { %>
+                                <div class="border rounded p-3 mb-3 review-item">
+                                    <div class="row g-3 align-items-end">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Tác giả</label>
+                                            <input type="text" class="form-control" name="reviews[<%= index %>][author]" value="<%= review.author || '' %>" placeholder="Tên người đánh giá">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Avatar (Ảnh)</label>
+                                            <% if (review.avatar) { %>
+                                                <div class="mb-2">
+                                                    <img src="<%= review.avatar %>" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                                </div>
+                                            <% } %>
+                                            <input type="file" class="form-control" name="reviews[<%= index %>][avatarFile]" accept="image/*">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="form-label">Điểm</label>
+                                            <input type="number" class="form-control" name="reviews[<%= index %>][rating]" min="1" max="5" step="1" value="<%= review.rating || 5 %>">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check mt-4">
+                                                <input class="form-check-input" type="checkbox" name="reviews[<%= index %>][verified]" id="rv<%= index %>v" <%= review.verified ? 'checked' : '' %>>
+                                                <label class="form-check-label" for="rv<%= index %>v">Đã xác minh</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Ngày</label>
+                                            <input type="date" class="form-control" name="reviews[<%= index %>][date]" value="<%= review.date ? new Date(review.date).toISOString().split('T')[0] : '' %>">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Nguồn</label>
+                                            <input type="text" class="form-control" name="reviews[<%= index %>][source]" value="<%= review.source || 'google' %>">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Nội dung</label>
+                                            <textarea class="form-control" name="reviews[<%= index %>][text]" rows="2" placeholder="Nội dung đánh giá..."><%= review.text || '' %></textarea>
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-end">
+                                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeReviewRow(this)"><i class="fas fa-trash me-1"></i>Xóa</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }); %>
+                            <% } else { %>
+                                <!-- one empty row by default -->
+                                <div class="border rounded p-3 mb-3 review-item">
+                                    <div class="row g-3 align-items-end">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Tác giả</label>
+                                            <input type="text" class="form-control" name="reviews[0][author]" placeholder="Tên người đánh giá">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Avatar (Ảnh)</label>
+                                            <input type="file" class="form-control" name="reviews[0][avatarFile]" accept="image/*">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="form-label">Điểm</label>
+                                            <input type="number" class="form-control" name="reviews[0][rating]" min="1" max="5" step="1" value="5">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check mt-4">
+                                                <input class="form-check-input" type="checkbox" name="reviews[0][verified]" id="rv0v">
+                                                <label class="form-check-label" for="rv0v">Đã xác minh</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Ngày</label>
+                                            <input type="date" class="form-control" name="reviews[0][date]">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Nguồn</label>
+                                            <input type="text" class="form-control" name="reviews[0][source]" value="google">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Nội dung</label>
+                                            <textarea class="form-control" name="reviews[0][text]" rows="2" placeholder="Nội dung đánh giá..."></textarea>
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-end">
+                                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeReviewRow(this)"><i class="fas fa-trash me-1"></i>Xóa</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary" onclick="addReviewRow()">
+                            <i class="fas fa-plus me-1"></i>Thêm đánh giá
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- === LIÊN HỆ === -->
         <div class="col-12">
             <div class="card mb-4">
@@ -401,27 +508,6 @@
             </div>
         </div>
 
-        <!-- === REVIEW WIDGET === -->
-        <div class="col-12">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0">
-                        <i class="fas fa-star me-2"></i>
-                        Đoạn mã nhúng Google Review
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label for="reviewWidgetScript" class="form-label">Mã nhúng widget đánh giá</label>
-                        <textarea class="form-control" id="reviewWidgetScript" name="reviewWidgetScript" rows="8" placeholder="Dán đoạn mã nhúng từ EmbedSocial, Google Reviews hoặc dịch vụ tương tự..."><%= accommodation.reviewWidgetScript || '' %></textarea>
-                        <div class="form-text">
-                            <i class="fas fa-info-circle me-1"></i>
-                            Dán toàn bộ đoạn script/iframe từ EmbedSocial hoặc Google Reviews. Hệ thống sẽ tự động hiển thị widget đánh giá trên trang chi tiết.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- === TAGS & TRẠNG THÁI === -->
         <div class="col-12">
@@ -573,4 +659,75 @@ document.getElementById('accommodationForm').addEventListener('submit', function
         return false;
     }
 });
+
+// === REVIEWS FUNCTIONS ===
+function reindexReviewRows() {
+    const items = document.querySelectorAll('#reviews-container .review-item');
+    items.forEach((item, idx) => {
+        item.querySelectorAll('input, textarea, label').forEach((el) => {
+            if (el.name && el.name.includes('reviews[')) {
+                el.name = el.name.replace(/reviews\[[0-9]+\]/, `reviews[${idx}]`);
+            }
+            if (el.htmlFor && el.htmlFor.startsWith('rv')) {
+                el.htmlFor = `rv${idx}v`;
+            }
+            if (el.id && el.id.startsWith('rv') && el.id.endsWith('v')) {
+                el.id = `rv${idx}v`;
+            }
+        });
+    });
+}
+
+function addReviewRow() {
+    const container = document.getElementById('reviews-container');
+    const div = document.createElement('div');
+    div.className = 'border rounded p-3 mb-3 review-item';
+    div.innerHTML = `
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Tác giả</label>
+                <input type="text" class="form-control" name="reviews[0][author]" placeholder="Tên người đánh giá">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Avatar (Ảnh)</label>
+                <input type="file" class="form-control" name="reviews[0][avatarFile]" accept="image/*">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Điểm</label>
+                <input type="number" class="form-control" name="reviews[0][rating]" min="1" max="5" step="1" value="5">
+            </div>
+            <div class="col-md-2">
+                <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" name="reviews[0][verified]" id="rv0v">
+                    <label class="form-check-label" for="rv0v">Đã xác minh</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Ngày</label>
+                <input type="date" class="form-control" name="reviews[0][date]">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Nguồn</label>
+                <input type="text" class="form-control" name="reviews[0][source]" value="google">
+            </div>
+            <div class="col-12">
+                <label class="form-label">Nội dung</label>
+                <textarea class="form-control" name="reviews[0][text]" rows="2" placeholder="Nội dung đánh giá..."></textarea>
+            </div>
+            <div class="col-12 d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeReviewRow(this)"><i class="fas fa-trash me-1"></i>Xóa</button>
+            </div>
+        </div>
+    `;
+    container.appendChild(div);
+    reindexReviewRows();
+}
+
+function removeReviewRow(button) {
+    const item = button.closest('.review-item');
+    if (item) {
+        item.remove();
+        reindexReviewRows();
+    }
+}
 </script>
