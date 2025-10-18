@@ -295,27 +295,40 @@
     }
   
     .reviewer-avatar {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      object-fit: cover;
-      flex-shrink: 0;
-      border: 2px solid #f5f6fa;
+      width: 52px !important;
+      height: 52px !important;
+      border-radius: 50% !important;
+      object-fit: cover !important;
+      flex-shrink: 0 !important;
+      border: 2px solid #f5f6fa !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+      display: block !important;
+    }
+    
+    /* Force override any external CSS */
+    .review-card img.reviewer-avatar {
+      width: 52px !important;
+      height: 52px !important;
+      border-radius: 50% !important;
+      object-fit: cover !important;
+      border: 2px solid #f5f6fa !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
   
     .reviewer-avatar-placeholder { 
-      width: 46px; 
-      height: 46px; 
-      border-radius: 50%; 
-      background: #e5e7eb; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      font-weight: 700; 
-      color: #374151; 
-      flex-shrink: 0; 
-      border: 2px solid #f5f6fa;
-      font-size: 14px;
+      width: 52px !important; 
+      height: 52px !important; 
+      border-radius: 50% !important; 
+      background: #e5e7eb !important; 
+      display: flex !important; 
+      align-items: center !important; 
+      justify-content: center !important; 
+      font-weight: 700 !important; 
+      color: #374151 !important; 
+      flex-shrink: 0 !important; 
+      border: 2px solid #f5f6fa !important;
+      font-size: 16px !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
   
     .reviewer-details {
@@ -481,14 +494,19 @@
       }
       
       .reviewer-avatar {
-        width: 40px;
-        height: 40px;
+        width: 46px !important;
+        height: 46px !important;
       }
       
       .reviewer-avatar-placeholder {
-        width: 40px;
-        height: 40px;
-        font-size: 12px;
+        width: 46px !important;
+        height: 46px !important;
+        font-size: 14px !important;
+      }
+      
+      .review-card img.reviewer-avatar {
+        width: 46px !important;
+        height: 46px !important;
       }
       
       .review-widget-container .review-card .star {
