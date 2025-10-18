@@ -225,40 +225,12 @@
         });
         </script>
 
-        <!-- Initialize Review Widgets -->
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeReviewWidgets();
-        });
 
-        function initializeReviewWidgets() {
-            var widgetWrapper = document.querySelector('.widget-wrapper');
-            if (!widgetWrapper) return;
-
-            widgetWrapper.classList.add('loading');
-
-            var shapoWidget = document.getElementById('shapo-widget-5e8084e2fdcaa2cd9b10');
-            if (shapoWidget) {
-                var observer = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                            widgetWrapper.classList.remove('loading');
-                            widgetWrapper.classList.add('loaded');
-                        }
-                    });
-                });
-                observer.observe(shapoWidget, { childList: true, subtree: true });
-
-                setTimeout(function() {
-                    if (widgetWrapper.classList.contains('loading')) {
-                        widgetWrapper.classList.remove('loading');
-                        widgetWrapper.classList.add('loaded');
-                    }
-                }, 5000);
-            } else {
-                widgetWrapper.classList.remove('loading');
-            }
-        }
-        </script>
+        <%- include('../../components/reviews-section', { 
+            attraction: entertainment,
+            title: "Đừng chỉ nghe chúng tôi, hãy nghe du khách!",
+            showButton: true,
+            buttonUrl: entertainment.reviewButtonUrl || ''
+        }) %>
     </body>
     </html>

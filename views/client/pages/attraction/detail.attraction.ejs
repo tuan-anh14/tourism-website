@@ -404,48 +404,6 @@
             // Initialize attraction data with server data
             window.AttractionData.initialize(null);
             
-            // Initialize review widgets
-            document.addEventListener('DOMContentLoaded', function() {
-                initializeReviewWidgets();
-            });
-            
-            function initializeReviewWidgets() {
-                const widgetWrapper = document.querySelector('.widget-wrapper');
-                if (!widgetWrapper) return;
-                
-                // Add loading class initially
-                widgetWrapper.classList.add('loading');
-                
-                // Check for Shapo widget
-                const shapoWidget = document.getElementById('shapo-widget-5e8084e2fdcaa2cd9b10');
-                if (shapoWidget) {
-                    // Monitor when Shapo widget loads
-                    const observer = new MutationObserver(function(mutations) {
-                        mutations.forEach(function(mutation) {
-                            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                                widgetWrapper.classList.remove('loading');
-                                widgetWrapper.classList.add('loaded');
-                            }
-                        });
-                    });
-                    
-                    observer.observe(shapoWidget, {
-                        childList: true,
-                        subtree: true
-                    });
-                    
-                    // Fallback timeout
-                    setTimeout(function() {
-                        if (widgetWrapper.classList.contains('loading')) {
-                            widgetWrapper.classList.remove('loading');
-                            widgetWrapper.classList.add('loaded');
-                        }
-                    }, 5000);
-                } else {
-                    // No widget found, remove loading state
-                    widgetWrapper.classList.remove('loading');
-                }
-            }
         </script>
     </body>
 </html>

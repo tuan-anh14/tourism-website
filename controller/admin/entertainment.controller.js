@@ -161,7 +161,7 @@ module.exports.store = async (req, res) => {
 
         const {
             history, architecture,
-            experience, notes, reviewWidgetScript
+            experience, notes
         } = req.body;
 
         // Process arrays
@@ -179,6 +179,39 @@ module.exports.store = async (req, res) => {
             imagesArray.push('/client/img/header-bg.jfif'); // Default placeholder image
         }
 
+        // Process reviews if provided
+        let reviewsArray = [];
+        if (req.body.reviews) {
+            try {
+                const raw = Array.isArray(req.body.reviews) ? req.body.reviews : Object.values(req.body.reviews);
+                // Map uploaded avatar files into corresponding review items
+                if (req.files && req.files.length > 0) {
+                    raw.forEach((r, idx) => {
+                        const avatarFile = req.files.find(f => f.fieldname === `reviews[${idx}][avatarFile]`);
+                        if (avatarFile) {
+                            r.avatar = `/uploads/${avatarFile.filename}`;
+                        }
+                    });
+                }
+                reviewsArray = raw
+                    .filter(Boolean)
+                    .map((r) => ({
+                        author: r.author || '',
+                        avatar: r.avatar || '',
+                        rating: typeof r.rating === 'number' ? r.rating : parseFloat(r.rating) || 0,
+                        text: r.text || '',
+                        verified: r.verified === 'on' || r.verified === true || r.verified === 'true',
+                        date: r.date ? new Date(r.date) : undefined,
+                        source: r.source || 'google'
+                    }))
+                    .filter((r) => r.author || r.text);
+            } catch (e) {
+                console.error('Error processing reviews:', e);
+                req.flash('error', 'reviews gửi từ form không hợp lệ');
+                return res.redirect('/admin/entertainments/create');
+            }
+        }
+
         const entertainmentData = {
             zone,
             name,
@@ -192,7 +225,7 @@ module.exports.store = async (req, res) => {
             experience: experienceArray,
             notes: notesArray,
             images: imagesArray,
-            reviewWidgetScript: typeof reviewWidgetScript === 'string' ? reviewWidgetScript.trim() : '',
+            reviews: reviewsArray,
             map: {
                 lat: parseFloat(lat),
                 lng: parseFloat(lng),
@@ -334,8 +367,7 @@ module.exports.update = async (req, res) => {
         const {
             history, architecture,
             experience, notes,
-            isActive, featured, removeImages,
-            reviewWidgetScript
+            isActive, featured, removeImages
         } = req.body;
 
         // Process arrays
@@ -377,6 +409,39 @@ module.exports.update = async (req, res) => {
             imagesArray.push('/client/img/header-bg.jfif');
         }
 
+        // Process reviews if provided
+        let reviewsArray = existingEntertainment.reviews || [];
+        if (req.body.reviews) {
+            try {
+                const raw = Array.isArray(req.body.reviews) ? req.body.reviews : Object.values(req.body.reviews);
+                // Map uploaded avatar files into corresponding review items
+                if (req.files && req.files.length > 0) {
+                    raw.forEach((r, idx) => {
+                        const avatarFile = req.files.find(f => f.fieldname === `reviews[${idx}][avatarFile]`);
+                        if (avatarFile) {
+                            r.avatar = `/uploads/${avatarFile.filename}`;
+                        }
+                    });
+                }
+                reviewsArray = raw
+                    .filter(Boolean)
+                    .map((r) => ({
+                        author: r.author || '',
+                        avatar: r.avatar || '',
+                        rating: typeof r.rating === 'number' ? r.rating : parseFloat(r.rating) || 0,
+                        text: r.text || '',
+                        verified: r.verified === 'on' || r.verified === true || r.verified === 'true',
+                        date: r.date ? new Date(r.date) : undefined,
+                        source: r.source || 'google'
+                    }))
+                    .filter((r) => r.author || r.text);
+            } catch (e) {
+                console.error('Error processing reviews:', e);
+                req.flash('error', 'reviews gửi từ form không hợp lệ');
+                return res.redirect('back');
+            }
+        }
+
         const updateData = {
             zone,
             name,
@@ -390,6 +455,7 @@ module.exports.update = async (req, res) => {
             experience: experienceArray,
             notes: notesArray,
             images: imagesArray,
+            reviews: reviewsArray,
             map: {
                 lat: parseFloat(lat),
                 lng: parseFloat(lng),
@@ -397,7 +463,6 @@ module.exports.update = async (req, res) => {
             },
             isActive: isActive === 'on',
             featured: featured === 'on',
-            reviewWidgetScript: typeof reviewWidgetScript === 'string' ? reviewWidgetScript.trim() : (existingEntertainment.reviewWidgetScript || '')
         };
 
         await Entertainment.findByIdAndUpdate(req.params.id, updateData);
