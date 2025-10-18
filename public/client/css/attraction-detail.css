@@ -413,8 +413,17 @@ body.dark textarea { background: rgba(38,38,40,0.9); border-color: rgba(255,255,
 .itinerary-day__banner-title { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; padding: 0 16px; z-index: 2; pointer-events: none; }
 .itinerary-day__banner-title h2 { margin: 0; font-size: clamp(24px, 4vw, 44px); font-weight: 800; text-shadow: 0 6px 24px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.35); letter-spacing: .2px; }
 .page-header.attraction-banner .banner-rating { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
-.page-header.attraction-banner .banner-rating .stars { display: inline-flex; gap: 4px; }
-.page-header.attraction-banner .banner-rating .rating-text { margin: 0; }
+.page-header.attraction-banner .banner-rating .stars { display: inline-flex; gap: 1px; }
+.page-header.attraction-banner .banner-rating .stars i { 
+    font-size: 18px; 
+    color: #ffd700 !important; 
+}
+.page-header.attraction-banner .banner-rating .stars i.active { 
+    color: #ffd700 !important; 
+}
+.page-header.attraction-banner .banner-rating .stars i.fa-star-o { 
+    color: #d1d5db !important; 
+}
 .itinerary-day__title-wrapper { text-align: center; margin-bottom: 12px; }
 .itinerary-day__title { margin: 0; font-size: 28px; font-weight: 800; }
 .itinerary-day__subtitle { margin: 4px 0 0 0; color: var(--medium-gray); }

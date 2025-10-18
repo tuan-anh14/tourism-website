@@ -953,7 +953,6 @@ img:hover {
 }
 
 .active {
-  border: 2px solid whitesmoke;
   border-radius: 20px;
   color: #fc036b;
   cursor: pointer;
