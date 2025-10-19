@@ -42,7 +42,7 @@
 }
 .post-meta span { display: inline-flex; align-items: center; gap: 6px; }
 .chip {
-  background: #fc036b;
+  background: var(--primary-color);
   color: #fff;
   padding: 4px 10px;
   border-radius: 999px;
@@ -109,7 +109,7 @@ body.dark .highlights .card-body p { color: #bbb; }
 .note .fact span { color: #777; font-size: var(--fs-xs); }
 
 .share { display: flex; align-items: center; gap: 10px; margin-top: 18px; }
-.share a { color: #fc036b; }
+.share a { color: var(--primary-color); }
 
 .sidebar { display: grid; gap: 1rem; height: max-content; }
 .widget { background: #fff; border-radius: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); padding: 1rem; }

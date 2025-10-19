@@ -136,7 +136,7 @@ body.dark .page-section .title h1.dark {
     padding: 15px;
     background: rgba(252, 3, 107, 0.1);
     border-radius: 8px;
-    border-left: 4px solid #fc036b;
+    border-left: 4px solid var(--primary-color);
 }
 
 .event-details p {
@@ -146,7 +146,7 @@ body.dark .page-section .title h1.dark {
 }
 
 .event-details strong {
-    color: #fc036b;
+    color: var(--primary-color);
 }
 
 /* Feature Cards */
@@ -167,7 +167,7 @@ body.dark .page-section .title h1.dark {
 
 .feature-card i {
     font-size: 3rem;
-    color: #fc036b;
+    color: var(--primary-color);
     margin-bottom: 1rem;
 }
 
@@ -252,7 +252,7 @@ body.dark .page-section.event-categories {
 
 /* Chatbot widget */
 .hnv-chatbot { position: fixed; right: 18px; bottom: 18px; z-index: 1200; font-family: inherit; }
-.hnv-chatbot__toggle { background: var(--primary-color, #fc036b); color: #fff; border: 0; border-radius: 999px; padding: 10px 14px; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,.15); }
+.hnv-chatbot__toggle { background: var(--primary-color); color: #fff; border: 0; border-radius: 999px; padding: 10px 14px; cursor: pointer; box-shadow: none; }
 .hnv-chatbot__panel { position: absolute; right: 0; bottom: 56px; width: 360px; max-height: 70vh; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.2); display: none; overflow: hidden; }
 .hnv-chatbot.open .hnv-chatbot__panel { display: grid; grid-template-rows: auto 1fr auto; height: 70vh; }
 .hnv-chatbot__header { padding: 10px 12px; font-weight: 700; background: rgba(0,0,0,.04); cursor: pointer; }
@@ -262,7 +262,7 @@ body.dark .page-section.event-categories {
 .hnv-chatbot__msg.a { background: #f6f6f6; }
 .hnv-chatbot__form { display: flex; gap: 8px; padding: 10px; border-top: 1px solid rgba(0,0,0,.06); }
 .hnv-chatbot__input { flex: 1; border: 1px solid #e6e6e6; border-radius: 999px; padding: 8px 12px; }
-.hnv-chatbot__send { border: 0; background: var(--primary-color, #fc036b); color: #fff; border-radius: 999px; padding: 8px 12px; cursor: pointer; }
+.hnv-chatbot__send { border: 0; background: var(--primary-color); color: #fff; border-radius: 999px; padding: 8px 12px; cursor: pointer; }
 
 @media (max-width: 600px) {
   .hnv-chatbot__panel { right: 8px; left: 8px; width: auto; height: 70vh; max-height: none; }

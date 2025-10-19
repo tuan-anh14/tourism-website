@@ -1,7 +1,7 @@
 /* Entertainment Detail - scoped and aligned with project palette */
 
 :root {
-  --accent: #fc036b;
+  --accent: var(--primary-color);
   --accent-dark: #c80255;
   --muted: #4a5568;
   --surface: #ffffff;
@@ -174,9 +174,9 @@
 .mapboxgl-canvas, .maplibregl-canvas { touch-action: auto !important; }
 
 /* Map markers and popups - aligned with attraction-detail */
-.map-marker { width: 14px; height: 14px; border-radius: 50%; background: #fc036b; box-shadow: 0 0 0 6px rgba(252,3,107,0.2); transition: transform .2s ease, box-shadow .2s ease; cursor: pointer; }
-.map-marker.hover, .map-marker:hover { transform: scale(1.12); box-shadow: 0 0 0 8px rgba(252,3,107,0.24); }
-.map-marker.active { transform: scale(1.15); box-shadow: 0 0 0 8px rgba(252,3,107,0.28); }
+.map-marker { width: 14px; height: 14px; border-radius: 50%; background: var(--primary-color); box-shadow: 0 0 0 6px #1261A633; transition: transform .2s ease, box-shadow .2s ease; cursor: pointer; }
+.map-marker.hover, .map-marker:hover { transform: scale(1.12); box-shadow: 0 0 0 8px #1261A640; }
+.map-marker.active { transform: scale(1.15); box-shadow: 0 0 0 8px #1261A647; }
 
 .maplibregl-popup-content { border-radius: 12px; padding: 0; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
 .map-popup { display: grid; grid-template-columns: 96px 1fr; gap: 0; }

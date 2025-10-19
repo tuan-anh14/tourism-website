@@ -1,6 +1,6 @@
 /* Modern Attraction Detail Styles */
 :root {
-    --primary-color: #fc036b;
+    --primary-color: var(--primary-color);
     --primary-light: #ff4d8a;
     --primary-dark: #d6024f;
     --secondary-color: #2c3e50;
@@ -82,7 +82,7 @@
     transition: var(--transition);
     position: relative;
 }
-.nav-link:hover, .nav-link.active { color: var(--primary-color); background: rgba(252, 3, 107, 0.08); }
+.nav-link:hover, .nav-link.active { color: var(--primary-color); background: #1261A614; }
 .nav-link.active::after {
     content: '';
     position: absolute;
@@ -436,7 +436,7 @@ section.reviews-pro .reviews-pro__header { width: calc(100vw - var(--reviews-gut
 .rating-input label { color: #ddd; font-size: 22px; cursor: pointer; transition: var(--transition-fast); }
 .rating-input label:hover, .rating-input label:hover ~ label, .rating-input input:checked ~ label { color: #ffc107; }
 textarea { width: 100%; padding: 10px 12px; border: 1.6px solid #e6e6e6; border-radius: 10px; font-family: inherit; resize: vertical; transition: var(--transition-fast); }
-textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(252, 3, 107, 0.12); }
+textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: none; }
 .form-actions { display: flex; gap: 10px; justify-content: flex-end; }
 
 /* Animations */
@@ -478,7 +478,7 @@ textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 
 /* Dark mode */
 body.dark .sticky-nav { background: rgba(20,20,22,0.9); border-bottom-color: rgba(255,255,255,0.08); }
 body.dark .nav-link { color: #e0e0e0; }
-body.dark .nav-link.active, body.dark .nav-link:hover { background: rgba(252,3,107,0.18); }
+body.dark .nav-link.active, body.dark .nav-link:hover { background: #1261A62E; }
 body.dark .experience-card, body.dark .fact-item, body.dark .reviews-summary, body.dark .review-item, body.dark .practical-card { background: rgba(28,28,30,0.94); box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
 body.dark .modal-content { background: rgba(28,28,30,0.96); color: #f0f0f0; }
 body.dark textarea { background: rgba(38,38,40,0.9); border-color: rgba(255,255,255,0.16); color: #f0f0f0; }
@@ -754,7 +754,7 @@ body.dark textarea { background: rgba(38,38,40,0.9); border-color: rgba(255,255,
     font-family: var(--ff-primary);
     color: var(--medium-gray);
     padding: 8px 12px;
-    background: rgba(252, 3, 107, 0.05);
+    background: #1261A60D;
     border-radius: 6px;
     border-left: 3px solid var(--primary-color);
     font-size: var(--fs-paragraphs); /* responsive font size */

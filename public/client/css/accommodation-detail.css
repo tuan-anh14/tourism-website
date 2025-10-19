@@ -7,7 +7,7 @@
    GLOBAL VARIABLES
    =========================================== */
 :root {
-  --primary-color: #fc036b;
+  --primary-color: var(--primary-color);
   --primary-light: #ff4d8a;
   --primary-dark: #c10251;
   --secondary-color: #2c3e50;
@@ -216,7 +216,7 @@ body.dark .acc-detail .contact-info {
   font-weight: 600 !important;
   margin-bottom: 20px;
   color: var(--secondary-color, #2d3748);
-  border-bottom: 3px solid var(--primary-color, #fc036b);
+  border-bottom: 3px solid var(--primary-color);
   padding-bottom: 12px;
   display: inline-block;
   letter-spacing: normal;
@@ -248,7 +248,7 @@ body.dark .acc-detail .description {
    HIGHLIGHT BOX
    =========================================== */
 .acc-detail .highlight-box {
-  background: rgba(252, 3, 107, 0.06);
+  background: #1261A610;
   border-left: 4px solid var(--primary-color);
   padding: 20px;
   border-radius: 0 8px 8px 0;
@@ -276,7 +276,7 @@ body.dark .acc-detail .description {
 }
 
 body.dark .acc-detail .highlight-box {
-  background: rgba(252, 3, 107, 0.15);
+  background: #1261A626;
 }
 
 body.dark .acc-detail .highlight-box li {
@@ -390,7 +390,7 @@ body.dark .acc-detail .service-item {
 
 .acc-detail .rule-item:hover {
   transform: translateX(4px);
-  background: rgba(252, 3, 107, 0.05);
+  background: #1261A60D;
 }
 
 .acc-detail .rule-item i {
@@ -406,7 +406,7 @@ body.dark .acc-detail .rule-item {
 }
 
 body.dark .acc-detail .rule-item:hover {
-  background: rgba(252, 3, 107, 0.15);
+  background: #1261A626;
 }
 
 /* ===========================================
@@ -440,7 +440,7 @@ body.dark .acc-detail .contact-info h3 {
 }
 
 .acc-detail .contact-item:hover {
-  background: rgba(252, 3, 107, 0.03);
+  background: #1261A608;
   padding-left: 8px;
   border-radius: 8px;
 }
@@ -456,7 +456,7 @@ body.dark .acc-detail .contact-info h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(252, 3, 107, 0.1);
+  background: #1261A61A;
   border-radius: 50%;
   font-size: 16px;
   flex-shrink: 0;
@@ -506,7 +506,7 @@ body.dark .acc-detail .contact-item .value {
 .acc-detail .acc-map-embed {
   width: 100%;
   height: 480px;
-  background: linear-gradient(135deg, #fc036b10 0%, #c1025110 100%);
+  background: linear-gradient(135deg, #1261A610 0%, #c1025110 100%);
   border-radius: var(--border-radius);
   overflow: hidden;
 }

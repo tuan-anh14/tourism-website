@@ -59,7 +59,7 @@
     font-weight: 600;
     margin: 20px auto; 
     color: #2d3748; 
-    border-bottom: 2px solid var(--primary-color, #fc036b); 
+    border-bottom: 2px solid var(--primary-color); 
     padding-bottom: 8px; 
     display:flex; 
     gap:8px; 
@@ -67,7 +67,7 @@
     letter-spacing: normal;
     word-spacing: normal;
 }
-.section-title i { color: var(--primary-color, #fc036b); }
+.section-title i { color: var(--primary-color); }
 .subsection-title { 
     margin: 24px 0 10px 0; 
     font-size: var(--fs-xl); /* 1.25rem = 20px */
@@ -79,7 +79,7 @@
     color:#2d3748; 
     letter-spacing: normal;
 }
-.subsection-title i { color: var(--primary-color, #fc036b); }
+.subsection-title i { color: var(--primary-color); }
 .description { 
     color: #4a5568; /* Original color for better readability */
     line-height: 1.8; /* Better line-height for long text */
@@ -98,8 +98,8 @@
 }
 
 
-.highlight-box { background: linear-gradient(135deg, #fff1f5, #ffe2ec); border-left: 4px solid var(--primary-color, #fc036b); padding: 16px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-.highlight-box h3 { color: var(--primary-color, #fc036b); margin: 0 0 8px 0; display:flex; gap:6px; align-items:center; }
+.highlight-box { background: linear-gradient(135deg, #fff1f5, #ffe2ec); border-left: 4px solid var(--primary-color, #1261A6); padding: 16px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.highlight-box h3 { color: var(--primary-color, #1261A6); margin: 0 0 8px 0; display:flex; gap:6px; align-items:center; }
 
 /* Namespace gallery selectors to avoid conflicts with global .image-gallery */
 .cuisine-detail .image-gallery { display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
@@ -110,19 +110,19 @@
 .ingredients-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 16px 0; }
 .ingredient-item { background:#f7fafc; padding: 12px; border-radius: 8px; display:flex; gap: 10px; align-items:center; transition: transform .2s ease, background .2s ease; }
 .ingredient-item:hover { transform: translateX(4px); background: #fff7ed; }
-.ingredient-item i { color: var(--primary-color, #fc036b); }
+.ingredient-item i { color: var(--primary-color); }
 .ingredient-item .muted { color:#666; font-size: 0.9rem; }
 
 .sidebar { display:flex; flex-direction: column; gap: 20px; }
 .info-card h3 { margin: 0 0 12px 0; color:#2d3748; display:flex; gap:8px; align-items:center; font-size: 18px; }
-.info-card h3 i { color: var(--primary-color, #fc036b); }
+.info-card h3 i { color: var(--primary-color); }
 .info-item { display:flex; gap: 10px; align-items:center; padding: 10px 0; border-bottom: 1px solid #e2e8f0; }
 .info-item:last-child { border-bottom: none; }
-.info-item i { color: var(--primary-color, #fc036b); width: 24px; text-align:center; }
+.info-item i { color: var(--primary-color); width: 24px; text-align:center; }
 .info-label { font-weight: 700; color:#2d3748; }
 .info-value { color:#666; }
 .similar-list { display:flex; flex-direction: column; gap: 8px; }
-.similar-link { color: var(--primary-color, #fc036b); text-decoration:none; padding: 8px 10px; background:#fff1f5; border-radius:6px; transition: background .2s ease; display:inline-block; }
+.similar-link { color: var(--primary-color); text-decoration:none; padding: 8px 10px; background:#fff1f5; border-radius:6px; transition: background .2s ease; display:inline-block; }
 .similar-link:hover { background:#ffe2ec; }
 
 /* Restaurant Section - Blog Style */
@@ -197,7 +197,7 @@
     position: absolute;
     top: 15px;
     left: 15px;
-    background: #fc036b;
+    background: var(--primary-color);
     color: white;
     padding: 6px 12px;
     border-radius: 20px;
@@ -224,7 +224,7 @@
     letter-spacing: normal;
 }
 .restaurant-card:hover .restaurant-name {
-    color: #fc036b;
+    color: var(--primary-color);
 }
 
 /* Restaurant Meta Info */
@@ -244,7 +244,7 @@
     gap: 0.3rem;
 }
 .restaurant-meta i {
-    color: #fc036b;
+    color: var(--primary-color);
 }
 
 /* Restaurant Details */
@@ -259,7 +259,7 @@
     align-items: flex-start;
 }
 .restaurant-detail i { 
-    color: var(--primary-color, #fc036b); 
+    color: var(--primary-color); 
     width: 18px; 
     text-align: center; 
     margin-top: 3px; 
@@ -269,7 +269,7 @@
 /* Price Tag */
 .price-tag { 
     display: inline-block; 
-    background: linear-gradient(135deg, #ff6ea4, #fc036b); 
+    background: var(--primary-color); 
     color: #fff; 
     padding: 6px 12px; 
     border-radius: 999px; 
@@ -293,7 +293,7 @@
     padding: 12px 16px; 
     border-radius: 8px; 
     color: #fff; 
-    background: linear-gradient(135deg, #ff6ea4, #fc036b); 
+    background: var(--primary-color); 
     text-decoration: none; 
     font-weight: 600; 
     transition: all 0.3s ease; 
@@ -301,7 +301,7 @@
 }
 .btn-map:hover { 
     filter: brightness(1.05); 
-    box-shadow: 0 4px 12px rgba(252,3,107,0.35); 
+    box-shadow: none; 
     transform: translateY(-2px); 
 }
 
@@ -312,19 +312,19 @@
     gap: 8px;
     padding: 12px 16px;
     border-radius: 8px;
-    color: #fc036b;
+    color: var(--primary-color);
     background: #fff1f5;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s ease;
     font-size: 14px;
-    border: 2px solid #fc036b;
+    border: 2px solid var(--primary-color);
 }
 .btn-detail:hover {
-    background: #fc036b;
+    background: var(--primary-color);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(252,3,107,0.25);
+    box-shadow: none;
 }
 
 /* Restaurant Excerpt */
@@ -344,11 +344,11 @@
 
 .tips-section { margin: 28px 0; text-align: center; }
 .tips-section .section-title { justify-content: center; text-align: center; }
-.tips-section .line { width: 150px; height: 4px; background:#fc036b; margin:10px auto 0 auto; border-radius:5px; }
+.tips-section .line { width: 150px; height: 4px; background:var(--primary-color); margin:10px auto 0 auto; border-radius:5px; }
 .cuisine-detail-page .tips-section > .container { margin-left:auto !important; margin-right:auto !important; }
 .cuisine-detail-page .tips-section .tips-grid { margin-left:auto; margin-right:auto; }
 .tips-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 14px; justify-items: center; max-width: 1000px; margin: 16px auto 0 auto; }
-.tip-card { background:#f7fafc; padding: 14px; border-radius: 8px; border-left: 4px solid var(--primary-color, #fc036b); width: 100%; max-width: 560px; }
+.tip-card { background:#f7fafc; padding: 14px; border-radius: 8px; border-left: 4px solid var(--primary-color); width: 100%; max-width: 560px; }
 .tip-card h4 { 
     margin: 0 0 8px 0; 
     display:flex; 
@@ -361,7 +361,7 @@
     font-weight: 600;
     letter-spacing: normal;
 }
-.tip-card h4 i { color: var(--primary-color, #fc036b); }
+.tip-card h4 i { color: var(--primary-color); }
 .tip-card p { 
     margin: 0; 
     color: #7c7c7c; /* Matching blog section color */
@@ -612,7 +612,7 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
 }
 .btn-view-images i { 
-    color: var(--primary-color, #fc036b); 
+    color: var(--primary-color); 
 }
 
 

@@ -12,6 +12,9 @@
     sans-serif;
   --ff-heading: "Playfair Display", Georgia, "Times New Roman", serif;
 
+  /* Brand Colors */
+  --primary-color: #1261A6; /* Global primary brand color */
+
   /* Font Sizes */
   --fs-xs: 0.75rem; /* 12px */
   --fs-sm: 0.875rem; /* 14px */
@@ -70,7 +73,7 @@ span {
 }
 
 /* .active {
-  color: #fc036b;
+  color: var(--primary-color);
   border-radius: 20px;
   background: whitesmoke;
   font-weight: bold;
@@ -184,7 +187,7 @@ header {
 .line {
   width: 150px;
   height: 4px;
-  background: #fc036b;
+  background: var(--primary-color);
   margin: 10px auto;
   border-radius: 5px;
 }
@@ -200,7 +203,7 @@ header {
   font-size: var(--fs-links-btns);
   font-weight: 600;
   padding: 13px 50px;
-  background: #fc036b;
+  background: var(--primary-color);
   border-radius: 30px;
   color: whitesmoke;
 }
@@ -503,7 +506,7 @@ section {
   justify-content: center;
 }
 .concard:hover {
-  background-color: #fb036b;
+  background-color: var(--primary-color);
   border-bottom: 5px solid #fff;
   color: #fff;
   transform: translateY(-7.5px);
@@ -566,7 +569,7 @@ form {
 .cbox-line {
   width: 20%;
   height: 0.2em;
-  background-color: #fb036b;
+  background-color: var(--primary-color);
   margin-bottom: 3em;
   margin-top: 1em;
 }
@@ -583,19 +586,19 @@ form {
   padding: 1em;
   margin-bottom: 2em;
   padding-left: 2em;
-  border: 0.1em solid #fc036b;
-  background-color: #fc036b;
+  border: 0.1em solid var(--primary-color);
+  background-color: var(--primary-color);
   color: white;
   display: flex;
   border-radius: 2em;
   align-items: center;
-  border: #fc036b 0.1em solid;
+  border: var(--primary-color) 0.1em solid;
   font-size: 1em;
 }
 
 .c_boxx a:hover {
   background-color: white;
-  color: #fc036b;
+  color: var(--primary-color);
   transition: all 0.5s ease;
 }
 
@@ -621,10 +624,10 @@ label {
 }
 
 input[type="submit"] {
-  background-color: #fc036b;
+  background-color: var(--primary-color);
   color: whitesmoke;
   padding: 12px 50px;
-  border: 2px solid #fc036b;
+  border: 2px solid var(--primary-color);
   border-radius: 100vmax;
   cursor: pointer;
   font-family: var(--ff-primary);
@@ -633,7 +636,7 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
   background-color: whitesmoke;
-  color: #fc036b;
+  color: var(--primary-color);
 }
 
 .cform {
@@ -670,7 +673,7 @@ input[type="submit"]:hover {
   width: 20%;
   display: block;
   height: 1em;
-  border-bottom: 3px solid #fc036b;
+  border-bottom: 3px solid var(--primary-color);
 }
 
 .ccol-left {
@@ -702,7 +705,7 @@ input[type="submit"]:hover {
 
 .crow-s {
   margin: 1em;
-  color: #fc036b;
+  color: var(--primary-color);
 }
 
 /* footer */
@@ -746,7 +749,7 @@ input[type="submit"]:hover {
 }
 
 .social a:hover {
-  background-color: #fc036b;
+  background-color: var(--primary-color);
 }
 
 .social i {
@@ -939,6 +942,20 @@ body.dark .hnv-chip {
   text-decoration: underline;
 }
 
+/* Contact component color normalization across pages */
+section[id^="contact"] .title .line { background: var(--primary-color); }
+section[id^="contact"] .cbox-line { background-color: var(--primary-color); }
+section[id^="contact"] .c_boxx a {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+section[id^="contact"] .c_boxx a:hover { color: var(--primary-color); }
+section[id^="contact"] input[type="submit"] {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+section[id^="contact"] input[type="submit"]:hover { color: var(--primary-color); }
+
 /* animations */
 img {
   transition: transform 0.3s ease;
@@ -949,24 +966,24 @@ img:hover {
 }
 
 .cir_border:hover {
-  color: #fc036b;
+  color: var(--primary-color);
 }
 
 .active {
   border-radius: 20px;
-  color: #fc036b;
+  color: var(--primary-color);
   cursor: pointer;
 }
 
 .ctn:hover {
   background: whitesmoke;
-  color: #fc036b;
+  color: var(--primary-color);
   box-shadow: 2px 2px 5px #00000056;
   cursor: pointer;
 }
 
 .nav-links .ctn:hover a {
-  color: #fc036b;
+  color: var(--primary-color);
 }
 
 body {
@@ -1072,12 +1089,12 @@ body.dark {
 
   &:hover::after {
     transform: rotate(45deg);
-    border-color: #fc036b;
+    border-color: var(--primary-color);
     mix-blend-mode: normal; /* keep brand color on hover */
     height: 120%;
   }
   &:hover::before {
-    border-color: #fc036b;
+    border-color: var(--primary-color);
     mix-blend-mode: normal; /* keep brand color on hover */
     transform: scale(0.8);
   }
@@ -1089,11 +1106,11 @@ body.dark {
   background: rgba(255, 255, 255, 0.08);
 
   &:hover::after {
-    border-color: #fc036b;
+    border-color: var(--primary-color);
   }
 
   &:hover::before {
-    border-color: #fc036b;
+    border-color: var(--primary-color);
   }
 }
 
@@ -1104,7 +1121,7 @@ body.dark {
   font-size: 2em;
   letter-spacing: 4px;
   overflow: hidden;
-  background: linear-gradient(45deg, #fc036b, #fff, #41031d);
+  background: linear-gradient(45deg, var(--primary-color), #fff, #41031d);
   background-repeat: no-repeat;
   background-size: 80%;
   animation: animate 8s linear infinite;

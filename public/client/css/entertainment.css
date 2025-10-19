@@ -170,18 +170,18 @@
 }
 
 .entertainment .filter-btn:hover {
-  border-color: #fc036b;
-  color: #fc036b;
+  border-color: var(--primary-color);
+  color: var(--primary-color);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(252, 3, 107, 0.2);
+  box-shadow: none;
 }
 
 .entertainment .filter-btn.active {
-  background: #fc036b;
-  border-color: #fc036b;
+  background: var(--primary-color);
+  border-color: var(--primary-color);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(252, 3, 107, 0.3);
+  box-shadow: none;
 }
 
 /* Card Enhancements */
@@ -234,7 +234,7 @@
   margin-top: auto;
   text-align: center;
   padding: 12px 24px;
-  background: linear-gradient(135deg, #fc036b, #ff6b9d);
+  background: var(--primary-color);
   color: white;
   text-decoration: none;
   border-radius: 25px;
@@ -248,7 +248,7 @@
 
 .entertainment .standard-card .ctn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(252, 3, 107, 0.4);
+  box-shadow: none;
   color: white;
   text-decoration: none;
 }
