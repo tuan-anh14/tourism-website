@@ -20,6 +20,15 @@
   --shadow-heavy: 0 8px 30px rgba(0, 0, 0, 0.2);
   --border-radius: 12px;
   --transition: all 0.3s ease;
+  
+  /* Font System Integration - Matching Blog Section */
+  --ff-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --ff-heading: "Playfair Display", Georgia, "Times New Roman", serif;
+  
+  /* Font Size Variables - Matching Blog Section */
+  --fs-xl: 1.25rem; /* 20px */
+  --fs-paragraphs: clamp(0.875rem, 0.8rem + 0.35vw, 1.125rem); /* 14px - 18px responsive */
+  --fs-headings: clamp(1.5rem, 1.2rem + 1.5vw, 3rem); /* 24px - 48px responsive */
 }
 
 /* ===========================================
@@ -63,6 +72,39 @@ body.dark .accommodation-detail-page .navbar .nav-links li a {
   text-align: center;
   color: #fff;
   z-index: 1;
+  font-family: var(--ff-primary);
+}
+
+/* Banner h1 styling for desktop */
+.page-header.accommodation-banner .header-content h1 {
+  font-family: var(--ff-heading);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 600;
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+/* Banner h2 styling for desktop */
+.page-header.accommodation-banner .header-content h2 {
+  font-family: var(--ff-heading);
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  font-weight: 600;
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* Banner p styling for desktop */
+.page-header.accommodation-banner .header-content p {
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+  margin: 8px auto 0 auto;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  line-height: 1.5;
+  text-align: center;
+  max-width: 35ch;
 }
 
 /* ===========================================
@@ -177,13 +219,15 @@ body.dark .acc-detail .contact-info {
    SECTION TITLES
    =========================================== */
 .acc-detail .section-title {
-  font-size: 24px;
-  font-weight: 700;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif !important;
+  font-size: clamp(1.2rem, 1rem + 1vw, 1.8rem) !important;
+  font-weight: 600 !important;
   margin-bottom: 20px;
   color: var(--secondary-color, #2d3748);
   border-bottom: 3px solid var(--primary-color, #fc036b);
   padding-bottom: 12px;
   display: inline-block;
+  letter-spacing: normal;
 }
 
 body.dark .acc-detail .section-title {
@@ -196,7 +240,8 @@ body.dark .acc-detail .section-title {
 .acc-detail .description {
   color: var(--medium-gray, #4a5568);
   line-height: 1.8;
-  font-size: 16px;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
 }
 
 .acc-detail .description p {
@@ -221,7 +266,8 @@ body.dark .acc-detail .description {
 .acc-detail .highlight-box h3 {
   color: var(--primary-color);
   margin-bottom: 12px;
-  font-size: 18px;
+  font-family: var(--ff-heading);
+  font-size: var(--fs-xl);
   font-weight: 600;
 }
 
@@ -233,6 +279,8 @@ body.dark .acc-detail .description {
   color: var(--dark-gray, #4a5568);
   margin: 8px 0;
   line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
 }
 
 body.dark .acc-detail .highlight-box {
@@ -258,7 +306,8 @@ body.dark .acc-detail .room-info {
 }
 
 .acc-detail .room-info h3 {
-  font-size: 18px;
+  font-family: var(--ff-heading);
+  font-size: var(--fs-xl);
   font-weight: 600;
   margin-bottom: 16px;
   color: var(--secondary-color);
@@ -280,6 +329,8 @@ body.dark .acc-detail .room-info h3 {
   gap: 10px;
   color: var(--dark-gray);
   padding: 8px 0;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
 }
 
 .acc-detail .feature-item i {
@@ -310,6 +361,8 @@ body.dark .acc-detail .feature-item {
   gap: 10px;
   color: var(--dark-gray);
   padding: 8px 0;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
 }
 
 .acc-detail .service-item i {
@@ -339,6 +392,8 @@ body.dark .acc-detail .service-item {
   background: var(--light-gray);
   border-radius: 8px;
   transition: var(--transition);
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
 }
 
 .acc-detail .rule-item:hover {
@@ -374,8 +429,9 @@ body.dark .acc-detail .rule-item:hover {
 .acc-detail .contact-info h3 {
   margin-bottom: 20px;
   color: var(--secondary-color);
-  font-size: 20px;
-  font-weight: 700;
+  font-family: var(--ff-heading);
+  font-size: var(--fs-xl);
+  font-weight: 600;
 }
 
 body.dark .acc-detail .contact-info h3 {
@@ -418,6 +474,8 @@ body.dark .acc-detail .contact-info h3 {
   color: var(--dark-gray);
   font-weight: 500;
   line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
 }
 
 .acc-detail .contact-item .value a {
@@ -449,7 +507,8 @@ body.dark .acc-detail .contact-item .value {
   margin-top: 16px;
   color: var(--medium-gray);
   line-height: 1.8;
-  font-size: 15px;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
 }
 
 .acc-detail .acc-map-embed {
@@ -644,9 +703,11 @@ section.reviews-pro {
 
 .reviews-pro__heading h2 {
   margin: 0;
-  font-size: 28px;
-  font-weight: 700;
+  font-family: var(--ff-heading);
+  font-size: var(--fs-headings);
+  font-weight: 600;
   color: var(--secondary-color);
+  letter-spacing: normal;
 }
 
 body.dark .reviews-pro__heading h2 {
@@ -656,6 +717,9 @@ body.dark .reviews-pro__heading h2 {
 .reviews-pro__heading .subheading {
   margin: 6px 0 0 0;
   color: var(--medium-gray);
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+  line-height: 1.5;
 }
 
 body.dark .reviews-pro__heading .subheading {
@@ -740,17 +804,31 @@ body.dark .reviews-pro__heading .subheading {
   }
 
   .page-header.accommodation-banner .header-content h1 {
+    font-family: var(--ff-heading);
     font-size: clamp(1.5rem, 6vw, 2rem);
+    font-weight: 600;
     margin-top: 12px;
     margin-bottom: 8px;
+    color: #fff;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.3);
   }
 
   .page-header.accommodation-banner .header-content h2 {
-    font-size: clamp(0.95rem, 4.2vw, 1.2rem);
+    font-family: var(--ff-heading);
+    font-size: clamp(0.8rem, 3.5vw, 1.1rem);
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
   }
 
   .page-header.accommodation-banner .header-content p {
+    font-family: var(--ff-primary);
     font-size: clamp(0.85rem, 3.8vw, 1rem);
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    text-align: center;
+    max-width: 35ch;
+    margin: 4px auto 0 auto;
   }
 
   /* Gallery mobile grid */
@@ -797,7 +875,10 @@ body.dark .reviews-pro__heading .subheading {
   }
 
   .reviews-pro__heading h2 {
-    font-size: 24px;
+    font-family: var(--ff-heading);
+    font-size: var(--fs-headings);
+    font-weight: 600;
+    letter-spacing: normal;
   }
 
   /* Modal adjustments */
@@ -821,7 +902,10 @@ body.dark .reviews-pro__heading .subheading {
 /* Small mobile */
 @media (max-width: 480px) {
   .acc-detail .section-title {
-    font-size: 20px;
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif !important;
+    font-size: clamp(1.1rem, 0.9rem + 0.8vw, 1.6rem) !important;
+    font-weight: 600 !important;
+    letter-spacing: normal;
   }
 
   .reviews-pro__card {
