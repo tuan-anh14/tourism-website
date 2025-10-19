@@ -30,6 +30,25 @@ body.dark .accommodation .navbar .nav-links li a {
 }
 .accommodation-banner .header-content h1 {
   color: #fff;
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-size: var(--fs-headings); /* Responsive heading size */
+  font-weight: 600; /* Semi-bold */
+  letter-spacing: normal; /* Normal spacing như blog section */
+}
+
+.accommodation-banner .header-content h2 {
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-size: 3vmin; /* Giữ nguyên responsive size */
+  font-weight: 500; /* Medium weight */
+  letter-spacing: normal; /* Normal spacing */
+}
+
+.accommodation-banner .header-content p {
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive paragraph size */
+  color: whitesmoke;
+  line-height: 1.5;
+  letter-spacing: normal;
 }
 
 /* Filters */
@@ -61,7 +80,8 @@ body.dark .accommodation .navbar .nav-links li a {
   outline: none;
   color: inherit;
   height: 40px;
-  font-size: 15px;
+  font-size: var(--fs-sm); /* 0.875rem (14px) */
+  font-family: var(--ff-primary); /* Inter font */
 }
 
 /* Dark mode: text inside white boxes */
@@ -204,8 +224,11 @@ body.dark .accommodation-card {
   gap: 8px;
 }
 .accommodation-card .title {
-  font-size: 18px;
+  font-size: var(--fs-xl); /* 1.25rem (20px) */
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-weight: 600; /* Semi-bold như blog section */
   margin: 0;
+  letter-spacing: normal;
 }
 .accommodation-card .type-label {
   background: rgba(0, 123, 255, 0.1);
@@ -222,9 +245,11 @@ body.dark .accommodation-card .type-label {
 }
 
 .accommodation-card .desc {
-  color: var(--clr-gray-200, #666);
+  color: #7c7c7c; /* Màu xám giống blog section */
   line-height: 1.5;
   margin: 0;
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive font size */
 }
 
 /* Meta section */
@@ -248,7 +273,8 @@ body.dark .accommodation-card .price {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 13px;
+  font-size: var(--fs-sm); /* 0.875rem (14px) */
+  font-family: var(--ff-primary); /* Inter font */
 }
 .accommodation-card .rating-value {
   font-weight: 600;
@@ -266,8 +292,9 @@ body.dark .accommodation-card .price {
   color: #ddd;
 }
 .accommodation-card .review-count {
-  color: var(--clr-gray-200, #666);
-  font-size: 11px;
+  color: #7c7c7c; /* Màu xám giống blog section */
+  font-size: var(--fs-xs); /* 0.75rem (12px) */
+  font-family: var(--ff-primary); /* Inter font */
 }
 
 .accommodation-card .amenities {
@@ -280,7 +307,8 @@ body.dark .accommodation-card .price {
   background: rgba(0, 0, 0, 0.06);
   border-radius: 999px;
   padding: 6px 10px;
-  font-size: 12px;
+  font-size: var(--fs-xs); /* 0.75rem (12px) */
+  font-family: var(--ff-primary); /* Inter font */
   color: #333;
 }
 body.dark .accommodation-card .amenities .tag {
@@ -307,11 +335,14 @@ body.dark .accommodation-card .amenities .tag {
 }
 .no-results h3 {
   margin: 0 0 8px;
-  font-size: 20px;
+  font-size: var(--fs-xl); /* 1.25rem (20px) */
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-weight: 600;
 }
 .no-results p {
   margin: 0;
-  font-size: 14px;
+  font-size: var(--fs-sm); /* 0.875rem (14px) */
+  font-family: var(--ff-primary); /* Inter font */
 }
 
 /* Visibility helper moved above for transitions */

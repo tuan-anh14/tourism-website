@@ -25,6 +25,29 @@
     position: relative; 
 }
 
+.page-header.transportation-banner .header-content h1 {
+  color: #fff;
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-size: var(--fs-headings); /* Responsive heading size */
+  font-weight: 600; /* Semi-bold */
+  letter-spacing: normal; /* Normal spacing như blog section */
+}
+
+.page-header.transportation-banner .header-content h2 {
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-size: 3vmin; /* Giữ nguyên responsive size */
+  font-weight: 500; /* Medium weight */
+  letter-spacing: normal; /* Normal spacing */
+}
+
+.page-header.transportation-banner .header-content p {
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive paragraph size */
+  color: whitesmoke;
+  line-height: 1.5;
+  letter-spacing: normal;
+}
+
 /* Mobile banner adjustments - show more image, smaller center block */
 @media (max-width: 768px) {
   .page-header.transportation-banner { height: 56vh; min-height: 300px; }
@@ -52,6 +75,20 @@
   text-align: center;
   border: 2px solid transparent;
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.transport-card h3 {
+  font-size: var(--fs-xl); /* 1.25rem (20px) */
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-weight: 600; /* Semi-bold như blog section */
+  letter-spacing: normal;
+}
+
+.transport-card p {
+  color: #7c7c7c; /* Màu xám giống blog section */
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive font size */
+  line-height: 1.5;
 }
 
 .transport-card:hover {
@@ -105,10 +142,20 @@
 }
 
 .card-header i { font-size: 22px; }
-.card-header h3 { font-size: 18px; }
+.card-header h3 { 
+  font-size: var(--fs-xl); /* 1.25rem (20px) */
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-weight: 600; /* Semi-bold như blog section */
+  letter-spacing: normal;
+}
 
 .card-body { padding: 16px; }
-.card-body p { color: var(--muted); }
+.card-body p { 
+  color: #7c7c7c; /* Màu xám giống blog section */
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive font size */
+  line-height: 1.5;
+}
 
 .features-list {
   display: flex;
@@ -122,7 +169,8 @@
   color: var(--primary-dark);
   padding: 6px 12px;
   border-radius: 18px;
-  font-size: 13px;
+  font-size: var(--fs-xs); /* 0.75rem (12px) */
+  font-family: var(--ff-primary); /* Inter font */
   font-weight: 600;
 }
 
@@ -141,6 +189,20 @@
   align-items: center;
   gap: 12px;
   transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.app-card h4 {
+  font-size: var(--fs-lg); /* 1.125rem (18px) */
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-weight: 600;
+  letter-spacing: normal;
+}
+
+.app-card p {
+  color: #7c7c7c; /* Màu xám giống blog section */
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive font size */
+  line-height: 1.5;
 }
 
 .app-card:hover {
@@ -174,8 +236,17 @@
   color: #fff;
   padding: 12px;
   text-align: left;
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-sm); /* 0.875rem (14px) */
+  font-weight: 600;
 }
-.comparison-table td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
+.comparison-table td { 
+  padding: 12px; 
+  border-bottom: 1px solid #e2e8f0; 
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-sm); /* 0.875rem (14px) */
+  color: #7c7c7c; /* Màu xám giống blog section */
+}
 .comparison-table tr:hover { background: #fff0f6; }
 
 .price-badge {
@@ -184,7 +255,8 @@
   padding: 4px 10px;
   border-radius: 16px;
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--fs-xs); /* 0.75rem (12px) */
+  font-family: var(--ff-primary); /* Inter font */
 }
 
 .tips-section { border-top: 1px solid #e6f6fb; }
@@ -202,9 +274,22 @@
   box-shadow: var(--shadow);
 }
 
-.tip-card h4 { display: flex; gap: 8px; align-items: center; }
+.tip-card h4 { 
+  display: flex; 
+  gap: 8px; 
+  align-items: center; 
+  font-size: var(--fs-lg); /* 1.125rem (18px) */
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-weight: 600;
+  letter-spacing: normal;
+}
 .tip-card h4 i { color: #14b8a6; }
-.tip-card p { color: var(--muted); }
+.tip-card p { 
+  color: #7c7c7c; /* Màu xám giống blog section */
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive font size */
+  line-height: 1.5;
+}
 
 /* Mobile responsive fixes for transportation banner */
 @media (max-width: 768px) {

@@ -36,9 +36,43 @@
   gap: 10px;
 }
 .entertainment .standard-card .title {
-  font-size: 18px;
+  font-size: var(--fs-xl); /* 1.25rem (20px) */
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-weight: 600; /* Semi-bold như blog section */
   margin: 0;
   text-align: left;
+  letter-spacing: normal;
+}
+
+.entertainment .standard-card .card-content p {
+  color: #7c7c7c; /* Màu xám giống blog section */
+  line-height: 1.5;
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive font size */
+}
+
+/* Banner header styles */
+.entertainment-main-banner .header-content h1 {
+  color: #fff;
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-size: var(--fs-headings); /* Responsive heading size */
+  font-weight: 600; /* Semi-bold */
+  letter-spacing: normal; /* Normal spacing như blog section */
+}
+
+.entertainment-main-banner .header-content h2 {
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-size: 3vmin; /* Giữ nguyên responsive size */
+  font-weight: 500; /* Medium weight */
+  letter-spacing: normal; /* Normal spacing */
+}
+
+.entertainment-main-banner .header-content p {
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive paragraph size */
+  color: whitesmoke;
+  line-height: 1.5;
+  letter-spacing: normal;
 }
 /* ===== ENTERTAINMENT PAGE STYLES ===== */
 
@@ -70,7 +104,8 @@
   outline: none;
   color: inherit;
   height: 40px;
-  font-size: 15px;
+  font-size: var(--fs-sm); /* 0.875rem (14px) */
+  font-family: var(--ff-primary); /* Inter font */
 }
 
 .entertainment .filter-buttons {
@@ -110,7 +145,8 @@
   border-radius: 25px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 14px;
+  font-size: var(--fs-sm); /* 0.875rem (14px) */
+  font-family: var(--ff-primary); /* Inter font */
   font-weight: 500;
   white-space: nowrap;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -177,9 +213,11 @@
 
 /* Entertainment Details */
 .entertainment-details {
-  font-size: 14px;
+  font-size: var(--fs-sm); /* 0.875rem (14px) */
+  font-family: var(--ff-primary); /* Inter font */
   line-height: 1.6;
   padding: 15px 0;
+  color: #7c7c7c; /* Màu xám giống blog section */
 }
 
 .entertainment-details p {
@@ -192,6 +230,8 @@
   color: #333;
   min-width: 80px;
   margin-right: 8px;
+  font-family: var(--ff-primary); /* Inter font */
+  font-weight: 600;
 }
 
 /* Star Rating */
@@ -283,12 +323,16 @@
 .feature-card h3 {
   color: #333;
   margin-bottom: 15px;
-  font-size: 1.3rem;
+  font-size: var(--fs-xl); /* 1.25rem (20px) */
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-weight: 600;
 }
 
 .feature-card p {
-  color: #666;
+  color: #7c7c7c; /* Màu xám giống blog section */
   line-height: 1.6;
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive font size */
 }
 
 /* Responsive Design */

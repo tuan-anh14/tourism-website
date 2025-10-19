@@ -8,18 +8,53 @@ body.dark .cuisine .navbar .nav-links li a { color: #fff; }
 
 /* Banner */
 .cuisine-banner.page-header { background-size: cover; background-position: center; min-height: 320px; display:flex; align-items:center; justify-content:center; text-align:center; padding:60px 20px; }
-.cuisine-banner .header-content h1 { color:#fff; }
+.cuisine-banner .header-content h1 { 
+  color: #fff;
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-size: var(--fs-headings); /* Responsive heading size */
+  font-weight: 600; /* Semi-bold */
+  letter-spacing: normal; /* Normal spacing như blog section */
+}
+
+.cuisine-banner .header-content h2 {
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-size: 3vmin; /* Giữ nguyên responsive size */
+  font-weight: 500; /* Medium weight */
+  letter-spacing: normal; /* Normal spacing */
+}
+
+.cuisine-banner .header-content p {
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive paragraph size */
+  color: whitesmoke;
+  line-height: 1.5;
+  letter-spacing: normal;
+}
 
 /* Overview section */
 .cuisine-overview { max-width: 1100px; margin: 28px auto; padding: 0 16px; text-align: center; }
-.cuisine-overview p { line-height: 1.7; }
+.cuisine-overview p { 
+  line-height: 1.7; 
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive font size */
+  color: #7c7c7c; /* Màu xám giống blog section */
+}
 
 /* Filters */
 .cuisine-filters { max-width: 1200px; margin: 20px auto 16px; padding: 0 16px; }
 .cuisine-filters .filter-row { display: grid; grid-template-columns: 1fr 180px 180px 180px; gap: 12px; }
 .cuisine-filters .box { background: rgba(255,255,255,0.92); border-radius: 12px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); padding: 10px 12px; display: flex; align-items: center; }
 .cuisine-filters .box input,
-.cuisine-filters .box select { width: 100%; background: transparent; border: none; outline: none; color: inherit; height: 40px; font-size: 15px; }
+.cuisine-filters .box select { 
+  width: 100%; 
+  background: transparent; 
+  border: none; 
+  outline: none; 
+  color: inherit; 
+  height: 40px; 
+  font-size: var(--fs-sm); /* 0.875rem (14px) */
+  font-family: var(--ff-primary); /* Inter font */
+}
 body.dark .cuisine-filters .box input,
 body.dark .cuisine-filters .box select { color: #111; }
 
@@ -42,12 +77,31 @@ body.dark .cuisine-card { background: rgba(20,20,22,0.92); box-shadow: 0 10px 30
 .cuisine-card .thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition: transform .5s ease; }
 .cuisine-card:hover .thumb img { transform: scale(1.06); }
 .cuisine-card .content { padding:16px; display:flex; flex-direction:column; gap:10px; }
-.cuisine-card .title { font-size: 18px; }
-.cuisine-card .desc { color: var(--clr-gray-200, #666); line-height: 1.5; }
+.cuisine-card .title { 
+  font-size: var(--fs-xl); /* 1.25rem (20px) */
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-weight: 600; /* Semi-bold như blog section */
+  letter-spacing: normal;
+}
+.cuisine-card .desc { 
+  color: #7c7c7c; /* Màu xám giống blog section */
+  line-height: 1.5; 
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive font size */
+}
 .cuisine-card .meta { display:grid; grid-template-columns: 1fr auto; gap:10px; align-items:center; }
-.cuisine-card .address, .cuisine-card .hours { font-size: 14px; color: #555; }
+.cuisine-card .address, .cuisine-card .hours { 
+  font-size: var(--fs-sm); /* 0.875rem (14px) */
+  font-family: var(--ff-primary); /* Inter font */
+  color: #7c7c7c; /* Màu xám giống blog section */
+}
 body.dark .cuisine-card .address, body.dark .cuisine-card .hours { color: #cbd5e1; }
-.cuisine-card .rating { color: #f59e0b; font-weight: 700; }
+.cuisine-card .rating { 
+  color: #f59e0b; 
+  font-weight: 700; 
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-sm); /* 0.875rem (14px) */
+}
 .cuisine-card .actions { margin-top:auto; display:flex; justify-content:flex-end; }
 
 /* Visibility helper */

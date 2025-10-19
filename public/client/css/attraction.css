@@ -182,12 +182,14 @@
 .suggestion-text {
     flex: 1;
     color: #333;
-    font-size: 15px;
+    font-size: var(--fs-sm); /* 0.875rem (14px) */
+    font-family: var(--ff-primary);
 }
 
 .suggestion-category {
     color: #666;
-    font-size: 12px;
+    font-size: var(--fs-xs); /* 0.75rem (12px) */
+    font-family: var(--ff-primary);
     background: rgba(0, 0, 0, 0.1);
     padding: 2px 8px;
     border-radius: 12px;
@@ -215,7 +217,25 @@
 
 .attraction-banner .header-content h1 {
     color: #fff;
-    letter-spacing: 0.2px;
+    font-family: var(--ff-heading); /* Playfair Display */
+    font-size: var(--fs-headings); /* Responsive heading size */
+    font-weight: 600; /* Semi-bold */
+    letter-spacing: normal; /* Normal spacing như blog section */
+}
+
+.attraction-banner .header-content h2 {
+    font-family: var(--ff-heading); /* Playfair Display */
+    font-size: 3vmin; /* Giữ nguyên responsive size */
+    font-weight: 500; /* Medium weight */
+    letter-spacing: normal; /* Normal spacing */
+}
+
+.attraction-banner .header-content p {
+    font-family: var(--ff-primary); /* Inter font */
+    font-size: var(--fs-paragraphs); /* Responsive paragraph size */
+    color: whitesmoke;
+    line-height: 1.5;
+    letter-spacing: normal;
 }
 
 /* Filter/Search Bar */
@@ -249,7 +269,7 @@
     outline: none;
     background: transparent;
     color: inherit;
-    font-size: 16px;
+    font-size: var(--fs-base); /* 1rem (16px) */
     font-family: var(--ff-primary);
 }
 
@@ -272,7 +292,7 @@
     background: transparent;
     color: inherit;
     height: 44px;
-    font-size: 15px;
+    font-size: var(--fs-sm); /* 0.875rem (14px) */
     font-family: var(--ff-primary);
     appearance: none;
     -webkit-appearance: none;
@@ -345,19 +365,21 @@
 }
 
 .attraction-card .title {
-    font-size: 20px;
+    font-size: var(--fs-xl); /* 1.25rem (20px) */
     font-family: var(--ff-heading);
-    font-weight: 700;
+    font-weight: 600; /* Semi-bold như blog section */
     text-align: left;
     margin: 0;
     letter-spacing: normal;
 }
 
 .attraction-card .desc {
-    color: var(--clr-gray-200, #666);
+    color: #7c7c7c; /* Màu xám giống blog section */
     line-height: 1.5;
     text-align: left;
     margin: 0;
+    font-family: var(--ff-primary); /* Inter font */
+    font-size: var(--fs-paragraphs); /* Responsive font size */
 }
 
 .attraction-card .attraction-meta { 
@@ -549,7 +571,7 @@ body.dark .attraction-card {
     }
     
     .attraction-banner .header-content p { 
-        font-size: 12px; 
+        font-size: var(--fs-xs); /* 0.75rem (12px) */
     }
     
     .attraction-banner #quote {
