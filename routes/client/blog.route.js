@@ -5,7 +5,9 @@ const blogController = require("../../controller/client/blog.controller");
 // Blog page route
 router.get("/", blogController.index);
 
-// Blog detail: Old Quarter - 36 streets
-router.get("/pho-co-ha-noi-36-pho-phuong", blogController.detailOldQuarter);
+// New SEO articles
+router.get("/bai-1", blogController.articleOne);
+router.get("/bai-2", blogController.articleTwo);
+router.get("/bai-3", blogController.articleThree);
 
 module.exports = router;
