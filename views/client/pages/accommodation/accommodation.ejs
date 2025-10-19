@@ -111,7 +111,7 @@
                         <% if (desc) { %><p class="desc font-color"><%= desc.length > 120 ? desc.substring(0, 120) + '...' : desc %></p><% } %>
                         <div class="meta">
                             <% if (price) { %>
-                            <span class="price">Từ <%= Number(price).toLocaleString('vi-VN') %>đ/đêm</span>
+                            <span class="price">Giá từ: <%= Number(price).toLocaleString('vi-VN') %> VNĐ</span>
                             <% } %>
                             <% if (rating > 0) { %>
                             <div class="rating">

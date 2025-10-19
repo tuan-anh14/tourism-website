@@ -25,7 +25,8 @@ module.exports.cuisine = async (req, res) => {
                 rating: doc.avgRating || 0,
                 address,
                 hours,
-                slug: doc.slug || String(doc._id)
+                slug: doc.slug || String(doc._id),
+                desc: doc.description || ''
             };
         });
 

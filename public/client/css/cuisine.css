@@ -82,27 +82,24 @@ body.dark .cuisine-card { background: rgba(20,20,22,0.92); box-shadow: 0 10px 30
   font-family: var(--ff-heading); /* Playfair Display */
   font-weight: 600; /* Semi-bold như blog section */
   letter-spacing: normal;
+  text-align: left;
 }
 .cuisine-card .desc { 
   color: #7c7c7c; /* Màu xám giống blog section */
   line-height: 1.5; 
   font-family: var(--ff-primary); /* Inter font */
   font-size: var(--fs-paragraphs); /* Responsive font size */
+  text-align: left;
 }
-.cuisine-card .meta { display:grid; grid-template-columns: 1fr auto; gap:10px; align-items:center; }
+.cuisine-card .meta { display:flex; flex-direction:column; gap:8px; }
 .cuisine-card .address, .cuisine-card .hours { 
   font-size: var(--fs-sm); /* 0.875rem (14px) */
   font-family: var(--ff-primary); /* Inter font */
   color: #7c7c7c; /* Màu xám giống blog section */
 }
 body.dark .cuisine-card .address, body.dark .cuisine-card .hours { color: #cbd5e1; }
-.cuisine-card .rating { 
-  color: #f59e0b; 
-  font-weight: 700; 
-  font-family: var(--ff-primary); /* Inter font */
-  font-size: var(--fs-sm); /* 0.875rem (14px) */
-}
-.cuisine-card .actions { margin-top:auto; display:flex; justify-content:flex-end; }
+/* Removed rating styles - no longer needed */
+.cuisine-card .actions { margin-top:auto; display:flex; justify-content:center; }
 
 /* Visibility helper */
 .cuisine-card.is-hidden { display: none !important; }

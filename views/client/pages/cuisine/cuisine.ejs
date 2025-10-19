@@ -37,30 +37,6 @@
                         <i class="fa fa-search" aria-hidden="true" style="margin-right:8px"></i>
                         <input id="cui-search" type="text" placeholder="Tìm tên món/quán..." aria-label="Tìm theo tên" />
                     </div>
-                    <div class="box">
-                        <select id="cui-area" aria-label="Chọn khu vực">
-                            <option value="all">Tất cả khu vực</option>
-                            <option value="center">Phố cổ</option>
-                            <option value="tayho">Tây Hồ</option>
-                            <option value="caugiay">Cầu Giấy</option>
-                            <option value="dongda">Đống Đa</option>
-                        </select>
-                    </div>
-                    <div class="box">
-                        <select id="cui-type" aria-label="Chọn loại món">
-                            <option value="all">Tất cả loại món</option>
-                            <option value="noodle">Món nước</option>
-                            <option value="grill">Nướng/Quay</option>
-                            <option value="snack">Quà vặt/Tráng miệng</option>
-                        </select>
-                    </div>
-                    <div class="box">
-                        <select id="cui-form" aria-label="Chọn hình thức">
-                            <option value="all">Tất cả hình thức</option>
-                            <option value="street">Vỉa hè/Quán nhỏ</option>
-                            <option value="restaurant">Nhà hàng</option>
-                        </select>
-                    </div>
                 </div>
             </div>
 
@@ -74,13 +50,16 @@
                     </div>
                     <div class="content">
                         <h3 class="title dark"><%= item.title %></h3>
-                        <% if (item.desc) { %><p class="desc font-color"><%= item.desc %></p><% } %>
+                        <% if (item.desc) { %>
+                            <p class="desc font-color"><%= item.desc.length > 80 ? item.desc.substring(0, 80) + '...' : item.desc %></p>
+                        <% } else { %>
+                            <p class="desc font-color">Món ăn đặc sản Hà Nội với hương vị truyền thống và độc đáo...</p>
+                        <% } %>
                         <div class="meta">
                             <div>
                                 <% if (item.address) { %><div class="address"><i class="fa fa-map-marker"></i> <%= item.address %></div><% } %>
                                 <% if (item.hours) { %><div class="hours"><i class="fa fa-clock-o"></i> <%= item.hours %></div><% } %>
                             </div>
-                            <div class="rating"><i class="fa fa-star"></i> <%= item.rating %></div>
                         </div>
                         <div class="actions">
                             <a class="ctn" href="/cuisine/<%= item.slug %>">Xem chi tiết</a>
