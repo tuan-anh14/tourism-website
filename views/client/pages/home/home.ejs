@@ -110,42 +110,60 @@
         </section>
         <!--Explore-->
 
-         <!--Events-->
-         <section class="events" id="events">
-            <div class="container">
-                <div class="title">
-                    <h1 class="dark">ĐỊA ĐIỂM NỔI BẬT</h1>
-                    <div class="line"></div>
+         <!--Attractions-->
+            <section class="events" id="events">
+                <div class="container">
+                    <div class="title">
+                        <h1 class="dark">ĐIỂM THAM QUAN NỔI BẬT</h1>
+                        <div class="line"></div>
+                    </div>
+                    <div class="row">
+                        <% if (featuredAttractions && featuredAttractions.length > 0) { %>
+                            <% featuredAttractions.forEach(attraction => { %>
+                                <article class="card col">
+                                    <% if (attraction.images && attraction.images.length > 0) { %>
+                                        <img class="card-img" src="<%= attraction.images[0] %>" alt="<%= attraction.name %>" />
+                                    <% } else { %>
+                                        <img class="card-img" src="/client/img/carousel-img5.jpg" alt="<%= attraction.name %>" />
+                                    <% } %>
+                                    <h4 class="dark"><%= attraction.name %></h4>
+                                    <p class="font-color">
+                                        <%= attraction.shortDescription || attraction.description?.substring(0, 80) + '...' || 'Khám phá điểm tham quan thú vị tại Hà Nội' %>
+                                    </p>
+                                    <a href="/attraction/<%= attraction.slug %>" class="ctn">Xem chi tiết</a>
+                                </article>
+                            <% }); %>
+                        <% } else { %>
+                            <!-- Fallback content khi không có điểm tham quan nổi bật -->
+                            <article class="card col">
+                                <img class="card-img" src="/client/img/lang-co.jpg" />
+                                <h4 class="dark">Làng cổ</h4>
+                                <p class="font-color">
+                                    Khám phá làng cổ.
+                                </p>
+                                <a href="/attraction" class="ctn">Xem chi tiết</a>
+                            </article>
+                            <article class="card col">
+                                <img src="/client/img/pho-co.jpg" />
+                                <h4 class="dark">Phố cổ Hà Nội</h4>
+                                <p class="font-color">
+                                    Khám phá phố cổ Hà Nội.
+                                </p>
+                                <a href="/attraction" class="ctn">Xem chi tiết</a>
+                            </article>
+                            <article class="card col">
+                                <img src="/client/img/ho-tay.jpg" />
+                                <h4 class="dark">Hồ Tây</h4>
+                                <p class="font-color">
+                                    Dạo quanh Hồ Tây, ghé chùa Trấn Quốc và trải nghiệm làng cổ ven đô.
+                                </p>
+                                <a href="/attraction" class="ctn">Xem chi tiết</a>
+                            </article>
+                        <% } %>
+                    </div>
                 </div>
-                <div class="row">
-                    <article class="card col">
-                        <img class="card-img" src="/client/img/lang-co.jpg" />
-                        <h4 class="dark">Làng cổ</h4>
-                        <p class="font-color">
-                            Khám phá làng cổ.
-                        </p>
-                        <a href="#" class="ctn">Xem chi tiết</a>
-                    </article>
-                    <article class="card col">
-                        <img src="/client/img/pho-co.jpg" />
-                        <h4 class="dark">Phố cổ Hà Nội</h4>
-                        <p class="font-color">
-                            Khám phá phố cổ Hà Nội.
-                        </p>
-                        <a href="#" class="ctn">Xem chi tiết</a>
-                    </article>
-                    <article class="card col">
-                        <img src="/client/img/ho-tay.jpg" />
-                        <h4 class="dark">Hồ Tây</h4>
-                        <p class="font-color">
-                            Dạo quanh Hồ Tây, ghé chùa Trấn Quốc và trải nghiệm làng cổ ven đô.
-                        </p>
-                        <a href="#" class="ctn">Xem chi tiết</a>
-                    </article>
-                </div>
-            </div>
-        </section>
-        <!--Events-->
+            </section>
+        <!--Attractions-->
 
         <!-- Map Section Component -->
         <%- include('../../components/map-section') %>
