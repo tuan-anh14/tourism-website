@@ -20,23 +20,8 @@
 <body class="restaurant-detail-page">
     <%- include('../../partials/header') %>
 
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb">
-        <div class="container">
-            <a href="/">Trang chủ</a>
-            <span class="separator">/</span>
-            <a href="/cuisine">Ẩm thực</a>
-            <span class="separator">/</span>
-            <% if (cuisine) { %>
-            <a href="/cuisine/<%= cuisine.slug %>"><%= cuisine.title %></a>
-            <span class="separator">/</span>
-            <% } %>
-            <span class="current"><%= (restaurant && restaurant.name) || 'Nhà hàng' %></span>
-        </div>
-    </nav>
-
     <!-- Banner -->
-    <header class="page-header restaurant-banner" style="background-image: url('<%= (restaurant && (restaurant.image || (restaurant.images && restaurant.images[0]))) || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200' %>');">
+    <header class="page-header restaurant-banner" style="background-image: url('<%= (restaurant && (restaurant.image || (restaurant.images && restaurant.images[0]))) || "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200" %>');">
         <div class="header-content">
             <h2 id="quote">Ẩm thực & Nhà hàng</h2>
             <div class="line"></div>

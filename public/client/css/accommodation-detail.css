@@ -75,36 +75,28 @@ body.dark .accommodation-detail-page .navbar .nav-links li a {
   font-family: var(--ff-primary);
 }
 
-/* Banner h1 styling for desktop */
-.page-header.accommodation-banner .header-content h1 {
-  font-family: var(--ff-heading);
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 600;
-  margin: 0;
+/* Header Content Typography - Matching accommodation page */
+.accommodation-banner .header-content h1 { 
   color: #fff;
-  text-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-size: var(--fs-headings); /* Responsive heading size */
+  font-weight: 600; /* Semi-bold */
+  letter-spacing: normal; /* Normal spacing như blog section */
 }
 
-/* Banner h2 styling for desktop */
-.page-header.accommodation-banner .header-content h2 {
-  font-family: var(--ff-heading);
-  font-size: clamp(0.9rem, 2vw, 1.2rem);
-  font-weight: 600;
-  margin: 0;
-  color: #fff;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+.accommodation-banner .header-content h2 {
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-size: 3vmin; /* Giữ nguyên responsive size */
+  font-weight: 500; /* Medium weight */
+  letter-spacing: normal; /* Normal spacing */
 }
 
-/* Banner p styling for desktop */
-.page-header.accommodation-banner .header-content p {
-  font-family: var(--ff-primary);
-  font-size: var(--fs-paragraphs);
-  margin: 8px auto 0 auto;
-  color: #fff;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+.accommodation-banner .header-content p {
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive paragraph size */
+  color: whitesmoke;
   line-height: 1.5;
-  text-align: center;
-  max-width: 35ch;
+  letter-spacing: normal;
 }
 
 /* ===========================================
@@ -805,30 +797,29 @@ body.dark .reviews-pro__heading .subheading {
 
   .page-header.accommodation-banner .header-content h1 {
     font-family: var(--ff-heading);
-    font-size: clamp(1.5rem, 6vw, 2rem);
+    font-size: var(--fs-headings); /* Responsive heading size */
     font-weight: 600;
     margin-top: 12px;
     margin-bottom: 8px;
     color: #fff;
-    text-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    letter-spacing: normal;
   }
 
   .page-header.accommodation-banner .header-content h2 {
     font-family: var(--ff-heading);
-    font-size: clamp(0.8rem, 3.5vw, 1.1rem);
-    font-weight: 600;
+    font-size: 3vmin; /* Giữ nguyên responsive size */
+    font-weight: 500; /* Medium weight */
     color: #fff;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    letter-spacing: normal;
   }
 
   .page-header.accommodation-banner .header-content p {
     font-family: var(--ff-primary);
-    font-size: clamp(0.85rem, 3.8vw, 1rem);
-    color: #fff;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    font-size: var(--fs-paragraphs); /* Responsive paragraph size */
+    color: whitesmoke;
+    line-height: 1.5;
+    letter-spacing: normal;
     text-align: center;
-    max-width: 35ch;
-    margin: 4px auto 0 auto;
   }
 
   /* Gallery mobile grid */

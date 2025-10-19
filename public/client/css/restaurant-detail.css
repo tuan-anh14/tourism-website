@@ -1,93 +1,56 @@
 /* Restaurant Detail Page Styles */
 
-.restaurant-detail-page .navbar.glass { 
-    background: transparent !important; 
-    box-shadow: none !important; 
+/* CSS Variables for Typography - Matching Blog Section */
+:root {
+    --ff-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --ff-heading: "Playfair Display", Georgia, "Times New Roman", serif;
+    --fs-xl: 1.25rem; /* 20px */
+    --fs-paragraphs: clamp(0.875rem, 0.8rem + 0.35vw, 1.125rem);
+    --fs-headings: clamp(1.5rem, 1.2rem + 1.5vw, 3rem);
 }
-.restaurant-detail-page .navbar .nav-links li a { 
+
+.restaurant-detail-page .navbar .nav-links li a,
+.cuisine-detail-page .navbar .nav-links li a { 
     color: #fff; 
 }
 
-/* Breadcrumb */
-.breadcrumb {
-    background: #f8f9fa;
-    padding: 12px 0;
-    border-bottom: 1px solid #e2e8f0;
-}
-.breadcrumb .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-}
-.breadcrumb a {
-    color: var(--primary-color, #fc036b);
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-.breadcrumb a:hover {
-    color: #d6025a;
-}
-.breadcrumb .separator {
-    color: #999;
-    margin: 0 4px;
-}
-.breadcrumb .current {
-    color: #666;
-    font-weight: 500;
-}
 
-/* Restaurant Banner */
+/* Restaurant Banner - Matching cuisine.ejs */
 .page-header.restaurant-banner { 
     background-size: cover; 
     background-position: center; 
-    position: relative; 
-    height: 70vh;
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.page-header.restaurant-banner::before { 
-    content: ""; 
-    position: absolute; 
-    inset: 0; 
-    background: rgba(0, 0, 0, 0.4); 
-}
-.page-header.restaurant-banner .header-content { 
-    position: relative; 
-    z-index: 2;
-    text-align: center;
-    color: white;
-    padding: 2rem;
+    min-height: 320px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center; 
+    padding: 60px 20px; 
 }
 
-/* Mobile banner adjustments */
-@media (max-width: 768px) {
-    .page-header.restaurant-banner { 
-        height: 56vh; 
-        min-height: 300px; 
-    }
-    .page-header.restaurant-banner .header-content { 
-        padding: 1rem; 
-        margin-bottom: 40px; 
-        letter-spacing: .15rem; 
-    }
-    .page-header.restaurant-banner .header-content h1 { 
-        font-size: clamp(1.4rem, 6vw, 2rem); 
-        margin-top: 16px; 
-        margin-bottom: 8px; 
-    }
-    .page-header.restaurant-banner .header-content h2 { 
-        font-size: clamp(0.9rem, 4.2vw, 1.2rem); 
-    }
-    .page-header.restaurant-banner .header-content p { 
-        font-size: clamp(0.8rem, 3.8vw, 1rem); 
-    }
+/* Header Content Typography - Matching Blog Section */
+.restaurant-banner .header-content h1 { 
+  color: #fff;
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-size: var(--fs-headings); /* Responsive heading size */
+  font-weight: 600; /* Semi-bold */
+  letter-spacing: normal; /* Normal spacing như blog section */
 }
+
+.restaurant-banner .header-content h2 {
+  font-family: var(--ff-heading); /* Playfair Display */
+  font-size: 3vmin; /* Giữ nguyên responsive size */
+  font-weight: 500; /* Medium weight */
+  letter-spacing: normal; /* Normal spacing */
+}
+
+.restaurant-banner .header-content p {
+  font-family: var(--ff-primary); /* Inter font */
+  font-size: var(--fs-paragraphs); /* Responsive paragraph size */
+  color: whitesmoke;
+  line-height: 1.5;
+  letter-spacing: normal;
+}
+
 
 .restaurant-detail .container { 
     max-width: 1200px; 
@@ -111,14 +74,18 @@
 }
 
 .section-title { 
-    font-size: 22px; 
-    margin: 0 0 14px 0; 
+    font-size: var(--fs-xl); /* 1.25rem = 20px */
+    font-family: var(--ff-heading); /* Playfair Display */
+    font-weight: 600;
+    margin: 20px auto; 
     color: #2d3748; 
     border-bottom: 2px solid var(--primary-color, #fc036b); 
     padding-bottom: 8px; 
     display: flex; 
     gap: 8px; 
     align-items: center; 
+    letter-spacing: normal;
+    word-spacing: normal;
 }
 .section-title i { 
     color: var(--primary-color, #fc036b); 
@@ -126,22 +93,34 @@
 
 .subsection-title { 
     margin: 24px 0 10px 0; 
-    font-size: 18px; 
+    font-size: var(--fs-xl); /* 1.25rem = 20px */
+    font-family: var(--ff-heading); /* Playfair Display */
+    font-weight: 600;
     display: flex; 
     align-items: center; 
     gap: 8px; 
     color: #2d3748; 
+    letter-spacing: normal;
 }
 .subsection-title i { 
     color: var(--primary-color, #fc036b); 
 }
 
 .description { 
-    color: #4a5568; 
-    line-height: 1.8; 
+    color: #4a5568; /* Original color for better readability */
+    line-height: 1.8; /* Better line-height for long text */
+    font-family: var(--ff-primary); /* Inter font */
+    font-size: var(--fs-paragraphs); /* Responsive font size */
+    text-align: left; /* Left align for better readability */
+    max-width: none; /* Remove width constraint */
 }
 .description p { 
     margin: 8px 0; 
+    font-family: var(--ff-primary); /* Inter font */
+    font-size: var(--fs-paragraphs); /* Responsive font size */
+    line-height: 1.8; /* Better line-height for paragraphs */
+    color: #4a5568; /* Original color for better readability */
+    text-align: left; /* Left align for better readability */
 }
 
 /* Specialties Grid */
@@ -213,7 +192,10 @@
     display: flex; 
     gap: 8px; 
     align-items: center; 
-    font-size: 18px; 
+    font-size: var(--fs-xl); /* 1.25rem = 20px */
+    font-family: var(--ff-heading); /* Playfair Display */
+    font-weight: 600;
+    letter-spacing: normal;
 }
 .info-card h3 i { 
     color: var(--primary-color, #fc036b); 
@@ -237,11 +219,15 @@
 .info-label { 
     font-weight: 700; 
     color: #2d3748; 
-    font-size: 14px;
+    font-size: var(--fs-paragraphs); /* Responsive font size */
+    font-family: var(--ff-primary); /* Inter font */
+    line-height: 1.5;
 }
 .info-value { 
-    color: #666; 
-    font-size: 14px;
+    color: #7c7c7c; /* Matching blog section color */
+    font-size: var(--fs-paragraphs); /* Responsive font size */
+    font-family: var(--ff-primary); /* Inter font */
+    line-height: 1.5;
 }
 
 /* Map Button */
@@ -296,10 +282,12 @@
     color: #ffc107; 
 }
 .review-text { 
-    color: #4a5568; 
-    font-size: 14px; 
-    line-height: 1.5; 
+    color: #7c7c7c; /* Matching blog section color */
+    font-size: var(--fs-paragraphs); /* Responsive font size */
+    font-family: var(--ff-primary); /* Inter font */
+    line-height: 1.5; /* Matching blog section line-height */
     margin: 8px 0; 
+    text-align: left; /* Left align for better readability */
 }
 .review-date { 
     color: #999; 
@@ -328,11 +316,13 @@
 }
 .category-title { 
     color: var(--primary-color, #fc036b); 
-    font-size: 18px; 
-    font-weight: 700; 
+    font-size: var(--fs-xl); /* 1.25rem = 20px */
+    font-family: var(--ff-heading); /* Playfair Display */
+    font-weight: 600;
     margin: 0 0 16px 0; 
     border-bottom: 2px solid var(--primary-color, #fc036b); 
     padding-bottom: 8px; 
+    letter-spacing: normal;
 }
 .menu-items { 
     display: flex; 
@@ -358,15 +348,19 @@
 }
 .item-name { 
     color: #2d3748; 
-    font-size: 16px; 
+    font-size: var(--fs-xl); /* 1.25rem = 20px */
+    font-family: var(--ff-heading); /* Playfair Display */
     font-weight: 600; 
     margin: 0 0 4px 0; 
+    letter-spacing: normal;
 }
 .item-description { 
-    color: #666; 
-    font-size: 14px; 
-    line-height: 1.4; 
+    color: #7c7c7c; /* Matching blog section color */
+    font-size: var(--fs-paragraphs); /* Responsive font size */
+    font-family: var(--ff-primary); /* Inter font */
+    line-height: 1.5; /* Matching blog section line-height */
     margin: 0; 
+    text-align: left; /* Left align for better readability */
 }
 .item-price { 
     color: var(--primary-color, #fc036b); 
@@ -494,13 +488,3 @@ body.dark .menu-item:hover {
     transform: translateX(-3px);
 }
 
-/* Responsive for breadcrumb */
-@media (max-width: 768px) {
-    .breadcrumb .container {
-        padding: 0 10px;
-        font-size: 13px;
-    }
-    .breadcrumb .separator {
-        margin: 0 2px;
-    }
-}
