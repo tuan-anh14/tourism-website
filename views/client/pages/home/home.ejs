@@ -418,10 +418,16 @@
                         <div id="successMessage" class="alert alert-success" style="display: none;">
                             <i class="fa fa-check-circle"></i>
                             <span id="successText"></span>
+                            <button type="button" class="alert-close" onclick="closeAlert()">
+                                <i class="fa fa-times"></i>
+                            </button>
                         </div>
                         <div id="errorMessage" class="alert alert-error" style="display: none;">
                             <i class="fa fa-exclamation-circle"></i>
                             <span id="errorText"></span>
+                            <button type="button" class="alert-close" onclick="closeAlert()">
+                                <i class="fa fa-times"></i>
+                            </button>
                         </div>
                     </div>
                     
@@ -566,6 +572,14 @@
                         
                         // Scroll to messages
                         messagesDiv.scrollIntoView({ behavior: 'smooth' });
+                        
+                        // Auto hide after 5 seconds
+                        const autoHideTimeout = setTimeout(() => {
+                            messagesDiv.style.display = 'none';
+                        }, 5000);
+                        
+                        // Store timeout ID for manual close
+                        window.contactAlertTimeout = autoHideTimeout;
                     } else {
                         errorText.textContent = result.message;
                         errorMessage.style.display = 'block';
@@ -588,6 +602,23 @@
                 }
             });
         });
+        
+        // Close alert function
+        function closeAlert() {
+            const messagesDiv = document.getElementById('contactMessages');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Clear auto-hide timeout if exists
+            if (window.contactAlertTimeout) {
+                clearTimeout(window.contactAlertTimeout);
+                window.contactAlertTimeout = null;
+            }
+            
+            messagesDiv.style.display = 'none';
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+        }
         </script>
         
         <!-- Contact Form Styles -->
@@ -600,6 +631,7 @@
             align-items: center;
             gap: 10px;
             font-weight: 500;
+            position: relative;
         }
         
         .alert-success {
@@ -616,6 +648,36 @@
         
         .alert i {
             font-size: 18px;
+        }
+        
+        .alert-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        
+        .alert-close:hover {
+            background-color: rgba(0,0,0,0.1);
+        }
+        
+        .alert-success .alert-close {
+            color: #155724;
+        }
+        
+        .alert-error .alert-close {
+            color: #721c24;
         }
         
         #contactForm input:required:invalid,
