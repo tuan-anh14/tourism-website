@@ -3,19 +3,39 @@ const Event = require('../../model/Event');
 
 module.exports.entertainment = async (req, res) => {
     try {
-        // Get all active entertainments (not just featured)
+        const page = parseInt(req.query.page) || 1;
+        const limit = 6; // 6 items per page
+        const skip = (page - 1) * limit;
+
+        // Get total count for pagination
+        const totalDocs = await Entertainment.countDocuments({ isActive: true });
+        const totalPages = Math.ceil(totalDocs / limit);
+
+        // Get entertainments with pagination
         const allEntertainments = await Entertainment.find({ 
             isActive: true 
-        }).sort({ featured: -1, createdAt: -1 }).lean();
+        }).sort({ featured: -1, createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean();
 
-        // Get featured entertainments for hero section
-        const featuredEntertainments = allEntertainments.filter(item => item.featured).slice(0, 6);
-        
-        // If not enough featured, fill with regular ones
-        if (featuredEntertainments.length < 6) {
-            const regularEntertainments = allEntertainments.filter(item => !item.featured).slice(0, 6 - featuredEntertainments.length);
-            featuredEntertainments.push(...regularEntertainments);
-        }
+        // Build query string for pagination
+        const queryParams = new URLSearchParams();
+        Object.keys(req.query).forEach(key => {
+            if (key !== 'page' && req.query[key]) {
+                queryParams.append(key, req.query[key]);
+            }
+        });
+        const queryString = queryParams.toString() ? `&${queryParams.toString()}` : '';
+
+        // Pagination data
+        const pagination = {
+            currentPage: page,
+            totalPages: totalPages,
+            hasPrev: page > 1,
+            hasNext: page < totalPages,
+            totalItems: totalDocs
+        };
 
         // Define fixed zones for filtering
         const zones = [
@@ -77,11 +97,13 @@ module.exports.entertainment = async (req, res) => {
         res.render("client/pages/entertainment/entertainment.ejs", {
             pageTitle: "Giải trí",
             hero: hero,
-            entertainments: featuredEntertainments,
+            entertainments: allEntertainments,
             allEntertainments: allEntertainments, // For filtering
             events: events,
             categories: categories,
-            zones: zones
+            zones: zones,
+            pagination,
+            queryString
         });
     } catch (error) {
         console.error('Error loading entertainment page:', error);

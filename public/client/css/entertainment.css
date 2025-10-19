@@ -22,18 +22,24 @@
 
 /* Card spacing parity with attractions */
 .entertainment .standard-card {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.entertainment .standard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12);
 }
 .entertainment .standard-card .card-content {
-  padding: 16px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  flex-grow: 1;
 }
 .entertainment .standard-card .title {
   font-size: var(--fs-xl); /* 1.25rem (20px) */
@@ -42,6 +48,7 @@
   margin: 0;
   text-align: left;
   letter-spacing: normal;
+  line-height: 1.3;
 }
 
 .entertainment .standard-card .card-content p {
@@ -49,6 +56,8 @@
   line-height: 1.5;
   font-family: var(--ff-primary); /* Inter font */
   font-size: var(--fs-paragraphs); /* Responsive font size */
+  text-align: left;
+  margin: 0;
 }
 
 /* Banner header styles */
@@ -218,6 +227,30 @@
   line-height: 1.6;
   padding: 15px 0;
   color: #7c7c7c; /* Màu xám giống blog section */
+}
+
+/* CTA Button styling */
+.entertainment .standard-card .ctn {
+  margin-top: auto;
+  text-align: center;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #fc036b, #ff6b9d);
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: inline-block;
+  align-self: center;
+  min-width: 120px;
+}
+
+.entertainment .standard-card .ctn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(252, 3, 107, 0.4);
+  color: white;
+  text-decoration: none;
 }
 
 .entertainment-details p {

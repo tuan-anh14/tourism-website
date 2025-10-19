@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="/client/css/responsive.css" />
         <link rel="stylesheet" href="/client/css/harmony.css" />
         <link rel="stylesheet" href="/client/css/entertainment.css" />
+        <link rel="stylesheet" href="/client/css/components/pagination.css" />
         <link
             rel="apple-touch-icon"
             sizes="180x180"
@@ -95,24 +96,14 @@
                                     <%= entertainment.targetAudience.slice(0, 2).join(', ') + (entertainment.targetAudience.length > 2 ? '...' : '') %>
                                 </p>
                             <% } %>
-                            <div class="entertainment-details">
-                                <p><strong>Khu vực:</strong> <%= entertainment.zone %></p>
-                                <p><strong>Loại hình:</strong> <%= entertainment.type %></p>
-                                <!-- <p><strong>Giá vé:</strong><span style="white-space: pre-line;"><%= entertainment.ticket %></span></p> -->
-                                <!-- <% if (entertainment.averageRating > 0) { %>
-                                    <p><strong>Đánh giá:</strong> 
-                                        <% for (let i = 1; i <= 5; i++) { %>
-                                            <i class="fa fa-star <%= i <= entertainment.averageRating ? 'text-warning' : 'text-muted' %>"></i>
-                                        <% } %>
-                                        (<%= entertainment.reviewCount %>)
-                                    </p>
-                                <% } %> -->
-                            </div>
                             <a href="/entertainment/<%= entertainment._id %>" class="ctn">Xem chi tiết</a>
                         </div>
                     </article>
                 <% }) %>
             </div>
+
+            <!-- Pagination -->
+            <%- include('../../components/pagination') %>
         </section>
 
         <!-- up scroll -->
@@ -125,6 +116,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="/client/js/includes.js"></script>
         <script src="/client/js/script.js"></script>
+        <script src="/client/js/components/pagination.js"></script>
         <script>
         // Entertainment filtering functionality (smooth, class-based like attractions)
         document.addEventListener('DOMContentLoaded', function() {
