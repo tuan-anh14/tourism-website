@@ -407,49 +407,66 @@
                 <div class="line"></div>
             </div>
             <div class="contact_us">
-                <form class="cform" action="" method="post">
+                <form class="cform" id="contactForm" action="/contact" method="post">
                     <div class="crow-message">
                         <h1 class="color">Gửi tin nhắn cho chúng tôi</h1>
                         <div></div>
                     </div>
+                    
+                    <!-- Success/Error Messages -->
+                    <div id="contactMessages" style="display: none;">
+                        <div id="successMessage" class="alert alert-success" style="display: none;">
+                            <i class="fa fa-check-circle"></i>
+                            <span id="successText"></span>
+                        </div>
+                        <div id="errorMessage" class="alert alert-error" style="display: none;">
+                            <i class="fa fa-exclamation-circle"></i>
+                            <span id="errorText"></span>
+                        </div>
+                    </div>
+                    
                     <div class="crow-in">
                         <input
                             type="text"
                             id="name"
                             name="name"
-                            placeholder="Your name"
+                            placeholder="Tên của bạn"
+                            required
                         />
                         <input
-                            type="text"
+                            type="email"
                             id="email"
                             name="email"
-                            placeholder="Your Email id"
+                            placeholder="Email của bạn"
+                            required
                         />
                     </div>
                     <div class="crow">
                         <div class="ccol-left">
-                            <select name="country" id="country">
-                                <option value="India">Việt Nam</option>
-                                <option value="Russia">Nga</option>
-                                <option value="usa">Mỹ</option>
-                                <option value="Japan">Nhật Bản</option>
-                                <option value="France">Pháp</option>
+                            <select name="country" id="country" required>
+                                <option value="">Chọn quốc gia</option>
+                                <option value="Việt Nam">Việt Nam</option>
+                                <option value="Nga">Nga</option>
+                                <option value="Mỹ">Mỹ</option>
+                                <option value="Nhật Bản">Nhật Bản</option>
+                                <option value="Pháp">Pháp</option>
                                 <option value="Brazil">Brazil</option>
+                                <option value="Khác">Khác</option>
                             </select>
                         </div>
                     </div>
                     <div class="crow">
                         <div class="ccol-left">
                             <textarea
-                                type="text"
                                 id="remarks"
                                 name="remarks"
-                                placeholder="Your Remarks....."
+                                placeholder="Nội dung tin nhắn của bạn..."
                                 style="height: 150px"
+                                required
                             ></textarea>
                         </div>
                     </div>
-                    <input class="crow-s" type="submit" value="Submit" />
+                    <input class="crow-s" type="submit" value="Gửi tin nhắn" id="submitBtn" />
                 </form>
                 <div class="cbox">
                     <div>
@@ -498,6 +515,126 @@
         <script src='https://unpkg.com/@mapbox/mapbox-gl-draw@1.4.3/dist/mapbox-gl-draw.js'></script>
         <!-- Map JavaScript -->
         <script src="/client/js/map.js"></script>
+        
+        <!-- Contact Form JavaScript -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const messagesDiv = document.getElementById('contactMessages');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const successText = document.getElementById('successText');
+            const errorText = document.getElementById('errorText');
+            
+            contactForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Disable submit button
+                submitBtn.disabled = true;
+                submitBtn.value = 'Đang gửi...';
+                
+                // Hide previous messages
+                messagesDiv.style.display = 'none';
+                successMessage.style.display = 'none';
+                errorMessage.style.display = 'none';
+                
+                try {
+                    const formData = new FormData(contactForm);
+                    const data = {
+                        name: formData.get('name'),
+                        email: formData.get('email'),
+                        country: formData.get('country'),
+                        remarks: formData.get('remarks')
+                    };
+                    
+                    const response = await fetch('/contact', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        successText.textContent = result.message;
+                        successMessage.style.display = 'block';
+                        messagesDiv.style.display = 'block';
+                        contactForm.reset();
+                        
+                        // Scroll to messages
+                        messagesDiv.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        errorText.textContent = result.message;
+                        errorMessage.style.display = 'block';
+                        messagesDiv.style.display = 'block';
+                        
+                        // Scroll to messages
+                        messagesDiv.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } catch (error) {
+                    errorText.textContent = 'Có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại.';
+                    errorMessage.style.display = 'block';
+                    messagesDiv.style.display = 'block';
+                    
+                    // Scroll to messages
+                    messagesDiv.scrollIntoView({ behavior: 'smooth' });
+                } finally {
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.value = 'Gửi tin nhắn';
+                }
+            });
+        });
+        </script>
+        
+        <!-- Contact Form Styles -->
+        <style>
+        .alert {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert i {
+            font-size: 18px;
+        }
+        
+        #contactForm input:required:invalid,
+        #contactForm select:required:invalid,
+        #contactForm textarea:required:invalid {
+            border-color: #dc3545;
+        }
+        
+        #contactForm input:required:valid,
+        #contactForm select:required:valid,
+        #contactForm textarea:required:valid {
+            border-color: #28a745;
+        }
+        
+        .crow-s:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        </style>
         <script>
             // ===========================================
             // HOME PAGE SPECIFIC SCRIPTS

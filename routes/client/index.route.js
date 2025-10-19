@@ -5,6 +5,7 @@ const cuisineRoutes = require("./cuisine.route");
 const entertainmentRoutes = require("./entertainment.route");
 const transportationRoutes = require("./transportation.route");
 const blogRoutes = require("./blog.route");
+const contactRoutes = require("./contact.route");
 
 module.exports = (app) => {
   app.use("/", homeRoutes);
@@ -14,4 +15,5 @@ module.exports = (app) => {
   app.use("/entertainment", entertainmentRoutes);
   app.use("/transportation", transportationRoutes);
   app.use("/blog", blogRoutes);
+  app.use("/contact", contactRoutes);
 };

@@ -8,6 +8,7 @@ const accommodationController = require('../../controller/admin/accommodation.co
 const cuisineController = require('../../controller/admin/cuisine.controller');
 const cuisinePlaceController = require('../../controller/admin/cuisine-place.controller');
 const entertainmentController = require('../../controller/admin/entertainment.controller');
+const contactController = require('../../controller/admin/contact.controller');
 
 const router = express.Router();
 
@@ -100,6 +101,13 @@ router.post('/entertainments/:id/toggle-featured', requireAuth, requireEditor, e
 router.delete('/entertainments/:id', requireAuth, requireEditor, entertainmentController.destroy);
 router.post('/entertainments/delete/:id', requireAuth, requireEditor, entertainmentController.destroy);
 
+// Contact routes (read and delete only)
+router.get('/contacts', requireAuth, contactController.index);
+router.get('/contacts/:id', requireAuth, contactController.show);
+router.delete('/contacts/:id', requireAuth, contactController.delete);
+router.post('/contacts/delete/:id', requireAuth, contactController.delete);
+router.patch('/contacts/:id/mark-read', requireAuth, contactController.markAsRead);
+router.patch('/contacts/:id/mark-replied', requireAuth, contactController.markAsReplied);
 
 // TODO: Add more routes for other modules
 // Foods, Tours, News, Reviews, Users
