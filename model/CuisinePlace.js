@@ -9,7 +9,7 @@ const CuisinePlaceSchema = new mongoose.Schema({
   // Location
   location: {
     type: { type: String, enum: ['Point'], default: 'Point' },
-    coordinates: { type: [Number], default: [0, 0] } // [lng, lat]
+    coordinates: { type: [Number], default: null } // [lng, lat] - optional
   },
   
   // Business info
@@ -53,7 +53,8 @@ const CuisinePlaceSchema = new mongoose.Schema({
 });
 
 // Indexes
-CuisinePlaceSchema.index({ location: '2dsphere' });
+// Only create 2dsphere index if location coordinates exist
+CuisinePlaceSchema.index({ location: '2dsphere' }, { sparse: true });
 CuisinePlaceSchema.index({ name: 'text', address: 'text' });
 CuisinePlaceSchema.index({ cuisine: 1, status: 1 });
 CuisinePlaceSchema.index({ featured: 1, isActive: 1 });

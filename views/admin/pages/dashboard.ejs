@@ -67,71 +67,7 @@
                 <div id="profile-visit-chart" style="height: 300px;"></div>
             </div>
         </div>
-        
-        <!-- Đánh giá gần đây -->
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Đánh giá gần đây</h5>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover table-lg">
-                        <thead>
-                            <tr>
-                                <th>Tên</th>
-                                <th>Đánh giá</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% if (recentReviews && recentReviews.length > 0) { %>
-                                <% recentReviews.forEach(review => { %>
-                                    <tr>
-                                        <td class="col-3">
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar avatar-md">
-                                                    <img src="/client/img/avatar.png" class="rounded-circle" width="40" height="40">
-                                                </div>
-                                                <p class="font-bold ms-3 mb-0"><%= review.user ? review.user.name : 'Khách du lịch' %></p>
-                                            </div>
-                                        </td>
-                                        <td class="col-auto">
-                                            <p class="mb-0"><%= review.content.length > 50 ? review.content.substring(0, 50) + '...' : review.content %></p>
-                                        </td>
-                                    </tr>
-                                <% }); %>
-                            <% } else { %>
-                                <tr>
-                                    <td class="col-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-md">
-                                                <img src="/client/img/avatar.png" class="rounded-circle" width="40" height="40">
-                                            </div>
-                                            <p class="font-bold ms-3 mb-0">Nguyễn Văn A</p>
-                                        </div>
-                                    </td>
-                                    <td class="col-auto">
-                                        <p class="mb-0">Hà Nội thật tuyệt vời! Tôi rất thích chuyến du lịch này.</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-md">
-                                                <img src="/client/img/avatar.png" class="rounded-circle" width="40" height="40">
-                                            </div>
-                                            <p class="font-bold ms-3 mb-0">Trần Thị B</p>
-                                        </div>
-                                    </td>
-                                    <td class="col-auto">
-                                        <p class="mb-0">Ẩm thực Hà Nội rất ngon, tôi sẽ quay lại lần nữa!</p>
-                                    </td>
-                                </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+    
     </div>
     
     <!-- Right Column - Additional Info -->
@@ -144,43 +80,6 @@
                 </div>
                 <h5 class="mb-1">Admin</h5>
                 <p class="text-muted mb-0">@admin</p>
-            </div>
-        </div>
-        
-        <!-- Tin tức gần đây -->
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0">Tin tức gần đây</h5>
-            </div>
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="avatar me-3">
-                        <img src="/client/img/avatar.png" class="rounded-circle" width="40" height="40">
-                    </div>
-                    <div class="flex-grow-1">
-                        <h6 class="mb-0">Lễ hội mùa thu</h6>
-                        <small class="text-muted">Tin tức</small>
-                    </div>
-                </div>
-              
-                    <div class="avatar me-3">
-                        <img src="/client/img/avatar.png" class="rounded-circle" width="40" height="40">
-                    </div>
-                    <div class="flex-grow-1">
-                        <h6 class="mb-0">Tour mới</h6>
-                        <small class="text-muted">Khuyến mãi</small>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center mb-3">
-                    <div class="avatar me-3">
-                        <img src="/client/img/avatar.png" class="rounded-circle" width="40" height="40">
-                    </div>
-                    <div class="flex-grow-1">
-                        <h6 class="mb-0">Ẩm thực đặc sắc</h6>
-                        <small class="text-muted">Ẩm thực</small>
-                    </div>
-                </div> -->
-                <button class="btn btn-primary btn-sm w-100">Xem tất cả</button>
             </div>
         </div>
         

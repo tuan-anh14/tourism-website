@@ -24,11 +24,11 @@
     
     <style>
         :root {
-            --primary-color: #667eea;
-            --secondary-color: #764ba2;
+            --primary-color: #fc036b;
+            --secondary-color: #e6025a;
             --sidebar-bg: #ffffff;
             --sidebar-text: #6c757d;
-            --sidebar-active: #667eea;
+            --sidebar-active: #fc036b;
             --main-bg: #f8f9fa;
         }
         
@@ -190,19 +190,9 @@
     <nav class="sidebar">
         <div class="brand">
             <div class="d-flex align-items-center">
-                <i class="fas fa-map-marked-alt me-2" style="color: var(--primary-color); font-size: 1.5rem;"></i>
-                <h4>Hà Nội Tourism</h4>
+                <div style="width: 50px; height: 50px; "></div>
+                <h4>HaNoiVibes</h4>
             </div>
-            <small class="text-muted">Admin Panel</small>
-        </div>
-        
-        <!-- Theme Toggle -->
-        <div class="theme-toggle">
-            <i class="fas fa-sun"></i>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="themeToggle">
-            </div>
-            <i class="fas fa-moon"></i>
         </div>
         
         <!-- Menu -->
@@ -231,6 +221,12 @@
                     <a class="nav-link <%= (pageTitle && pageTitle.includes('Ẩm thực')) ? 'active' : '' %>" href="/admin/cuisines">
                         <i class="fas fa-utensils"></i>
                         Ẩm thực
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <%= (pageTitle && pageTitle.includes('Địa điểm Ẩm thực')) ? 'active' : '' %>" href="/admin/cuisine-places">
+                        <i class="fas fa-store"></i>
+                        Địa điểm Ẩm thực
                     </a>
                 </li>
                 <li class="nav-item">

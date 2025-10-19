@@ -2,7 +2,7 @@
 
 /* Page Header */
 .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #fc036b 0%, #e6025a 100%);
     color: white;
     padding: 2rem 0;
     margin-bottom: 2rem;
@@ -60,8 +60,8 @@
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    border-color: #fc036b;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
 }
 
 .form-label {
@@ -88,23 +88,23 @@
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #fc036b 0%, #e6025a 100%);
     border: none;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    background: linear-gradient(135deg, #e6025a 0%, #d4004a 100%);
     transform: translateY(-1px);
 }
 
 .btn-outline-primary {
-    border: 2px solid #667eea;
-    color: #667eea;
+    border: 2px solid #fc036b;
+    color: #fc036b;
 }
 
 .btn-outline-primary:hover {
-    background: #667eea;
-    border-color: #667eea;
+    background: #fc036b;
+    border-color: #fc036b;
     transform: translateY(-1px);
 }
 
@@ -203,7 +203,7 @@
 }
 
 .img-thumbnail:hover {
-    border-color: #667eea;
+    border-color: #fc036b;
     transform: scale(1.05);
 }
 
@@ -217,19 +217,19 @@
     border-radius: 10px;
     margin: 0 2px;
     border: 2px solid #e9ecef;
-    color: #667eea;
+    color: #fc036b;
     font-weight: 500;
 }
 
 .page-link:hover {
-    background: #667eea;
-    border-color: #667eea;
+    background: #fc036b;
+    border-color: #fc036b;
     color: white;
 }
 
 .page-item.active .page-link {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-color: #667eea;
+    background: linear-gradient(135deg, #fc036b 0%, #e6025a 100%);
+    border-color: #fc036b;
 }
 
 /* Alerts */
@@ -390,12 +390,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #fc036b 0%, #e6025a 100%);
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    background: linear-gradient(135deg, #e6025a 0%, #d4004a 100%);
 }
 
 /* Animation */
@@ -494,7 +494,7 @@
 }
 
 .contact-info i {
-    color: #667eea;
+    color: #fc036b;
     margin-right: 0.5rem;
 }
 
@@ -524,7 +524,7 @@
 
 /* Statistics Cards */
 .stat-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #fc036b 0%, #e6025a 100%);
     color: white;
     border-radius: 15px;
     padding: 1.5rem;
@@ -596,12 +596,12 @@
 }
 
 .file-upload-area:hover {
-    border-color: #667eea;
+    border-color: #fc036b;
     background-color: #f8f9ff;
 }
 
 .file-upload-area.dragover {
-    border-color: #667eea;
+    border-color: #fc036b;
     background-color: #f0f4ff;
 }
 
@@ -613,7 +613,7 @@
 }
 
 .progress-bar {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #fc036b 0%, #e6025a 100%);
     border-radius: 10px;
 }
 

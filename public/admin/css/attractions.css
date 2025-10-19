@@ -41,13 +41,13 @@
 }
 
 .dynamic-field-container .btn-outline-primary {
-    border-color: #4e73df;
-    color: #4e73df;
+    border-color: #fc036b;
+    color: #fc036b;
 }
 
 .dynamic-field-container .btn-outline-primary:hover {
-    background-color: #4e73df;
-    border-color: #4e73df;
+    background-color: #fc036b;
+    border-color: #fc036b;
     color: #fff;
 }
 
@@ -151,7 +151,7 @@
 
 /* Badges */
 .badge-category {
-    background-color: #4e73df;
+    background-color: #fc036b;
     color: #fff;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
@@ -251,20 +251,20 @@
 }
 
 .pagination .page-link {
-    color: #4e73df;
+    color: #fc036b;
     border-color: #e3e6f0;
     padding: 0.5rem 0.75rem;
 }
 
 .pagination .page-link:hover {
-    color: #2e59d9;
+    color: #e6025a;
     background-color: #eaecf4;
     border-color: #e3e6f0;
 }
 
 .pagination .page-item.active .page-link {
-    background-color: #4e73df;
-    border-color: #4e73df;
+    background-color: #fc036b;
+    border-color: #fc036b;
 }
 
 /* Empty State */
@@ -349,7 +349,7 @@
     height: 20px;
     margin: -10px 0 0 -10px;
     border: 2px solid #f3f3f3;
-    border-top: 2px solid #4e73df;
+    border-top: 2px solid #fc036b;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
