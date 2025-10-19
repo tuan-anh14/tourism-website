@@ -6,6 +6,12 @@ const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 const { GoogleGenAI } = require('@google/genai');
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY || 'YOUR_KEY_HERE' });
 
+// Simple in-memory cache for responses
+const responseCache = new Map();
+const RATE_LIMIT = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const RATE_LIMIT_DURATION = 1000; // 1 second
+
 function normalizeMessages(messages) {
   if (!Array.isArray(messages)) return [];
   return messages
@@ -18,6 +24,32 @@ exports.handleChatCompletion = async (req, res) => {
   try {
     const { messages } = req.body || {};
     const history = normalizeMessages(messages);
+    
+    // Rate limiting
+    const clientIP = req.ip || req.connection.remoteAddress || 'unknown';
+    const now = Date.now();
+    
+    if (RATE_LIMIT.has(clientIP)) {
+      const lastRequest = RATE_LIMIT.get(clientIP);
+      if (now - lastRequest < RATE_LIMIT_DURATION) {
+        return res.json({ 
+          role: 'assistant', 
+          content: 'Vui lòng chờ một chút trước khi gửi tin nhắn tiếp theo.' 
+        });
+      }
+    }
+    RATE_LIMIT.set(clientIP, now);
+    
+    // Cache check
+    const cacheKey = JSON.stringify({ messages: history });
+    if (responseCache.has(cacheKey)) {
+      const cached = responseCache.get(cacheKey);
+      if (now - cached.timestamp < CACHE_DURATION) {
+        return res.json(cached.response);
+      } else {
+        responseCache.delete(cacheKey);
+      }
+    }
 
     // Convert to Gemini's content format
     const contents = history.map(m => ({
@@ -56,7 +88,15 @@ exports.handleChatCompletion = async (req, res) => {
         contents: payload.contents
       });
       const text = (response && response.text) || 'Xin lỗi, hiện chưa có phản hồi.';
-      return res.json({ role: 'assistant', content: text });
+      const responseData = { role: 'assistant', content: text };
+      
+      // Cache the response
+      responseCache.set(cacheKey, {
+        response: responseData,
+        timestamp: now
+      });
+      
+      return res.json(responseData);
     } catch (sdkErr) {
       const friendly = 'Xin lỗi, hệ thống chưa thể trả lời lúc này.';
       return res.json({ role: 'assistant', content: friendly, meta: { source: 'genai-sdk', error: sdkErr && sdkErr.message } });

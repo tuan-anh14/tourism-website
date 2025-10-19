@@ -12,12 +12,15 @@ let isDrawMode = false;
 let attractionsData = [];
 let attractionsLoaded = false;
 
-// Initialize map when DOM is loaded
+// Initialize map when DOM is loaded with lazy loading
 document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('hanoi-map')) {
-        initializeHanoiMap();
-        setupInteractionToggle();
-        loadAttractionsFromOSM();
+        // Lazy load map after a short delay for better performance
+        setTimeout(() => {
+            initializeHanoiMap();
+            setupInteractionToggle();
+            loadAttractionsFromOSM();
+        }, 100);
     }
 });
 
@@ -33,12 +36,18 @@ async function loadAttractionsFromOSM() {
         
         // Use cached data if it's less than 24 hours old
         if (cachedData && cacheTime && (now - parseInt(cacheTime)) < 24 * 60 * 60 * 1000) {
-            attractionsData = JSON.parse(cachedData);
-            attractionsLoaded = true;
-            // Skip rendering markers for cleaner UI & performance
-            loadAllAttractions();
-            console.log('Loaded attractions from cache');
-            return;
+            try {
+                attractionsData = JSON.parse(cachedData);
+                attractionsLoaded = true;
+                // Skip rendering markers for cleaner UI & performance
+                loadAllAttractions();
+                console.log('Loaded attractions from cache');
+                return;
+            } catch (e) {
+                console.warn('Cache corrupted, reloading data');
+                localStorage.removeItem('hanoi-attractions-cache');
+                localStorage.removeItem('hanoi-attractions-cache-time');
+            }
         }
         
         // Show loading indicator
