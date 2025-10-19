@@ -56,6 +56,8 @@ app.use(flash());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+// Connect DB once; on Vercel, this will be reused across invocations
+// Avoid duplicate connects by calling only here
 database.connect();
 
 route(app);
@@ -81,15 +83,14 @@ app.use((err, req, res, next) => {
   res.status(500).render('errors/500', { error: err });
 });
 
-const server = http.createServer(app);
-(async () => {
-  try {
-    await database.connect();
-    server.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-    });
-  } catch (error) {
-    console.error('Failed to connect DB, server not started:', error);
-  }
-})();
+// Export the app for Vercel serverless function
+module.exports = app;
+
+// Start local server only when not running in Vercel
+if (!process.env.VERCEL) {
+  const server = http.createServer(app);
+  server.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+}
 
