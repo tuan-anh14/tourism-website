@@ -5,10 +5,19 @@ const { createSlug } = require('../../utils/slug');
 // [GET] /cuisine
 module.exports.cuisine = async (req, res) => {
     try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = 6; // 6 items per page
+        const skip = (page - 1) * limit;
+
+        // Get total count for pagination
+        const totalDocs = await Cuisine.countDocuments({ isActive: true, status: 'published' });
+        const totalPages = Math.ceil(totalDocs / limit);
+
         const docs = await Cuisine.find({ isActive: true, status: 'published' })
             .populate('places')
             .sort({ featured: -1, createdAt: -1 })
-            .limit(60);
+            .skip(skip)
+            .limit(limit);
 
         const cuisines = (docs || []).map(doc => {
             const firstPlace = (doc.places && doc.places[0]) || {};
@@ -30,15 +39,43 @@ module.exports.cuisine = async (req, res) => {
             };
         });
 
+        // Build query string for pagination
+        const queryParams = new URLSearchParams();
+        Object.keys(req.query).forEach(key => {
+            if (key !== 'page' && req.query[key]) {
+                queryParams.append(key, req.query[key]);
+            }
+        });
+        const queryString = queryParams.toString() ? `&${queryParams.toString()}` : '';
+
+        // Pagination data
+        const pagination = {
+            currentPage: page,
+            totalPages: totalPages,
+            hasPrev: page > 1,
+            hasNext: page < totalPages,
+            totalItems: totalDocs
+        };
+
         res.render('client/pages/cuisine/cuisine.ejs', {
             pageTitle: 'Ẩm thực',
-            cuisines
+            cuisines,
+            pagination,
+            queryString
         });
     } catch (error) {
         console.error('Client cuisines error:', error);
         res.render('client/pages/cuisine/cuisine.ejs', {
             pageTitle: 'Ẩm thực',
-            cuisines: []
+            cuisines: [],
+            pagination: {
+                currentPage: 1,
+                totalPages: 1,
+                hasPrev: false,
+                hasNext: false,
+                totalItems: 0
+            },
+            queryString: ''
         });
     }
 };
