@@ -165,6 +165,60 @@
             </section>
         <!--Attractions-->
 
+        <!-- Blog Section -->
+        <section class="events" id="blog">
+            <div class="container">
+                <div class="title">
+                    <h1 class="dark">BLOG NỔI BẬT</h1>
+                    <div class="line"></div>
+                </div>
+                <div class="row">
+                    <!-- Blog Post 1 -->
+                    <article class="card col">
+                        <img class="card-img" src="/client/img/Overview-1.jpg" alt="Blog post 1" />
+                        <div class="blog-meta">
+                            <span class="blog-category">Du lịch</span>
+                            <span class="blog-date">15/01/2024</span>
+                        </div>
+                        <h4 class="dark">Khám phá phố cổ Hà Nội - Hành trình 36 phố phường</h4>
+                        <p class="font-color">
+                            Dạo bước qua những con phố cổ kính, khám phá văn hóa truyền thống và ẩm thực đặc sắc của Hà Nội...
+                        </p>
+                        <a href="/blog/pho-co-ha-noi-36-pho-phuong" class="ctn">Đọc tiếp</a>
+                    </article>
+                    
+                    <!-- Blog Post 2 -->
+                    <article class="card col">
+                        <img class="card-img" src="/client/img/Overview-2.jpg" alt="Blog post 2" />
+                        <div class="blog-meta">
+                            <span class="blog-category">Ẩm thực</span>
+                            <span class="blog-date">12/01/2024</span>
+                        </div>
+                        <h4 class="dark">Hành trình ẩm thực Hà Nội - Từ phở đến bún chả</h4>
+                        <p class="font-color">
+                            Khám phá những món ăn đặc sắc của Hà Nội, từ tô phở nóng hổi buổi sáng đến đĩa bún chả thơm ngon...
+                        </p>
+                        <a href="/blog" class="ctn">Đọc tiếp</a>
+                    </article>
+                    
+                    <!-- Blog Post 3 -->
+                    <article class="card col">
+                        <img class="card-img" src="/client/img/Overview-3.jpg" alt="Blog post 3" />
+                        <div class="blog-meta">
+                            <span class="blog-category">Văn hóa</span>
+                            <span class="blog-date">10/01/2024</span>
+                        </div>
+                        <h4 class="dark">Văn Miếu - Quốc Tử Giám: Nơi lưu giữ tinh hoa giáo dục</h4>
+                        <p class="font-color">
+                            Tham quan Văn Miếu - Quốc Tử Giám, ngôi trường đại học đầu tiên của Việt Nam...
+                        </p>
+                        <a href="/blog" class="ctn">Đọc tiếp</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <!-- Blog Section -->
+
         <!-- Map Section Component -->
         <%- include('../../components/map-section') %>
 
@@ -695,6 +749,34 @@
         .crow-s:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+        }
+        
+        /* Blog Section Styles */
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        
+        .blog-category {
+            background: #007bff;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .blog-date {
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .blog-meta + h4 {
+            margin-top: 0;
         }
         </style>
         <script>
