@@ -2,7 +2,7 @@
 
 /* Page Header */
 .page-header {
-    background: linear-gradient(135deg, #fc036b 0%, #e6025a 100%);
+    background: var(--primary-color);
     color: white;
     padding: 2rem 0;
     margin-bottom: 2rem;
@@ -60,7 +60,7 @@
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: #fc036b;
+    border-color: var(--primary-color);
     box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
 }
 
@@ -88,23 +88,23 @@
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #fc036b 0%, #e6025a 100%);
+    background: var(--primary-color);
     border: none;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #e6025a 0%, #d4004a 100%);
+    background: var(--primary-color);
     transform: translateY(-1px);
 }
 
 .btn-outline-primary {
-    border: 2px solid #fc036b;
-    color: #fc036b;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
 }
 
 .btn-outline-primary:hover {
-    background: #fc036b;
-    border-color: #fc036b;
+    background: var(--primary-color);
+    border-color: var(--primary-color);
     transform: translateY(-1px);
 }
 
@@ -203,7 +203,7 @@
 }
 
 .img-thumbnail:hover {
-    border-color: #fc036b;
+    border-color: var(--primary-color);
     transform: scale(1.05);
 }
 
@@ -217,19 +217,19 @@
     border-radius: 10px;
     margin: 0 2px;
     border: 2px solid #e9ecef;
-    color: #fc036b;
+    color: var(--primary-color);
     font-weight: 500;
 }
 
 .page-link:hover {
-    background: #fc036b;
-    border-color: #fc036b;
+    background: var(--primary-color);
+    border-color: var(--primary-color);
     color: white;
 }
 
 .page-item.active .page-link {
-    background: linear-gradient(135deg, #fc036b 0%, #e6025a 100%);
-    border-color: #fc036b;
+    background: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 /* Alerts */
@@ -390,12 +390,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #fc036b 0%, #e6025a 100%);
+    background: var(--primary-color);
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #e6025a 0%, #d4004a 100%);
+    background: var(--primary-color);
 }
 
 /* Animation */
@@ -494,7 +494,7 @@
 }
 
 .contact-info i {
-    color: #fc036b;
+    color: var(--primary-color);
     margin-right: 0.5rem;
 }
 
@@ -524,7 +524,7 @@
 
 /* Statistics Cards */
 .stat-card {
-    background: linear-gradient(135deg, #fc036b 0%, #e6025a 100%);
+    background: var(--primary-color);
     color: white;
     border-radius: 15px;
     padding: 1.5rem;
@@ -596,12 +596,12 @@
 }
 
 .file-upload-area:hover {
-    border-color: #fc036b;
+    border-color: var(--primary-color);
     background-color: #f8f9ff;
 }
 
 .file-upload-area.dragover {
-    border-color: #fc036b;
+    border-color: var(--primary-color);
     background-color: #f0f4ff;
 }
 
@@ -613,7 +613,7 @@
 }
 
 .progress-bar {
-    background: linear-gradient(135deg, #fc036b 0%, #e6025a 100%);
+    background: var(--primary-color);
     border-radius: 10px;
 }
 
