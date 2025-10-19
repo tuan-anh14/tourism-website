@@ -7,7 +7,6 @@
    GLOBAL VARIABLES
    =========================================== */
 :root {
-  --primary-color: var(--primary-color);
   --primary-light: #ff4d8a;
   --primary-dark: #c10251;
   --secondary-color: #2c3e50;
