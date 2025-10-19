@@ -64,19 +64,17 @@
                         <div class="col-lg-6 col-md-12">
                             <div class="mb-3">
                                 <label for="openHours" class="form-label">Giờ mở cửa <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="openHours" name="openHours" 
-                                       value="<%= entertainment ? entertainment.openHours : '' %>" 
-                                       placeholder="VD: 8:00 - 22:00 hàng ngày" required>
-                                <div class="form-text">Ví dụ: 8:00 - 22:00 hàng ngày, Thứ 2 - Chủ nhật</div>
+                                <textarea class="form-control" id="openHours" name="openHours" rows="3" 
+                                          placeholder="VD: 8:00 - 22:00 hàng ngày" required><%= entertainment ? entertainment.openHours : '' %></textarea>
+                                <div class="form-text">Ví dụ: 8:00 - 22:00 hàng ngày, Thứ 2 - Chủ nhật. Có thể xuống dòng để nhập nhiều thông tin.</div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-12">
                             <div class="mb-3">
                                 <label for="ticket" class="form-label">Giá vé <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="ticket" name="ticket" 
-                                       value="<%= entertainment ? entertainment.ticket : '' %>" 
-                                       placeholder="VD: 50.000đ - 200.000đ" required>
-                                <div class="form-text">Ví dụ: 50.000đ - 200.000đ, Miễn phí, 100.000đ/người</div>
+                                <textarea class="form-control" id="ticket" name="ticket" rows="3" 
+                                          placeholder="VD: 50.000đ - 200.000đ" required><%= entertainment ? entertainment.ticket : '' %></textarea>
+                                <div class="form-text">Ví dụ: 50.000đ - 200.000đ, Miễn phí, 100.000đ/người. Có thể xuống dòng để nhập nhiều thông tin.</div>
                             </div>
                         </div>
                     </div>
@@ -150,6 +148,38 @@
             </div>
         </div>
 
+        <!-- === HOẠT ĐỘNG VÀ ĐỐI TƯỢNG === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-running me-2"></i>
+                        Hoạt động và đối tượng
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="activities" class="form-label">Hoạt động của du khách</label>
+                                <textarea class="form-control" id="activities" name="activities" rows="4" 
+                                          placeholder="Mỗi hoạt động trên một dòng"><%= entertainment ? (Array.isArray(entertainment.activities) ? entertainment.activities.join('\n') : (typeof entertainment.activities === 'string' ? entertainment.activities : '')) : '' %></textarea>
+                                <div class="form-text">Mỗi hoạt động trên một dòng riêng</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="targetAudience" class="form-label">Đối tượng khách hàng</label>
+                                <textarea class="form-control" id="targetAudience" name="targetAudience" rows="4" 
+                                          placeholder="Mỗi đối tượng trên một dòng"><%= entertainment ? (Array.isArray(entertainment.targetAudience) ? entertainment.targetAudience.join('\n') : (typeof entertainment.targetAudience === 'string' ? entertainment.targetAudience : '')) : '' %></textarea>
+                                <div class="form-text">Mỗi đối tượng trên một dòng riêng</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- === HÌNH ẢNH === -->
         <div class="col-12">
             <div class="card mb-4">
@@ -161,9 +191,9 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label for="images" class="form-label">Hình ảnh <span class="text-danger">*</span></label>
-                        <input type="file" class="form-control" id="images" name="images" multiple accept="image/*" required>
-                        <div class="form-text">Chọn nhiều hình ảnh (JPG, PNG, GIF, WebP) - Tối đa 10MB mỗi file</div>
+                        <label for="images" class="form-label">Hình ảnh</label>
+                        <input type="file" class="form-control" id="images" name="images" multiple accept="image/*">
+                        <div class="form-text">Chọn nhiều hình ảnh (JPG, PNG, GIF, WebP) - Tối đa 10MB mỗi file. Nếu không chọn, hệ thống sẽ sử dụng hình ảnh mặc định.</div>
                     </div>
                     
                     <!-- Image Preview Area -->
@@ -435,15 +465,12 @@ function removeReviewRow(button) {
 // Form validation
 document.getElementById('entertainmentForm').addEventListener('submit', function(e) {
     // Basic validation
-    const requiredFields = ['name', 'zone', 'type', 'address', 'openHours', 'ticket', 'lat', 'lng', 'embedUrl', 'images'];
+    const requiredFields = ['name', 'zone', 'type', 'address', 'openHours', 'ticket'];
     let isValid = true;
     
     requiredFields.forEach(field => {
         const input = document.getElementById(field);
-        if (!input.value.trim() && input.type !== 'file') {
-            input.classList.add('is-invalid');
-            isValid = false;
-        } else if (input.type === 'file' && input.files.length === 0) {
+        if (!input.value.trim()) {
             input.classList.add('is-invalid');
             isValid = false;
         } else {
@@ -453,7 +480,7 @@ document.getElementById('entertainmentForm').addEventListener('submit', function
     
     if (!isValid) {
         e.preventDefault();
-        alert('Vui lòng điền đầy đủ các trường bắt buộc và chọn ít nhất một hình ảnh');
+        alert('Vui lòng điền đầy đủ các trường bắt buộc');
     }
 });
 </script>

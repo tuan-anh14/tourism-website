@@ -65,19 +65,17 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="openHours" class="form-label">Giờ mở cửa <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="openHours" name="openHours" 
-                                       value="<%= entertainment.openHours %>" 
-                                       placeholder="VD: 8:00 - 22:00 hàng ngày" required>
-                                <div class="form-text">Ví dụ: 8:00 - 22:00 hàng ngày, Thứ 2 - Chủ nhật</div>
+                                <textarea class="form-control" id="openHours" name="openHours" rows="3" 
+                                          placeholder="VD: 8:00 - 22:00 hàng ngày" required><%= entertainment.openHours %></textarea>
+                                <div class="form-text">Ví dụ: 8:00 - 22:00 hàng ngày, Thứ 2 - Chủ nhật. Có thể xuống dòng để nhập nhiều thông tin.</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="ticket" class="form-label">Giá vé <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="ticket" name="ticket" 
-                                       value="<%= entertainment.ticket %>" 
-                                       placeholder="VD: 50.000đ - 200.000đ" required>
-                                <div class="form-text">Ví dụ: 50.000đ - 200.000đ, Miễn phí, 100.000đ/người</div>
+                                <textarea class="form-control" id="ticket" name="ticket" rows="3" 
+                                          placeholder="VD: 50.000đ - 200.000đ" required><%= entertainment.ticket %></textarea>
+                                <div class="form-text">Ví dụ: 50.000đ - 200.000đ, Miễn phí, 100.000đ/người. Có thể xuống dòng để nhập nhiều thông tin.</div>
                             </div>
                         </div>
                     </div>
@@ -144,6 +142,38 @@
                                 <textarea class="form-control" id="notes" name="notes" rows="4" 
                                           placeholder="Mỗi lưu ý trên một dòng"><%= Array.isArray(entertainment.notes) ? entertainment.notes.join('\n') : (typeof entertainment.notes === 'string' ? entertainment.notes : '') %></textarea>
                                 <div class="form-text">Mỗi lưu ý trên một dòng riêng</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === HOẠT ĐỘNG VÀ ĐỐI TƯỢNG === -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-running me-2"></i>
+                        Hoạt động và đối tượng
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="activities" class="form-label">Hoạt động của du khách</label>
+                                <textarea class="form-control" id="activities" name="activities" rows="4" 
+                                          placeholder="Mỗi hoạt động trên một dòng"><%= Array.isArray(entertainment.activities) ? entertainment.activities.join('\n') : (typeof entertainment.activities === 'string' ? entertainment.activities : '') %></textarea>
+                                <div class="form-text">Mỗi hoạt động trên một dòng riêng</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="targetAudience" class="form-label">Đối tượng khách hàng</label>
+                                <textarea class="form-control" id="targetAudience" name="targetAudience" rows="4" 
+                                          placeholder="Mỗi đối tượng trên một dòng"><%= Array.isArray(entertainment.targetAudience) ? entertainment.targetAudience.join('\n') : (typeof entertainment.targetAudience === 'string' ? entertainment.targetAudience : '') %></textarea>
+                                <div class="form-text">Mỗi đối tượng trên một dòng riêng</div>
                             </div>
                         </div>
                     </div>
@@ -530,7 +560,7 @@ document.getElementById('entertainmentForm').addEventListener('submit', function
     });
     
     // Basic validation
-    const requiredFields = ['name', 'zone', 'type', 'address', 'openHours', 'ticket', 'lat', 'lng', 'embedUrl'];
+    const requiredFields = ['name', 'zone', 'type', 'address', 'openHours', 'ticket'];
     let isValid = true;
     
     requiredFields.forEach(field => {

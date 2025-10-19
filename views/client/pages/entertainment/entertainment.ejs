@@ -89,18 +89,24 @@
                                     ? entertainment.activities.slice(0, 2).join(', ') + (entertainment.activities.length > 2 ? '...' : '')
                                     : entertainment.type %>
                             </p>
+                            <% if (entertainment.targetAudience && entertainment.targetAudience.length > 0) { %>
+                                <p class="font-color small">
+                                    <i class="fa fa-users me-1"></i>
+                                    <%= entertainment.targetAudience.slice(0, 2).join(', ') + (entertainment.targetAudience.length > 2 ? '...' : '') %>
+                                </p>
+                            <% } %>
                             <div class="entertainment-details">
                                 <p><strong>Khu vực:</strong> <%= entertainment.zone %></p>
                                 <p><strong>Loại hình:</strong> <%= entertainment.type %></p>
-                                <p><strong>Giá vé:</strong> <%= entertainment.ticket %></p>
-                                <% if (entertainment.averageRating > 0) { %>
+                                <!-- <p><strong>Giá vé:</strong><span style="white-space: pre-line;"><%= entertainment.ticket %></span></p> -->
+                                <!-- <% if (entertainment.averageRating > 0) { %>
                                     <p><strong>Đánh giá:</strong> 
                                         <% for (let i = 1; i <= 5; i++) { %>
                                             <i class="fa fa-star <%= i <= entertainment.averageRating ? 'text-warning' : 'text-muted' %>"></i>
                                         <% } %>
                                         (<%= entertainment.reviewCount %>)
                                     </p>
-                                <% } %>
+                                <% } %> -->
                             </div>
                             <a href="/entertainment/<%= entertainment._id %>" class="ctn">Xem chi tiết</a>
                         </div>

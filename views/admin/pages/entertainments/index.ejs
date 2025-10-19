@@ -125,7 +125,7 @@
                                         <% } %>
                                     </div>
                                     <div class="mt-1">
-                                        <small class="text-muted">Giá: <%= entertainment.ticket %></small>
+                                        <small class="text-muted">Giá: <%= entertainment.ticket.length > 80 ? entertainment.ticket.substring(0, 80) + '...' : entertainment.ticket %></small>
                                     </div>
                                 </td>
                                 <td>

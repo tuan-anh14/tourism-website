@@ -35,13 +35,13 @@ const entertainmentSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    maxlength: 100
+    maxlength: 1000
   },
   ticket: {
     type: String,
     required: true,
     trim: true,
-    maxlength: 100
+    maxlength: 1000
   },
   history: {
     type: String,
@@ -59,6 +59,18 @@ const entertainmentSchema = new mongoose.Schema({
     maxlength: 200
   }],
   notes: [{
+    type: String,
+    trim: true,
+    maxlength: 200
+  }],
+  // Hoạt động của du khách
+  activities: [{
+    type: String,
+    trim: true,
+    maxlength: 200
+  }],
+  // Đối tượng khách hàng
+  targetAudience: [{
     type: String,
     trim: true,
     maxlength: 200

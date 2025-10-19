@@ -36,7 +36,7 @@
                     <article class="info-card">
                         <div class="info-card-icon"><%= info.icon %></div>
                         <h3><%= info.label %></h3>
-                        <p class="font-color"><%= info.value %></p>
+                        <p class="font-color" style="white-space: pre-line;"><%= info.value %></p>
                     </article>
                 <% }) %>
             </div>
@@ -45,13 +45,13 @@
             <section class="content-section">
                 <h2 class="dark"><%= detail.intro.title %></h2>
                 <% (detail.intro.paragraphs || []).forEach(function(p){ %>
-                    <p class="font-color"><%= p %></p>
+                    <p class="font-color" style="white-space: pre-line;"><%= p %></p>
                 <% }) %>
 
                 <% (detail.sections || []).forEach(function(sec){ %>
                     <h3 class="dark"><%= sec.title %></h3>
                     <% (sec.paragraphs || []).forEach(function(p){ %>
-                        <p class="font-color"><%= p %></p>
+                        <p class="font-color" style="white-space: pre-line;"><%= p %></p>
                     <% }) %>
                     <% if (sec.bullets && sec.bullets.length) { %>
                         <ul>
@@ -65,7 +65,7 @@
                 <% if (detail.highlight) { %>
                     <div class="highlight-box">
                         <h4 class="dark">💡 <%= detail.highlight.title %></h4>
-                        <p class="font-color"><%= detail.highlight.content %></p>
+                        <p class="font-color" style="white-space: pre-line;"><%= detail.highlight.content %></p>
                     </div>
                 <% } %>
             </section>
@@ -101,6 +101,40 @@
                     <% } %>
                 </div>
             </section>
+
+            <!-- Activities -->
+            <% if (entertainment.activities && entertainment.activities.length > 0) { %>
+                <section class="content-section">
+                    <h2 class="dark">Hoạt động của du khách</h2>
+                    <div class="highlight-box">
+                        <ul>
+                            <% entertainment.activities.forEach(function(activity){ %>
+                                <li class="font-color">
+                                    <i class="fa fa-play text-success me-2"></i>
+                                    <%= activity %>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </section>
+            <% } %>
+
+            <!-- Target Audience -->
+            <% if (entertainment.targetAudience && entertainment.targetAudience.length > 0) { %>
+                <section class="content-section">
+                    <h2 class="dark">Đối tượng khách hàng</h2>
+                    <div class="highlight-box">
+                        <ul>
+                            <% entertainment.targetAudience.forEach(function(audience){ %>
+                                <li class="font-color">
+                                    <i class="fa fa-users text-primary me-2"></i>
+                                    <%= audience %>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </section>
+            <% } %>
 
             <!-- Notes -->
             <% if (entertainment.notes && entertainment.notes.length > 0) { %>
@@ -142,11 +176,18 @@
             </div>
         </section>
 
+        <%- include('../../components/reviews-section', { 
+            attraction: entertainment,
+            title: "Đừng chỉ nghe chúng tôi, hãy nghe du khách!",
+            showButton: true,
+            buttonUrl: entertainment.reviewButtonUrl || ''
+        }) %>
+
         <section class="detail-container">
             <!-- CTA -->
             <section class="cta-section">
                 <h2 class="dark"><%= detail.cta.title %></h2>
-                <p class="font-color" style="margin-bottom: 16px;"><%= detail.cta.subtitle %></p>
+                <p class="font-color" style="margin-bottom: 16px; white-space: pre-line;"><%= detail.cta.subtitle %></p>
                 <% (detail.cta.actions || []).forEach(function(act){ %>
                     <a href="<%= act.href %>" class="btn"><%= act.label %></a>
                 <% }) %>
@@ -176,8 +217,6 @@
                 </div>
             </div>
         </div>
-
-        
 
         <!-- up scroll -->
         <i class="arrow" onclick="topFunction()" id="upbtn"></i>
@@ -224,13 +263,5 @@
           if(modalNext) modalNext.addEventListener('click', function(){ show(idx+1); if(modalImg){ modalImg.src = images[idx]; if(modalCounter){ modalCounter.textContent = (idx+1)+' / '+images.length; } } });
         });
         </script>
-
-
-        <%- include('../../components/reviews-section', { 
-            attraction: entertainment,
-            title: "Đừng chỉ nghe chúng tôi, hãy nghe du khách!",
-            showButton: true,
-            buttonUrl: entertainment.reviewButtonUrl || ''
-        }) %>
     </body>
     </html>

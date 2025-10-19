@@ -161,13 +161,15 @@ module.exports.store = async (req, res) => {
 
         const {
             history, architecture,
-            experience, notes
+            experience, notes,
+            activities, targetAudience
         } = req.body;
 
         // Process arrays
-        // Removed activities and audience
         const experienceArray = experience ? experience.split('\n').filter(item => item.trim()) : [];
         const notesArray = notes ? notes.split('\n').filter(item => item.trim()) : [];
+        const activitiesArray = activities ? activities.split('\n').filter(item => item.trim()) : [];
+        const targetAudienceArray = targetAudience ? targetAudience.split('\n').filter(item => item.trim()) : [];
         
         // Process uploaded images
         const imagesArray = req.files && req.files.length > 0 
@@ -224,6 +226,8 @@ module.exports.store = async (req, res) => {
             architecture: architecture || null,
             experience: experienceArray,
             notes: notesArray,
+            activities: activitiesArray,
+            targetAudience: targetAudienceArray,
             images: imagesArray,
             reviews: reviewsArray,
             map: {
@@ -367,13 +371,15 @@ module.exports.update = async (req, res) => {
         const {
             history, architecture,
             experience, notes,
+            activities, targetAudience,
             isActive, featured, removeImages
         } = req.body;
 
         // Process arrays
-        // Removed activities and audience
         const experienceArray = experience ? experience.split('\n').filter(item => item.trim()) : [];
         const notesArray = notes ? notes.split('\n').filter(item => item.trim()) : [];
+        const activitiesArray = activities ? activities.split('\n').filter(item => item.trim()) : [];
+        const targetAudienceArray = targetAudience ? targetAudience.split('\n').filter(item => item.trim()) : [];
         
         // Get existing entertainment to preserve current images
         const existingEntertainment = await Entertainment.findById(req.params.id);
@@ -454,6 +460,8 @@ module.exports.update = async (req, res) => {
             architecture: architecture || null,
             experience: experienceArray,
             notes: notesArray,
+            activities: activitiesArray,
+            targetAudience: targetAudienceArray,
             images: imagesArray,
             reviews: reviewsArray,
             map: {
