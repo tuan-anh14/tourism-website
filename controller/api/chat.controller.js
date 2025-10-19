@@ -2,7 +2,9 @@
 // Endpoint: https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-1.5-flash-latest';
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+const { GoogleGenAI } = require('@google/genai');
+const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY || 'YOUR_KEY_HERE' });
 
 function normalizeMessages(messages) {
   if (!Array.isArray(messages)) return [];
@@ -14,10 +16,6 @@ function normalizeMessages(messages) {
 
 exports.handleChatCompletion = async (req, res) => {
   try {
-    if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_KEY_HERE') {
-      return res.status(500).json({ error: 'Missing GEMINI_API_KEY', hint: 'Add GEMINI_API_KEY to your .env and restart the server.' });
-    }
-
     const { messages } = req.body || {};
     const history = normalizeMessages(messages);
 
@@ -41,37 +39,31 @@ exports.handleChatCompletion = async (req, res) => {
         maxOutputTokens: 512
       }
     };
-
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
-    // Retry on 429 with exponential backoff (client also throttles)
-    let data = null;
-    let lastStatus = 0;
-    for (let attempt = 0; attempt < 3; attempt++) {
-      const resp = await global.fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+    
+    // If no API key, gracefully degrade with local reply (avoid 4xx to client)
+    if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_KEY_HERE') {
+      const lastUser = history.findLast ? history.findLast(m => m.role === 'user') : [...history].reverse().find(m => m.role === 'user');
+      const fallback = lastUser && lastUser.content
+        ? `(Chế độ demo) Bạn hỏi: "${lastUser.content}". Hiện chưa cấu hình khóa AI, vui lòng liên hệ quản trị viên hoặc đặt biến môi trường GEMINI_API_KEY.`
+        : '(Chế độ demo) Xin chào! Vui lòng nhập câu hỏi của bạn.';
+      return res.json({ role: 'assistant', content: fallback });
+    }
+    
+    // Call Gemini using @google/genai SDK
+    try {
+      const response = await ai.models.generateContent({
+        model: GEMINI_MODEL,
+        contents: payload.contents
       });
-      lastStatus = resp.status;
-      if (resp.ok) { data = await resp.json(); break; }
-      if (resp.status === 429) {
-        const waitMs = 800 * Math.pow(1.6, attempt);
-        await new Promise(r => setTimeout(r, waitMs));
-        continue;
-      }
-      const text = await resp.text();
-      return res.status(resp.status).json({ error: 'Gemini API error', detail: text });
+      const text = (response && response.text) || 'Xin lỗi, hiện chưa có phản hồi.';
+      return res.json({ role: 'assistant', content: text });
+    } catch (sdkErr) {
+      const friendly = 'Xin lỗi, hệ thống chưa thể trả lời lúc này.';
+      return res.json({ role: 'assistant', content: friendly, meta: { source: 'genai-sdk', error: sdkErr && sdkErr.message } });
     }
-    if (!data) {
-      return res.status(429).json({ error: 'Gemini API rate limited', detail: 'Please try again shortly.' });
-    }
-    const candidate = data && data.candidates && data.candidates[0];
-    const parts = candidate && candidate.content && candidate.content.parts;
-    const text = parts && parts[0] && parts[0].text ? parts[0].text : 'Xin lỗi, hiện chưa có phản hồi.';
-
-    res.json({ role: 'assistant', content: text });
   } catch (err) {
-    res.status(500).json({ error: 'Server error', detail: err.message });
+    // Always degrade gracefully to 200 so client widget doesn't show 4xx/5xx
+    res.json({ role: 'assistant', content: 'Xin lỗi, đã xảy ra lỗi máy chủ.', meta: { error: err && err.message } });
   }
 };
 
