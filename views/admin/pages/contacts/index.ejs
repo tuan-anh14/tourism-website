@@ -100,7 +100,7 @@
                     </thead>
                     <tbody>
                         <% contacts.forEach(contact => { %>
-                            <tr class="contact-row <%= contact.status %>">
+                            <tr class="contact-row <%= contact.status %>" data-contact-id="<%= contact._id %>">
                                 <td class="contact-info">
                                     <div class="contact-details">
                                         <div class="contact-name">
@@ -143,20 +143,18 @@
                                             <i class="fa fa-eye"></i>
                                         </a>
                                         <% if (contact.status === 'new') { %>
-                                            <a href="/admin/contacts/<%= contact._id %>/mark-read" 
-                                               class="btn btn-sm btn-warning" 
-                                               title="Đánh dấu đã đọc"
-                                               onclick="return confirm('Đánh dấu đã đọc?')">
+                                            <button onclick="markAsRead('<%= contact._id %>')" 
+                                                    class="btn btn-sm btn-warning" 
+                                                    title="Đánh dấu đã đọc">
                                                 <i class="fa fa-check"></i>
-                                            </a>
+                                            </button>
                                         <% } %>
                                         <% if (contact.status === 'read') { %>
-                                            <a href="/admin/contacts/<%= contact._id %>/mark-replied" 
-                                               class="btn btn-sm btn-success" 
-                                               title="Đánh dấu đã trả lời"
-                                               onclick="return confirm('Đánh dấu đã trả lời?')">
+                                            <button onclick="markAsReplied('<%= contact._id %>')" 
+                                                    class="btn btn-sm btn-success" 
+                                                    title="Đánh dấu đã trả lời">
                                                 <i class="fa fa-reply"></i>
-                                            </a>
+                                            </button>
                                         <% } %>
                                         <a href="/admin/contacts/<%= contact._id %>/delete" 
                                            class="btn btn-sm btn-danger" 
@@ -219,6 +217,160 @@
         <% } %>
     </div>
 </div>
+
+<!-- JavaScript for AJAX actions -->
+<script>
+// Mark as read function
+async function markAsRead(contactId) {
+    if (!confirm('Đánh dấu đã đọc?')) return;
+    
+    try {
+        const response = await fetch(`/admin/contacts/${contactId}/mark-read`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showNotification('Đánh dấu đã đọc thành công!', 'success');
+            // Update status badge without reload
+            updateContactStatus(contactId, 'read');
+        } else {
+            showNotification('Có lỗi xảy ra: ' + result.message, 'error');
+        }
+    } catch (error) {
+        showNotification('Có lỗi xảy ra khi đánh dấu đã đọc', 'error');
+    }
+}
+
+// Mark as replied function
+async function markAsReplied(contactId) {
+    if (!confirm('Đánh dấu đã trả lời?')) return;
+    
+    try {
+        const response = await fetch(`/admin/contacts/${contactId}/mark-replied`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showNotification('Đánh dấu đã trả lời thành công!', 'success');
+            // Update status badge without reload
+            updateContactStatus(contactId, 'replied');
+        } else {
+            showNotification('Có lỗi xảy ra: ' + result.message, 'error');
+        }
+    } catch (error) {
+        showNotification('Có lỗi xảy ra khi đánh dấu đã trả lời', 'error');
+    }
+}
+
+// Update contact status function
+function updateContactStatus(contactId, newStatus) {
+    // Find the contact row
+    const contactRow = document.querySelector(`tr[data-contact-id="${contactId}"]`);
+    if (!contactRow) return;
+    
+    // Update status badge
+    const statusBadge = contactRow.querySelector('.status-badge');
+    if (statusBadge) {
+        statusBadge.className = `status-badge ${newStatus}`;
+        statusBadge.textContent = newStatus === 'read' ? 'Đã đọc' : 
+                                  newStatus === 'replied' ? 'Đã trả lời' : 'Mới';
+    }
+    
+    // Update row class
+    contactRow.className = `contact-row ${newStatus}`;
+    
+    // Hide/show action buttons
+    const markReadBtn = contactRow.querySelector('button[onclick*="markAsRead"]');
+    const markRepliedBtn = contactRow.querySelector('button[onclick*="markAsReplied"]');
+    
+    if (markReadBtn) markReadBtn.style.display = 'none';
+    if (markRepliedBtn) markRepliedBtn.style.display = 'none';
+}
+
+// Show notification function
+function showNotification(message, type) {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => notification.remove());
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fa fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+</script>
+
+<!-- Notification Styles -->
+<style>
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    padding: 15px 20px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    animation: slideIn 0.3s ease-out;
+    max-width: 400px;
+}
+
+.notification-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.notification-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.notification-content i {
+    font-size: 18px;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+</style>
 
 <style>
 /* Contact Management Styles */

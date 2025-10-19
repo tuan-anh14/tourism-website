@@ -208,29 +208,20 @@ module.exports.markAsRead = async (req, res) => {
     
     await contact.markAsRead();
     
-    if (req.headers.accept && req.headers.accept.includes('application/json')) {
-      return res.json({
-        success: true,
-        message: 'Đánh dấu đã đọc thành công'
-      });
-    }
-    
-    req.flash('success', 'Đánh dấu đã đọc thành công');
-    res.redirect('back');
+    // Always return JSON for AJAX requests
+    return res.json({
+      success: true,
+      message: 'Đánh dấu đã đọc thành công'
+    });
     
   } catch (error) {
     console.error('Mark as read error:', error);
     
-    if (req.headers.accept && req.headers.accept.includes('application/json')) {
-      return res.status(500).json({
-        success: false,
-        message: 'Lỗi server',
-        error: error.message
-      });
-    }
-    
-    req.flash('error', 'Có lỗi xảy ra');
-    res.redirect('back');
+    return res.status(500).json({
+      success: false,
+      message: 'Lỗi server',
+      error: error.message
+    });
   }
 };
 
@@ -252,28 +243,19 @@ module.exports.markAsReplied = async (req, res) => {
     
     await contact.markAsReplied();
     
-    if (req.headers.accept && req.headers.accept.includes('application/json')) {
-      return res.json({
-        success: true,
-        message: 'Đánh dấu đã trả lời thành công'
-      });
-    }
-    
-    req.flash('success', 'Đánh dấu đã trả lời thành công');
-    res.redirect('back');
+    // Always return JSON for AJAX requests
+    return res.json({
+      success: true,
+      message: 'Đánh dấu đã trả lời thành công'
+    });
     
   } catch (error) {
     console.error('Mark as replied error:', error);
     
-    if (req.headers.accept && req.headers.accept.includes('application/json')) {
-      return res.status(500).json({
-        success: false,
-        message: 'Lỗi server',
-        error: error.message
-      });
-    }
-    
-    req.flash('error', 'Có lỗi xảy ra');
-    res.redirect('back');
+    return res.status(500).json({
+      success: false,
+      message: 'Lỗi server',
+      error: error.message
+    });
   }
 };
