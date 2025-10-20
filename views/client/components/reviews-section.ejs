@@ -1,553 +1,778 @@
-<%# reviews-section partial: include via include('../components/reviews-section', props) %>
 <%
-  const _title = (typeof title !== 'undefined' && title) ? title : "Đừng chỉ nghe chúng tôi, hãy nghe du khách!";
-  const _rating = (typeof rating !== 'undefined' && rating != null && !isNaN(Number(rating)))
-    ? Number(rating)
-    : (typeof attraction !== 'undefined' && attraction && attraction.rating && !isNaN(Number(attraction.rating.average))
-        ? Number(attraction.rating.average)
-        : 4.7);
-  const _reviewCount = (typeof reviewCount !== 'undefined' && reviewCount != null)
-    ? reviewCount
-    : (typeof attraction !== 'undefined' && attraction && attraction.rating && typeof attraction.rating.count !== 'undefined'
-        ? attraction.rating.count
-        : 0);
-  const _showButton = (typeof showButton === 'undefined') ? true : (showButton !== false);
-  const _buttonUrl = (typeof buttonUrl !== 'undefined' && buttonUrl)
-    ? String(buttonUrl)
-    : (typeof attraction !== 'undefined' && attraction && attraction.reviewButtonUrl ? String(attraction.reviewButtonUrl) : '');
+// =================================================================
+// REVIEWS SECTION COMPONENT - Hệ thống đánh giá mới
+// =================================================================
+// Props:
+// - targetType: 'attraction', 'accommodation', 'food', 'entertainment', 'tour'
+// - targetId: ID của đối tượng
+// - title: Tiêu đề section (optional)
+// - showForm: Hiển thị form đánh giá (default: true)
+// =================================================================
+
+const _title = (typeof title !== 'undefined' && title) 
+  ? title 
+  : "Đánh giá từ khách hàng";
+const _targetType = targetType || 'attraction';
+const _targetId = targetId || '';
+const _showForm = (typeof showForm === 'undefined') ? true : showForm;
+const _currentUser = typeof user !== 'undefined' ? user : null;
 %>
 
-<div class="review-widget-container">
-    <div class="review-widget-header">
-      <h2 class="review-widget-title"><%= _title %></h2>
+<div class="reviews-section" data-target-type="<%= _targetType %>" data-target-id="<%= _targetId %>">
+  
+  <!-- =================================================================
+       HEADER
+       ================================================================= -->
+  <div class="reviews-header">
+    <h2 class="reviews-title">Khách hàng đánh giá</h2>
     </div>
   
-    <div class="review-widget-stats">
-      <div class="review-widget-brand">
-        <div class="review-widget-logo">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 85 36" class="google-logo">
-          <g clip-path="url(#a-1)">
-            <path fill="#4285F4" d="M20.778 13.43h-9.862v2.927h6.994c-.345 4.104-3.76 5.854-6.982 5.854-4.123 0-7.72-3.244-7.72-7.791 0-4.43 3.429-7.841 7.73-7.841 3.317 0 5.272 2.115 5.272 2.115l2.049-2.122s-2.63-2.928-7.427-2.928C4.725 3.644 0 8.8 0 14.367c0 5.457 4.445 10.777 10.988 10.777 5.756 0 9.969-3.942 9.969-9.772 0-1.23-.179-1.941-.179-1.941Z"/>
-            <path fill="#EA4335" d="M28.857 11.312c-4.047 0-6.947 3.163-6.947 6.853 0 3.744 2.813 6.966 6.994 6.966 3.786 0 6.887-2.893 6.887-6.886 0-4.576-3.607-6.933-6.934-6.933Zm.04 2.714c1.99 0 3.876 1.609 3.876 4.201 0 2.538-1.878 4.192-3.885 4.192-2.205 0-3.945-1.766-3.945-4.212 0-2.394 1.718-4.181 3.954-4.181Z"/>
-            <path fill="#FBBC05" d="M43.965 11.312c-4.046 0-6.946 3.163-6.946 6.853 0 3.744 2.813 6.966 6.994 6.966 3.785 0 6.886-2.893 6.886-6.886 0-4.576-3.607-6.933-6.934-6.933Zm.04 2.714c1.99 0 3.876 1.609 3.876 4.201 0 2.538-1.877 4.192-3.885 4.192-2.205 0-3.945-1.766-3.945-4.212 0-2.394 1.718-4.181 3.955-4.181Z"/>
-            <path fill="#4285F4" d="M58.783 11.319c-3.714 0-6.634 3.253-6.634 6.904 0 4.16 3.385 6.918 6.57 6.918 1.97 0 3.017-.782 3.79-1.68v1.363c0 2.384-1.448 3.812-3.633 3.812-2.11 0-3.169-1.57-3.537-2.46l-2.656 1.11c.943 1.992 2.839 4.07 6.215 4.07 3.693 0 6.508-2.327 6.508-7.205V11.734h-2.897v1.17c-.89-.96-2.109-1.585-3.726-1.585Zm.269 2.709c1.821 0 3.69 1.554 3.69 4.21 0 2.699-1.865 4.187-3.73 4.187-1.98 0-3.823-1.608-3.823-4.161 0-2.653 1.914-4.236 3.863-4.236Z"/>
-            <path fill="#EA4335" d="M78.288 11.302c-3.504 0-6.446 2.788-6.446 6.901 0 4.353 3.28 6.934 6.782 6.934 2.924 0 4.718-1.6 5.789-3.032l-2.389-1.59c-.62.962-1.656 1.902-3.385 1.902-1.943 0-2.836-1.063-3.39-2.094l9.266-3.845-.48-1.126c-.896-2.207-2.984-4.05-5.747-4.05Zm.12 2.658c1.263 0 2.171.671 2.557 1.476l-6.187 2.586c-.267-2.002 1.63-4.062 3.63-4.062Z"/>
-            <path fill="#34A853" d="M67.425 24.727h3.044V4.359h-3.044v20.368Z"/>
-          </g>
-          </svg>
+  <div class="reviews-stats-container" id="reviewsStats">
+    <div class="stats-loading">
+      <div class="spinner"></div>
+      <p>Đang tải thống kê...</p>
         </div>
-        <div class="review-widget-logo-title">Reviews</div>
       </div>
       
-      <div class="review-widget-rating">
-        <div class="rating-score"><%= _rating %></div>
-        <div class="rating-stars">
-          <% 
-            const fullStars = Math.floor(_rating);
-            const hasHalfStar = (_rating % 1) >= 0.5;
-            for(let i = 0; i < 5; i++) {
-              if(i < fullStars) { %>
-                <span class="star filled">★</span>
-              <% } else if(i === fullStars && hasHalfStar) { %>
-                <span class="star half">★</span>
+  <!-- =================================================================
+       REVIEW FORM - Chỉ hiển thị khi user đã đăng nhập
+       ================================================================= -->
+  <% if (_showForm) { %>
+    <div class="review-form-container" id="reviewFormContainer">
+      <% if (_currentUser) { %>
+        <%- include('review-form', { 
+          targetType: _targetType, 
+          targetId: _targetId,
+          user: _currentUser
+        }) %>
               <% } else { %>
-                <span class="star empty">☆</span>
-              <% }
-            }
-          %>
+        <div class="review-login-prompt">
+          <div class="login-prompt-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <h3>Chia sẻ trải nghiệm của bạn</h3>
+          <p>Đăng nhập để viết đánh giá và giúp mọi người có thêm thông tin hữu ích</p>
+          <a href="/auth/login?redirect=<%= encodeURIComponent(typeof currentUrl !== 'undefined' ? currentUrl : '') %>" class="btn-primary">
+            Đăng nhập để đánh giá
+          </a>
         </div>
-      <div class="review-count">(<%= _reviewCount %>)</div>
-      </div>
-  
-      <% if(_showButton) { %>
-        <% if(_buttonUrl) { %>
-          <a href="<%= _buttonUrl %>" target="_blank" rel="noopener" class="review-widget-btn">Đánh giá chúng tôi trên Google</a>
-        <% } else { %>
-          <button class="review-widget-btn">Đánh giá chúng tôi trên Google</button>
-        <% } %>
       <% } %>
     </div>
-  
-    <div class="review-widget-carousel">
-      <div class="carousel-track">
-        <% 
-          const reviewsToShow = (typeof reviews !== 'undefined' && Array.isArray(reviews))
-            ? reviews
-            : ((typeof attraction !== 'undefined' && attraction && Array.isArray(attraction.reviews)) ? attraction.reviews : []);
-          if (reviewsToShow.length === 0) { %>
-            <div class="review-card">
-              <div class="review-text" style="opacity:0.7">Chưa có đánh giá nào.</div>
-            </div>
-        <% } else { 
-          reviewsToShow.forEach((review, idx) => { %>
-          <div class="review-card" data-review="<%= idx %>">
-            <div class="google-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-              </svg>
-            </div>
-            <div class="review-card-header">
-              <div class="reviewer-info">
-                <% if(review.avatar) { %>
-                  <img src="<%= review.avatar %>" alt="<%= review.author %>" class="reviewer-avatar">
-                <% } else { %>
-                  <div class="reviewer-avatar-placeholder"><%= (review.author || '?').charAt(0).toUpperCase() %></div>
                 <% } %>
                 
-                <div class="reviewer-details">
-                  <div class="reviewer-name">
-                    <%= review.author || 'Anonymous' %>
-                    <% if(review.verified) { %>
-                      <span class="verified-badge" title="Verified">✓</span>
-                    <% } %>
-                  </div>
-                  <div class="review-date"><%= review.date %></div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="review-rating">
-              <% for(let i = 0; i < review.rating; i++) { %>
-                <span class="star">★</span>
-              <% } %>
-            </div>
-  
-          <div class="review-text">
-            <%= (review.text || '').substring(0, 150) %><% if((review.text || '').length > 150) { %>... <a class="review-read-more" href="#">Read more</a><% } %>
-          </div>
-          </div>
-        <% }); } %>
-      </div>
-  
-      <button class="carousel-btn carousel-prev">‹</button>
-      <button class="carousel-btn carousel-next">›</button>
+  <!-- =================================================================
+       REVIEWS LIST
+       ================================================================= -->
+  <div class="reviews-list-container" id="reviewsList">
+    <div class="reviews-loading">
+      <div class="spinner"></div>
+      <p>Đang tải đánh giá...</p>
     </div>
   </div>
   
+  <!-- =================================================================
+       PAGINATION
+       ================================================================= -->
+  <div class="reviews-pagination" id="reviewsPagination"></div>
+
+</div>
+
+<!-- =================================================================
+     STYLES
+     ================================================================= -->
   <style>
-    .review-widget-container {
+/* ==========================
+   CONTAINER & LAYOUT
+   ========================== */
+.reviews-section {
       background: #ffffff;
       border-radius: 16px;
-      padding: 28px 24px;
-      margin: 24px 0;
-      box-shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
-      border: 1px solid #eef2f7;
-    }
-  
-    .review-widget-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-  
-    .review-widget-title {
-      font-size: 28px;
+  padding: 32px 28px;
+  margin: 32px 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+}
+
+/* ==========================
+   HEADER
+   ========================== */
+.reviews-header {
+  margin-bottom: 20px;
+}
+
+.reviews-title {
+  font-size: 20px;
       font-weight: 700;
-      color: #0f172a;
+  color: #1a1a1a;
       margin: 0;
     }
   
-    .review-widget-stats {
+/* ==========================
+   STATS CONTAINER
+   ========================== */
+.reviews-stats-container {
+  margin-bottom: 32px;
+}
+
+.review-stats-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 24px;
+}
+
+.stats-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 16px 0;
+}
+
+.stats-summary {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 8px;
-      margin-bottom: 22px;
-      padding: 16px;
-      background: #f8fafc;
-      border: 1px solid #eef2f7;
-      border-radius: 12px;
+  align-items: flex-start;
+  gap: 32px;
       flex-wrap: wrap;
-      gap: 16px;
-    }
-  
-    .review-widget-brand { display: flex; align-items: center; gap: 10px; }
-    .review-widget-logo { width: 112px; height: 44px; }
-    .review-widget-logo-title { font-weight: 700; color: #1f2937; }
-  
-    .google-logo {
-      width: 100%;
-      height: 100%;
-    }
-  
-    .review-widget-rating {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      flex: 0 0 auto;
-      white-space: nowrap;
-    }
-  
-    .rating-score { font-size: 24px; font-weight: 800; color: #111827; }
-  
-    .rating-stars { display: inline-flex; gap: 1px; align-items: center; }
+}
+
+.average-rating {
+  text-align: center;
+  min-width: 120px;
+}
+
+.rating-number {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+  color: #1a1a1a;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+  margin-bottom: 6px;
+}
   
     .rating-stars .star { 
-      font-size: 20px !important; 
-      color: #f59e0b !important; 
-      margin: 0 !important;
-      padding: 0 !important;
-      display: inline-block !important;
-    }
-  
-    .rating-stars .star.empty {
-      color: #d1d5db !important;
-    }
-    
-    .rating-stars .star.filled {
-      color: #f59e0b !important;
-    }
-    
-    .rating-stars .star.half {
-      color: #f59e0b !important;
-    }
-  
-    .review-count { font-size: 13px; color: #6b7280; }
-  
-    .review-widget-btn {
-      background: #2563eb;
-      color: #ffffff;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-      white-space: nowrap;
-      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
-    }
-  
-    .review-widget-btn:hover { transform: translateY(-2px); background: #1d4ed8; }
-  
-    .review-widget-carousel {
-      position: relative;
+  font-size: 20px;
+  color: #fbbf24;
+}
+
+.rating-count {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.rating-distribution {
+  flex: 1;
+  min-width: 280px;
+}
+
+.distribution-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.distribution-label {
+  font-size: 13px;
+  font-weight: 400;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #6b7280;
+}
+
+.distribution-label .star {
+  color: #fbbf24;
+  font-size: 14px;
+}
+
+.distribution-bar {
+  flex: 1;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
       overflow: hidden;
     }
   
-    .carousel-track {
-      display: flex;
-      gap: 16px;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      padding: 8px 4px 12px;
-      scrollbar-width: none;
-    }
-  
-    .carousel-track::-webkit-scrollbar {
-      display: none;
-    }
-  
-    .review-card {
-      flex: 0 0 calc(25% - 12px);
-      min-width: 270px;
-      max-width: 330px;
-      min-height: 280px;
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 18px;
-      padding: 22px 20px 16px 20px;
-      margin: 10px;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 8px rgba(40, 40, 40, 0.16);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-  
-    .review-card:hover { 
-      background: #f9fafb; 
+.distribution-fill {
+  height: 100%;
+  background: #fbbf24;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+.distribution-count {
+  font-size: 13px;
+  font-weight: 400;
+  min-width: 30px;
+  text-align: right;
+  color: #6b7280;
+}
+
+/* ==========================
+   LOGIN PROMPT
+   ========================== */
+.review-login-prompt {
+  text-align: center;
+  padding: 48px 24px;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  border-radius: 12px;
+  margin-bottom: 32px;
+}
+
+.login-prompt-icon {
+  color: #6366f1;
+  margin-bottom: 16px;
+}
+
+.review-login-prompt h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.review-login-prompt p {
+  font-size: 15px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: #6366f1;
+  color: #ffffff;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.btn-primary:hover {
+  background: #4f46e5;
       transform: translateY(-2px); 
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
-    }
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+}
 
-    .google-icon {
-      position: absolute;
-      top: 16px;
-      right: 18px;
-      width: 24px;
-      height: 24px;
-      background: #ffffff;
-      border-radius: 6px;
-      border: 1px solid #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
+/* ==========================
+   REVIEWS LIST
+   ========================== */
+.reviews-list-container {
+  margin-top: 32px;
+}
 
-    .google-icon svg {
-      width: 16px;
-      height: 16px;
-    }
-  
-    .review-card-header {
-      margin-bottom: 12px;
-      position: relative;
-    }
-  
-    .reviewer-info {
+.review-item {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 20px 0;
+  margin-bottom: 0;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+}
+
+.review-header {
       display: flex;
+  align-items: flex-start;
       gap: 12px;
-      align-items: flex-start;
+  margin-bottom: 12px;
     }
   
     .reviewer-avatar {
-      width: 52px !important;
-      height: 52px !important;
-      border-radius: 50% !important;
-      object-fit: cover !important;
-      flex-shrink: 0 !important;
-      border: 2px solid #f5f6fa !important;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-      display: block !important;
-    }
-    
-    /* Force override any external CSS */
-    .review-card img.reviewer-avatar {
-      width: 52px !important;
-      height: 52px !important;
-      border-radius: 50% !important;
-      object-fit: cover !important;
-      border: 2px solid #f5f6fa !important;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
     }
   
     .reviewer-avatar-placeholder { 
-      width: 52px !important; 
-      height: 52px !important; 
-      border-radius: 50% !important; 
-      background: #e5e7eb !important; 
-      display: flex !important; 
-      align-items: center !important; 
-      justify-content: center !important; 
-      font-weight: 700 !important; 
-      color: #374151 !important; 
-      flex-shrink: 0 !important; 
-      border: 2px solid #f5f6fa !important;
-      font-size: 16px !important;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    }
-  
-    .reviewer-details {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.reviewer-info {
       flex: 1;
-      min-width: 0;
     }
   
     .reviewer-name { 
-      font-weight: 500; 
-      color: #000000; 
-      font-size: 1.06rem; 
-      word-break: break-word; 
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 4px;
       display: flex; 
       align-items: center; 
       gap: 6px;
-      line-height: 1.2;
-      letter-spacing: -0.025em;
-      margin: 0 0 4px 0;
-    }
-  
-    .verified-badge { color: #197bff; }
-  
-    .review-date { 
-      font-size: 0.88rem; 
-      color: #888; 
-      margin-left: 3px; 
+}
+
+.verified-badge {
+  background: #10b981;
+  color: #ffffff;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.review-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #6b7280;
     }
   
     .review-rating { 
-      display: inline-flex; 
-      gap: 1px !important; 
-      margin-bottom: 10px; 
-      align-items: center;
-    }
+  display: flex;
+  gap: 1px;
+}
+
+.review-rating .star {
+  font-size: 14px;
+  color: #fbbf24;
+}
+
+.review-date {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.review-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.review-content {
+  font-size: 14px;
+      line-height: 1.6; 
+  color: #4b5563;
+  margin-bottom: 12px;
+}
+
+.review-images {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.review-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  border: 1px solid #e5e7eb;
+}
+
+.review-image:hover {
+  transform: scale(1.03);
+}
+
+
+/* ==========================
+   PAGINATION
+   ========================== */
+.reviews-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+}
+
+.page-btn {
+  padding: 8px 14px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #374151;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.page-btn.active {
+  background: #6366f1;
+  color: #ffffff;
+  border-color: #6366f1;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==========================
+   LOADING STATES
+   ========================== */
+.stats-loading,
+.reviews-loading {
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f4f6;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.stats-loading p,
+.reviews-loading p {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.no-reviews {
+  text-align: center;
+  padding: 64px 24px;
+  color: #6b7280;
+}
+
+.no-reviews-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.3;
+}
+
+.no-reviews h3 {
+        font-size: 20px;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+/* ==========================
+   RESPONSIVE
+   ========================== */
+@media (max-width: 768px) {
+  .reviews-section {
+    padding: 20px 16px;
+    margin: 20px 0;
+  }
+
+  .reviews-title {
+    font-size: 18px;
+  }
   
-    .review-widget-container .review-card .star { 
-      font-size: 18px !important; 
-      line-height: 1 !important; 
-      color: #ffd700 !important; 
-      margin-right: 0 !important;
-      margin-left: 0 !important;
-      display: inline-block !important;
-      width: auto !important;
-      height: auto !important;
-      text-decoration: none !important;
-      border: none !important;
-      padding: 0 !important;
+  .review-stats-card {
+    padding: 16px;
+  }
+
+  .stats-title {
+    font-size: 15px;
+  }
+
+  .stats-summary {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .rating-number {
+    font-size: 48px;
+  }
+
+  .rating-distribution {
+    width: 100%;
+  }
+
+  .review-item {
+        padding: 16px;
+  }
+
+  .review-header {
+    flex-direction: column;
+  }
+
+  .reviewer-avatar,
+  .reviewer-avatar-placeholder {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+  }
+
+  .review-image {
+    width: 100px;
+    height: 100px;
+  }
+}
+</style>
+
+<!-- =================================================================
+     SCRIPT
+     ================================================================= -->
+<script>
+(function() {
+  const reviewsSection = document.querySelector('.reviews-section');
+  if (!reviewsSection) return;
+
+  const targetType = reviewsSection.dataset.targetType;
+  const targetId = reviewsSection.dataset.targetId;
+  let currentPage = 1;
+
+  // =================================================================
+  // LOAD STATS
+  // =================================================================
+  async function loadStats() {
+    try {
+      const response = await fetch(`/api/reviews/${targetType}/${targetId}?page=1&limit=1`);
+      const data = await response.json();
+
+      if (data.success && data.data.stats) {
+        renderStats(data.data.stats);
+      }
+    } catch (error) {
+      console.error('Error loading stats:', error);
+      document.getElementById('reviewsStats').innerHTML = `
+        <div class="no-reviews">
+          <p>Không thể tải thống kê</p>
+        </div>
+      `;
+    }
+  }
+
+  // =================================================================
+  // RENDER STATS
+  // =================================================================
+  function renderStats(stats) {
+    const total = stats.totalReviews;
+    const avg = stats.averageRating || 0;
+    const dist = stats.ratingDistribution || {};
+
+    const fullStars = Math.floor(avg);
+    const hasHalf = (avg % 1) >= 0.5;
+    
+    let starsHtml = '';
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        starsHtml += '<span class="star">★</span>';
+      } else if (i === fullStars && hasHalf) {
+        starsHtml += '<span class="star">★</span>';
+      } else {
+        starsHtml += '<span class="star" style="color: rgba(255,255,255,0.3)">★</span>';
+      }
+    }
+
+    let distributionHtml = '';
+    for (let i = 5; i >= 1; i--) {
+      const count = dist[i] || 0;
+      const percent = total > 0 ? (count / total * 100) : 0;
+      distributionHtml += `
+        <div class="distribution-row">
+          <div class="distribution-label">
+            <span>${i}</span>
+            <span class="star">★</span>
+          </div>
+          <div class="distribution-bar">
+            <div class="distribution-fill" style="width: ${percent}%"></div>
+          </div>
+          <div class="distribution-count">${count}</div>
+        </div>
+      `;
+    }
+
+    document.getElementById('reviewsStats').innerHTML = `
+      <div class="review-stats-card">
+        <h3 class="stats-title">Tổng quan</h3>
+        <div class="stats-summary">
+          <div class="average-rating">
+            <div class="rating-number">${avg.toFixed(1)}</div>
+            <div class="rating-stars">${starsHtml}</div>
+            <div class="rating-count">(${total} đánh giá)</div>
+          </div>
+          <div class="rating-distribution">
+            ${distributionHtml}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // =================================================================
+  // LOAD REVIEWS
+  // =================================================================
+  async function loadReviews(page = 1) {
+    currentPage = page;
+    const container = document.getElementById('reviewsList');
+    
+    container.innerHTML = `
+      <div class="reviews-loading">
+        <div class="spinner"></div>
+        <p>Đang tải đánh giá...</p>
+      </div>
+    `;
+
+    try {
+      const response = await fetch(`/api/reviews/${targetType}/${targetId}?page=${page}&limit=10`);
+      const data = await response.json();
+
+      if (data.success) {
+        renderReviews(data.data.reviews);
+        renderPagination(data.data.pagination);
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      console.error('Error loading reviews:', error);
+      container.innerHTML = `
+        <div class="no-reviews">
+          <div class="no-reviews-icon">📝</div>
+          <h3>Chưa có đánh giá nào</h3>
+          <p>Hãy là người đầu tiên chia sẻ trải nghiệm của bạn</p>
+        </div>
+      `;
+    }
+  }
+
+  // =================================================================
+  // RENDER REVIEWS
+  // =================================================================
+  function renderReviews(reviews) {
+    const container = document.getElementById('reviewsList');
+    
+    if (!reviews || reviews.length === 0) {
+      container.innerHTML = `
+        <div class="no-reviews">
+          <div class="no-reviews-icon">📝</div>
+          <h3>Chưa có đánh giá nào</h3>
+          <p>Hãy là người đầu tiên chia sẻ trải nghiệm của bạn</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = reviews.map(review => {
+      const starsHtml = Array(review.rating).fill('<span class="star">★</span>').join('');
+      const dateObj = new Date(review.createdAt);
+      const date = dateObj.toLocaleDateString('vi-VN') + ' ' + dateObj.toLocaleTimeString('vi-VN');
+      const avatarHtml = review.user.avatar 
+        ? `<img src="${review.user.avatar}" alt="${review.user.name}" class="reviewer-avatar">`
+        : `<div class="reviewer-avatar-placeholder">${review.user.name.charAt(0).toUpperCase()}</div>`;
+      
+      const imagesHtml = review.images && review.images.length > 0
+        ? `<div class="review-images">
+            ${review.images.map(img => `<img src="${img}" alt="Review image" class="review-image" onclick="viewImage('${img}')">`).join('')}
+           </div>`
+        : '';
+
+      const verifiedBadge = review.verified 
+        ? '<span class="verified-badge">✓ Đã xác minh</span>'
+        : '';
+
+      return `
+        <div class="review-item" data-review-id="${review._id}">
+          <div class="review-header">
+            ${avatarHtml}
+            <div class="reviewer-info">
+              <div class="reviewer-name">
+                ${review.user.name}
+                ${verifiedBadge}
+              </div>
+              <div class="review-meta">
+                <div class="review-rating">${starsHtml}</div>
+                <span class="review-date">${date}</span>
+              </div>
+            </div>
+          </div>
+          ${review.title ? `<h4 class="review-title">${review.title}</h4>` : ''}
+          <div class="review-content">${review.content}</div>
+          ${imagesHtml}
+        </div>
+      `;
+    }).join('');
+  }
+
+  // =================================================================
+  // RENDER PAGINATION
+  // =================================================================
+  function renderPagination(pagination) {
+    const container = document.getElementById('reviewsPagination');
+    
+    if (pagination.totalPages <= 1) {
+      container.innerHTML = '';
+      return;
+    }
+
+    let html = '';
+    
+    // Previous button
+    html += `<button class="page-btn" ${!pagination.hasPrev ? 'disabled' : ''} 
+              onclick="loadReviewsPage(${currentPage - 1})">‹</button>`;
+    
+    // Page numbers
+    for (let i = 1; i <= pagination.totalPages; i++) {
+      if (
+        i === 1 || 
+        i === pagination.totalPages || 
+        (i >= currentPage - 1 && i <= currentPage + 1)
+      ) {
+        html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" 
+                  onclick="loadReviewsPage(${i})">${i}</button>`;
+      } else if (i === currentPage - 2 || i === currentPage + 2) {
+        html += '<span style="padding: 8px;">...</span>';
+      }
     }
     
-    /* Force override any external CSS */
-    .review-card span.star {
-      font-size: 18px !important;
-      color: #ffd700 !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      display: inline-block !important;
-    }
-  
-    .review-text { 
-      font-size: 0.95rem; 
-      color: #34395e; 
-      line-height: 1.6; 
-      word-break: break-word; 
-      font-weight: 500;
-      margin: 8px 0;
-      text-align: left;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      min-height: 63px;
-    }
-    .review-read-more { color: #2563eb; text-decoration: none; font-weight: 600; }
-    .review-read-more:hover { text-decoration: underline; }
-  
-    .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: #ffffff; border: 1px solid #e5e7eb; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 20px; color: #374151; transition: all 0.2s; z-index: 10; display: none; box-shadow: 0 6px 16px rgba(17, 24, 39, 0.08); }
-  
-    .carousel-btn:hover { background: #f3f4f6; color: #111827; }
-  
-    .carousel-prev {
-      left: 10px;
-    }
-  
-    .carousel-next {
-      right: 10px;
-    }
-  
-    /* Responsive Design */
-    @media (max-width: 1024px) {
-      .review-card {
-        flex: 0 0 calc(50% - 10px);
-        min-width: 280px;
-      }
-    }
-  
-    @media (max-width: 768px) {
-      .review-widget-container {
-        padding: 20px 16px;
-      }
-  
-      .review-widget-title {
-        font-size: 24px;
-      }
-  
-      .review-widget-stats {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-      }
-  
-      .review-widget-rating {
-        width: 100%;
-        justify-content: space-between;
-      }
-  
-      .review-widget-btn {
-        width: 100%;
-      }
-  
-      .review-card {
-        flex: 0 0 calc(100% - 0px);
-        min-width: auto;
-        min-height: 260px;
-        padding: 18px 16px 14px 16px;
-      }
-  
-      .carousel-btn {
-        display: block !important;
-      }
-    }
-  
-    @media (max-width: 480px) {
-      .review-widget-title {
-        font-size: 20px;
-      }
-  
-      .rating-score {
-        font-size: 24px;
-      }
-  
-      .review-widget-logo {
-        width: 100px;
-        height: 42px;
-      }
-      
-      .rating-stars .star {
-        font-size: 18px !important;
-      }
-  
-      .carousel-track {
-        gap: 12px;
-      }
-  
-      .review-card {
-        padding: 16px;
-        min-height: 240px;
-      }
-  
-      .review-text {
-        font-size: 15px;
-        padding: 12px 16px;
-      }
-      
-      .reviewer-avatar {
-        width: 46px !important;
-        height: 46px !important;
-      }
-      
-      .reviewer-avatar-placeholder {
-        width: 46px !important;
-        height: 46px !important;
-        font-size: 14px !important;
-      }
-      
-      .review-card img.reviewer-avatar {
-        width: 46px !important;
-        height: 46px !important;
-      }
-      
-      .review-widget-container .review-card .star {
-        font-size: 16px !important;
-      }
-      
-      .review-card span.star {
-        font-size: 16px !important;
-      }
-      
-      .google-icon {
-        width: 20px;
-        height: 20px;
-        top: -10px;
-        right: -10px;
-      }
-      
-      .google-icon svg {
-        width: 14px;
-        height: 14px;
-      }
-    }
-  </style>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const carouselTracks = document.querySelectorAll('.carousel-track');
-      
-      carouselTracks.forEach(track => {
-        const prevBtn = track.parentElement.querySelector('.carousel-prev');
-        const nextBtn = track.parentElement.querySelector('.carousel-next');
-        
-        if(prevBtn && nextBtn) {
-          prevBtn.addEventListener('click', () => {
-            track.scrollBy({ left: -300, behavior: 'smooth' });
-          });
-          
-          nextBtn.addEventListener('click', () => {
-            track.scrollBy({ left: 300, behavior: 'smooth' });
-          });
-        }
-      });
-    });
+    // Next button
+    html += `<button class="page-btn" ${!pagination.hasNext ? 'disabled' : ''} 
+              onclick="loadReviewsPage(${currentPage + 1})">›</button>`;
+    
+    container.innerHTML = html;
+  }
+
+  // =================================================================
+  // GLOBAL FUNCTIONS
+  // =================================================================
+  window.loadReviewsPage = function(page) {
+    loadReviews(page);
+    reviewsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  window.viewImage = function(url) {
+    window.open(url, '_blank');
+  };
+
+  // =================================================================
+  // INIT
+  // =================================================================
+  loadStats();
+  loadReviews(1);
+})();
   </script>

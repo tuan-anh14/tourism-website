@@ -217,6 +217,19 @@
             </div>
         </div>
 
+        <!-- ===========================================
+             REVIEWS SECTION
+             =========================================== -->
+        <% if (entertainment && entertainment._id) { %>
+            <%- include('../../components/reviews-section', { 
+                targetType: 'entertainment',
+                targetId: entertainment._id,
+                title: 'Đánh giá từ khách hàng',
+                showForm: true,
+                currentUrl: '/entertainment/' + (entertainment.slug || entertainment._id)
+            }) %>
+        <% } %>
+
         <!-- Contact Section -->
         <%- include('../../components/contact-section', { sectionId: 'contact-entertainment-detail' }) %>
 

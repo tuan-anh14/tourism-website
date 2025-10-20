@@ -1,5 +1,24 @@
 const User = require("../model/User");
 
+// Optional auth middleware - sets user in res.locals if logged in, but doesn't require login
+module.exports.optionalAuth = async (req, res, next) => {
+  try {
+    if (req.cookies && req.cookies.tokenUser) {
+      const user = await User.findOne({
+        tokenUser: req.cookies.tokenUser,
+        deleted: false,
+      });
+      
+      if (user) {
+        res.locals.user = user;
+      }
+    }
+  } catch (error) {
+    console.error('Optional auth error:', error);
+  }
+  next();
+};
+
 // Client authentication middleware - checks for tokenUser cookie
 module.exports.requireAuth = async (req, res, next) => {
   // If this is an admin route, use session-based auth instead
@@ -7,7 +26,16 @@ module.exports.requireAuth = async (req, res, next) => {
     return module.exports.requireAdmin(req, res, next);
   }
 
+  // Check if this is an API request
+  const isApiRequest = req.originalUrl && req.originalUrl.startsWith('/api/');
+
   if (!req.cookies || !req.cookies.tokenUser) {
+    if (isApiRequest) {
+      return res.status(401).json({
+        success: false,
+        message: 'Vui lòng đăng nhập để tiếp tục'
+      });
+    }
     res.redirect(`/auth/login`);
     return;
   }
@@ -18,6 +46,12 @@ module.exports.requireAuth = async (req, res, next) => {
   });
 
   if (!user) {
+    if (isApiRequest) {
+      return res.status(401).json({
+        success: false,
+        message: 'Phiên đăng nhập không hợp lệ'
+      });
+    }
     res.redirect(`/auth/login`);
     return;
   }

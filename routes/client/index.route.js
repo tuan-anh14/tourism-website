@@ -7,6 +7,7 @@ const transportationRoutes = require("./transportation.route");
 const blogRoutes = require("./blog.route");
 const contactRoutes = require("./contact.route");
 const authRoutes = require("./auth.route");
+const reviewRoutes = require("./review.route");
 
 module.exports = (app) => {
   app.use("/", homeRoutes);
@@ -18,4 +19,5 @@ module.exports = (app) => {
   app.use("/blog", blogRoutes);
   app.use("/contact", contactRoutes);
   app.use("/auth", authRoutes);
+  app.use("/api/reviews", reviewRoutes);
 };

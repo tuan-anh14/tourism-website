@@ -1,8 +1,9 @@
 const express = require('express')
 const route = express.Router()
 
-const accommodationController = require("../../controller/client/accommodation.controller") 
+const accommodationController = require("../../controller/client/accommodation.controller")
+const { optionalAuth } = require("../../middleware/auth")
 
-route.get('/', accommodationController.accommodation)
-route.get('/:slug', accommodationController.accommodationDetail)
+route.get('/', optionalAuth, accommodationController.accommodation)
+route.get('/:slug', optionalAuth, accommodationController.accommodationDetail)
 module.exports = route; 

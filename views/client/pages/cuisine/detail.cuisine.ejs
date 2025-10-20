@@ -188,6 +188,19 @@
             </div>
         </div>
 
+        <!-- ===========================================
+             REVIEWS SECTION
+             =========================================== -->
+        <% if (food && food._id) { %>
+            <%- include('../../components/reviews-section', { 
+                targetType: 'food',
+                targetId: food._id,
+                title: 'Đánh giá từ thực khách',
+                showForm: true,
+                currentUrl: '/cuisine/' + (food.slug || food._id)
+            }) %>
+        <% } %>
+
         <!-- Contact Section -->
         <%- include('../../components/contact-section', { sectionId: 'contact-cuisine-detail' }) %>
 

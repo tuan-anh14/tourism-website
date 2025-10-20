@@ -355,7 +355,15 @@
                 <!-- ===========================================
                      REVIEWS SECTION 
                      =========================================== -->
-                <!-- Reviews will be added here in next step -->
+                <% if (attraction && attraction._id) { %>
+                    <%- include('../../components/reviews-section', { 
+                        targetType: 'attraction',
+                        targetId: attraction._id,
+                        title: 'Đánh giá từ du khách',
+                        showForm: true,
+                        currentUrl: '/attraction/' + (attraction.slug || attraction._id)
+                    }) %>
+                <% } %>
             </div>
         </main>
 
@@ -382,8 +390,6 @@
                 </div>
             </div>
         </div>
-
-        <%- include('../../components/reviews-section') %>
 
         <!-- Contact Section -->
         <%- include('../../components/contact-section', { sectionId: 'contact-attraction-detail' }) %>

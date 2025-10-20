@@ -243,12 +243,15 @@
     <!-- ===========================================
              REVIEWS SECTION
              =========================================== -->
-    <%- include('../../components/reviews-section', { 
-        attraction: acc,
-        title: "Đừng chỉ nghe chúng tôi, hãy nghe du khách!",
-        showButton: true,
-        buttonUrl: acc && acc.website ? acc.website : ''
-    }) %>
+    <% if (acc && acc._id) { %>
+        <%- include('../../components/reviews-section', { 
+            targetType: 'accommodation',
+            targetId: acc._id,
+            title: 'Đánh giá từ khách hàng',
+            showForm: true,
+            currentUrl: '/accommodation/' + (acc.slug || acc._id)
+        }) %>
+    <% } %>
 
     <!-- Contact Section -->
     <%- include('../../components/contact-section', { sectionId: 'contact-accommodation-detail' }) %>
