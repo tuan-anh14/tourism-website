@@ -320,15 +320,38 @@ section {
   font-size: var(--fs-paragraphs);
 }
 
+.events {
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
 .events .ctn {
   margin-top: 30px;
 }
 
-/* explore */
-.explore {
+/* Specific spacing for blog section */
+section#blog {
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+/* Overview & Map Container - Split Screen Layout */
+.overview-map-container {
   width: 100%;
-  min-height: 80vh;
-  height: auto;
+  height: 100vh;
+  min-height: 600px;
+  margin: 0 !important;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+/* explore - Left Side (50%) */
+.explore {
+  width: 50%;
+  height: 100%;
+  margin: 0;
   background-image: url(../img/prj-overview.jpg);
   background-attachment: fixed;
   background-position: center;
@@ -336,7 +359,10 @@ section {
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
-  padding: 60px 0; /* ensure spacing so content never touches next section */
+  justify-content: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+  flex-shrink: 0;
 }
 
 .explore-content {
@@ -345,12 +371,13 @@ section {
   display: flex;
   align-items: center;
   flex-direction: column;
-  /* center block and constrain readable width */
+  justify-content: center;
   position: relative;
   z-index: 1;
-  padding: 2rem 17px;
+  padding: 2rem 25px;
   margin: 0 auto;
-  max-width: 980px;
+  max-width: 700px;
+  width: 100%;
 }
 
 .explore-content::after {
@@ -366,24 +393,27 @@ section {
 
 .explore-content h1 {
   font-family: var(--ff-heading);
-  font-size: var(--fs-headings);
-  letter-spacing: 0.3rem;
+  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+  letter-spacing: 0.25rem;
   font-weight: 600;
-  margin: auto;
+  margin: 0 auto 15px;
+  text-align: center;
 }
 
 .explore-content .line {
-  margin-bottom: 50px;
+  margin-bottom: 25px;
+  width: 120px;
 }
 
 .explore-content p {
   font-family: var(--ff-primary);
   color: rgb(221, 221, 221);
-  max-width: 65ch;
-  line-height: 1.5;
-  text-align: left;
-  padding: 0px 35px;
-  font-size: var(--fs-paragraphs);
+  max-width: 60ch;
+  line-height: 1.6;
+  text-align: justify;
+  padding: 0px 20px;
+  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+  margin: 0;
 }
 
 .explore-content .ctn {
@@ -554,62 +584,119 @@ p,
 .contributors {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  margin-top: 0em;
-  padding: 5em 2em;
+  justify-content: center;
   flex-wrap: wrap;
+  margin: 0;
+  padding: 3em 2em 5em;
   width: 100%;
   min-height: 100vh;
-  background-color: #000;
+  position: relative;
+  background-image: url(../img/Overview-1.jpg);
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
   font-family: var(--ff-primary);
 }
 
+.contributors::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(3px);
+  z-index: 0;
+}
+
+.contributors-title {
+  width: 100%;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 2em;
+}
+
+.contributors-title h1 {
+  font-family: var(--ff-heading);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.2rem;
+  margin: 0;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.contributors-title .line {
+  width: 150px;
+  height: 4px;
+  background: var(--primary-color);
+  margin: 15px auto 0;
+  border-radius: 2px;
+}
+
 .concard {
-  background-color: #ffff;
-  padding: 0.2em 0.5em;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 1em 0.8em;
   color: #222;
-  height: 12em;
+  height: 13em;
   width: 10em;
-  border-radius: 5px;
+  border-radius: 12px;
   margin: 1.5em 0.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
+
 .concard:hover {
   background-color: var(--primary-color);
-  border-bottom: 5px solid #fff;
   color: #fff;
-  transform: translateY(-7.5px);
-  transition: background-color 0.5s ease, transform 1s ease,
-    border-bottom 0.5s ease 0.2s;
+  transform: translateY(-10px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.concard:hover .msv {
+  color: #fff;
 }
 
 .concard .pfp {
-  width: 50%;
+  width: 55%;
   border-radius: 100%;
+  border: 3px solid var(--primary-color);
+  margin-bottom: 0.8em;
 }
+
 .text {
-  margin: 1em 0em 0em 0em;
   text-align: center;
-  font-size: 0.9em;
+  width: 100%;
 }
+
 .text h1 {
   font-weight: 600;
-  font-size: var(--fs-xl);
+  font-size: 1.1rem;
   font-family: var(--ff-primary);
+  margin: 0 0 0.4em 0;
+  color: #222;
 }
-.logolink {
-  margin: 0.6em 0em 0em 0em;
-  width: 25%;
+
+.concard:hover .text h1 {
+  color: #fff;
 }
-.logolink img {
-  border-radius: 100%;
-  background-color: #ffff;
-}
-.logolink .github-logo {
-  width: 100%;
+
+.msv {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  font-family: var(--ff-primary);
+  letter-spacing: 0.5px;
 }
 
 /* contact */
@@ -647,11 +734,16 @@ form {
 }
 
 .c_boxx a p {
-  color: white;
+  color: white !important;
   font-size: 1em;
   font-weight: 100;
   padding: 1rem;
   padding: 0px 40px;
+  margin: 0;
+}
+
+.c_boxx a:hover p {
+  color: var(--primary-color) !important;
 }
 
 .c_boxx a {
@@ -660,24 +752,30 @@ form {
   padding-left: 2em;
   border: 0.1em solid var(--primary-color);
   background-color: var(--primary-color);
-  color: white;
+  color: white !important;
   display: flex;
   border-radius: 2em;
   align-items: center;
-  border: var(--primary-color) 0.1em solid;
   font-size: 1em;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 .c_boxx a:hover {
   background-color: white;
-  color: var(--primary-color);
-  transition: all 0.5s ease;
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color);
+}
+
+.c_boxx a:hover i {
+  color: var(--primary-color) !important;
 }
 
 .c_boxx i {
   font-size: 38px;
   margin-right: 10px;
-  /* margin-left: 0.5em; */
+  color: white;
+  transition: color 0.3s ease;
 }
 
 input[type="text"],
@@ -697,18 +795,20 @@ label {
 
 input[type="submit"] {
   background-color: var(--primary-color);
-  color: whitesmoke;
+  color: whitesmoke !important;
   padding: 12px 50px;
   border: 2px solid var(--primary-color);
   border-radius: 100vmax;
   cursor: pointer;
   font-family: var(--ff-primary);
   font-size: var(--fs-links-btns);
+  transition: all 0.3s ease;
 }
 
 input[type="submit"]:hover {
   background-color: whitesmoke;
-  color: var(--primary-color);
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color);
 }
 
 .cform {
@@ -1020,13 +1120,29 @@ section[id^="contact"] .cbox-line { background-color: var(--primary-color); }
 section[id^="contact"] .c_boxx a {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
+  color: white !important;
 }
-section[id^="contact"] .c_boxx a:hover { color: var(--primary-color); }
+section[id^="contact"] .c_boxx a:hover { 
+  background-color: white;
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color);
+}
+section[id^="contact"] .c_boxx a:hover i {
+  color: var(--primary-color) !important;
+}
+section[id^="contact"] .c_boxx i {
+  color: white;
+}
 section[id^="contact"] input[type="submit"] {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
+  color: whitesmoke !important;
 }
-section[id^="contact"] input[type="submit"]:hover { color: var(--primary-color); }
+section[id^="contact"] input[type="submit"]:hover { 
+  background-color: whitesmoke;
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color);
+}
 
 /* animations */
 img {
@@ -1298,7 +1414,174 @@ input[type="radio"] {
 }
 
 /* Responsive Design */
+
+/* Large screens optimization */
+@media (min-width: 1400px) {
+  .overview-map-container {
+    min-height: 700px;
+  }
+
+  .explore-content {
+    max-width: 800px;
+    padding: 2.5rem 30px;
+  }
+
+  .explore-content h1 {
+    font-size: 2.8rem;
+  }
+
+  .explore-content p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+}
+
+/* Tablet optimization */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Contributors - optimize for tablet */
+  .contributors {
+    padding: 3em 1.5em;
+    min-height: 100vh;
+    background-attachment: scroll;
+  }
+
+  .concard {
+    height: 11em;
+    width: 9em;
+    margin: 1em 0.6em;
+    padding: 0.8em 0.6em;
+  }
+
+  .concard .pfp {
+    width: 50%;
+  }
+
+  .text h1 {
+    font-size: 1rem;
+  }
+
+  .msv {
+    font-size: 0.8rem;
+  }
+
+  .overview-map-container {
+    min-height: 550px;
+  }
+
+  .explore {
+    padding: 30px 15px;
+  }
+
+  .explore-content {
+    max-width: 600px;
+    padding: 1.8rem 20px;
+  }
+
+  .explore-content h1 {
+    font-size: 2rem;
+  }
+
+  .explore-content p {
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile styles */
 @media (max-width: 768px) {
+  /* Events/Blog section spacing */
+  .events {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  section#blog {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  /* Contributors - fit all in one screen */
+  .contributors {
+    padding: 2em 1em 2.5em;
+    min-height: auto;
+    max-height: 100vh;
+    overflow-y: auto;
+    background-attachment: scroll;
+  }
+
+  .contributors-title {
+    margin-bottom: 1.5em;
+  }
+
+  .contributors-title h1 {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    letter-spacing: 0.1rem;
+  }
+
+  .contributors-title .line {
+    width: 100px;
+    height: 3px;
+  }
+
+  .concard {
+    height: 9.5em;
+    width: 7.5em;
+    margin: 0.8em 0.4em;
+    padding: 0.6em 0.5em;
+  }
+
+  .concard .pfp {
+    width: 48%;
+    border: 2px solid var(--primary-color);
+    margin-bottom: 0.5em;
+  }
+
+  .text h1 {
+    font-size: 0.9rem;
+    margin: 0 0 0.3em 0;
+  }
+
+  .msv {
+    font-size: 0.7rem;
+  }
+
+  /* Overview & Map Container - Stack vertically on mobile */
+  .overview-map-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    margin: 0 !important;
+  }
+
+  /* Explore section for mobile - Top half */
+  .explore {
+    width: 100%;
+    height: 50vh;
+    min-height: 400px;
+    padding: 30px 15px;
+    background-attachment: scroll;
+  }
+
+  .explore-content {
+    padding: 1.5rem 20px;
+    max-width: 600px;
+  }
+
+  .explore-content h1 {
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    letter-spacing: 0.15rem;
+  }
+
+  .explore-content .line {
+    margin-bottom: 20px;
+    width: 100px;
+  }
+
+  .explore-content p {
+    padding: 0px 15px;
+    font-size: clamp(0.8rem, 2vw, 0.95rem);
+    line-height: 1.5;
+  }
+
   #about {
     padding: 40px 0 !important;
     width: 100% !important;
@@ -1383,6 +1666,100 @@ input[type="radio"] {
 }
 
 @media (max-width: 480px) {
+  /* Events/Blog section spacing on small mobile */
+  .events {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  section#blog {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  /* Contributors - fit all in one screen on small mobile */
+  .contributors {
+    padding: 1.5em 0.5em 2em;
+    min-height: auto;
+    max-height: 100vh;
+    overflow-y: auto;
+    gap: 0.3em;
+    background-attachment: scroll;
+  }
+
+  .contributors-title {
+    margin-bottom: 1.2em;
+  }
+
+  .contributors-title h1 {
+    font-size: clamp(1.3rem, 4.5vw, 1.8rem);
+    letter-spacing: 0.08rem;
+  }
+
+  .contributors-title .line {
+    width: 80px;
+    height: 3px;
+    margin: 10px auto 0;
+  }
+
+  .concard {
+    height: 8em;
+    width: 6.5em;
+    margin: 0.5em 0.3em;
+    padding: 0.5em 0.4em;
+  }
+
+  .concard .pfp {
+    width: 45%;
+    border: 2px solid var(--primary-color);
+    margin-bottom: 0.4em;
+  }
+
+  .text h1 {
+    font-size: 0.8rem;
+    margin: 0 0 0.25em 0;
+  }
+
+  .msv {
+    font-size: 0.65rem;
+  }
+
+  /* Overview & Map Container - Stack vertically on small mobile */
+  .overview-map-container {
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0 !important;
+  }
+
+  /* Explore section for small mobile */
+  .explore {
+    width: 100%;
+    height: 50vh;
+    min-height: 350px;
+    padding: 25px 12px;
+  }
+
+  .explore-content {
+    padding: 1rem 15px;
+    max-width: 500px;
+  }
+
+  .explore-content h1 {
+    font-size: clamp(1rem, 3.5vw, 1.5rem);
+    letter-spacing: 0.1rem;
+  }
+
+  .explore-content .line {
+    margin-bottom: 15px;
+    width: 80px;
+  }
+
+  .explore-content p {
+    padding: 0px 12px;
+    font-size: clamp(0.75rem, 1.8vw, 0.85rem);
+    line-height: 1.4;
+  }
+
   #about {
     padding: 30px 0 !important;
     width: 100% !important;

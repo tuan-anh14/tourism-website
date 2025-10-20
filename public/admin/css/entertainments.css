@@ -76,7 +76,7 @@
 }
 
 .form-control.is-invalid {
-    border-color: #dc3545;
+    border-color: ;
 }
 
 .form-text {
@@ -136,13 +136,13 @@
 }
 
 .btn-outline-danger {
-    border: 2px solid #dc3545;
-    color: #dc3545;
+    border: 2px solid ;
+    color: ;
 }
 
 .btn-outline-danger:hover {
-    background: #dc3545;
-    border-color: #dc3545;
+    background: ;
+    border-color: ;
     transform: translateY(-2px);
 }
 

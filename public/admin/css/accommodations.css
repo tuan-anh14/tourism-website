@@ -109,13 +109,13 @@
 }
 
 .btn-outline-danger {
-    border: 2px solid #dc3545;
-    color: #dc3545;
+    border: 2px solid ;
+    color: ;
 }
 
 .btn-outline-danger:hover {
-    background: #dc3545;
-    border-color: #dc3545;
+    background: ;
+    border-color: ;
 }
 
 .btn-outline-info {
@@ -416,7 +416,7 @@
 
 /* Form Validation */
 .is-invalid {
-    border-color: #dc3545 !important;
+    border-color:  !important;
 }
 
 .is-valid {
@@ -424,7 +424,7 @@
 }
 
 .invalid-feedback {
-    color: #dc3545;
+    color: ;
     font-size: 0.875rem;
     margin-top: 0.25rem;
 }

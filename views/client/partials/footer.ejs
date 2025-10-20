@@ -76,10 +76,22 @@
             "es"      // Spanish
         ],
         native_language_names: true,
-        detect_browser_language: true,
+        detect_browser_language: false,
         flag_size: 24,
         float_switcher_open_direction: "bottom"
     };
+    // Force Vietnamese as default language
+    document.documentElement.setAttribute('lang', 'vi');
+    
+    // Clear any stored language preference to always start with Vietnamese
+    try {
+        localStorage.removeItem('googtrans');
+        localStorage.removeItem('gtranslate_language');
+        // Clear cookies
+        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname + ';';
+    } catch(e) {}
+    
     // Lazy load GTranslate for better performance
     window.addEventListener('DOMContentLoaded', function(){
         if(!document.querySelector('script[src*="gtranslate"]')){
@@ -90,6 +102,24 @@
                 s.defer=true;
                 s.async=true;
                 document.body.appendChild(s);
+                
+                // After GTranslate loads, ensure Vietnamese is set
+                s.onload = function() {
+                    setTimeout(() => {
+                        if (window.gtranslate) {
+                            try {
+                                // Force set to Vietnamese if not already
+                                var currentLang = window.gtranslate.getCurrentLanguage ? 
+                                    window.gtranslate.getCurrentLanguage() : 'vi';
+                                if (currentLang !== 'vi') {
+                                    window.gtranslate.switchLanguage('vi');
+                                }
+                            } catch(e) {
+                                console.log('GTranslate force language:', e);
+                            }
+                        }
+                    }, 500);
+                };
             }, 1000);
         }
     });
