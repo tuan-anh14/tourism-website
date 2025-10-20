@@ -160,6 +160,9 @@
         <!--footer-->
         <%- include('../../partials/footer') %>
 
+        <!-- Inject all attractions data for search -->
+        <div id="attractions-data" data-json="<%= allAttractionsForSearch %>" style="display: none;"></div>
+        
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="/client/js/includes.js"></script>
         <script src="/client/js/script.js"></script>

@@ -1067,3 +1067,152 @@ body.dark .itinerary-day__info-card {
     background: rgba(20, 20, 22, 0.9);
     border-color: rgba(255, 255, 255, 0.1);
 }
+
+/* ===========================================
+   REVIEWS & MAP - SIDE BY SIDE LAYOUT
+   =========================================== */
+.reviews-map-container {
+    display: grid;
+    grid-template-columns: 60% 40%; /* Đánh giá to hơn (60%), Bản đồ nhỏ hơn (40%) */
+    gap: 24px;
+    margin: 32px 0;
+    align-items: start; /* Align to top */
+}
+
+.reviews-col,
+.map-col {
+    min-width: 0; /* Prevent overflow */
+}
+
+/* Override reviews section margin when inside grid */
+.reviews-col .reviews-section {
+    margin: 0;
+}
+
+/* Map Card Styling - Match Reviews Section */
+.map-overview-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px 28px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+}
+
+.map-card-header {
+    margin-bottom: 20px;
+}
+
+.map-card-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 8px 0;
+    font-family: var(--ff-heading);
+}
+
+.map-card-header p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.map-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Map Container Inside Card */
+.map-card-body .itinerary-overview__map-container {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    height: 450px; /* Fixed height for map */
+}
+
+.map-card-body .itinerary-overview__map-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.map-card-body .itinerary-overview__map {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+}
+
+/* Remove old heading inside map */
+.map-card-body .map-overview__heading {
+    display: none;
+}
+
+/* Dark Mode */
+body.dark .map-overview-card {
+    background: rgba(20, 20, 22, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark .map-card-header h2 {
+    color: #ffffff;
+}
+
+body.dark .map-card-header p {
+    color: #9ca3af;
+}
+
+body.dark .map-card-body .itinerary-overview__map-container {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive - Stack vertically on smaller screens */
+@media (max-width: 1200px) {
+    .reviews-map-container {
+        grid-template-columns: 55% 45%; /* Adjust ratio for medium screens */
+    }
+    
+    .map-card-body .itinerary-overview__map-container {
+        height: 400px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .reviews-map-container {
+        grid-template-columns: 1fr; /* Stack vertically */
+        gap: 20px;
+    }
+    
+    .map-card-body .itinerary-overview__map-container {
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .reviews-map-container {
+        margin: 20px 0;
+        gap: 16px;
+    }
+    
+    .map-overview-card {
+        padding: 20px 16px;
+    }
+    
+    .map-card-header h2 {
+        font-size: 18px;
+    }
+    
+    .map-card-body .itinerary-overview__map-container {
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .map-card-body .itinerary-overview__map-container {
+        height: 250px;
+    }
+}

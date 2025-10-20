@@ -170,10 +170,17 @@ module.exports.attractions = async (req, res) => {
 
         const attractions = attractionDocs.map(mapAttractionToView);
 
+        // Lấy TẤT CẢ attractions để phục vụ search (không giới hạn pagination)
+        const allAttractionsForSearch = await Attraction.find({ isActive: true })
+            .select('name category slug')
+            .sort({ name: 1 })
+            .lean();
+
         res.render("client/pages/attraction/attraction.ejs", {
             pageTitle: "Điểm tham quan",
             attractions,
             categories,
+            allAttractionsForSearch: JSON.stringify(allAttractionsForSearch), // Pass as JSON string
             pagination: {
                 currentPage: page,
                 totalPages,
@@ -193,6 +200,7 @@ module.exports.attractions = async (req, res) => {
             pageTitle: "Điểm tham quan",
             attractions: [],
             categories: [],
+            allAttractionsForSearch: JSON.stringify([]), // Empty array for error case
             pagination: {
                 currentPage: 1,
                 totalPages: 0,

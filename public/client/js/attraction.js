@@ -28,8 +28,34 @@
         'nhan-van': 'Điểm tham quan nhân văn'
     };
     
-    // Load attractions data from page cards
+    // Load attractions data - ưu tiên từ server data (toàn bộ), fallback là page cards
     function loadAttractionsData() {
+        // Thử load từ data attribute (toàn bộ attractions từ server)
+        var dataElement = document.getElementById('attractions-data');
+        if (dataElement) {
+            try {
+                var jsonStr = dataElement.getAttribute('data-json');
+                if (jsonStr) {
+                    var allData = JSON.parse(jsonStr);
+                    if (Array.isArray(allData) && allData.length > 0) {
+                        attractionsData = allData.map(function(item) {
+                            return {
+                                title: item.name,
+                                category: item.category,
+                                slug: item.slug,
+                                icon: categoryIcons[item.category] || 'fa-map-marker'
+                            };
+                        });
+                        console.log('✅ Loaded ' + attractionsData.length + ' attractions for search (from server - ALL data)');
+                        return;
+                    }
+                }
+            } catch(e) {
+                console.warn('Failed to parse attractions data from server:', e);
+            }
+        }
+        
+        // Fallback: load từ cards trên trang (chỉ trang hiện tại)
         var allCards = document.querySelectorAll('.attraction-card');
         attractionsData = [];
         allCards.forEach(function(card) {
@@ -45,7 +71,7 @@
                 });
             }
         });
-        console.log('Loaded ' + attractionsData.length + ' attractions for search');
+        console.log('⚠️ Loaded ' + attractionsData.length + ' attractions for search (from page cards - current page only)');
     }
 
     function normalize(str) {
@@ -176,12 +202,18 @@
         }
         hideSuggestions();
         
-        // Nếu có slug, có thể navigate trực tiếp đến trang detail (future enhancement)
-        // if (slug) {
-        //     window.location.href = '/attraction/' + slug;
-        //     return;
-        // }
+        // Kiểm tra xem attraction có trên trang hiện tại không
+        var cardOnPage = cards && cards.find(function(card) {
+            return card.getAttribute('data-title') === title;
+        });
         
+        // Nếu item KHÔNG có trên trang hiện tại và có slug → navigate to detail page
+        if (!cardOnPage && slug) {
+            window.location.href = '/attraction/' + slug;
+            return;
+        }
+        
+        // Nếu item CÓ trên trang hiện tại → filter và scroll như bình thường
         // Update filters to show this attraction (use text match; keep category = all to avoid code mismatches)
         if (searchInput) searchInput.value = title;
         if (categorySelect) categorySelect.value = 'all';

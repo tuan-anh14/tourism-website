@@ -19,26 +19,17 @@
     </head>
     <body>
         <%- include('../../partials/header') %>
-        <% /* ===========================================
-             DYNAMIC DATA INITIALIZATION
-             ===========================================
-             Data will be managed by attraction-data.js
-             This ensures clean separation of concerns
-             =========================================== */ %>
         <% var attraction = (typeof attraction !== 'undefined' && attraction) ? attraction : null; %>
         <% const bannerUrl = (attraction && (attraction.heroImage || (attraction.images && attraction.images[0] && attraction.images[0].url))) || '/client/img/header-bg.jfif'; %>
         <!-- Banner -->
         <header class="page-header attraction-banner" style="background-image: url('<%= bannerUrl %>');">
             <div class="header-content">
-                <h2 id="quote">
+                <h2 id="quote" style="color: #fff;">
                     <%= attraction && attraction.category === 'nhan-van' ? 'Điểm tham quan nhân văn' :
                         attraction && attraction.category === 'tu-nhien' ? 'Điểm đến tham quan tự nhiên' : 'Điểm tham quan' %>
                 </h2>
                 <div class="line"></div>
                 <h1><%= (attraction && (attraction.title || attraction.name)) || 'Điểm tham quan' %></h1>
-                <p class="font-color">
-                    <%= (attraction && attraction.shortDescription) || 'Khám phá vẻ đẹp văn hóa Hà Nội' %>
-                </p>
                 <% if (attraction && attraction.hasReviewWidget) { %>
                     <div class="banner-rating">
                         <div class="stars">
@@ -64,48 +55,17 @@
 
         <main class="attraction-detail main" aria-label="Nội dung chi tiết điểm tham quan">
             <div class="container">
-                <!-- Map Overview Section -->
-                <section id="map-overview" class="content-section map-overview">
-                    <div class="itinerary-overview__map-container">
-                        <div class="itinerary-overview__map-inner">
-                            <div id="glanceMap"
-                                 class="itinerary-overview__map"
-                                 data-lat="<%= (attraction && (attraction.lat || attraction.coordinates?.lat)) || 21.028511 %>"
-                                 data-lng="<%= (attraction && (attraction.lng || attraction.coordinates?.lng)) || 105.804817 %>"
-                                 data-zoom="<%= (attraction && (attraction.mapZoom || attraction.map?.zoom)) || 14 %>"
-                                 data-name="<%= (attraction && (attraction.title || attraction.name)) || '' %>"
-                                 data-address="<%= (attraction && attraction.address) || '' %>"
-                                 data-image="<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0] && attraction.images[0].url))) || '' %>"
-                                 data-url="<%= (attraction && ('/attraction/' + (attraction.slug || attraction._id))) || '' %>"
-                                 data-route='<%- JSON.stringify((attraction && attraction.route) || []) %>'></div>
-                            <div class="map-overview__heading">
-                                <h2>Bản đồ tổng quan</h2>
-                                <p>Vị trí và phạm vi điểm tham quan</p>
-                            </div>
-                            
-                        </div>
-                        <div class="itinerary-overview__map-gradient-vertical"></div>
-                        <div class="itinerary-overview__map-gradient-horizontal"></div>
-                    </div>
-                </section>
-                <!-- ===========================================
-                     SECTION 1: INTRODUCTION & BASIC INFO
-                     =========================================== -->
                 <section id="attraction-intro" class="content-section itinerary-day no-margin-top">
                     <div class="itinerary-day__hero-wrapper">
                         <div class="itinerary-day__hero-media">
                             <img src="<%= (attraction && attraction.images && attraction.images[0] && attraction.images[0].url) || '/client/img/carousel-img5.jpg' %>" 
                                  alt="<%= (attraction && (attraction.title || attraction.name)) || 'Điểm tham quan' %>" 
                                  loading="lazy" />
-                            <div class="itinerary-day__banner-title">
-                                <h2>Chào mừng tới <%= (attraction && (attraction.title || attraction.name)) || 'Điểm tham quan' %></h2>
-                            </div>
                         </div>
                     </div>
 
                     <div class="itinerary-day__overlay">
                         <div class="itinerary-day__content-container">
-                            <!-- NEW LAYOUT: Side by side Introduction and Basic Info -->
                             <div class="intro-layout">
                                 <!-- LEFT: Introduction -->
                                 <div class="intro-section">
@@ -181,10 +141,6 @@
                         </div>
                     </div>
                 </section>
-
-                <!-- ===========================================
-                     SECTION 2: EXPERIENCES & GUIDELINES
-                     =========================================== -->
                 <section id="attraction-experiences" class="content-section itinerary-day">
                     <div class="itinerary-day__hero-wrapper">
                         <div class="itinerary-day__hero-media">
@@ -353,17 +309,50 @@
                 </script>
 
                 <!-- ===========================================
-                     REVIEWS SECTION 
+                     REVIEWS & MAP SECTION - SIDE BY SIDE
                      =========================================== -->
-                <% if (attraction && attraction._id) { %>
-                    <%- include('../../components/reviews-section', { 
-                        targetType: 'attraction',
-                        targetId: attraction._id,
-                        title: 'Đánh giá từ du khách',
-                        showForm: true,
-                        currentUrl: '/attraction/' + (attraction.slug || attraction._id)
-                    }) %>
-                <% } %>
+                <div class="reviews-map-container">
+                    <!-- Left: Reviews -->
+                    <div class="reviews-col">
+                        <% if (attraction && attraction._id) { %>
+                            <%- include('../../components/reviews-section', { 
+                                targetType: 'attraction',
+                                targetId: attraction._id,
+                                title: 'Đánh giá từ du khách',
+                                showForm: true,
+                                currentUrl: '/attraction/' + (attraction.slug || attraction._id)
+                            }) %>
+                        <% } %>
+                    </div>
+                    
+                    <!-- Right: Map -->
+                    <div class="map-col">
+                        <section id="map-overview" class="map-overview-card">
+                            <div class="map-card-header">
+                                <h2>Bản đồ tổng quan</h2>
+                                <p>Vị trí và phạm vi điểm tham quan</p>
+                            </div>
+                            <div class="map-card-body">
+                                <div class="itinerary-overview__map-container">
+                                    <div class="itinerary-overview__map-inner">
+                                        <div id="glanceMap"
+                                             class="itinerary-overview__map"
+                                             data-lat="<%= (attraction && (attraction.lat || attraction.coordinates?.lat)) || 21.028511 %>"
+                                             data-lng="<%= (attraction && (attraction.lng || attraction.coordinates?.lng)) || 105.804817 %>"
+                                             data-zoom="<%= (attraction && (attraction.mapZoom || attraction.map?.zoom)) || 14 %>"
+                                             data-name="<%= (attraction && (attraction.title || attraction.name)) || '' %>"
+                                             data-address="<%= (attraction && attraction.address) || '' %>"
+                                             data-image="<%= (attraction && (attraction.heroImage || (attraction.images && attraction.images[0] && attraction.images[0].url))) || '' %>"
+                                             data-url="<%= (attraction && ('/attraction/' + (attraction.slug || attraction._id))) || '' %>"
+                                             data-route='<%- JSON.stringify((attraction && attraction.route) || []) %>'></div>
+                                    </div>
+                                    <div class="itinerary-overview__map-gradient-vertical"></div>
+                                    <div class="itinerary-overview__map-gradient-horizontal"></div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
             </div>
         </main>
 
