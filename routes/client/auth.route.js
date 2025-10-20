@@ -4,6 +4,7 @@ const route = express.Router()
 const controller = require("../../controller/client/auth.controller")
 const validate = require("../../validates/auth.validate")
 const authMiddleware = require("../../middleware/auth")
+const { upload } = require("../../middleware/upload")
 
 route.get('/register', controller.register)
 
@@ -28,5 +29,12 @@ route.get('/password/reset', controller.resetPassword)
 route.post('/password/reset', validate.resetPasswordPost, controller.resetPasswordPost)
 
 route.get('/info', authMiddleware.requireAuth, controller.info)
+
+// Cập nhật thông tin cơ bản: avatar + fullName (email, phone chỉ đọc)
+route.post('/info', 
+  authMiddleware.requireAuth, 
+  upload.single('avatar'), 
+  controller.infoPost
+)
 
 module.exports = route;

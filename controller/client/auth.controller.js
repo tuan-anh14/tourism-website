@@ -31,6 +31,9 @@ module.exports.registerPost = async (req, res) => {
   }
 
   const user = new User(req.body);
+  if (!user.avatar) {
+    user.avatar = '/client/img/avatar.png';
+  }
   await user.save();
 
   res.cookie("tokenUser", user.tokenUser);
@@ -213,5 +216,45 @@ module.exports.resetPasswordPost = async (req, res) => {
 module.exports.info = (req, res) => {
   res.render("client/pages/auth/info", {
     pageTitle: "Thông tin tài khoản",
+    user: res.locals.user
   });
+};
+
+// [POST] /auth/info - cập nhật avatar + fullName
+module.exports.infoPost = async (req, res) => {
+  try {
+    const user = res.locals.user;
+    if (!user) {
+      req.flash('error', 'Vui lòng đăng nhập');
+      return res.redirect('/auth/login');
+    }
+
+    const updates = {};
+
+    if (req.body.fullName && String(req.body.fullName).trim()) {
+      updates.fullName = String(req.body.fullName).trim();
+    }
+
+    if (req.file) {
+      // multer saved file under public/uploads
+      updates.avatar = `/uploads/${req.file.filename}`;
+    }
+
+    if (Object.keys(updates).length === 0) {
+      req.flash('warning', 'Không có gì để cập nhật');
+      return res.redirect('/auth/info');
+    }
+
+    await User.updateOne({ _id: user._id }, updates);
+
+    // update in response locals for immediate render
+    Object.assign(res.locals.user, updates);
+
+    req.flash('success', 'Cập nhật thông tin thành công');
+    res.redirect('/auth/info');
+  } catch (err) {
+    console.error('Update user info error:', err);
+    req.flash('error', 'Không thể cập nhật thông tin lúc này');
+    res.redirect('/auth/info');
+  }
 };

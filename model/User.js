@@ -31,7 +31,10 @@ const userSchema = new mongoose.Schema({
     }
   },
   phone: String,
-  avatar: String,
+  avatar: {
+    type: String,
+    default: '/client/img/avatar.png'
+  },
   role: {
     type: String,
     default: 'user',

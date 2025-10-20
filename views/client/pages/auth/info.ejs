@@ -232,27 +232,44 @@
                     <% } %>
                 <% } %>
 
-                <div class="user-info">
+                <form class="user-info" action="/auth/info" method="post" enctype="multipart/form-data">
+                    <div class="text-center mb-3">
+                        <img id="avatarPreview" src="<%= user.avatar || '/client/img/avatar.png' %>" alt="Avatar" style="width:96px;height:96px;border-radius:50%;object-fit:cover;border:2px solid #e9ecef;">
+                    </div>
+                    <div class="info-item">
+                        <label>Ảnh đại diện:</label>
+                        <div>
+                            <input id="avatarInput" type="file" name="avatar" accept="image/*" class="form-control form-control-sm">
+                            <div class="form-text">Ảnh vuông, dung lượng &lt; 5MB</div>
+                        </div>
+                    </div>
                     <div class="info-item">
                         <label>Họ và tên:</label>
-                        <span><%= user.fullName %></span>
+                        <input type="text" class="form-control" name="fullName" value="<%= user.fullName %>" required>
                     </div>
                     
                     <div class="info-item">
                         <label>Email:</label>
-                        <span><%= user.email %></span>
+                        <input type="text" class="form-control" value="<%= user.email %>" readonly>
                     </div>
                     
                     <div class="info-item">
                         <label>Số điện thoại:</label>
-                        <span><%= user.phone || 'Chưa cập nhật' %></span>
+                        <input type="text" class="form-control" value="<%= user.phone || 'Chưa cập nhật' %>" readonly>
                     </div>
                     
                     <div class="info-item">
                         <label>Trạng thái:</label>
                         <span class="status <%= user.status %>"><%= user.status === 'active' ? 'Hoạt động' : 'Bị khóa' %></span>
                     </div>
-                </div>
+
+                    <div class="d-grid gap-2 mt-3">
+                        <button type="submit" class="btn btn-brand">
+                            <i class="fa fa-save"></i>
+                            Lưu thay đổi
+                        </button>
+                    </div>
+                </form>
 
                 <div class="d-grid gap-2 d-md-flex">
                     <a href="/auth/logout" class="btn btn-secondary">
@@ -274,5 +291,17 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            document.getElementById('avatarInput')?.addEventListener('change', function (e) {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const img = document.getElementById('avatarPreview');
+                    if (img) img.src = ev.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        </script>
 </body>
 </html>
