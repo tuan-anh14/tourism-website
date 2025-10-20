@@ -78,8 +78,8 @@ module.exports.attractions = async (req, res) => {
 
         let query = { isActive: true };
         
-        // Lọc theo danh mục
-        if (category) {
+        // Lọc theo danh mục (chỉ filter khi category không phải 'all' hoặc empty)
+        if (category && category !== 'all') {
             query.category = category;
         }
 
@@ -105,23 +105,68 @@ module.exports.attractions = async (req, res) => {
             case 'newest':
                 sortOption = { createdAt: -1 };
                 break;
+            case 'featured':
+                sortOption = { featured: -1, createdAt: -1 };
+                break;
             default:
-                sortOption = { featured: -1, 'rating.average': -1 };
+                // Sort mặc định: mix featured và mới nhất để có đa dạng
+                sortOption = { featured: -1, createdAt: -1 };
         }
 
-        const [attractionDocs, total] = await Promise.all([
-            Attraction.find(query)
-                .sort(sortOption)
-                .skip(skip)
-                .limit(limit)
-                .lean(),
-            Attraction.countDocuments(query)
-        ]);
-
+        const total = await Attraction.countDocuments(query);
         const totalPages = Math.ceil(total / limit);
 
         // Lấy danh mục cho filter
         const categories = await Attraction.distinct('category', { isActive: true });
+
+        let attractionDocs;
+
+        // Nếu không filter theo category cụ thể, interleave để có đa dạng
+        if (!category || category === 'all') {
+            // Tính số lượng mỗi category cần lấy cho trang hiện tại
+            // Tỉ lệ: 19 nhan-van : 7 tu-nhien ~ 73% : 27%
+            const nhanVanRatio = 0.73;
+            const tuNhienRatio = 0.27;
+            
+            const nhanVanLimit = Math.ceil(limit * nhanVanRatio);
+            const tuNhienLimit = Math.ceil(limit * tuNhienRatio);
+            
+            // Lấy attractions từ mỗi category với pagination riêng
+            const [nhanVanDocs, tuNhienDocs] = await Promise.all([
+                Attraction.find({ ...query, category: 'nhan-van' })
+                    .sort(sortOption)
+                    .skip(Math.floor(skip * nhanVanRatio))
+                    .limit(nhanVanLimit)
+                    .lean(),
+                Attraction.find({ ...query, category: 'tu-nhien' })
+                    .sort(sortOption)
+                    .skip(Math.floor(skip * tuNhienRatio))
+                    .limit(tuNhienLimit)
+                    .lean()
+            ]);
+
+            // Interleave (xen kẽ) 2 arrays để có đa dạng
+            attractionDocs = [];
+            let nvIndex = 0, tnIndex = 0;
+            
+            while (attractionDocs.length < limit && (nvIndex < nhanVanDocs.length || tnIndex < tuNhienDocs.length)) {
+                // Thêm 2-3 nhân văn
+                for (let i = 0; i < 2 && nvIndex < nhanVanDocs.length && attractionDocs.length < limit; i++) {
+                    attractionDocs.push(nhanVanDocs[nvIndex++]);
+                }
+                // Thêm 1 tự nhiên
+                if (tnIndex < tuNhienDocs.length && attractionDocs.length < limit) {
+                    attractionDocs.push(tuNhienDocs[tnIndex++]);
+                }
+            }
+        } else {
+            // Nếu đã filter category, lấy bình thường
+            attractionDocs = await Attraction.find(query)
+                .sort(sortOption)
+                .skip(skip)
+                .limit(limit)
+                .lean();
+        }
 
         const attractions = attractionDocs.map(mapAttractionToView);
 

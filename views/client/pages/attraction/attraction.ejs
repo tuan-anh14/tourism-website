@@ -23,10 +23,8 @@
         <!-- Banner -->
         <header class="page-header attraction-banner" style="background-image: url('/client/img/banner-attraction.jpg');">
             <div class="header-content">
-                <h2 id="quote">Khám phá Hà Nội – Di sản và nhịp sống</h2>
-                <div class="line"></div>
                 <h1>Điểm tham quan</h1>
-                <p class="font-color">Chọn lọc địa điểm đặc sắc cho hành trình Hà Nội trọn vẹn</p>
+                <p class="font-color">Khám phá Hà Nội – Di sản và nhịp sống</p>
                 
                 <!-- Search Bar Component -->
                 <div class="hero-search-container">
@@ -66,16 +64,9 @@
                             <% if (categories && categories.length > 0) { %>
                                 <% categories.forEach(category => { %>
                                     <option value="<%= category %>" <%= filters.category === category ? 'selected' : '' %>>
-                                        <%= category === 'di-tich-lich-su' ? 'Di tích lịch sử' :
-                                            category === 'bao-tang' ? 'Bảo tàng' :
-                                            category === 'pho-co' ? 'Phố cổ' :
-                                            category === 'lang-nghe' ? 'Làng nghề' :
-                                            category === 'khu-vui-choi' ? 'Khu vui chơi' :
-                                            category === 'le-hoi' ? 'Lễ hội' :
-                                            category === 'van-hoa' ? 'Văn hóa' :
+                                        <%= 
                                             category === 'tu-nhien' ? 'Điểm tham quan tự nhiên' :
-        										category === 'nhan-van' ? 'Điểm tham quan nhân văn' :
-                                            category === 'ton-giao' ? 'Tôn giáo' : category %>
+        										category === 'nhan-van' ? 'Điểm tham quan nhân văn' : category %>
                                     </option>
                                 <% }); %>
                             <% } %>
@@ -113,7 +104,7 @@
                             <div class="content">
                                 <h3 class="title dark"><%= attraction.name %></h3>
                                 <p class="desc font-color">
-                                    <%= attraction.shortDescription || attraction.description?.substring(0, 100) + '...' || 'Khám phá điểm tham quan thú vị tại Hà Nội' %>
+                                    <%= attraction.shortDescription || attraction.description || 'Khám phá điểm tham quan thú vị tại Hà Nội' %>
                                 </p>
                                 <div class="attraction-meta">
                                     <div class="rating">
@@ -124,16 +115,9 @@
                                         </div>
                                     </div>
                                     <div class="category-badge">
-                                        <%= attraction.category === 'di-tich-lich-su' ? 'Di tích lịch sử' :
-                                            attraction.category === 'bao-tang' ? 'Bảo tàng' :
-                                            attraction.category === 'pho-co' ? 'Phố cổ' :
-                                            attraction.category === 'lang-nghe' ? 'Làng nghề' :
-                                            attraction.category === 'khu-vui-choi' ? 'Khu vui chơi' :
-                                            attraction.category === 'le-hoi' ? 'Lễ hội' :
-                                            attraction.category === 'van-hoa' ? 'Văn hóa' :
+                                        <%= 
                                             attraction.category === 'tu-nhien' ? 'Điểm tham quan tự nhiên' :
-        										attraction.category === 'nhan-van' ? 'Điểm tham quan nhân văn' :
-                                            attraction.category === 'ton-giao' ? 'Tôn giáo' : attraction.category %>
+        										attraction.category === 'nhan-van' ? 'Điểm tham quan nhân văn' : attraction.category %>
                                     </div>
                                 </div>
                                 <div class="actions">

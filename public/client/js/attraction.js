@@ -13,34 +13,40 @@
     var popularIndex = 0;
     var popularTimerId;
     
-    // Search data
-    // Use category codes consistent with cards/select options
-    var attractionsData = [
-        { title: "Hoàng thành Thăng Long", category: "di-tich-lich-su", icon: "fa-landmark" },
-        { title: "Văn Miếu - Quốc Tử Giám", category: "di-tich-lich-su", icon: "fa-university" },
-        { title: "Bảo tàng Dân tộc học Việt Nam", category: "bao-tang", icon: "fa-museum" },
-        { title: "Phố cổ Hà Nội", category: "pho-co", icon: "fa-home" },
-        { title: "Làng gốm Bát Tràng", category: "lang-nghe", icon: "fa-palette" },
-        { title: "Công viên Thống Nhất", category: "khu-vui-choi", icon: "fa-tree" },
-        { title: "Lễ hội Gióng", category: "le-hoi", icon: "fa-calendar" },
-        { title: "Hồ Hoàn Kiếm", category: "di-tich-lich-su", icon: "fa-water" },
-        { title: "Chùa Một Cột", category: "di-tich-lich-su", icon: "fa-temple-buddhist" },
-        { title: "Nhà hát Lớn Hà Nội", category: "van-hoa", icon: "fa-theater-masks" }
-    ];
+    // Search data - sẽ được load từ page
+    var attractionsData = [];
+    
+    // Map categories to icons - icon thống nhất cho tất cả
+    var categoryIcons = {
+        'tu-nhien': 'fa-map-marker',
+        'nhan-van': 'fa-map-marker'
+    };
     
     // Map all categories to two groups for suggestion labels
     var categoryLabels = {
-        'di-tich-lich-su': "Điểm tham quan nhân văn",
-        'bao-tang': "Điểm tham quan nhân văn", 
-        'pho-co': "Điểm tham quan nhân văn",
-        'lang-nghe': "Điểm tham quan nhân văn",
-        'khu-vui-choi': "Điểm tham quan nhân văn",
-        'le-hoi': "Điểm tham quan nhân văn",
-        'van-hoa': 'Điểm tham quan nhân văn',
         'tu-nhien': 'Điểm tham quan tự nhiên',
-        'nhan-van': 'Điểm tham quan nhân văn',
-        'ton-giao': 'Điểm tham quan nhân văn'
+        'nhan-van': 'Điểm tham quan nhân văn'
     };
+    
+    // Load attractions data from page cards
+    function loadAttractionsData() {
+        var allCards = document.querySelectorAll('.attraction-card');
+        attractionsData = [];
+        allCards.forEach(function(card) {
+            var title = card.getAttribute('data-title');
+            var category = card.getAttribute('data-category');
+            var slug = card.getAttribute('data-slug');
+            if (title && category) {
+                attractionsData.push({
+                    title: title,
+                    category: category,
+                    slug: slug,
+                    icon: categoryIcons[category] || 'fa-map-marker'
+                });
+            }
+        });
+        console.log('Loaded ' + attractionsData.length + ' attractions for search');
+    }
 
     function normalize(str) {
         // Lowercase, strip diacritics, remove punctuation/dash variants, collapse spaces
@@ -110,9 +116,23 @@
         }
         
         var normalizedQuery = normalize(query);
+        
+        // Filter và sort matches - ưu tiên starts with, sau đó includes
         var matches = attractionsData.filter(function(item) {
             return normalize(item.title).includes(normalizedQuery);
-        }).slice(0, 5); // Limit to 5 suggestions
+        }).sort(function(a, b) {
+            var aNorm = normalize(a.title);
+            var bNorm = normalize(b.title);
+            var aStarts = aNorm.indexOf(normalizedQuery) === 0;
+            var bStarts = bNorm.indexOf(normalizedQuery) === 0;
+            
+            // Ưu tiên starts with
+            if (aStarts && !bStarts) return -1;
+            if (!aStarts && bStarts) return 1;
+            
+            // Sau đó sort theo độ dài (ngắn hơn lên trước)
+            return a.title.length - b.title.length;
+        }).slice(0, 8); // Tăng limit lên 8 suggestions
         
         if (matches.length === 0) {
             renderNoResults();
@@ -120,10 +140,12 @@
         }
         
         var html = matches.map(function(item) {
-            return '<div class="suggestion-item" data-title="' + item.title + '" data-category="' + item.category + '">' +
-                   '<i class="fa ' + item.icon + ' suggestion-icon"></i>' +
+            var icon = item.icon || 'fa-map-marker'; // Default icon
+            var label = categoryLabels[item.category] || item.category;
+            return '<div class="suggestion-item" data-title="' + item.title + '" data-category="' + item.category + '" data-slug="' + (item.slug || '') + '">' +
+                   '<i class="fa ' + icon + ' suggestion-icon"></i>' +
                    '<span class="suggestion-text">' + item.title + '</span>' +
-                   '<span class="suggestion-category">' + categoryLabels[item.category] + '</span>' +
+                   '<span class="suggestion-category">' + label + '</span>' +
                    '</div>';
         }).join('');
         
@@ -136,7 +158,8 @@
             item.addEventListener('click', function() {
                 var title = this.getAttribute('data-title');
                 var category = this.getAttribute('data-category');
-                selectSuggestion(title, category);
+                var slug = this.getAttribute('data-slug');
+                selectSuggestion(title, category, slug);
             });
         });
     }
@@ -147,11 +170,17 @@
         }
     }
     
-    function selectSuggestion(title, category) {
+    function selectSuggestion(title, category, slug) {
         if (heroSearchInput) {
             heroSearchInput.value = title;
         }
         hideSuggestions();
+        
+        // Nếu có slug, có thể navigate trực tiếp đến trang detail (future enhancement)
+        // if (slug) {
+        //     window.location.href = '/attraction/' + slug;
+        //     return;
+        // }
         
         // Update filters to show this attraction (use text match; keep category = all to avoid code mismatches)
         if (searchInput) searchInput.value = title;
@@ -199,7 +228,7 @@
         });
         
         if (exactMatch) {
-            selectSuggestion(exactMatch.title, exactMatch.category);
+            selectSuggestion(exactMatch.title, exactMatch.category, exactMatch.slug);
         } else {
             // Apply general search
             if (searchInput) searchInput.value = query;
@@ -281,6 +310,9 @@
         pillContainer = document.querySelector('.attraction-pills');
         cards = Array.prototype.slice.call(document.querySelectorAll('.attraction-card'));
 
+        // Load attractions data for search from page cards
+        loadAttractionsData();
+
         // Hero search elements
         heroSearchInput = document.getElementById('hero-search-input');
         heroSearchForm = document.querySelector('.hero-search-form');
@@ -290,10 +322,22 @@
 
         // Original event listeners
         if (searchInput) searchInput.addEventListener('input', applyFilters);
-        if (categorySelect) categorySelect.addEventListener('change', function () {
-            if (pillContainer) pillContainer.querySelectorAll('.pill').forEach(function (p) { p.classList.remove('active'); });
-            applyFilters();
-        });
+        if (categorySelect) {
+            categorySelect.addEventListener('change', function () {
+                if (pillContainer) pillContainer.querySelectorAll('.pill').forEach(function (p) { p.classList.remove('active'); });
+                
+                // Reload page with selected category
+                var selectedCategory = this.value;
+                var url = new URL(window.location.href);
+                if (selectedCategory && selectedCategory !== 'all') {
+                    url.searchParams.set('category', selectedCategory);
+                } else {
+                    url.searchParams.delete('category');
+                }
+                url.searchParams.set('page', '1'); // Reset to page 1
+                window.location.href = url.toString();
+            });
+        }
         // Pills are removed on listing page to avoid duplication; guard listener
         if (pillContainer && pillContainer.offsetParent !== null) {
             pillContainer.addEventListener('click', onPillClick);
