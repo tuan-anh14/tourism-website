@@ -29,6 +29,23 @@
     --fs-headings: clamp(1.5rem, 1.2rem + 1.5vw, 3rem); /* 24px - 48px responsive */
 }
 
+/* ===========================================
+   TEXT JUSTIFICATION FOR ALL CONTENT
+   =========================================== */
+.attraction-detail-page p,
+.attraction-detail-page .description,
+.attraction-detail-page .content,
+.attraction-detail-page .attraction-description,
+.attraction-detail-page .history-text,
+.attraction-detail-page .feature-description,
+.attraction-detail-page .review-content,
+.attraction-detail-page .info-text {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
 /* Sticky Navigation */
 .sticky-nav {
     position: fixed;

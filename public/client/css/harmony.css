@@ -1,5 +1,19 @@
 /* Harmony CSS - Styles for Events Page */
 
+/* ===========================================
+   TEXT JUSTIFICATION FOR ALL CONTENT
+   =========================================== */
+.harmony-page p,
+.harmony-page .description,
+.harmony-page .content,
+.harmony-page .harmony-description,
+.harmony-page .feature-description {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
 /* Page Header Styles */
 .page-header {
     width: 100vw;

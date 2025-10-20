@@ -31,6 +31,23 @@
 }
 
 /* ===========================================
+   TEXT JUSTIFICATION FOR ALL CONTENT
+   =========================================== */
+.accommodation-detail-page p,
+.accommodation-detail-page .description,
+.accommodation-detail-page .content,
+.accommodation-detail-page .hotel-description,
+.accommodation-detail-page .room-description,
+.accommodation-detail-page .amenity-description,
+.accommodation-detail-page .review-content,
+.accommodation-detail-page .policy-text {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
+/* ===========================================
    NAVBAR OVERRIDE FOR ACCOMMODATION PAGE
    =========================================== */
 .accommodation-detail-page .navbar.glass {

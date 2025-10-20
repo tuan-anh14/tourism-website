@@ -1,5 +1,20 @@
 /* Accommodation Page (namespaced) */
 
+/* ===========================================
+   TEXT JUSTIFICATION FOR ALL CONTENT
+   =========================================== */
+.accommodation-page p,
+.accommodation-page .description,
+.accommodation-page .content,
+.accommodation-page .accommodation-description,
+.accommodation-page .hotel-description,
+.accommodation-page .room-description {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
 /* Navbar overlay for hero */
 .accommodation .navbar.glass {
   background: transparent !important;

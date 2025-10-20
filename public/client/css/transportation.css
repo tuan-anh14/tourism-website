@@ -1,5 +1,21 @@
 /* Transportation Page Styles - scoped and aligned with existing design */
 
+/* ===========================================
+   TEXT JUSTIFICATION FOR ALL CONTENT
+   =========================================== */
+.transportation-page p,
+.transportation-page .description,
+.transportation-page .content,
+.transportation-page .transportation-description,
+.transportation-page .route-description,
+.transportation-page .service-description,
+.transportation-page .info-text {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
 :root {
   --primary: var(--primary-color); /* align with project accent */
   --primary-dark: #c80255;

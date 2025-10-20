@@ -1,5 +1,21 @@
 /* Entertainment Detail - scoped and aligned with project palette */
 
+/* ===========================================
+   TEXT JUSTIFICATION FOR ALL CONTENT
+   =========================================== */
+.entertainment-detail-page p,
+.entertainment-detail-page .description,
+.entertainment-detail-page .content,
+.entertainment-detail-page .entertainment-description,
+.entertainment-detail-page .event-description,
+.entertainment-detail-page .venue-description,
+.entertainment-detail-page .review-content {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
 :root {
   --accent: var(--primary-color);
   --accent-dark: #c80255;

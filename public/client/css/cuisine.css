@@ -1,5 +1,20 @@
 /* Cuisine Page (namespaced) */
 
+/* ===========================================
+   TEXT JUSTIFICATION FOR ALL CONTENT
+   =========================================== */
+.cuisine-page p,
+.cuisine-page .description,
+.cuisine-page .content,
+.cuisine-page .cuisine-description,
+.cuisine-page .dish-description,
+.cuisine-page .restaurant-description {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
 .cuisine .navbar.glass { background: transparent !important; box-shadow: none !important; }
 .cuisine .navbar .nav-links li a { color: #fff; }
 body.dark .cuisine .navbar .nav-links li a { color: #fff; }

@@ -1,3 +1,18 @@
+/* ===========================================
+   TEXT JUSTIFICATION FOR ALL CONTENT
+   =========================================== */
+.entertainment-page p,
+.entertainment-page .description,
+.entertainment-page .content,
+.entertainment-page .entertainment-description,
+.entertainment-page .event-description,
+.entertainment-page .venue-description {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
 /* Grid align like attractions */
 .entertainment .entertainment-grid {
   width: 100%;

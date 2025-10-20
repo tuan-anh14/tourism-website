@@ -307,13 +307,14 @@ section {
   font-size: var(--fs-paragraphs);
   font-family: var(--ff-primary);
   line-height: 1.5;
+  text-align: justify;
 }
 
 .col > p {
   color: #7c7c7c;
   padding: 0;
   line-height: 1.5;
-  text-align: center;
+  text-align: justify;
   max-width: 35ch;
   font-family: var(--ff-primary);
   font-size: var(--fs-paragraphs);
@@ -450,7 +451,7 @@ section {
   padding: 0;
   margin: 30px 0;
   width: 100%;
-  text-align: left;
+  text-align: justify;
   max-width: 40ch;
   font-family: var(--ff-primary);
   font-size: var(--fs-paragraphs);
@@ -467,6 +468,77 @@ section {
 #about {
   width: 100%;
   padding: 60px 0;
+}
+
+/* Global text justification for all client pages */
+#about p,
+.content-col p,
+section p,
+p,
+.description,
+.content,
+.article-content,
+.blog-content,
+.detail-content,
+.attraction-description,
+.cuisine-description,
+.entertainment-description,
+.accommodation-description,
+.transportation-description,
+.review-content,
+.news-content,
+.event-description {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
+/* Specific page content justification */
+/* Home page */
+.home-content p,
+.overview-content p {
+  text-align: justify !important;
+}
+
+/* Attraction pages */
+.attraction-content p,
+.attraction-detail p,
+.attraction-info p {
+  text-align: justify !important;
+}
+
+/* Cuisine pages */
+.cuisine-content p,
+.cuisine-detail p,
+.restaurant-info p {
+  text-align: justify !important;
+}
+
+/* Entertainment pages */
+.entertainment-content p,
+.entertainment-detail p {
+  text-align: justify !important;
+}
+
+/* Accommodation pages */
+.accommodation-content p,
+.accommodation-detail p,
+.hotel-info p {
+  text-align: justify !important;
+}
+
+/* Transportation pages */
+.transportation-content p,
+.transportation-detail p {
+  text-align: justify !important;
+}
+
+/* Blog pages */
+.blog-post p,
+.blog-content p,
+.article-body p {
+  text-align: justify !important;
 }
 
 #about_us {
@@ -1116,27 +1188,12 @@ body.dark {
 
 #quote {
   position: relative;
-  font-family: sans-serif;
+  font-family: var(--ff-heading);
   text-transform: uppercase;
   font-size: 2em;
   letter-spacing: 4px;
-  overflow: hidden;
-  background: linear-gradient(45deg, var(--primary-color), #fff, #41031d);
-  background-repeat: no-repeat;
-  background-size: 80%;
-  animation: animate 8s linear infinite;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0);
-}
-
-@keyframes animate {
-  0% {
-    background-position: -500%;
-  }
-  100% {
-    background-position: 500%;
-  }
+  color: var(--primary-color);
+  font-weight: 600;
 }
 
 /* Carousel Styles - Clean and Optimized */

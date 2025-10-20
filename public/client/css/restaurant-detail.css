@@ -1,5 +1,21 @@
 /* Restaurant Detail Page Styles */
 
+/* ===========================================
+   TEXT JUSTIFICATION FOR ALL CONTENT
+   =========================================== */
+.restaurant-detail-page p,
+.restaurant-detail-page .description,
+.restaurant-detail-page .content,
+.restaurant-detail-page .restaurant-description,
+.restaurant-detail-page .menu-description,
+.restaurant-detail-page .dish-description,
+.restaurant-detail-page .review-content {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
 /* CSS Variables for Typography - Matching Blog Section */
 :root {
     --ff-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;

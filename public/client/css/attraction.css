@@ -1,5 +1,20 @@
 /* Attractions Page Styles (namespaced to avoid conflicts) */
 
+/* ===========================================
+   TEXT JUSTIFICATION FOR ALL CONTENT
+   =========================================== */
+.attraction-page p,
+.attraction-page .description,
+.attraction-page .content,
+.attraction-page .attraction-description,
+.attraction-page .location-description,
+.attraction-page .feature-description {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
 .attraction-page {
     width: 100%;
 }

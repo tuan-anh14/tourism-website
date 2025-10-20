@@ -1,5 +1,22 @@
 /* Blog Page Styles */
 
+/* ===========================================
+   TEXT JUSTIFICATION FOR ALL CONTENT
+   =========================================== */
+.blog-page p,
+.blog-page .description,
+.blog-page .content,
+.blog-page .article-content,
+.blog-page .blog-content,
+.blog-page .post-description,
+.blog-page .excerpt,
+.blog-page .summary {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
 /* Blog Banner */
 #blog-banner {
   width: 100vw;

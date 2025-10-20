@@ -151,6 +151,7 @@
   }
   #about_us p {
     width: 70%;
+    text-align: justify;
   }
 }
 
@@ -159,6 +160,7 @@
     width: 85%;
     padding-top: 7em;
     margin: auto;
+    text-align: justify;
   }
   form,
   .cbox {
@@ -194,6 +196,22 @@
 
   #about_us p {
     margin: auto;
+    text-align: justify !important;
+  }
+  
+  /* Ensure all text content is justified on small screens */
+  p,
+  .description,
+  .content,
+  .article-content,
+  .blog-content,
+  .detail-content,
+  .attraction-description,
+  .cuisine-description,
+  .entertainment-description,
+  .accommodation-description,
+  .transportation-description {
+    text-align: justify !important;
   }
   /* carousel: keep each duplicate contained */
   .containerx { gap: 1.2rem; }
@@ -236,6 +254,16 @@
     min-height: 150px;
     border-radius: 6px;
   }
+  
+  /* Ensure text justification on very small screens */
+  p,
+  .description,
+  .content,
+  .article-content,
+  .blog-content,
+  .detail-content {
+    text-align: justify !important;
+  }
 }
 @media screen and (max-width: 400px) {
   .ctn {
@@ -249,6 +277,16 @@
   .image-gallery img {
     max-height: 180px;
     min-height: 140px;
+  }
+  
+  /* Ensure text justification on extra small screens */
+  p,
+  .description,
+  .content,
+  .article-content,
+  .blog-content,
+  .detail-content {
+    text-align: justify !important;
   }
 }
 
@@ -282,7 +320,17 @@
   }
   .content-col p {
     max-width: 75%;
-    text-align: justify;
+    text-align: justify !important;
+  }
+  
+  /* Ensure all page content is justified on mobile */
+  p,
+  .description,
+  .content,
+  .article-content,
+  .blog-content,
+  .detail-content {
+    text-align: justify !important;
   }
   
   /* Image gallery responsive */

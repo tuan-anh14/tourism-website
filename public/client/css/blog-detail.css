@@ -1,5 +1,22 @@
 /* Blog Detail Page Styles */
 
+/* ===========================================
+   TEXT JUSTIFICATION FOR ALL CONTENT
+   =========================================== */
+.blog-detail-page p,
+.blog-detail-page .description,
+.blog-detail-page .content,
+.blog-detail-page .article-content,
+.blog-detail-page .blog-content,
+.blog-detail-page .post-content,
+.blog-detail-page .article-body,
+.blog-detail-page .excerpt {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
 .blog-detail-hero {
   width: 100vw;
   height: 60vh;

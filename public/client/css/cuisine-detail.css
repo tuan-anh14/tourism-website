@@ -9,6 +9,23 @@
     --fs-headings: clamp(1.5rem, 1.2rem + 1.5vw, 3rem);
 }
 
+/* ===========================================
+   TEXT JUSTIFICATION FOR ALL CONTENT
+   =========================================== */
+.cuisine-detail-page p,
+.cuisine-detail-page .description,
+.cuisine-detail-page .content,
+.cuisine-detail-page .cuisine-description,
+.cuisine-detail-page .dish-description,
+.cuisine-detail-page .restaurant-description,
+.cuisine-detail-page .menu-description,
+.cuisine-detail-page .review-content {
+  text-align: justify !important;
+  line-height: 1.6;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-paragraphs);
+}
+
 .cuisine-detail-page .navbar .nav-links li a,
 .restaurant-detail-page .navbar .nav-links li a { color: #fff; }
 
