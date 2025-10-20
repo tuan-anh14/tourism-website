@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const md5 = require('md5');
+const generate = require('../utils/generate');
 
 const userSchema = new mongoose.Schema({
+  fullName: {
+    type: String,
+    required: true
+  },
   username: {
     type: String,
-    required: true,
     unique: true,
+    sparse: true, // Allows null values while maintaining uniqueness
     trim: true
   },
   email: {
@@ -17,48 +22,50 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
-    minlength: 6
-  },
-  fullName: {
-    type: String,
     required: true
   },
+  tokenUser: {
+    type: String,
+    default: function() {
+      return generate.generateRandomString(20);
+    }
+  },
+  phone: String,
+  avatar: String,
   role: {
     type: String,
-    enum: ['admin', 'editor', 'viewer'],
-    default: 'viewer'
+    default: 'user',
+    enum: ['user', 'admin', 'editor']
   },
-  avatar: String,
+  status: {
+    type: String,
+    default: 'active',
+    enum: ['active', 'inactive']
+  },
   isActive: {
     type: Boolean,
     default: true
   },
-  lastLogin: Date,
-  permissions: [{
-    module: String,
-    actions: [String] // ['create', 'read', 'update', 'delete']
-  }]
+  statusOnline: {
+    type: String,
+    default: 'offline',
+    enum: ['online', 'offline']
+  },
+  lastLogin: {
+    type: Date
+  },
+  deleted: {
+    type: Boolean,
+    default: false
+  },
+  deletedAt: Date
 }, {
   timestamps: true
 });
 
-// Hash password before saving
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Compare password method
-userSchema.methods.comparePassword = async function(candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
+// Method to compare password
+userSchema.methods.comparePassword = function(candidatePassword) {
+  return md5(candidatePassword) === this.password;
 };
 
 module.exports = mongoose.model('User', userSchema);

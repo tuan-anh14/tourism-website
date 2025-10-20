@@ -34,5 +34,24 @@
       <a href="/blog" id="sept" class="cir_border">Blog</a>
     </li>
   </ul>
+  
+  <!-- Auth Section -->
+  <div class="auth-section">
+    <% if (typeof user !== 'undefined' && user) { %>
+      <div class="user-menu">
+        <span class="user-name">Xin chào, <%= user.fullName %></span>
+        <div class="user-dropdown">
+          <a href="/auth/info" class="dropdown-item">Thông tin tài khoản</a>
+          <a href="/auth/logout" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="auth-buttons">
+        <a href="/auth/login" class="btn-login">Đăng nhập</a>
+        <a href="/auth/register" class="btn-register">Đăng ký</a>
+      </div>
+    <% } %>
+  </div>
+  
   <img src="/client/img/menu-btn.png" alt="" class="menu-btn" />
 </nav>

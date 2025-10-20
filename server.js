@@ -4,6 +4,7 @@ const http = require("http");
 const session = require("express-session");
 const methodOverride = require("method-override");
 const flash = require("connect-flash");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 const database = require("./config/database");
@@ -19,6 +20,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // Parse nested fields from forms (e.g. ticket_info[normal], map[lat])
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Parse cookies
+app.use(cookieParser());
 
 // Support PUT/DELETE from HTML forms via _method
 app.use(methodOverride('_method'));
@@ -51,7 +55,31 @@ app.use(session({
 // Flash messages
 app.use(flash());
 
-// Remove duplicate session config from admin routes
+// Load user middleware
+const User = require('./model/User');
+app.use(async (req, res, next) => {
+  // Load user if tokenUser cookie exists
+  if (req.cookies && req.cookies.tokenUser) {
+    const user = await User.findOne({
+      tokenUser: req.cookies.tokenUser,
+      deleted: false,
+      status: 'active'
+    });
+    if (user) {
+      res.locals.user = user;
+    }
+  }
+  
+  // Make flash messages available to all views
+  res.locals.flash = {
+    success: req.flash('success'),
+    error: req.flash('error'),
+    warning: req.flash('warning'),
+    info: req.flash('info')
+  };
+  
+  next();
+});
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
