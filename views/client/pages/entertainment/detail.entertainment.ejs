@@ -22,10 +22,8 @@
         <!-- Banner -->
         <header class="page-header entertainment-banner" style="background-image: url('<%= detail.heroImage %>');">
             <div class="header-content">
-                <h2 id="quote">Văn hoá & Nghệ thuật</h2>
-                <div class="line"></div>
                 <h1><%= detail.title %></h1>
-                <p class="font-color">Trải nghiệm nghệ thuật giữa lòng Thủ đô</p>
+                <p class="font-color">Trải nghiệm nghệ thuật giữa lòng Thủ đô Hà Nội</p>
             </div>
         </header>
         <section class="detail-container">
@@ -153,34 +151,7 @@
              <!-- Reviews will be added here in next step -->
         </section>
 
-        <!-- Map Overview Section -->
-        <section id="map-overview" class="content-section map-overview">
-            <div class="itinerary-overview__map-container">
-                <div class="itinerary-overview__map-inner">
-                    <div id="entMap"
-                         class="itinerary-overview__map"
-                         data-lat="<%= (entertainment && entertainment.map && entertainment.map.lat) || 21.028511 %>"
-                         data-lng="<%= (entertainment && entertainment.map && entertainment.map.lng) || 105.804817 %>"
-                         data-zoom="<%= (detail && detail.mapZoom) || 14 %>"
-                         data-name="<%= entertainment && entertainment.name %>"
-                         data-address="<%= entertainment && entertainment.address %>"
-                         data-image="<%= (entertainment && entertainment.images && entertainment.images[0] && entertainment.images[0].url) || '' %>"></div>
-                    <div class="map-overview__heading">
-                        <h2>Bản đồ vị trí</h2>
-                        <p>Vị trí địa điểm giải trí trên bản đồ</p>
-                    </div>
-                </div>
-                <div class="itinerary-overview__map-gradient-vertical"></div>
-                <div class="itinerary-overview__map-gradient-horizontal"></div>
-            </div>
-        </section>
-
-        <%- include('../../components/reviews-section', { 
-            attraction: entertainment,
-            title: "Đừng chỉ nghe chúng tôi, hãy nghe du khách!",
-            showButton: true,
-            buttonUrl: entertainment.reviewButtonUrl || ''
-        }) %>
+        
 
         <section class="detail-container">
             <!-- CTA -->
