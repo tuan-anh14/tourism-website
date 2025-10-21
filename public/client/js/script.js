@@ -179,7 +179,7 @@
       var wrap = document.createElement("div");
       wrap.className = "hnv-chat";
       wrap.innerHTML =
-        '\n                <button class="hnv-chat__toggle" aria-label="Chat"><i class="fa fa-comments"></i></button>\n                <div class="hnv-chat__panel" role="dialog" aria-label="Chatbot">\n                    <div class="hnv-chat__header">\n                        <span>Hà Nội Vibes - Trợ lý du lịch</span>\n                        <div class="hnv-chat__actions">\n                            <button class="hnv-history-btn" id="hnvHistoryBtn" title="Lịch sử chat"><i class="fa fa-history"></i></button>\n                            <button class="hnv-new-chat" id="hnvNewChat" title="Cuộc trò chuyện mới"><i class="fa fa-plus"></i></button>\n                            <button class="hnv-close-btn" id="hnvCloseBtn" title="Đóng chat"><i class="fa fa-times"></i></button>\n                        </div>\n                    </div>\n                    <div class="hnv-chat__body">\n                        <div class="hnv-quick">\n                            <button class="hnv-chip" data-q="Gợi ý lịch trình 2 ngày?">Gợi ý lịch trình 2 ngày?</button>\n                            <button class="hnv-chip" data-q="Ăn gì ở Phố cổ?">Ăn gì ở Phố cổ?</button>\n                            <button class="hnv-chip" data-q="Phương tiện di chuyển?">Phương tiện di chuyển?</button>\n                            <button class="hnv-chip" data-q="Top điểm check-in">Top điểm check-in</button>\n                        </div>\n                        <div class="hnv-chat__messages" id="hnvMsgs">\n                            <div class="hnv-msg hnv-msg--bot">Xin chào! Bạn muốn đi đâu ở Hà Nội?</div>\n                        </div>\n                    </div>\n                    <div class="hnv-chat__footer">\n                        <input class="hnv-input" id="hnvInput" type="text" placeholder="Nhập câu hỏi của bạn..." />\n                        <button class="hnv-send" id="hnvSend" aria-label="Gửi"><i class="fa fa-paper-plane"></i></button>\n                    </div>\n                </div>';
+        '\n                <button class="hnv-chat__toggle" aria-label="Chat"><i class="fa fa-comments"></i></button>\n                <div class="hnv-chat__panel" role="dialog" aria-label="Chatbot">\n                    <div class="hnv-chat__header">\n                        <span>ViA - Trợ lý du lịch</span>\n                        <div class="hnv-chat__actions">\n                            <button class="hnv-history-btn" id="hnvHistoryBtn" title="Lịch sử chat"><i class="fa fa-history"></i></button>\n                            <button class="hnv-new-chat" id="hnvNewChat" title="Cuộc trò chuyện mới"><i class="fa fa-plus"></i></button>\n                            <button class="hnv-close-btn" id="hnvCloseBtn" title="Đóng chat"><i class="fa fa-times"></i></button>\n                        </div>\n                    </div>\n                    <div class="hnv-chat__body">\n                        <div class="hnv-quick">\n                            <button class="hnv-chip" data-q="Gợi ý lịch trình 2 ngày?">Gợi ý lịch trình 2 ngày?</button>\n                            <button class="hnv-chip" data-q="Ăn gì ở Phố cổ?">Ăn gì ở Phố cổ?</button>\n                            <button class="hnv-chip" data-q="Phương tiện di chuyển?">Phương tiện di chuyển?</button>\n                            <button class="hnv-chip" data-q="Top điểm check-in">Top điểm check-in</button>\n                        </div>\n                        <div class="hnv-chat__messages" id="hnvMsgs">\n                            <div class="hnv-msg hnv-msg--bot">Xin chào! Bạn muốn đi đâu ở Hà Nội?</div>\n                        </div>\n                    </div>\n                    <div class="hnv-chat__footer">\n                        <input class="hnv-input" id="hnvInput" type="text" placeholder="Nhập câu hỏi của bạn..." />\n                        <button class="hnv-send" id="hnvSend" aria-label="Gửi"><i class="fa fa-paper-plane"></i></button>\n                    </div>\n                </div>';
       root.appendChild(wrap);
 
       var toggle = wrap.querySelector(".hnv-chat__toggle");
@@ -366,7 +366,7 @@
               position: fixed;
               right: -350px;
               top: 0;
-              width: min(350px, calc(100vw - 20px));
+              width: min(350px, calc(100vw - 40px));
               max-width: 350px;
               height: 100vh;
               background: #f8f9fa;
@@ -374,6 +374,7 @@
               transition: right 0.3s ease;
               z-index: 10000;
               overflow-y: auto;
+              overflow-x: hidden;
               box-shadow: -5px 0 15px rgba(0,0,0,0.1);
             }
             
@@ -468,8 +469,9 @@
             
             @media (max-width: 768px) {
               #chat-history-sidebar {
-                width: calc(100vw - 10px);
-                max-width: calc(100vw - 10px);
+                width: calc(100vw - 20px);
+                max-width: calc(100vw - 20px);
+                right: -100vw; /* Đảm bảo không bị thừa phần ngoài */
               }
               
               .chat-history-header {
