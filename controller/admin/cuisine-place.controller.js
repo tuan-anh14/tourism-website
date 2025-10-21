@@ -144,7 +144,7 @@ module.exports.store = async (req, res) => {
     if (req.files && req.files.length > 0) {
       const images = req.files.filter(f => f.fieldname === 'placeImages');
       if (images.length > 0) {
-        data.images = images.map((f) => `/uploads/${f.filename}`);
+        data.images = images.map((f) => f.secure_url || f.path);
       }
     }
 
@@ -157,7 +157,7 @@ module.exports.store = async (req, res) => {
             file.fieldname && file.fieldname.includes(`reviews[${reviewIdx}][avatar]`)
           );
           if (avatarFile) {
-            review.avatar = `/uploads/${avatarFile.filename}`;
+            review.avatar = avatarFile.secure_url || avatarFile.path;
           }
         }
       });
@@ -297,7 +297,7 @@ module.exports.editPatch = async (req, res) => {
     if (req.files && req.files.length > 0) {
       const placeImages = req.files.filter(f => f.fieldname === 'placeImages');
       if (placeImages.length > 0) {
-        const newImages = placeImages.map((file) => `/uploads/${file.filename}`);
+        const newImages = placeImages.map((file) => file.secure_url || file.path);
         place.images = [ ...(place.images || []), ...newImages ];
       }
     }
@@ -316,7 +316,7 @@ module.exports.editPatch = async (req, res) => {
             file.fieldname && file.fieldname.includes(`reviews[${reviewIdx}][avatar]`)
           );
           if (avatarFile) {
-            review.avatar = `/uploads/${avatarFile.filename}`;
+            review.avatar = avatarFile.secure_url || avatarFile.path;
           }
         }
       });
@@ -381,7 +381,7 @@ module.exports.update = async (req, res) => {
     if (req.files && req.files.length > 0) {
       const placeImages = req.files.filter(f => f.fieldname === 'placeImages');
       if (placeImages.length > 0) {
-        const newImages = placeImages.map((file) => `/uploads/${file.filename}`);
+        const newImages = placeImages.map((file) => file.secure_url || file.path);
         place.images = [ ...(place.images || []), ...newImages ];
       }
     }
@@ -401,7 +401,7 @@ module.exports.update = async (req, res) => {
             file.fieldname && file.fieldname.includes(`reviews[${reviewIdx}][avatar]`)
           );
           if (avatarFile) {
-            review.avatar = `/uploads/${avatarFile.filename}`;
+            review.avatar = avatarFile.secure_url || avatarFile.path;
           }
         }
       });

@@ -41,13 +41,13 @@ router.get('/logout', authController.logout);
 // Dashboard
 router.get('/dashboard', requireAdmin, authController.showDashboard);
 
-// Import upload middleware
-const { uploadMultiple, uploadDynamic } = require('../../middleware/upload');
+// Import Cloudinary upload middleware
+const { uploadMultiple, uploadDynamic, debugUpload } = require('../../middleware/cloudinary');
 
 // Attractions routes (aligned with ProductManagement pattern)
 router.get('/attractions', requireAdmin, attractionController.index);
 router.get('/attractions/create', requireAdmin, requireEditor, attractionController.create);
-router.post('/attractions', requireAdmin, requireEditor, uploadDynamic, attractionController.store);
+router.post('/attractions', requireAdmin, requireEditor, debugUpload, uploadDynamic, attractionController.store);
 router.get('/attractions/:id', requireAdmin, attractionController.show);
 router.get('/attractions/edit/:id', requireAdmin, requireEditor, attractionController.edit);
 router.patch('/attractions/edit/:id', requireAdmin, requireEditor, uploadDynamic, attractionController.editPatch);

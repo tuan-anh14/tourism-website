@@ -183,7 +183,7 @@ module.exports.store = async (req, res) => {
         
         // Process uploaded images
         const imagesArray = req.files && req.files.length > 0 
-            ? req.files.filter(f => f.fieldname === 'images').map(file => `/uploads/${file.filename}`)
+            ? req.files.filter(f => f.fieldname === 'images').map(file => file.secure_url || file.path)
             : [];
         
         // If no images uploaded, set default placeholder
@@ -201,7 +201,7 @@ module.exports.store = async (req, res) => {
                     raw.forEach((r, idx) => {
                         const avatarFile = req.files.find(f => f.fieldname === `reviews[${idx}][avatarFile]`);
                         if (avatarFile) {
-                            r.avatar = `/uploads/${avatarFile.filename}`;
+                            r.avatar = avatarFile.secure_url || avatarFile.path;
                         }
                     });
                 }
@@ -415,7 +415,7 @@ module.exports.update = async (req, res) => {
             // Filter main images (fieldname = 'images')
             const mainImages = req.files.filter(f => f.fieldname === 'images');
             if (mainImages.length > 0) {
-                const newImages = mainImages.map(file => `/uploads/${file.filename}`);
+                const newImages = mainImages.map(file => file.secure_url || file.path);
                 imagesArray = [...imagesArray, ...newImages];
             }
         }
@@ -435,7 +435,7 @@ module.exports.update = async (req, res) => {
                     raw.forEach((r, idx) => {
                         const avatarFile = req.files.find(f => f.fieldname === `reviews[${idx}][avatarFile]`);
                         if (avatarFile) {
-                            r.avatar = `/uploads/${avatarFile.filename}`;
+                            r.avatar = avatarFile.secure_url || avatarFile.path;
                         }
                     });
                 }

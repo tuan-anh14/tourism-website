@@ -10,6 +10,8 @@
     "seed": "node scripts/seed.js",
     "deploy": "bash scripts/deploy.sh",
     "optimize-images": "node scripts/optimize-uploads.js",
+    "cleanup-uploads": "node scripts/cleanup-uploads.js",
+    "test-cloudinary": "node scripts/test-cloudinary.js",
     "vercel-build": "echo 'Build completed'",
     "vercel-dev": "vercel dev",
     "vercel-deploy": "vercel --prod"

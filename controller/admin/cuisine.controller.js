@@ -128,7 +128,7 @@ module.exports.store = async (req, res) => {
       // Filter main images (fieldname = 'images')
       const mainImages = req.files.filter(f => f.fieldname === 'images');
       if (mainImages.length > 0) {
-        data.mainImages = mainImages.map((f) => `/uploads/${f.filename}`);
+        data.mainImages = mainImages.map((f) => f.secure_url || f.path);
       }
     }
 
@@ -270,7 +270,7 @@ module.exports.editPatch = async (req, res) => {
       // Filter main images (fieldname = 'images')
       const mainImages = req.files.filter(f => f.fieldname === 'images');
       if (mainImages.length > 0) {
-        const newImages = mainImages.map((file) => `/uploads/${file.filename}`);
+        const newImages = mainImages.map((file) => file.secure_url || file.path);
         cuisine.mainImages = [ ...(cuisine.mainImages || []), ...newImages ];
       }
     }
@@ -336,7 +336,7 @@ module.exports.update = async (req, res) => {
 
     // Handle uploads
     if (req.files && req.files.length > 0) {
-      const newImages = req.files.map((file) => `/uploads/${file.filename}`);
+      const newImages = req.files.map((file) => file.secure_url || file.path);
       cuisine.mainImages = [ ...(cuisine.mainImages || []), ...newImages ];
     }
     if (!data.mainImages) data.mainImages = cuisine.mainImages;

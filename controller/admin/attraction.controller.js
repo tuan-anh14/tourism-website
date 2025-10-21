@@ -167,11 +167,24 @@ module.exports.store = async (req, res) => {
     // Reviews will be processed after file uploads
 
     // Xử lý images nếu có
+    console.log('🔍 Upload Debug in Controller:');
+    console.log('  req.files:', req.files);
+    console.log('  req.files length:', req.files ? req.files.length : 'undefined');
+    
     if (req.files && req.files.length > 0) {
       // Filter main images (fieldname = 'images')
       const mainImages = req.files.filter(f => f.fieldname === 'images');
+      console.log('  mainImages:', mainImages);
+      
       if (mainImages.length > 0) {
-        data.images = mainImages.map(file => `/uploads/${file.filename}`);
+        data.images = mainImages.map(file => {
+          console.log('  file object:', file);
+          console.log('  file.secure_url:', file.secure_url);
+          console.log('  file.path:', file.path);
+          // Cloudinary trả về URL trong file.path hoặc file.secure_url
+          return file.secure_url || file.path;
+        });
+        console.log('  Final images array:', data.images);
       }
       // Map uploaded avatar files into corresponding review items
       if (data.reviews) {
@@ -179,7 +192,7 @@ module.exports.store = async (req, res) => {
         raw.forEach((r, idx) => {
           const avatarFile = req.files.find(f => f.fieldname === `reviews[${idx}][avatarFile]`);
           if (avatarFile) {
-            r.avatar = `/uploads/${avatarFile.filename}`;
+            r.avatar = avatarFile.secure_url || avatarFile.path;
           }
         });
         data.reviews = raw;
@@ -390,7 +403,7 @@ module.exports.editPatch = async (req, res) => {
       // Filter main images (fieldname = 'images')
       const mainImages = req.files.filter(f => f.fieldname === 'images');
       if (mainImages.length > 0) {
-        const newImages = mainImages.map(file => `/uploads/${file.filename}`);
+        const newImages = mainImages.map(file => file.secure_url);
         attraction.images = [ ...(attraction.images || []), ...newImages ];
       }
       // Map uploaded avatar files into corresponding review items
@@ -399,7 +412,7 @@ module.exports.editPatch = async (req, res) => {
         raw.forEach((r, idx) => {
           const avatarFile = req.files.find(f => f.fieldname === `reviews[${idx}][avatarFile]`);
           if (avatarFile) {
-            r.avatar = `/uploads/${avatarFile.filename}`;
+            r.avatar = avatarFile.secure_url || avatarFile.path;
           }
         });
         data.reviews = raw;
@@ -537,7 +550,7 @@ module.exports.update = async (req, res) => {
       // Filter main images (fieldname = 'images')
       const mainImages = req.files.filter(f => f.fieldname === 'images');
       if (mainImages.length > 0) {
-        const newImages = mainImages.map(file => `/uploads/${file.filename}`);
+        const newImages = mainImages.map(file => file.secure_url);
         attraction.images = [...attraction.images, ...newImages];
       }
     }
@@ -550,7 +563,7 @@ module.exports.update = async (req, res) => {
           raw.forEach((r, idx) => {
             const avatarFile = req.files.find(f => f.fieldname === `reviews[${idx}][avatarFile]`);
             if (avatarFile) {
-              r.avatar = `/uploads/${avatarFile.filename}`;
+              r.avatar = avatarFile.secure_url || avatarFile.path;
             }
           });
         }
@@ -604,7 +617,7 @@ module.exports.update = async (req, res) => {
       // Filter main images (fieldname = 'images')
       const mainImages = req.files.filter(f => f.fieldname === 'images');
       if (mainImages.length > 0) {
-        const newImages = mainImages.map(file => `/uploads/${file.filename}`);
+        const newImages = mainImages.map(file => file.secure_url);
         attraction.images = [ ...(attraction.images || []), ...newImages ];
       }
     }

@@ -9,11 +9,11 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// Cấu hình storage cho Cloudinary
-const storage = new CloudinaryStorage({
+// Cấu hình storage cho Cloudinary - Reviews
+const storageReviews = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'tourism-website/reviews', // Thư mục lưu trữ trên Cloudinary
+    folder: 'tourism-website/reviews', // Thư mục lưu trữ reviews
     allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
     transformation: [
       { width: 1200, height: 1200, crop: 'limit', quality: 'auto' },
@@ -23,9 +23,23 @@ const storage = new CloudinaryStorage({
   }
 });
 
-// Cấu hình multer với Cloudinary storage
-const upload = multer({
-  storage: storage,
+// Cấu hình storage cho Cloudinary - Admin uploads
+const storageAdmin = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'tourism-website/admin', // Thư mục lưu trữ admin uploads
+    allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+    transformation: [
+      { width: 1200, height: 1200, crop: 'limit', quality: 'auto' },
+      { fetch_format: 'auto' }
+    ],
+    resource_type: 'image'
+  }
+});
+
+// Cấu hình multer với Cloudinary storage - Reviews
+const uploadReviews = multer({
+  storage: storageReviews,
   fileFilter: (req, file, cb) => {
     // Chỉ cho phép upload ảnh
     if (file.mimetype.startsWith('image/')) {
@@ -40,14 +54,43 @@ const upload = multer({
   }
 });
 
-// Middleware để upload nhiều ảnh
-const uploadMultiple = upload.array('images', 5);
+// Cấu hình multer với Cloudinary storage - Admin
+const uploadAdmin = multer({
+  storage: storageAdmin,
+  fileFilter: (req, file, cb) => {
+    // Chỉ cho phép upload ảnh
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Chỉ được upload file ảnh!'), false);
+    }
+  },
+  limits: {
+    fileSize: 10 * 1024 * 1024, // Giới hạn 10MB
+    files: 10 // Tối đa 10 file cho admin
+  }
+});
 
-// Middleware để upload một ảnh
-const uploadSingle = upload.single('image');
+// Middleware để upload nhiều ảnh - Reviews
+const uploadMultiple = uploadReviews.array('images', 5);
 
-// Middleware để upload với field names động
-const uploadDynamic = upload.any();
+// Middleware để upload một ảnh - Reviews  
+const uploadSingle = uploadReviews.single('image');
+
+// Middleware để upload với field names động - Admin
+const uploadDynamic = uploadAdmin.any();
+
+// Debug middleware để log thông tin upload
+const debugUpload = (req, res, next) => {
+  console.log('🔍 Upload Debug Info:');
+  console.log('  Content-Type:', req.headers['content-type']);
+  console.log('  Method:', req.method);
+  console.log('  URL:', req.originalUrl);
+  console.log('  Body keys:', Object.keys(req.body));
+  console.log('  Files before upload:', req.files);
+  
+  next();
+};
 
 // Hàm xóa ảnh từ Cloudinary
 const deleteImage = async (publicId) => {
@@ -81,8 +124,10 @@ module.exports = {
   uploadMultiple,
   uploadSingle,
   uploadDynamic,
-  upload,
+  uploadReviews,
+  uploadAdmin,
   deleteImage,
   deleteMultipleImages,
-  getImageUrl
+  getImageUrl,
+  debugUpload
 };

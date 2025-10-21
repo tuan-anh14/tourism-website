@@ -4,7 +4,7 @@ const route = express.Router()
 const controller = require("../../controller/client/auth.controller")
 const validate = require("../../validates/auth.validate")
 const authMiddleware = require("../../middleware/auth")
-const { upload } = require("../../middleware/upload")
+const { uploadSingle } = require("../../middleware/cloudinary")
 
 route.get('/register', controller.register)
 
@@ -33,7 +33,7 @@ route.get('/info', authMiddleware.requireAuth, controller.info)
 // Cập nhật thông tin cơ bản: avatar + fullName (email, phone chỉ đọc)
 route.post('/info', 
   authMiddleware.requireAuth, 
-  upload.single('avatar'), 
+  uploadSingle, 
   controller.infoPost
 )
 
