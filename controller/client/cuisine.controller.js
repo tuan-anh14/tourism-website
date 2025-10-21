@@ -57,9 +57,19 @@ module.exports.cuisine = async (req, res) => {
             totalItems: totalDocs
         };
 
+        // Lấy TẤT CẢ cuisines để phục vụ search (không giới hạn pagination)
+        const allCuisinesForSearch = await Cuisine.find({ isActive: true, status: 'published' })
+            .select('name slug')
+            .sort({ name: 1 })
+            .lean();
+        
+        console.log('🔍 All cuisines for search:', allCuisinesForSearch.length, 'items');
+        console.log('Sample:', allCuisinesForSearch.slice(0, 3));
+
         res.render('client/pages/cuisine/cuisine.ejs', {
             pageTitle: 'Ẩm thực',
             cuisines,
+            allCuisinesForSearch: JSON.stringify(allCuisinesForSearch), // Pass as JSON string
             pagination,
             queryString
         });
@@ -68,6 +78,7 @@ module.exports.cuisine = async (req, res) => {
         res.render('client/pages/cuisine/cuisine.ejs', {
             pageTitle: 'Ẩm thực',
             cuisines: [],
+            allCuisinesForSearch: JSON.stringify([]), // Empty array for error case
             pagination: {
                 currentPage: 1,
                 totalPages: 1,

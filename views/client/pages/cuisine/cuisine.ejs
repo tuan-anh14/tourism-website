@@ -21,12 +21,10 @@
         <%- include('../../partials/header') %>    
 
         <!-- Banner -->
-        <header class="page-header cuisine-banner" style="background-image: url('/client/img/pho.jpeg');">
+        <header class="page-header cuisine-banner" style="background-image: url('/client/img/pho-ha-noi-banner.jpg');">
             <div class="header-content">
-                <h2 id="quote">Hương vị Hà Nội – tinh hoa và bình dị</h2>
-                <div class="line"></div>
                 <h1>Ẩm thực Hà Nội</h1>
-                <p class="font-color">Đặc sản trứ danh, phố quán thân quen, câu chuyện văn hóa qua từng món</p>
+                <p class="font-color" style="text-align: center;">Hương vị Hà Nội – tinh hoa và bình dị</p>
             </div>
         </header>
 
@@ -36,7 +34,7 @@
                 <div class="filter-row">
                     <div class="box" role="search">
                         <i class="fa fa-search" aria-hidden="true" style="margin-right:8px"></i>
-                        <input id="cui-search" type="text" placeholder="Tìm tên món/quán..." aria-label="Tìm theo tên" />
+                        <input id="cui-search" type="text" placeholder="Tìm tên ẩm thực" aria-label="Tìm theo tên" />
                     </div>
                 </div>
             </div>
@@ -83,6 +81,9 @@
         <!--footer-->
         <%- include('../../partials/footer') %>
 
+        <!-- Inject all cuisines data for search -->
+        <div id="cuisines-data" data-json='<%= allCuisinesForSearch %>' style="display: none;"></div>
+        
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="/client/js/includes.js"></script>
         <script src="/client/js/script.js"></script>
