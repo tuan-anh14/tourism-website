@@ -48,8 +48,38 @@
         padding: 8px 12px;
         border-radius: 5px;
         background: white;
+        color: #000 !important; /* Đảm bảo màu chữ đen */
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         border: 1px solid #ddd;
+    }
+    
+    /* Fix cho GTranslate widget */
+    .gtranslate_wrapper * {
+        color: #000 !important;
+    }
+    
+    .gtranslate_wrapper .gt_selector {
+        color: #000 !important;
+    }
+    
+    .gtranslate_wrapper .gt_selector option {
+        color: #000 !important;
+        background: white !important;
+    }
+    
+    /* Fix cho dropdown và các element khác */
+    .gtranslate_wrapper .gt_selector,
+    .gtranslate_wrapper .gt_selector:focus,
+    .gtranslate_wrapper .gt_selector:hover {
+        color: #000 !important;
+        background: white !important;
+    }
+    
+    /* Fix cho text trong GTranslate */
+    .gtranslate_wrapper span,
+    .gtranslate_wrapper div,
+    .gtranslate_wrapper p {
+        color: #000 !important;
     }
     @media (max-width: 768px) {
         .gtranslate_wrapper { top: 10px; right: 10px; transform: scale(0.9); }
