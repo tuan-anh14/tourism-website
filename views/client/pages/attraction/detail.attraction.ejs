@@ -227,31 +227,6 @@
                     </div>
                 </section>
                 
-                <!-- Third Banner Section with Image 2 -->
-                <section id="attraction-additional" class="content-section itinerary-day">
-                    <div class="itinerary-day__hero-wrapper">
-                        <div class="itinerary-day__hero-media">
-                            <img src="<%= (attraction && attraction.images && attraction.images[2] && attraction.images[2].url) || '/client/img/carousel-img3.jpg' %>" 
-                                 alt="<%= (attraction && (attraction.title || attraction.name)) || 'Điểm tham quan' %> - Thông tin bổ sung" 
-                                 loading="lazy" />
-                        </div>
-                    </div>
-
-                    <div class="itinerary-day__overlay">
-                        <div class="itinerary-day__content-container">
-                            <div class="itinerary-day__description">
-                                <h3>Thông tin bổ sung:</h3>
-                                <div class="description-content">
-                                    <p>Khám phá thêm những điều thú vị về điểm tham quan này.</p>
-                                    <% if (attraction && attraction.additionalInfo) { %>
-                                        <p><%= attraction.additionalInfo %></p>
-                                    <% } %>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
                 <!-- Media Showcase Section (Hero + Thumbnails) -->
                 <section id="media-showcase" class="content-section media-showcase">
                     <% 

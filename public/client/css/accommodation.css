@@ -17,7 +17,7 @@
 
 /* Navbar overlay for hero */
 .accommodation .navbar.glass {
-  background: transparent !important;
+  background: rgba(0, 0, 0, 0.6) !important;
   box-shadow: none !important;
 }
 .accommodation .navbar .nav-links li a {

@@ -51,7 +51,7 @@
    NAVBAR OVERRIDE FOR ACCOMMODATION PAGE
    =========================================== */
 .accommodation-detail-page .navbar.glass {
-  background: transparent !important;
+  background: rgba(0, 0, 0, 0.6) !important;
   box-shadow: none !important;
 }
 .accommodation-detail-page .navbar .nav-links li a {
