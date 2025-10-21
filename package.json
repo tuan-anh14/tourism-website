@@ -12,6 +12,7 @@
     "optimize-images": "node scripts/optimize-uploads.js",
     "cleanup-uploads": "node scripts/cleanup-uploads.js",
     "test-cloudinary": "node scripts/test-cloudinary.js",
+    "migrate-to-cloudinary": "node scripts/migrate-to-cloudinary.js",
     "vercel-build": "echo 'Build completed'",
     "vercel-dev": "vercel dev",
     "vercel-deploy": "vercel --prod"
