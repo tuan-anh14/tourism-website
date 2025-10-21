@@ -56,13 +56,13 @@
         <main class="attraction-detail main" aria-label="Nội dung chi tiết điểm tham quan">
             <div class="container">
                 <section id="attraction-intro" class="content-section itinerary-day no-margin-top">
-                    <div class="itinerary-day__hero-wrapper">
+                    <!-- <div class="itinerary-day__hero-wrapper">
                         <div class="itinerary-day__hero-media">
                             <img src="<%= (attraction && attraction.images && attraction.images[1] && attraction.images[1].url) || '/client/img/carousel-img5.jpg' %>" 
                                  alt="<%= (attraction && (attraction.title || attraction.name)) || 'Điểm tham quan' %>" 
                                  loading="lazy" />
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="itinerary-day__overlay">
                         <div class="itinerary-day__content-container">
@@ -143,7 +143,7 @@
                 <section id="attraction-experiences" class="content-section itinerary-day">
                     <div class="itinerary-day__hero-wrapper">
                         <div class="itinerary-day__hero-media">
-                            <img src="<%= (attraction && attraction.images && attraction.images[2] && attraction.images[2].url) || '/client/img/carousel-img4.jpg' %>" 
+                            <img src="<%= (attraction && attraction.images && attraction.images[1] && attraction.images[1].url) || '/client/img/carousel-img4.jpg' %>" 
                                  alt="<%= (attraction && (attraction.title || attraction.name)) || 'Điểm tham quan' %> - Trải nghiệm" 
                                  loading="lazy" />
                         </div>
