@@ -379,12 +379,29 @@ section {
   height: 400px;
 }
 
-.row .col {
+/* Apply height only to events/blog sections, not tours */
+.events .row .col,
+#blog .row .col {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 10px;
   height: 450px;
+}
+
+/* General row col without fixed height for tours */
+.row .col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+}
+
+/* Tours section specific - no fixed height */
+.tours .row .col {
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
 }
 
 .row .col img {
@@ -2030,8 +2047,69 @@ input[type="radio"] {
   }
 }
 
+/* Force override tours section spacing for mobile - highest priority */
+@media (max-width: 768px) {
+  /* Ultra-specific selector to override everything */
+  section.tours#tours {
+    margin: 20px auto !important;
+    padding: 10px 0 !important;
+  }
+  
+  section.tours#tours .container {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  section.tours#tours .row {
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 1rem !important;
+  }
+  
+  section.tours#tours .content-col p {
+    margin: 10px 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Ensure tours columns have no fixed height */
+  section.tours#tours .row .col {
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+  }
+}
+
 /* Mobile styles */
 @media (max-width: 768px) {
+  /* Tours section spacing - reduce for mobile */
+  .tours {
+    margin: 20px auto !important;
+    padding: 10px 0 !important;
+  }
+
+  .tours .row {
+    gap: 1rem !important;
+    margin: 0 !important;
+  }
+
+  .tours .content-col {
+    margin: 0 !important;
+    padding: 0 15px !important;
+  }
+
+  .tours .content-col p {
+    margin: 10px 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Force override any other margin/padding */
+  section.tours {
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
   /* Events/Blog section spacing */
   .events {
     margin-top: 40px;
@@ -2209,7 +2287,68 @@ input[type="radio"] {
   }
 }
 
+/* Force override tours section spacing for small mobile - highest priority */
 @media (max-width: 480px) {
+  /* Ultra-specific selector to override everything for small mobile */
+  section.tours#tours {
+    margin: 15px auto !important;
+    padding: 5px 0 !important;
+  }
+  
+  section.tours#tours .container {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  section.tours#tours .row {
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0.5rem !important;
+  }
+  
+  section.tours#tours .content-col p {
+    margin: 5px 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Ensure tours columns have no fixed height for small mobile */
+  section.tours#tours .row .col {
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Tours section spacing - further reduce for small mobile */
+  .tours {
+    margin: 15px auto !important;
+    padding: 5px 0 !important;
+  }
+
+  .tours .row {
+    gap: 0.5rem !important;
+    margin: 0 !important;
+  }
+
+  .tours .content-col {
+    margin: 0 !important;
+    padding: 0 10px !important;
+  }
+
+  .tours .content-col p {
+    margin: 5px 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Force override any other margin/padding for small mobile */
+  section.tours {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+  }
+
   /* Events/Blog section spacing on small mobile */
   .events {
     margin-top: 30px;
