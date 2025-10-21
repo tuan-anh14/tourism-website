@@ -32,15 +32,20 @@
       ]
     },
     {
-      "source": "/(.*\\.(jpg|jpeg|png|webp|gif))",
+      "source": "/public/uploads/:path*.(jpg|jpeg|png|webp|gif)",
       "headers": [
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
-        },
+        }
+      ]
+    },
+    {
+      "source": "/public/cached-images/:path*.(jpg|jpeg|png|webp|gif)",
+      "headers": [
         {
-          "key": "Content-Type",
-          "value": "image/jpeg"
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     },
