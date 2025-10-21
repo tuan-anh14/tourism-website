@@ -53,7 +53,6 @@ const _user = user || null;
           rows="5"
           placeholder="Chia sẻ trải nghiệm của bạn..."
           required
-          minlength="10"
         ></textarea>
         
         <!-- Toolbar với emoji + upload -->
@@ -137,35 +136,80 @@ const _user = user || null;
 /* ==========================
    FORM WRAPPER
    ========================== */
+/* Override any external CSS that might interfere */
+.review-form-wrapper * {
+  box-sizing: border-box !important;
+}
+
 .review-form-wrapper {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 24px;
-  margin-bottom: 24px;
-  width: 100% !important;
-  max-width: 600px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative !important;
+  z-index: 1 !important;
+  isolation: isolate !important;
 }
 
-/* Override any parent container constraints */
-.review-form-container .review-form-wrapper {
-  width: 100% !important;
-  max-width: 600px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
+/* Prevent external CSS from affecting our components */
+.review-form-wrapper .rating-input,
+.review-form-wrapper .star-buttons,
+.review-form-wrapper .star-btn,
+.review-form-wrapper .star-icon {
+  all: unset !important;
+  display: revert !important;
+  box-sizing: border-box !important;
 }
 
-.review-form-header {
+/* Force all 5 stars to be visible */
+.review-form-wrapper .star-buttons {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow: visible !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.review-form-wrapper .star-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 11 !important;
+}
+
+/* Ensure all 5 stars are always visible */
+.review-form-wrapper .star-btn:nth-child(1),
+.review-form-wrapper .star-btn:nth-child(2),
+.review-form-wrapper .star-btn:nth-child(3),
+.review-form-wrapper .star-btn:nth-child(4),
+.review-form-wrapper .star-btn:nth-child(5) {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.review-form-wrapper {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  padding: 24px !important;
+  margin: 0 auto 24px !important;
+  width: 100% !important;
+  max-width: 1000px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.review-form-wrapper .review-form-header {
   margin-bottom: 24px;
   text-align: center;
   padding-bottom: 16px;
   border-bottom: 1px solid #f3f4f6;
 }
 
-.form-title {
+.review-form-wrapper .form-title {
   font-size: 1.125rem;
   font-weight: 700;
   color: #1a1a1a;
@@ -176,11 +220,14 @@ const _user = user || null;
 /* ==========================
    FORM GROUPS
    ========================== */
-.form-group {
+.review-form-wrapper .form-group {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.form-label {
+.review-form-wrapper .form-label {
   display: block;
   font-size: 0.8125rem;
   font-weight: 500;
@@ -190,94 +237,158 @@ const _user = user || null;
 }
 
 /* Content Input Wrapper */
-.content-input-wrapper {
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  background: #ffffff;
-  transition: all 0.2s;
-  overflow: hidden;
+.review-form-wrapper .content-input-wrapper {
+  border: 1px solid #d1d5db !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+  transition: all 0.2s !important;
+  overflow: hidden !important;
   width: 100% !important;
-  display: block !important;
-  margin-bottom: 16px;
+  max-width: 900px !important;
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: 1fr 180px !important;
+  grid-template-rows: auto auto auto !important;
+  margin: 0 auto 16px !important;
+  min-height: 200px !important;
 }
 
-.content-input-wrapper:focus-within {
+.review-form-wrapper .content-input-wrapper:focus-within {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.form-control {
+.review-form-wrapper .form-control {
+  grid-column: 1 / 2 !important;
+  grid-row: 1 / 3 !important;
   width: 100% !important;
-  padding: 16px 18px;
-  border: none;
-  border-radius: 0;
-  font-size: 0.875rem;
-  font-family: var(--ff-primary);
-  background: transparent;
-  resize: vertical;
+  padding: 16px 18px !important;
+  border: none !important;
+  border-right: 1px solid #e5e7eb !important;
+  border-radius: 0 !important;
+  font-size: 0.875rem !important;
+  font-family: var(--ff-primary) !important;
+  background: transparent !important;
+  resize: none !important;
   box-sizing: border-box !important;
   display: block !important;
-  line-height: 1.5;
-  min-height: 120px;
+  line-height: 1.5 !important;
+  min-height: 200px !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
 }
 
-.form-control:focus {
+.review-form-wrapper .form-control:focus {
   outline: none;
 }
 
 /* ==========================
    RATING INPUT - In Header, Centered
    ========================== */
-.rating-input {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 12px;
-  padding: 16px 0;
-  background: #f8fafc;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
+/* Force 5 stars to always be visible */
+.review-form-wrapper .rating-input {
+  position: relative !important;
+  z-index: 10 !important;
+  overflow: visible !important;
 }
 
-.star-buttons {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  margin-bottom: 8px;
-  flex-wrap: wrap;
+.review-form-wrapper .rating-input::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: #f8fafc !important;
+  border-radius: 8px !important;
+  z-index: -1 !important;
 }
 
-.star-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  transition: all 0.2s;
-  line-height: 1;
-  border-radius: 4px;
+/* Ensure all 5 stars are always visible */
+.review-form-wrapper .star-buttons {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow: visible !important;
+  position: relative !important;
+  z-index: 5 !important;
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
-.star-btn:hover {
+.review-form-wrapper .star-btn {
+  position: relative !important;
+  z-index: 6 !important;
+  flex: 0 0 auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 28px !important;
+  max-width: 40px !important;
+}
+.review-form-wrapper .rating-input {
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 12px auto 0 !important;
+    max-width: 900px !important;
+    padding: 16px 8px !important;
+    background: #f8fafc !important;
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+.review-form-wrapper .star-buttons {
+    display: flex !important;
+    gap: 8px !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 8px !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 4px !important;
+  }
+
+.review-form-wrapper .star-btn {
+    background: none !important;
+    border: none !important;
+    cursor: pointer !important;
+    padding: 4px !important;
+    transition: all 0.2s !important;
+    line-height: 1 !important;
+    border-radius: 4px !important;
+    flex-shrink: 0 !important;
+    min-width: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+.review-form-wrapper .star-btn:hover {
   transform: scale(1.1);
   background: rgba(251, 191, 36, 0.1);
 }
 
-.star-icon {
-  font-size: 2rem;
-  color: #d1d5db;
-  transition: color 0.2s;
-  display: block;
-  line-height: 1;
-}
+.review-form-wrapper .star-icon {
+    font-size: 1.75rem !important;
+    color: #d1d5db !important;
+    transition: color 0.2s !important;
+    display: block !important;
+    line-height: 1 !important;
+  }
 
-.star-btn:hover .star-icon,
-.star-btn.active .star-icon {
+.review-form-wrapper .star-btn:hover .star-icon,
+.review-form-wrapper .star-btn.active .star-icon {
   color: #fbbf24;
 }
 
-.rating-label {
+.review-form-wrapper .rating-label {
   font-size: 0.875rem;
   color: #3b82f6;
   font-weight: 500;
@@ -286,31 +397,35 @@ const _user = user || null;
   font-family: var(--ff-primary);
 }
 
-.rating-label:empty {
+.review-form-wrapper .rating-label:empty {
   display: none;
 }
 
 /* ==========================
-   CONTENT TOOLBAR - Emoji horizontal
+   CONTENT TOOLBAR - Emoji bên phải
    ========================== */
 .content-toolbar {
-  padding: 12px 16px;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  padding: 16px 12px;
   background: #f9fafb;
-  border-top: 1px solid #e5e7eb;
-  margin-top: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .emoji-toolbar {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
   align-items: center;
+  justify-items: center;
 }
 
 .emoji-btn {
-  font-size: 1.125rem;
-  padding: 6px 8px;
+  font-size: 1.25rem;
+  padding: 8px;
   background: transparent;
   border: none;
   border-radius: 6px;
@@ -320,37 +435,40 @@ const _user = user || null;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
 }
 
 .emoji-btn:hover {
   background: #e5e7eb;
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
 
 /* ==========================
-   UPLOAD SECTION - Below emoji
+   UPLOAD SECTION - Bên phải dưới emoji
    ========================== */
 .upload-section {
-  padding: 12px 16px 16px;
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  padding: 12px;
   background: #f9fafb;
-  border-top: 1px solid #e5e7eb;
-  text-align: center;
-  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .upload-btn {
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
+  gap: 6px;
+  padding: 12px 16px;
   background: #ffffff;
   color: #6b7280;
   border: 1px solid #d1d5db;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 500;
   transition: all 0.2s;
   white-space: nowrap;
@@ -361,23 +479,26 @@ const _user = user || null;
   background: #f3f4f6;
   color: #374151;
   border-color: #9ca3af;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .upload-btn svg {
   flex-shrink: 0;
+  width: 24px;
+  height: 24px;
 }
 
 /* ==========================
    IMAGE PREVIEWS
    ========================== */
 .image-previews {
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
   padding: 16px 18px 12px;
   background: #ffffff;
-  margin-top: 8px;
   border-top: 1px solid #e5e7eb;
 }
 
@@ -439,7 +560,8 @@ const _user = user || null;
   display: flex;
   gap: 12px;
   justify-content: center;
-  margin-top: 24px;
+  margin: 24px auto 0;
+  max-width: 900px;
   padding-top: 20px;
   border-top: 1px solid #e5e7eb;
 }
@@ -546,52 +668,121 @@ const _user = user || null;
    ========================== */
 @media (max-width: 768px) {
   .review-form-wrapper {
-    padding: 20px 16px;
-    margin: 20px 16px;
-    max-width: none;
+    padding: 20px 16px !important;
+    margin: 0 auto 20px !important;
+    max-width: 100% !important;
   }
 
   .form-title {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
   }
 
   .rating-input {
-    padding: 12px 0;
-    margin-top: 8px;
+    padding: 14px 10px;
+    margin: 8px auto 0;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .star-buttons {
+    gap: 6px !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    padding: 0 8px !important;
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+    position: relative !important;
+    z-index: 10 !important;
+  }
+
+  .star-btn {
+    padding: 4px !important;
+    flex: 0 0 auto !important;
+    min-width: 24px !important;
+    max-width: 32px !important;
+    position: relative !important;
+    z-index: 11 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
   .star-icon {
-    font-size: 1.75rem;
+    font-size: 1.5rem !important;
   }
   
-  .star-buttons {
-    gap: 6px;
+  /* Mobile: Đưa emoji và upload xuống dưới */
+  .content-input-wrapper {
+    display: grid !important;
+    max-width: 100% !important;
+    min-height: 150px !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto auto auto !important;
+  }
+  
+  .form-control {
+    width: 100% !important;
+    border: none !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    min-height: 120px !important;
+    font-size: 0.875rem !important;
+    padding: 12px 16px !important;
+    line-height: 1.5 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    grid-column: 1 / 2 !important;
+    grid-row: 1 / 2 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .content-toolbar {
+    padding: 12px 16px !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    grid-column: 1 / 2 !important;
+    grid-row: 2 / 3 !important;
   }
   
   .emoji-toolbar {
+    display: flex;
     gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
   .emoji-btn {
-    font-size: 1rem;
-    min-width: 32px;
-    height: 32px;
-    padding: 4px 6px;
+    font-size: 1.125rem;
+    width: 36px;
+    height: 36px;
+    padding: 6px;
   }
   
   .upload-section {
-    padding: 10px 14px 12px;
+    padding: 12px 16px !important;
+    grid-column: 1 / 2 !important;
+    grid-row: 3 / 4 !important;
+  }
+  
+  .upload-btn {
+    flex-direction: row;
+    padding: 10px 20px;
+    font-size: 0.8125rem;
+  }
+  
+  .upload-btn svg {
+    width: 18px;
+    height: 18px;
   }
 
   .form-actions {
     justify-content: center;
-    margin-top: 20px;
+    margin: 20px auto 0;
+    max-width: 100%;
     padding-top: 16px;
   }
 
   .btn-submit {
     width: 100%;
-    max-width: 200px;
+    max-width: 100%;
     padding: 12px 24px;
   }
 
@@ -601,43 +792,158 @@ const _user = user || null;
   }
 
   .image-previews {
-    gap: 8px;
-    padding: 12px 14px 8px;
+    gap: 8px !important;
+    padding: 12px 16px 8px !important;
+    grid-column: 1 / 2 !important;
+    grid-row: 4 / 5 !important;
   }
 }
 
 @media (max-width: 480px) {
   .review-form-wrapper {
-    padding: 16px 12px;
-    margin: 16px 12px;
+    padding: 16px 12px !important;
+    margin: 0 auto 16px !important;
+    max-width: 100% !important;
   }
 
   .form-title {
-    font-size: 1.125rem;
+    font-size: 1rem;
+  }
+
+  .rating-input {
+    padding: 12px 8px;
+    width: 100%;
   }
 
   .star-buttons {
-    gap: 4px;
+    gap: 4px !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    padding: 0 4px !important;
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+  }
+
+  .star-btn {
+    padding: 2px !important;
+    flex: 0 0 auto !important;
+    min-width: 20px !important;
+    max-width: 28px !important;
   }
 
   .star-icon {
-    font-size: 1.5rem;
+    font-size: 1.25rem !important;
   }
 
   .emoji-btn {
-    min-width: 28px;
-    height: 28px;
-    font-size: 0.9rem;
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
   }
 
   .form-control {
-    padding: 12px 14px;
-    min-height: 100px;
+    padding: 12px 14px !important;
+    min-height: 100px !important;
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .image-preview-item {
     width: 70px;
     height: 70px;
+  }
+}
+
+@media (max-width: 375px) {
+  .rating-input {
+    padding: 10px 6px;
+    width: 100%;
+  }
+
+  .star-buttons {
+    gap: 3px !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    padding: 0 2px !important;
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+  }
+
+  .star-btn {
+    padding: 1px !important;
+    flex: 0 0 auto !important;
+    min-width: 18px !important;
+    max-width: 24px !important;
+  }
+
+  .star-icon {
+    font-size: 1.125rem !important;
+  }
+}
+
+@media (max-width: 350px) {
+  .rating-input {
+    padding: 10px 4px;
+  }
+
+  .star-buttons {
+    gap: 2px !important;
+    justify-content: space-between !important;
+    padding: 0 1px !important;
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+  }
+
+  .star-btn {
+    padding: 0 !important;
+    min-width: 16px !important;
+    max-width: 20px !important;
+  }
+
+  .star-icon {
+    font-size: 1rem !important;
+  }
+}
+
+@media (max-width: 320px) {
+  .review-form-wrapper {
+    padding: 12px 8px !important;
+    margin: 0 auto 12px !important;
+  }
+
+  .star-buttons {
+    gap: 1px !important;
+    padding: 0 1px !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+  }
+
+  .star-btn {
+    padding: 0 !important;
+    min-width: 14px !important;
+    max-width: 18px !important;
+  }
+
+  .star-icon {
+    font-size: 0.875rem !important;
+  }
+
+  .form-control {
+    padding: 10px 12px !important;
+    font-size: 0.8125rem !important;
+    line-height: 1.5 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    min-height: 80px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 }
 </style>
@@ -664,14 +970,6 @@ const _user = user || null;
   let selectedRating = 0;
   let selectedImages = [];
 
-  const ratingLabels = {
-    1: 'Rất tệ 😞',
-    2: 'Tệ 😐',
-    3: 'Bình thường 🙂',
-    4: 'Tốt 😊',
-    5: 'Tuyệt vời 🌟'
-  };
-
   // =================================================================
   // RATING STARS
   // =================================================================
@@ -689,9 +987,6 @@ const _user = user || null;
           b.classList.remove('active');
         }
       });
-      
-      ratingLabel.textContent = ratingLabels[selectedRating];
-      ratingLabel.classList.add('selected');
     });
 
     btn.addEventListener('mouseenter', function() {
@@ -801,8 +1096,8 @@ const _user = user || null;
       return;
     }
 
-    if (contentInput.value.length < 10) {
-      alert('Nội dung đánh giá phải có ít nhất 10 ký tự');
+    if (!contentInput.value.trim()) {
+      alert('Vui lòng nhập nội dung đánh giá');
       return;
     }
 
