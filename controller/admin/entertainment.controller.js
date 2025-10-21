@@ -496,14 +496,24 @@ module.exports.update = async (req, res) => {
 
 // Delete entertainment
 module.exports.destroy = async (req, res) => {
+    console.log('=== DELETE ENTERTAINMENT ===');
+    console.log('ID from params:', req.params.id);
+    console.log('Method:', req.method);
+    console.log('Body:', req.body);
+    console.log('User:', req.user);
+    
     try {
         const entertainment = await Entertainment.findById(req.params.id);
+        console.log('Entertainment found:', entertainment ? entertainment.name : 'NOT FOUND');
+        
         if (!entertainment) {
+            console.log('Entertainment not found, redirecting...');
             req.flash('error', 'Không tìm thấy giải trí');
             return res.redirect('/admin/entertainments');
         }
 
         await Entertainment.findByIdAndDelete(req.params.id);
+        console.log('Entertainment deleted successfully');
         req.flash('success', 'Xóa giải trí thành công');
         res.redirect('/admin/entertainments');
     } catch (error) {

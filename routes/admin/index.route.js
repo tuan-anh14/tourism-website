@@ -98,7 +98,8 @@ router.patch('/entertainments/:id', requireAdmin, requireEditor, uploadDynamic, 
 router.post('/entertainments/:id', requireAdmin, requireEditor, uploadDynamic, entertainmentController.update);
 router.post('/entertainments/:id/toggle-active', requireAdmin, requireEditor, entertainmentController.toggleActive);
 router.post('/entertainments/:id/toggle-featured', requireAdmin, requireEditor, entertainmentController.toggleFeatured);
-router.delete('/entertainments/:id', requireAdmin, requireEditor, entertainmentController.destroy);
+// Accept both DELETE (via method-override) and direct POST for compatibility
+router.delete('/entertainments/delete/:id', requireAdmin, requireEditor, entertainmentController.destroy);
 router.post('/entertainments/delete/:id', requireAdmin, requireEditor, entertainmentController.destroy);
 
 // Contact routes (read and delete only)

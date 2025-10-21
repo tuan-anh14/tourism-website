@@ -158,12 +158,12 @@
                                            title="Chỉnh sửa">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <button type="button" 
-                                                class="btn btn-sm btn-outline-danger" 
-                                                title="Xóa"
-                                                onclick="confirmDelete('<%= entertainment._id %>', '<%= entertainment.name %>')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        <form method="POST" action="/admin/entertainments/delete/<%= entertainment._id %>" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa <%= entertainment.name %>?')">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
@@ -264,8 +264,30 @@
 
 <script>
 function confirmDelete(id, name) {
-    document.getElementById('deleteName').textContent = name;
-    document.getElementById('deleteForm').action = '/admin/entertainments/' + id;
-    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    console.log('=== CONFIRM DELETE CALLED ===');
+    console.log('ID:', id);
+    console.log('Name:', name);
+    
+    const deleteNameEl = document.getElementById('deleteName');
+    const deleteFormEl = document.getElementById('deleteForm');
+    
+    console.log('deleteName element:', deleteNameEl);
+    console.log('deleteForm element:', deleteFormEl);
+    
+    if (!deleteNameEl || !deleteFormEl) {
+        console.error('Modal elements not found!');
+        return;
+    }
+    
+    deleteNameEl.textContent = name;
+    const actionUrl = '/admin/entertainments/delete/' + id;
+    deleteFormEl.action = actionUrl;
+    
+    console.log('Form action set to:', actionUrl);
+    console.log('Form method:', deleteFormEl.method);
+    
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    console.log('Modal created:', modal);
+    modal.show();
 }
 </script>
