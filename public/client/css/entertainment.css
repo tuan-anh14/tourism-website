@@ -73,6 +73,12 @@
   font-size: var(--fs-paragraphs); /* Responsive font size */
   text-align: left;
   margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: calc(1.5em * 2); /* 2 lines max */
 }
 
 /* Banner header styles */
@@ -139,7 +145,7 @@
   overflow-x: auto;
   padding: 8px 0 12px 0;
   scrollbar-width: thin;
-  scrollbar-color: rgba(252, 3, 107, 0.3) transparent;
+  scrollbar-color: rgba(18, 97, 166, 0.3) transparent;
 }
 .entertainment .filter-buttons::-webkit-scrollbar {
   height: 8px;
@@ -150,15 +156,15 @@
   margin: 0 10px;
 }
 .entertainment .filter-buttons::-webkit-scrollbar-thumb {
-  background: rgba(252, 3, 107, 0.5);
+  background: rgba(18, 97, 166, 0.5);
   border-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 .entertainment .filter-buttons::-webkit-scrollbar-thumb:hover {
-  background: rgba(252, 3, 107, 0.7);
+  background: rgba(18, 97, 166, 0.7);
 }
 .entertainment .filter-buttons::-webkit-scrollbar-thumb:active {
-  background: rgba(252, 3, 107, 0.8);
+  background: rgba(18, 97, 166, 0.8);
 }
 
 .entertainment .filter-btn {
@@ -204,6 +210,8 @@
   position: relative;
   overflow: hidden;
   border-radius: 10px 10px 0 0;
+  height: 200px;
+  width: 100%;
 }
 
 .card-image-container img {
@@ -211,6 +219,7 @@
   width: 100%;
   height: 200px;
   object-fit: cover;
+  object-position: center;
 }
 
 .standard-card:hover .card-image-container img {
@@ -410,6 +419,9 @@
     font-size: 12px;
   }
 
+  .card-image-container {
+    height: 180px;
+  }
   .card-image-container img {
     height: 180px;
   }
@@ -437,7 +449,7 @@
     overflow-x: auto;
     padding: 8px 0 12px 0;
     scrollbar-width: thin;
-    scrollbar-color: rgba(252, 3, 107, 0.3) transparent;
+    scrollbar-color: rgba(18, 97, 166, 0.3) transparent;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -450,11 +462,11 @@
     margin: 0 5px;
   }
   .entertainment .filter-buttons::-webkit-scrollbar-thumb {
-    background: rgba(252, 3, 107, 0.5);
+    background: rgba(18, 97, 166, 0.5);
     border-radius: 3px;
   }
   .entertainment .filter-buttons::-webkit-scrollbar-thumb:hover {
-    background: rgba(252, 3, 107, 0.7);
+    background: rgba(18, 97, 166, 0.7);
   }
 
   .entertainment .filter-btn {
@@ -476,6 +488,9 @@
     width: 100%;
   }
 
+  .card-image-container {
+    height: 220px;
+  }
   .card-image-container img {
     height: 220px;
   }
@@ -515,6 +530,9 @@
     flex-shrink: 0;
   }
 
+  .card-image-container {
+    height: 200px;
+  }
   .card-image-container img {
     height: 200px;
   }

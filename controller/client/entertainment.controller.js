@@ -6,15 +6,35 @@ module.exports.entertainment = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = 6; // 6 items per page
         const skip = (page - 1) * limit;
+        
+        // Get filter parameters
+        const zone = req.query.zone;
+        const search = req.query.search;
 
-        // Get total count for pagination
-        const totalDocs = await Entertainment.countDocuments({ isActive: true });
+        // Build query object
+        let query = { isActive: true };
+        
+        // Add zone filter if specified
+        if (zone && zone !== 'all') {
+            query.zone = zone;
+        }
+        
+        // Add search filter if specified
+        if (search && search.trim()) {
+            query.$or = [
+                { name: { $regex: search.trim(), $options: 'i' } },
+                { activities: { $regex: search.trim(), $options: 'i' } },
+                { type: { $regex: search.trim(), $options: 'i' } }
+            ];
+        }
+
+        // Get total count for pagination (with filters applied)
+        const totalDocs = await Entertainment.countDocuments(query);
         const totalPages = Math.ceil(totalDocs / limit);
 
-        // Get entertainments with pagination
-        const allEntertainments = await Entertainment.find({ 
-            isActive: true 
-        }).sort({ featured: -1, createdAt: -1 })
+        // Get entertainments with pagination and filters
+        const allEntertainments = await Entertainment.find(query)
+        .sort({ featured: -1, createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .lean();
@@ -103,7 +123,9 @@ module.exports.entertainment = async (req, res) => {
             categories: categories,
             zones: zones,
             pagination,
-            queryString
+            queryString,
+            currentZone: zone || 'all',
+            currentSearch: search || ''
         });
     } catch (error) {
         console.error('Error loading entertainment page:', error);

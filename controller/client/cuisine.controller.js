@@ -8,12 +8,27 @@ module.exports.cuisine = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = 6; // 6 items per page
         const skip = (page - 1) * limit;
+        
+        // Get search parameter
+        const search = req.query.search;
 
-        // Get total count for pagination
-        const totalDocs = await Cuisine.countDocuments({ isActive: true, status: 'published' });
+        // Build query object
+        let query = { isActive: true, status: 'published' };
+        
+        // Add search filter if specified
+        if (search && search.trim()) {
+            query.$or = [
+                { name: { $regex: search.trim(), $options: 'i' } },
+                { description: { $regex: search.trim(), $options: 'i' } },
+                { 'places.name': { $regex: search.trim(), $options: 'i' } }
+            ];
+        }
+
+        // Get total count for pagination (with filters applied)
+        const totalDocs = await Cuisine.countDocuments(query);
         const totalPages = Math.ceil(totalDocs / limit);
 
-        const docs = await Cuisine.find({ isActive: true, status: 'published' })
+        const docs = await Cuisine.find(query)
             .populate('places')
             .sort({ featured: -1, createdAt: -1 })
             .skip(skip)
@@ -71,7 +86,8 @@ module.exports.cuisine = async (req, res) => {
             cuisines,
             allCuisinesForSearch: JSON.stringify(allCuisinesForSearch), // Pass as JSON string
             pagination,
-            queryString
+            queryString,
+            currentSearch: search || ''
         });
     } catch (error) {
         console.error('Client cuisines error:', error);
