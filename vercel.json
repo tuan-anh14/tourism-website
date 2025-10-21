@@ -3,19 +3,7 @@
   "builds": [
     {
       "src": "server.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": [
-          "public/**",
-          "views/**",
-          "config/**",
-          "controller/**",
-          "middleware/**",
-          "model/**",
-          "routes/**",
-          "utils/**"
-        ]
-      }
+      "use": "@vercel/node"
     }
   ],
   "env": {
@@ -24,6 +12,15 @@
   "headers": [
     {
       "source": "/public/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/uploads/(.*)",
       "headers": [
         {
           "key": "Cache-Control",

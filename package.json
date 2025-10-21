@@ -9,6 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "node scripts/seed.js",
     "deploy": "bash scripts/deploy.sh",
+    "optimize-images": "node scripts/optimize-uploads.js",
     "vercel-build": "echo 'Build completed'",
     "vercel-dev": "vercel dev",
     "vercel-deploy": "vercel --prod"
@@ -51,7 +52,8 @@
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "sharp": "^0.34.4"
   },
   "repository": {
     "type": "git",

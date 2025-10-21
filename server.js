@@ -15,7 +15,11 @@ const apiChatRouter = require('./routes/api/chat.route');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Serve static files from public directory
 app.use(express.static(path.join(__dirname, "public")));
+
+// Serve uploads directory separately for better caching
+app.use('/uploads', express.static(path.join(__dirname, "public/uploads")));
 
 // Parse nested fields from forms (e.g. ticket_info[normal], map[lat])
 app.use(express.urlencoded({ extended: true }));
