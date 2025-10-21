@@ -88,7 +88,6 @@
                             <th style="width: 120px;">Quận/Huyện</th>
                             <th style="width: 150px;">Địa chỉ</th>
                             <th style="width: 100px;">Giá từ</th>
-                            <th style="width: 100px;">Đánh giá</th>
                             <th style="width: 100px;">Trạng thái</th>
                             <th style="width: 150px;">Thao tác</th>
                         </tr>
@@ -141,17 +140,6 @@
                                     <strong class="text-success">
                                         <%= new Intl.NumberFormat('vi-VN').format(accommodation.priceFrom) %>đ
                                     </strong>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-1"><%= accommodation.avgRating || 0 %></span>
-                                        <div class="rating">
-                                            <% for (let i = 1; i <= 5; i++) { %>
-                                                <i class="fas fa-star <%= i <= (accommodation.avgRating || 0) ? 'text-warning' : 'text-muted' %>" style="font-size: 0.8em;"></i>
-                                            <% } %>
-                                        </div>
-                                        <small class="text-muted ms-1">(<%= accommodation.reviewCount || 0 %>)</small>
-                                    </div>
                                 </td>
                                 <td>
                                     <% if (accommodation.isActive) { %>
