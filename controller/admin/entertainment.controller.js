@@ -11,7 +11,17 @@ module.exports.index = async (req, res) => {
         const filter = {};
         if (req.query.zone) filter.zone = req.query.zone;
         if (req.query.type) filter.type = req.query.type;
-        if (req.query.isActive !== undefined) filter.isActive = req.query.isActive === 'true';
+        if (req.query.isActive !== undefined && req.query.isActive !== '') {
+            filter.isActive = req.query.isActive === 'true';
+        }
+        
+        // Debug
+        console.log('=== Entertainment Pagination Debug ===');
+        console.log('Page:', page);
+        console.log('Limit:', limit);
+        console.log('Skip:', skip);
+        console.log('Query params:', req.query);
+        console.log('Filter:', filter);
         
         const entertainments = await Entertainment.find(filter)
             .sort({ createdAt: -1 })
@@ -21,6 +31,11 @@ module.exports.index = async (req, res) => {
             
         const total = await Entertainment.countDocuments(filter);
         const totalPages = Math.ceil(total / limit);
+        
+        console.log('Total documents:', total);
+        console.log('Total pages:', totalPages);
+        console.log('Entertainments found:', entertainments.length);
+        console.log('=====================================');
         
         // Define fixed zones and types for filter dropdowns
         const zones = [
@@ -48,16 +63,11 @@ module.exports.index = async (req, res) => {
             pageTitle: 'Quản lý Giải trí',
             page: 'entertainments',
             body: 'admin/pages/entertainments/index',
+            user: req.user,
             entertainments,
-            pagination: {
-                currentPage: page,
-                totalPages,
-                total,
-                hasNext: page < totalPages,
-                hasPrev: page > 1,
-                nextPage: page + 1,
-                prevPage: page - 1
-            },
+            currentPage: page,
+            totalPages,
+            req: req,
             filters: {
                 zones,
                 types,

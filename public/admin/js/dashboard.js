@@ -168,6 +168,12 @@ function initThemeToggle() {
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
     
+    // Check if themeToggle exists before proceeding
+    if (!themeToggle) {
+        console.log('Theme toggle element not found, skipping theme initialization');
+        return;
+    }
+    
     // Check for saved theme preference or default to light mode
     const currentTheme = localStorage.getItem('theme') || 'light';
     
@@ -190,6 +196,11 @@ function initThemeToggle() {
 // Sidebar Collapse
 function initSidebarCollapse() {
     const sidebarLinks = document.querySelectorAll('.sidebar .nav-link[data-bs-toggle="collapse"]');
+    
+    if (sidebarLinks.length === 0) {
+        console.log('No sidebar collapse links found, skipping sidebar collapse initialization');
+        return;
+    }
     
     sidebarLinks.forEach(link => {
         link.addEventListener('click', function(e) {
@@ -214,6 +225,12 @@ function initSidebarCollapse() {
 // Mobile Sidebar Toggle
 function initMobileSidebar() {
     const sidebar = document.querySelector('.sidebar');
+    
+    if (!sidebar) {
+        console.log('Sidebar element not found, skipping mobile sidebar initialization');
+        return;
+    }
+    
     const toggleBtn = document.createElement('button');
     toggleBtn.className = 'btn btn-primary position-fixed top-0 start-0 m-3 d-md-none';
     toggleBtn.style.zIndex = '1001';

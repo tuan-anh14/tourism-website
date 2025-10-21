@@ -1,9 +1,12 @@
-<!-- Page Actions -->
-<div class="d-flex justify-content-end mb-3">
-    <a href="/admin/entertainments/create" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i>
-        Thêm mới
-    </a>
+<!-- Page Header -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Quản lý Giải trí</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="/admin/entertainments/create" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>
+            Thêm mới
+        </a>
+    </div>
 </div>
 
 <!-- Flash Messages -->
@@ -168,37 +171,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <!-- Pagination -->
-            <% if (pagination.totalPages > 1) { %>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        <% if (pagination.hasPrev) { %>
-                            <li class="page-item">
-                                <a class="page-link" href="?page=<%= pagination.prevPage %>&zone=<%= filters.currentZone %>&type=<%= filters.currentType %>&isActive=<%= filters.currentActive %>">
-                                    <i class="fas fa-chevron-left"></i>
-                                </a>
-                            </li>
-                        <% } %>
-                        
-                        <% for (let i = Math.max(1, pagination.currentPage - 2); i <= Math.min(pagination.totalPages, pagination.currentPage + 2); i++) { %>
-                            <li class="page-item <%= i === pagination.currentPage ? 'active' : '' %>">
-                                <a class="page-link" href="?page=<%= i %>&zone=<%= filters.currentZone %>&type=<%= filters.currentType %>&isActive=<%= filters.currentActive %>">
-                                    <%= i %>
-                                </a>
-                            </li>
-                        <% } %>
-                        
-                        <% if (pagination.hasNext) { %>
-                            <li class="page-item">
-                                <a class="page-link" href="?page=<%= pagination.nextPage %>&zone=<%= filters.currentZone %>&type=<%= filters.currentType %>&isActive=<%= filters.currentActive %>">
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </li>
-                        <% } %>
-                    </ul>
-                </nav>
-            <% } %>
         <% } else { %>
             <div class="text-center py-5">
                 <i class="fas fa-theater-masks fa-3x text-muted mb-3"></i>
@@ -223,6 +195,48 @@
             </div>
         <% } %>
     </div>
+    
+    <!-- Pagination -->
+    <% if (totalPages > 1) { %>
+        <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination justify-content-center">
+                <%
+                    // Build pagination URL function
+                    function buildPaginationUrl(pageNum) {
+                        let url = '?page=' + pageNum;
+                        if (filters.currentZone) url += '&zone=' + encodeURIComponent(filters.currentZone);
+                        if (filters.currentType) url += '&type=' + encodeURIComponent(filters.currentType);
+                        if (filters.currentActive) url += '&isActive=' + filters.currentActive;
+                        return url;
+                    }
+                %>
+                
+                <% if (currentPage > 1) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="<%= buildPaginationUrl(currentPage - 1) %>">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                <% } %>
+                
+                <% for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) { %>
+                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                        <a class="page-link" href="<%= buildPaginationUrl(i) %>">
+                            <%= i %>
+                        </a>
+                    </li>
+                <% } %>
+                
+                <% if (currentPage < totalPages) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="<%= buildPaginationUrl(currentPage + 1) %>">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+        </nav>
+    <% } %>
 </div>
 
 <!-- Delete Confirmation Modal -->
