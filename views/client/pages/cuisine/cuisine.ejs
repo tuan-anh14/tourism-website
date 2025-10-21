@@ -54,12 +54,6 @@
                         <% } else { %>
                             <p class="desc font-color">Món ăn đặc sản Hà Nội với hương vị truyền thống và độc đáo...</p>
                         <% } %>
-                        <div class="meta">
-                            <div>
-                                <% if (item.address) { %><div class="address"><i class="fa fa-map-marker"></i> <%= item.address %></div><% } %>
-                                <% if (item.hours) { %><div class="hours"><i class="fa fa-clock-o"></i> <%= item.hours %></div><% } %>
-                            </div>
-                        </div>
                         <div class="actions">
                             <a class="ctn" href="/cuisine/<%= item.slug %>">Xem chi tiết</a>
                         </div>

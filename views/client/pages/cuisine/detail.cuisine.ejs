@@ -22,10 +22,16 @@
         <%- include('../../partials/header') %>
 
         <!-- Banner -->
-        <header class="page-header cuisine-banner" style="background-image: url('<%= (food && (food.heroImage || (food.images && food.images[0]))) || "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200" %>');">
+        <% 
+        var bannerImage = "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200"; // Ảnh mặc định
+        if (food && food.images && food.images.length > 0) {
+            bannerImage = food.images[0]; // Lấy ảnh đầu tiên (index 0)
+        } else if (food && food.heroImage) {
+            bannerImage = food.heroImage;
+        }
+        %>
+        <header class="page-header cuisine-banner" style="background-image: url('<%= bannerImage %>');">
             <div class="header-content">
-                <h2 id="quote">Ẩm thực & Đặc sản</h2>
-                <div class="line"></div>
                 <h1><%= (food && food.title) || 'Món đặc sản Hà Nội' %></h1>
                 <p class="font-color">Khám phá hương vị truyền thống Hà Nội</p>
             </div>
@@ -70,31 +76,27 @@
                             </div>
                             <% } %>
 
-                            <% var gallery = (food && food.images) || []; %>
-                            <% if (gallery.length) { %>
+                            <% 
+                            var gallery = (food && food.images) || []; 
+                            var galleryImages = [];
+                            if (gallery.length > 1) {
+                                // Lấy ảnh từ index 1 trở đi (bỏ qua ảnh đầu tiên đã dùng cho banner)
+                                galleryImages = gallery.slice(1, 7); // Lấy tối đa 6 ảnh từ index 1-6
+                            } else if (gallery.length === 1) {
+                                // Nếu chỉ có 1 ảnh, vẫn hiển thị nó trong gallery
+                                galleryImages = gallery;
+                            }
+                            %>
+                            <% if (galleryImages.length) { %>
                             <h3 class="subsection-title"><i class="fa fa-image"></i> Hình ảnh món ăn</h3>
                             <div class="image-gallery">
-                                <% gallery.slice(0, 6).forEach(function(img){ %>
+                                <% galleryImages.forEach(function(img){ %>
                                 <div class="gallery-item"><img src="<%= img %>" alt="Hình món ăn" loading="lazy" /></div>
                                 <% }) %>
                             </div>
                             <% } %>
                         </section>
                     </div>
-
-                    <aside class="sidebar">
-                        <% var similars = (food && food.similar) || []; %>
-                        <% if (similars.length) { %>
-                        <section class="info-card">
-                            <h3><i class="fa fa-heart"></i> Món ăn tương tự</h3>
-                            <div class="similar-list">
-                                <% similars.forEach(function(s){ %>
-                                <a class="similar-link" href="<%= s.href || '#' %>"><i class="fa fa-cutlery"></i> <%= s.name %></a>
-                                <% }) %>
-                            </div>
-                        </section>
-                        <% } %>
-                    </aside>
                 </div>
 
                 <% var restaurants = (food && food.restaurants) || []; %>
@@ -111,18 +113,21 @@
                             <article class="blog-card" data-restaurant-index="<%= idx %>">
                                 <div class="blog-image" data-images='<%= JSON.stringify(r.images || []) %>' data-restaurant-name="<%= r.name %>">
                                     <img src="<%= r.image || defaultImage %>" alt="<%= r.name %>" />
-                                    <div class="blog-category"><%= r.category || 'Nhà hàng' %></div>
                                 </div>
                                 <div class="blog-content">
                                     <div class="blog-meta">
-                                        <span class="blog-date"><i class="fa fa-star"></i> <%= r.rating || '4.5' %>/5</span>
-                                        <span class="blog-author"><i class="fa fa-map-marker"></i> <%= r.distance || r.address || '' %></span>
+                                        <div class="blog-rating">
+                                            <span class="blog-date"><i class="fa fa-star"></i> <%= r.rating || '4.5' %>/5</span>
+                                        </div>
+                                        <div class="blog-address">
+                                            <span class="blog-author"><i class="fa fa-map-marker"></i> <%= r.distance || r.address || '' %></span>
+                                        </div>
                                     </div>
                                     <h3 class="blog-title"><%= r.name %></h3>
                                     <% if (r.description) { %>
                                     <p class="blog-excerpt"><%= r.description %></p>
                                     <% } %>
-                                    <a href="#" class="blog-read-more" onclick="viewRestaurantDetail('<%= r.id || idx %>', '<%= r.name %>'); return false;">Xem chi tiết <i class="fa fa-arrow-right"></i></a>
+                                    <a href="#" class="ctn" onclick="viewRestaurantDetail('<%= r.id || idx %>', '<%= r.name %>'); return false;">Xem chi tiết</a>
                                 </div>
                             </article>
                             <% }) %>
@@ -200,6 +205,23 @@
                 currentUrl: '/cuisine/' + (food.slug || food._id)
             }) %>
         <% } %>
+
+        <aside class="sidebar">
+            <% var similars = (food && food.similar) || []; %>
+            <% if (similars.length) { %>
+            <section class="info-card">
+                <h3><i class="fa fa-heart"></i> Món ăn tương tự</h3>
+                            <div class="similar-list">
+                                <% similars.forEach(function(s){ %>
+                                <a class="similar-link" href="<%= s.href || '#' %>">
+                                    <i class="fa fa-cutlery"></i>
+                                    <span><%= s.name %></span>
+                                </a>
+                                <% }) %>
+                            </div>
+            </section>
+            <% } %>
+        </aside>
 
         <!-- Contact Section -->
         <%- include('../../components/contact-section', { sectionId: 'contact-cuisine-detail' }) %>
@@ -334,9 +356,8 @@
             });
 
             // Lightbox for cuisine image gallery
-            try {
-                var cuisineTitle = <%- JSON.stringify((food && food.title) || 'Món ăn') %>;
-            } catch (e) { cuisineTitle = 'Món ăn'; }
+            var cuisineTitle = '<%= (food && food.title) || "Món ăn" %>';
+            var allFoodImages = <%- JSON.stringify((food && food.images) || []) %>; // Tất cả ảnh từ database
 
             const galleryNodeList = document.querySelectorAll('.image-gallery img');
             const galleryArray = Array.prototype.slice.call(galleryNodeList);
@@ -344,10 +365,15 @@
                 img.style.cursor = 'zoom-in';
                 img.addEventListener('click', function(ev) {
                     ev.preventDefault();
-                    // collect all gallery image urls in order
-                    currentRestaurantImages = galleryArray.map(function(el){ return el.getAttribute('src'); });
+                    
+                    // Sử dụng tất cả ảnh từ database, không chỉ ảnh trong gallery
+                    currentRestaurantImages = allFoodImages;
                     currentRestaurantName = cuisineTitle;
-                    currentRestaurantImageIndex = index;
+                    
+                    // Tính index thực tế trong mảng gốc
+                    // Nếu có nhiều hơn 1 ảnh, gallery bắt đầu từ index 1
+                    var realIndex = allFoodImages.length > 1 ? index + 1 : index;
+                    currentRestaurantImageIndex = realIndex;
 
                     // title
                     var titleEl = document.getElementById('restaurantModalTitle');
@@ -355,7 +381,7 @@
 
                     // open modal on selected index
                     document.getElementById('restaurantImagesModal').classList.add('active');
-                    showRestaurantImage(index);
+                    showRestaurantImage(realIndex);
                 });
             });
         });
