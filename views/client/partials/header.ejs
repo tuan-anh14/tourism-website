@@ -1,4 +1,31 @@
 <!-- Header Component -->
+<style>
+  /* Ẩn logo image trên responsive */
+  @media (max-width: 768px) {
+    .navbar .img2 {
+      display: none !important;
+    }
+    
+    /* Điều chỉnh logo text trên mobile */
+    .navbar .logo {
+      margin-left: 0 !important;
+      font-size: 1.5rem !important;
+      font-weight: bold !important;
+    }
+    
+    /* Điều chỉnh container logo */
+    .navbar span a {
+      justify-content: flex-start !important;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .navbar .logo {
+      font-size: 1.3rem !important;
+    }
+  }
+</style>
+
 <nav class="navbar glass" style="height: 70px">
   <span
     ><a href="/" style="display: flex; align-items: center"
