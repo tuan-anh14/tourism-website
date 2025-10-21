@@ -129,29 +129,6 @@
                         </a>
                     </section>
                     <% } %>
-
-                    <% var reviews = (restaurant && restaurant.reviews) || []; %>
-                    <% if (reviews.length) { %>
-                    <section class="info-card">
-                        <h3><i class="fa fa-comments"></i> Đánh giá</h3>
-                        <div class="reviews-list">
-                            <% reviews.slice(0, 3).forEach(function(review){ %>
-                            <div class="review-item">
-                                <div class="review-header">
-                                    <strong><%= review.author %></strong>
-                                    <div class="review-rating">
-                                        <% for(var i = 0; i < 5; i++) { %>
-                                            <i class="fa fa-star <%= i < review.rating ? 'active' : '' %>"></i>
-                                        <% } %>
-                                    </div>
-                                </div>
-                                <p class="review-text"><%= review.text %></p>
-                                <span class="review-date"><%= review.date %></span>
-                            </div>
-                            <% }) %>
-                        </div>
-                    </section>
-                    <% } %>
                 </aside>
             </div>
 
@@ -179,26 +156,28 @@
                 </div>
             </section>
             <% } %>
-
-            <!-- Back to Cuisine -->
-            <% if (cuisine) { %>
-            <section class="back-section">
-                <div class="back-to-cuisine">
-                    <a href="/cuisine/<%= cuisine.slug %>" class="btn-back">
-                        <i class="fa fa-arrow-left"></i> Quay lại <%= cuisine.title %>
-                    </a>
-                </div>
-            </section>
-            <% } %>
             <% } %>
         </div>
     </main>
 
-    <!-- Contact Section -->
-    <%- include('../../components/contact-section', { sectionId: 'contact-restaurant-detail' }) %>
-
     <!-- up scroll -->
     <i class="arrow" onclick="topFunction()" id="upbtn"></i>
+
+    <!-- ===========================================
+             REVIEWS SECTION
+             =========================================== -->
+    <% if (restaurant && restaurant.id) { %>
+        <%- include('../../components/reviews-section', { 
+            targetType: 'cuisine-place',
+            targetId: restaurant.id,
+            title: 'Đánh giá từ khách hàng',
+            showForm: true,
+            currentUrl: '/cuisine/restaurant/' + (restaurant.slug || restaurant.id)
+        }) %>
+    <% } %>
+
+    <!-- Contact Section -->
+    <%- include('../../components/contact-section', { sectionId: 'contact-restaurant-detail' }) %>
 
     <%- include('../../partials/footer') %>
 

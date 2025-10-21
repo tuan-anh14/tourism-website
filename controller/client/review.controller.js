@@ -17,7 +17,7 @@ module.exports.getReviews = async (req, res) => {
     const skip = (page - 1) * limit;
 
     // Validate targetType
-    const validTypes = ['attraction', 'accommodation', 'food', 'entertainment', 'tour'];
+    const validTypes = ['attraction', 'accommodation', 'food', 'entertainment', 'tour', 'cuisine-place'];
     if (!validTypes.includes(targetType)) {
       return res.status(400).json({
         success: false,
@@ -133,7 +133,7 @@ module.exports.createReview = async (req, res) => {
     const user = res.locals.user;
 
     // Kiểm tra target có tồn tại không
-    const validTypes = ['attraction', 'accommodation', 'food', 'entertainment', 'tour'];
+    const validTypes = ['attraction', 'accommodation', 'food', 'entertainment', 'tour', 'cuisine-place'];
     if (!validTypes.includes(targetType)) {
       return res.status(400).json({
         success: false,
@@ -154,6 +154,14 @@ module.exports.createReview = async (req, res) => {
         break;
       case 'entertainment':
         targetExists = await Entertainment.exists({ _id: targetId, isActive: true });
+        break;
+      case 'cuisine-place':
+        // For cuisine-place, we need to check if it exists in Cuisine.places
+        const Cuisine = require('../../model/Cuisine');
+        targetExists = await Cuisine.exists({ 
+          'places._id': targetId, 
+          isActive: true 
+        });
         break;
     }
 
