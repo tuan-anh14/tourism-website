@@ -24,7 +24,8 @@
         <header class="page-header accommodation-banner" style="background-image: url('/client/img/hotel.jpg');">
             <div class="header-content">
                 <h1>Lưu trú Hà Nội</h1>
-                <p class="font-color">Nghỉ ngơi thoải mái – tận hưởng Hà Nội</p>
+                <p class="font-color">Hà Nội Vibes – chọn nơi lưu trú, chọn cảm hứng mới</p>
+            
             </div>
         </header>
 
@@ -172,6 +173,116 @@
         <script src="/client/js/script.js"></script>
         <script src="/client/js/components/pagination.js"></script>
         <script src="/client/js/accommodation.js"></script>
+        <script>
+        // Hero search functionality for accommodation
+        document.addEventListener('DOMContentLoaded', function() {
+            var heroSearchInput = document.getElementById('hero-search-input');
+            var searchSuggestions = document.getElementById('search-suggestions');
+            var searchClearBtn = document.querySelector('.search-clear');
+            var searchTimeout;
+
+            // Load accommodations data from page
+            var accommodationsData = [];
+            var allCards = document.querySelectorAll('.accommodation-card');
+            allCards.forEach(function(card) {
+                var title = card.getAttribute('data-title');
+                if (title) {
+                    accommodationsData.push({
+                        title: title,
+                        icon: 'fa-bed'
+                    });
+                }
+            });
+
+            function normalize(str) {
+                return (str || '').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+            }
+
+            function showSuggestions(query) {
+                if (!query || query.length < 2) {
+                    searchSuggestions.style.display = 'none';
+                    return;
+                }
+
+                var normalizedQuery = normalize(query);
+                var matches = accommodationsData.filter(function(item) {
+                    return normalize(item.title).includes(normalizedQuery);
+                }).slice(0, 5);
+
+                if (matches.length > 0) {
+                    searchSuggestions.innerHTML = matches.map(function(item) {
+                        return '<div class="suggestion-item" data-title="' + item.title + '">' +
+                               '<i class="fa ' + item.icon + ' suggestion-icon"></i>' +
+                               '<span class="suggestion-text">' + item.title + '</span>' +
+                               '</div>';
+                    }).join('');
+                    searchSuggestions.classList.add('show');
+                    searchSuggestions.style.display = 'block';
+                } else {
+                    searchSuggestions.style.display = 'none';
+                }
+            }
+
+            function hideSuggestions() {
+                setTimeout(function() {
+                    searchSuggestions.style.display = 'none';
+                    searchSuggestions.classList.remove('show');
+                }, 200);
+            }
+
+            // Search input events
+            if (heroSearchInput) {
+                heroSearchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(function() {
+                        showSuggestions(this.value);
+                    }.bind(this), 300);
+                });
+
+                heroSearchInput.addEventListener('focus', function() {
+                    if (this.value.length >= 2) {
+                        showSuggestions(this.value);
+                    }
+                });
+
+                heroSearchInput.addEventListener('blur', hideSuggestions);
+            }
+
+            // Suggestion click events
+            if (searchSuggestions) {
+                searchSuggestions.addEventListener('click', function(e) {
+                    var suggestionItem = e.target.closest('.suggestion-item');
+                    if (suggestionItem) {
+                        var title = suggestionItem.getAttribute('data-title');
+                        heroSearchInput.value = title;
+                        hideSuggestions();
+                        // Trigger search
+                        var searchInput = document.getElementById('acc-search');
+                        if (searchInput) {
+                            searchInput.value = title;
+                            searchInput.dispatchEvent(new Event('input'));
+                        }
+                    }
+                });
+            }
+
+            // Clear button
+            if (searchClearBtn) {
+                searchClearBtn.addEventListener('click', function() {
+                    heroSearchInput.value = '';
+                    hideSuggestions();
+                    heroSearchInput.focus();
+                });
+            }
+
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.hero-search-container')) {
+                    hideSuggestions();
+                }
+            });
+        });
+        </script>
         <!--footer-->
     </body>
 </html>
