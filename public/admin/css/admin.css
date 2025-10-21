@@ -1,7 +1,7 @@
 /* Admin Panel Styles */
 
 :root {
-  --primary-color: #fc036b;
+  --primary-color: #1261A6;
   --secondary-color: #e6025a;
   --success-color: #28a745;
   --danger-color: ;
@@ -11,7 +11,7 @@
   --dark-color: #343a40;
   --sidebar-bg: #ffffff;
   --sidebar-text: #6c757d;
-  --sidebar-active: #fc036b;
+  --sidebar-active: #1261A6;
   --main-bg: #f8f9fa;
 }
 

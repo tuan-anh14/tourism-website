@@ -41,13 +41,13 @@
 }
 
 .dynamic-field-container .btn-outline-primary {
-    border-color: #fc036b;
-    color: #fc036b;
+    border-color: #1261A6;
+    color: #1261A6;
 }
 
 .dynamic-field-container .btn-outline-primary:hover {
-    background-color: #fc036b;
-    border-color: #fc036b;
+    background-color: #1261A6;
+    border-color: #1261A6;
     color: #fff;
 }
 
@@ -151,7 +151,7 @@
 
 /* Badges */
 .badge-category {
-    background-color: #fc036b;
+    background-color: #1261A6;
     color: #fff;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
@@ -251,7 +251,7 @@
 }
 
 .pagination .page-link {
-    color: #fc036b;
+    color: #1261A6;
     border-color: #e3e6f0;
     padding: 0.5rem 0.75rem;
 }
@@ -263,8 +263,8 @@
 }
 
 .pagination .page-item.active .page-link {
-    background-color: #fc036b;
-    border-color: #fc036b;
+    background-color: #1261A6;
+    border-color: #1261A6;
 }
 
 /* Empty State */
@@ -349,7 +349,7 @@
     height: 20px;
     margin: -10px 0 0 -10px;
     border: 2px solid #f3f3f3;
-    border-top: 2px solid #fc036b;
+    border-top: 2px solid #1261A6;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
