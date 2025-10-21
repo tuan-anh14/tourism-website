@@ -5,6 +5,7 @@ const Food = require('../../model/Food');
 const Entertainment = require('../../model/Entertainment');
 const path = require('path');
 const fs = require('fs');
+const { deleteImage, deleteMultipleImages } = require('../../middleware/cloudinary');
 
 // =================================================================
 // LẤY DANH SÁCH REVIEWS CHO MỘT TARGET (attraction, accommodation, v.v.)
@@ -186,10 +187,10 @@ module.exports.createReview = async (req, res) => {
       });
     }
 
-    // Xử lý upload ảnh (nếu có)
+    // Xử lý upload ảnh lên Cloudinary (nếu có)
     let images = [];
     if (req.files && req.files.length > 0) {
-      images = req.files.map(file => `/uploads/${file.filename}`);
+      images = req.files.map(file => file.path); // Cloudinary trả về URL trong file.path
     }
 
     // Tạo review
@@ -288,14 +289,22 @@ module.exports.deleteReview = async (req, res) => {
       });
     }
 
-    // Xóa ảnh đi kèm (nếu có)
+    // Xóa ảnh từ Cloudinary (nếu có)
     if (review.images && review.images.length > 0) {
-      review.images.forEach(imagePath => {
-        const fullPath = path.join('public', imagePath);
-        if (fs.existsSync(fullPath)) {
-          fs.unlinkSync(fullPath);
-        }
-      });
+      try {
+        // Lấy public_id từ URL Cloudinary
+        const publicIds = review.images.map(imageUrl => {
+          const urlParts = imageUrl.split('/');
+          const filename = urlParts[urlParts.length - 1];
+          const publicId = filename.split('.')[0]; // Bỏ extension
+          return `tourism-website/reviews/${publicId}`;
+        });
+        
+        await deleteMultipleImages(publicIds);
+      } catch (error) {
+        console.error('Error deleting images from Cloudinary:', error);
+        // Không throw error để không ảnh hưởng đến việc xóa review
+      }
     }
 
     await Review.findByIdAndDelete(reviewId);
@@ -349,9 +358,9 @@ module.exports.updateReview = async (req, res) => {
     if (title !== undefined) review.title = title;
     if (content) review.content = content;
 
-    // Xử lý ảnh mới (nếu có)
+    // Xử lý ảnh mới lên Cloudinary (nếu có)
     if (req.files && req.files.length > 0) {
-      const newImages = req.files.map(file => `/uploads/${file.filename}`);
+      const newImages = req.files.map(file => file.path); // Cloudinary trả về URL trong file.path
       review.images = [...(review.images || []), ...newImages];
     }
 

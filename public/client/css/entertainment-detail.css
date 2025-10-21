@@ -70,6 +70,7 @@
   color: whitesmoke;
   line-height: 1.5;
   letter-spacing: normal;
+  text-align: center !important; /* Override global justify rule */
 }
 
 /* Mobile banner adjustments - giống cuisine.css */
@@ -98,7 +99,8 @@
   }
   .entertainment-banner .header-content p { 
     font-family: var(--ff-primary);
-    font-size: clamp(0.8rem, 3.8vw, 1rem); 
+    font-size: clamp(0.8rem, 3.8vw, 1rem);
+    text-align: center !important; /* Ensure centering on mobile */
   }
 }
 
