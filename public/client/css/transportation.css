@@ -689,7 +689,7 @@
   height: 44px;
   border-radius: 999px;
   border: 0;
-  background: #6c2bd9; /* purple */
+  background: ##1261A6; /* purple */
   color: #fff;
   cursor: pointer;
 }
@@ -776,7 +776,7 @@ body:not(.dark) .t-how { color: #111; }
 .t-how__steps { display: flex; flex-direction: column; gap: 14px; }
 .t-step { display: grid; grid-template-columns: 48px 1fr; gap: 12px; align-items: start; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 12px 16px; }
 body:not(.dark) .t-step { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
-.t-step__num { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; background: #6c2bd9; font-weight: 800; }
+.t-step__num { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; background: ##1261A6; font-weight: 800; }
 .t-how__media img { width: 100%; border-radius: 16px; display: block; }
 
 @media (max-width: 900px) {
