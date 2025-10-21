@@ -23,7 +23,7 @@
   height: 100vh;
   background-image: url("../img/banner-home.jpg");
   background-position: center;
-  background-attachment: fixed;
+  background-attachment: scroll;
   background-size: cover;
   background-repeat: no-repeat;
   display: flex;
@@ -33,6 +33,13 @@
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   image-rendering: high-quality;
+}
+
+/* Fixed background cho desktop để tránh blur trên mobile */
+@media screen and (min-width: 1024px) {
+  #blog-banner {
+    background-attachment: fixed;
+  }
 }
 
 #blog-banner::before {

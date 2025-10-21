@@ -1,5 +1,17 @@
 <!-- Header Component -->
 <style>
+  /* Ẩn nút đóng menu trên desktop */
+  .menu-close-btn {
+    display: none !important;
+  }
+  
+  /* Hiển thị nút đóng chỉ trên mobile */
+  @media (max-width: 768px) {
+    .menu-close-btn {
+      display: block !important;
+    }
+  }
+  
   /* Ẩn logo image trên responsive */
   @media (max-width: 768px) {
     .navbar .img2 {
