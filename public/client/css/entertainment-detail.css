@@ -303,3 +303,112 @@
 .modal-image { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
 .modal-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .modal-info { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.55); color: #fff; padding: 6px 10px; border-radius: 999px; font-size: 12px; }
+
+/* ===========================================
+   MAP SECTION (Full Width) - Matching Accommodation Style
+   =========================================== */
+.map-container {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: var(--border-radius);
+    padding: 24px;
+    box-shadow: var(--shadow-light);
+    margin-bottom: 24px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    transition: var(--transition);
+    grid-column: 1 / -1;
+}
+
+.map-container:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
+}
+
+body.dark .map-container {
+    background: rgba(20, 20, 22, 0.95);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.map-container .section-title {
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif !important;
+    font-size: clamp(1.2rem, 1rem + 1vw, 1.8rem) !important;
+    font-weight: 600 !important;
+    margin-bottom: 20px;
+    color: var(--secondary-color, #2d3748);
+    border-bottom: 3px solid var(--primary-color);
+    padding-bottom: 12px;
+    display: inline-block;
+    letter-spacing: normal;
+}
+
+body.dark .map-container .section-title {
+    color: #fff;
+}
+
+.map-address {
+    margin-top: 16px;
+    color: var(--medium-gray);
+    line-height: 1.8;
+    font-family: var(--ff-primary);
+    font-size: var(--fs-paragraphs);
+}
+
+body.dark .map-address {
+    color: #94a3b8;
+}
+
+/* Map Container Inside Full Width Map */
+.map-container .itinerary-overview__map-container {
+    position: relative;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    height: 480px;
+    background: linear-gradient(135deg, #1261A610 0%, #c1025110 100%);
+}
+
+.map-container .itinerary-overview__map-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #eef2f5;
+}
+
+.map-container .itinerary-overview__map {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    height: 100%;
+    border-radius: var(--border-radius);
+}
+
+/* Remove old heading inside map */
+.map-container .map-overview__heading {
+    display: none;
+}
+
+/* Dark Mode for Map Container */
+body.dark .map-container .itinerary-overview__map-container {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Map Embed Styling for other pages */
+.attraction-map-embed,
+.entertainment-map-embed,
+.cuisine-map-embed {
+    width: 100%;
+    height: 480px;
+    background: linear-gradient(135deg, #1261A610 0%, #c1025110 100%);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+/* Map Container for different pages */
+#glanceMap,
+#entMap {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--border-radius);
+}

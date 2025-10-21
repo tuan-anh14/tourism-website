@@ -218,6 +218,33 @@
         </div>
 
         <!-- ===========================================
+             MAP SECTION (Full Width)
+             =========================================== -->
+        <section class="map-container">
+            <h2 class="section-title">Vị trí trên bản đồ</h2>
+            <div class="itinerary-overview__map-container">
+                <div class="itinerary-overview__map-inner">
+                    <div id="entMap"
+                         class="itinerary-overview__map"
+                         data-lat="<%= (entertainment && entertainment.map && entertainment.map.lat) || 21.028511 %>"
+                         data-lng="<%= (entertainment && entertainment.map && entertainment.map.lng) || 105.804817 %>"
+                         data-zoom="<%= (detail && detail.mapZoom) || 14 %>"
+                         data-name="<%= entertainment && entertainment.name %>"
+                         data-address="<%= entertainment && entertainment.address %>"
+                         data-image="<%= (entertainment && entertainment.images && entertainment.images[0] && entertainment.images[0].url) || '' %>"
+                         data-url="<%= (entertainment && ('/entertainment/' + (entertainment.slug || entertainment._id))) || '' %>"></div>
+                </div>
+                <div class="itinerary-overview__map-gradient-vertical"></div>
+                <div class="itinerary-overview__map-gradient-horizontal"></div>
+            </div>
+            <% if (entertainment && entertainment.address) { %>
+            <p class="map-address">
+                <strong>Địa chỉ:</strong> <%= entertainment.address %>
+            </p>
+            <% } %>
+        </section>
+
+        <!-- ===========================================
              REVIEWS SECTION
              =========================================== -->
         <% if (entertainment && entertainment._id) { %>

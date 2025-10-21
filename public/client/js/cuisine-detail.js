@@ -85,7 +85,61 @@
     });
   }
 
+  function initMapOverview(){
+    if (typeof maplibregl === 'undefined') return;
+    var el = document.getElementById('cuisineMap');
+    if (!el) return;
+    var lat = parseFloat(el.getAttribute('data-lat') || '21.028511');
+    var lng = parseFloat(el.getAttribute('data-lng') || '105.804817');
+    var zoom = parseFloat(el.getAttribute('data-zoom') || '14');
+    var map = new maplibregl.Map({
+      container: el,
+      style: {
+        version: 8,
+        name: 'Minimal Light',
+        sources: {
+          light: {
+            type: 'raster',
+            tiles: ['https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png'],
+            tileSize: 256,
+            attribution: '© OpenStreetMap, © CARTO'
+          }
+        },
+        layers: [{ id: 'base', type: 'raster', source: 'light' }]
+      },
+      center: [lng, lat],
+      zoom: zoom,
+      attributionControl: true
+    });
+    map.scrollZoom.disable();
+    map.boxZoom.disable();
+    map.dragRotate.disable();
+    map.keyboard.disable();
+    map.doubleClickZoom.enable();
+    map.dragPan.enable();
+
+    var el = document.createElement('div'); el.className = 'map-marker active';
+    var marker = new maplibregl.Marker({ element: el })
+      .setLngLat([lng, lat])
+      .addTo(map);
+
+    var html = '<div class="map-popup">'+
+        '<div class="info">'+
+          '<h4>'+ (el.getAttribute('data-name')||'') +'</h4>'+
+          '<p>'+ (el.getAttribute('data-address')||'') +'</p>'+
+        '</div>'+
+      '</div>';
+    var popup = new maplibregl.Popup({ closeButton: true, closeOnClick: false })
+      .setHTML(html);
+    marker.setPopup(popup);
+  }
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  
+  // Initialize map overview
+  document.addEventListener('DOMContentLoaded', function(){
+    initMapOverview();
+  });
 })();
 
 

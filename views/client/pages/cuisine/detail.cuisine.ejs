@@ -194,6 +194,33 @@
         </div>
 
         <!-- ===========================================
+             MAP SECTION (Full Width)
+             =========================================== -->
+        <section class="map-container">
+            <h2 class="section-title">Vị trí trên bản đồ</h2>
+            <div class="itinerary-overview__map-container">
+                <div class="itinerary-overview__map-inner">
+                    <div id="cuisineMap"
+                         class="itinerary-overview__map"
+                         data-lat="<%= (food && (food.lat || food.coordinates?.lat)) || 21.028511 %>"
+                         data-lng="<%= (food && (food.lng || food.coordinates?.lng)) || 105.804817 %>"
+                         data-zoom="<%= (food && (food.mapZoom || food.map?.zoom)) || 14 %>"
+                         data-name="<%= (food && (food.title || food.name)) || '' %>"
+                         data-address="<%= (food && food.address) || '' %>"
+                         data-image="<%= (food && (food.heroImage || (food.images && food.images[0]))) || '' %>"
+                         data-url="<%= (food && ('/cuisine/' + (food.slug || food._id))) || '' %>"></div>
+                </div>
+                <div class="itinerary-overview__map-gradient-vertical"></div>
+                <div class="itinerary-overview__map-gradient-horizontal"></div>
+            </div>
+            <% if (food && food.address) { %>
+            <p class="map-address">
+                <strong>Địa chỉ:</strong> <%= food.address %>
+            </p>
+            <% } %>
+        </section>
+
+        <!-- ===========================================
              REVIEWS SECTION
              =========================================== -->
         <% if (food && food._id) { %>
