@@ -347,7 +347,7 @@ body.dark .acc-detail .room-info h3 {
 
 .acc-detail .feature-item i {
   color: var(--primary-color);
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 body.dark .acc-detail .feature-item {
@@ -379,7 +379,7 @@ body.dark .acc-detail .feature-item {
 
 .acc-detail .service-item i {
   color: var(--primary-color);
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 body.dark .acc-detail .service-item {
@@ -417,7 +417,7 @@ body.dark .acc-detail .service-item {
   color: #007bff;
   margin-top: 2px;
   flex-shrink: 0;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 body.dark .acc-detail .rule-item {
@@ -478,7 +478,7 @@ body.dark .acc-detail .contact-info h3 {
   justify-content: center;
   background: #1261A61A;
   border-radius: 50%;
-  font-size: 16px;
+  font-size: 1rem;
   flex-shrink: 0;
 }
 
@@ -673,7 +673,7 @@ body.dark .acc-detail .map-address {
   color: #fff;
   padding: 8px 16px;
   border-radius: 999px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
 }
 
@@ -759,7 +759,7 @@ body.dark .reviews-pro__heading .subheading {
 .widget-wrapper.loading::before {
   content: "Đang tải đánh giá...";
   color: var(--medium-gray);
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 /* No reviews fallback */

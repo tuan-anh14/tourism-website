@@ -323,7 +323,7 @@
     padding: 13px 25px;
   }
   .c_boxx a p {
-    font-size: 16px;
+    font-size: 1rem;
   }
   
   /* Tours section - ensure images remain visible */
@@ -370,8 +370,8 @@
     grid-template-columns: 1fr;
     text-align: left;
   }
-  .footer-logo strong { font-size: 16px; }
-  .footer-slogan { font-size: 14px; }
+  .footer-logo strong { font-size: 1rem; }
+  .footer-slogan { font-size: 0.875rem; }
 }
 
 @media (max-width: 850px) {
@@ -522,7 +522,7 @@
   .map-control-btn {
     width: 40px;
     height: 40px;
-    font-size: 14px;
+    font-size: 0.875rem;
   }
   
   .area-navigation {
@@ -538,11 +538,11 @@
   .area-btn {
     padding: 6px 8px;
     margin-bottom: 4px;
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   
   .area-btn i {
-    font-size: 10px;
+    font-size: 0.625rem;
     width: 12px;
   }
   
@@ -566,7 +566,7 @@
   .legend-icon {
     width: 18px;
     height: 18px;
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   
   .popup-content {
@@ -597,7 +597,7 @@
   .map-control-btn {
     width: 35px;
     height: 35px;
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   
   .area-navigation {
@@ -606,18 +606,18 @@
   }
   
   .area-navigation h5 {
-    font-size: 10px;
+    font-size: 0.625rem;
     margin-bottom: 6px;
   }
   
   .area-btn {
     padding: 4px 6px;
     margin-bottom: 3px;
-    font-size: 9px;
+    font-size: 0.5625rem;
   }
   
   .area-btn i {
-    font-size: 9px;
+    font-size: 0.5625rem;
     width: 10px;
   }
   
@@ -635,14 +635,14 @@
   }
   
   .legend-item {
-    font-size: 11px;
+    font-size: 0.6875rem;
     margin-bottom: 4px;
   }
   
   .legend-icon {
     width: 16px;
     height: 16px;
-    font-size: 9px;
+    font-size: 0.5625rem;
   }
   
   .popup-content {
@@ -654,11 +654,11 @@
   }
   
   .popup-description {
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
   
   .type-badge {
     padding: 3px 8px;
-    font-size: 10px;
+    font-size: 0.625rem;
   }
 }

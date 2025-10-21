@@ -234,7 +234,7 @@
   color: white;
   padding: 6px 12px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: bold;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   z-index: 2;
@@ -263,7 +263,7 @@
   text-decoration: none;
   border-radius: 25px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
   transition: all 0.3s ease;
   display: inline-block;
   align-self: center;
@@ -337,7 +337,7 @@
 
 /* Event Cards */
 .event-details {
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.6;
   padding: 15px 0;
 }
@@ -400,7 +400,7 @@
 
   .filter-btn {
     padding: 8px 16px;
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
 }
 
@@ -416,7 +416,7 @@
 
   .filter-btn {
     padding: 8px 14px;
-    font-size: 12px;
+    font-size: 0.75rem;
   }
 
   .card-image-container {
@@ -473,7 +473,7 @@
     min-width: fit-content;
     margin: 0;
     padding: 10px 16px;
-    font-size: 13px;
+    font-size: 0.8125rem;
     white-space: nowrap;
     flex-shrink: 0;
   }
@@ -497,7 +497,7 @@
 
   .entertainment-details,
   .event-details {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 
   .entertainment-details strong,
@@ -525,7 +525,7 @@
   .entertainment .filter-btn {
     min-width: fit-content;
     padding: 8px 14px;
-    font-size: 12px;
+    font-size: 0.75rem;
     white-space: nowrap;
     flex-shrink: 0;
   }
@@ -539,13 +539,13 @@
 
   .entertainment-details,
   .event-details {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   .entertainment-details strong,
   .event-details strong {
     min-width: 70px;
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
 
   .feature-card {
@@ -561,7 +561,7 @@
   }
 
   .feature-card p {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 }
 

@@ -102,7 +102,7 @@
 .quick-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 16px; margin: 24px auto 32px; width: min(100%, 1200px); }
 .info-card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.08); transition: transform .2s ease, box-shadow .2s ease; }
 .info-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.12); }
-.info-card-icon { font-size: 24px; margin-bottom: 8px; }
+.info-card-icon { font-size: 1.5rem; margin-bottom: 8px; }
 .info-card h3 { 
   color: var(--accent); 
   font-family: var(--ff-heading);
@@ -184,8 +184,8 @@
 .map-overview .itinerary-overview__map-inner { position: relative; height: clamp(420px, 70vh, 680px); background: #eef2f5; }
 .map-overview .itinerary-overview__map { position: absolute; inset: 0; z-index: 1; }
 .map-overview .map-overview__heading { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 2; text-align: center; color: #111; padding: 0; background: transparent; box-shadow: none; margin: 0; pointer-events: none; }
-.map-overview .map-overview__heading h2 { margin: 0; font-size: 24px; line-height: 1.2; text-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-.map-overview .map-overview__heading p { margin: 6px 0 0 0; font-size: 13px; color: var(--muted); text-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+.map-overview .map-overview__heading h2 { margin: 0; font-size: 1.5rem; line-height: 1.2; text-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.map-overview .map-overview__heading p { margin: 6px 0 0 0; font-size: 0.8125rem; color: var(--muted); text-shadow: 0 1px 6px rgba(0,0,0,0.06); }
 .map-overview .itinerary-overview__map-gradient-vertical { display: none; }
 .map-overview .itinerary-overview__map-gradient-horizontal { display: none; }
 
@@ -205,14 +205,14 @@
 .map-popup h4 { 
   margin: 0 0 6px 0; 
   font-family: var(--ff-heading);
-  font-size: 16px; 
+  font-size: 1rem; 
   color: #111; 
   font-weight: 600; 
 }
 .map-popup p { 
   margin: 0; 
   font-family: var(--ff-primary);
-  font-size: 13px; 
+  font-size: 0.8125rem; 
   color: var(--muted); 
 }
 
@@ -325,7 +325,7 @@
 .nav-prev, .nav-next { background: rgba(0,0,0,0.5); color: #fff; border: none; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; }
 .modal-image { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
 .modal-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
-.modal-info { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.55); color: #fff; padding: 6px 10px; border-radius: 999px; font-size: 12px; }
+.modal-info { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.55); color: #fff; padding: 6px 10px; border-radius: 999px; font-size: 0.75rem; }
 
 /* ===========================================
    MAP SECTION (Full Width) - Matching Accommodation Style

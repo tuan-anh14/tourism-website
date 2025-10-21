@@ -260,7 +260,7 @@
     text-decoration: none; 
     font-weight: 600; 
     transition: all 0.3s ease; 
-    font-size: 14px; 
+    font-size: 0.875rem; 
 }
 .btn-map:hover { 
     filter: brightness(1.05); 
@@ -292,7 +292,7 @@
 }
 .review-rating i { 
     color: #ddd; 
-    font-size: 12px; 
+    font-size: 0.75rem; 
 }
 .review-rating i.active { 
     color: #ffc107; 
@@ -307,7 +307,7 @@
 }
 .review-date { 
     color: #999; 
-    font-size: 12px; 
+    font-size: 0.75rem; 
 }
 
 /* Menu Section */
@@ -381,7 +381,7 @@
 .item-price { 
     color: var(--primary-color); 
     font-weight: 700; 
-    font-size: 16px; 
+    font-size: 1rem; 
     margin-left: 12px; 
 }
 
