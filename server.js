@@ -11,9 +11,14 @@ const database = require("./config/database");
 const route = require("./routes/client/index.route");
 const routeAdmin = require("./routes/admin/index.route");
 const apiChatRouter = require('./routes/api/chat.route');
+const ImageOptimizationMiddleware = require('./middleware/imageOptimization');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Image optimization middleware
+const imageOptimizer = new ImageOptimizationMiddleware();
+app.use(imageOptimizer.optimizeImage());
 
 app.use(express.static(path.join(__dirname, "public")));
 

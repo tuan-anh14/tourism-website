@@ -22,7 +22,20 @@ body.dark .cuisine .navbar .nav-links li a { color: #fff; }
 .cuisine .navbar .nav-links li a:hover { border-color: rgba(255,255,255,0.85) !important; }
 
 /* Banner */
-.cuisine-banner.page-header { background-size: cover; background-position: center; min-height: 320px; display:flex; align-items:center; justify-content:center; text-align:center; padding:60px 20px; }
+.cuisine-banner.page-header { 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;
+  min-height: 320px; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  text-align:center; 
+  padding:60px 20px; 
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: high-quality;
+}
 .cuisine-banner .header-content h1 { 
   color: #fff;
   font-family: var(--ff-heading); /* Playfair Display */

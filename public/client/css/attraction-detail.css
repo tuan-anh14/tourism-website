@@ -122,7 +122,11 @@
 .page-header.attraction-banner { 
     background-size: cover; 
     background-position: center; 
+    background-repeat: no-repeat;
     position: relative; 
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: high-quality;
 }
 .page-header.attraction-banner::before { 
     content:""; 

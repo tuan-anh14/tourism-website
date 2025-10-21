@@ -35,12 +35,16 @@
 .entertainment-banner.page-header { 
   background-size: cover; 
   background-position: center; 
+  background-repeat: no-repeat;
   min-height: 320px; 
   display: flex; 
   align-items: center; 
   justify-content: center; 
   text-align: center; 
   padding: 60px 20px; 
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: high-quality;
 }
 .entertainment-banner .header-content h1 { 
   color: #fff;

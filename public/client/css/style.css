@@ -45,12 +45,28 @@ img {
   max-width: 100%;
   display: block;
   height: auto;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: high-quality;
 }
 
 /* Ensure all images in the site are responsive */
 img:not(.image-gallery img) {
   max-width: 100%;
   height: auto;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: high-quality;
+}
+
+/* Optimize all banner backgrounds for better image quality */
+.page-header,
+[class*="banner"],
+[class*="hero"] {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: high-quality;
+  background-repeat: no-repeat;
 }
 
 a {
@@ -161,9 +177,13 @@ header {
   background-position: bottom;
   background-attachment: fixed;
   background-size: cover;
+  background-repeat: no-repeat;
   display: flex;
   align-items: end;
   justify-content: center;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: high-quality;
 }
 
 .header-content {

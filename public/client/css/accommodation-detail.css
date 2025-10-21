@@ -71,11 +71,15 @@ body.dark .accommodation-detail-page .navbar .nav-links li a {
 .page-header.accommodation-banner {
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   position: relative;
   height: 480px;
   display: flex;
   align-items: center;
   justify-content: center;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: high-quality;
 }
 .page-header.accommodation-banner::before {
   content: "";

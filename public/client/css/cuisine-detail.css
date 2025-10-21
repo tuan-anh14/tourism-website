@@ -33,12 +33,16 @@
 .page-header.cuisine-banner { 
     background-size: cover; 
     background-position: center; 
+    background-repeat: no-repeat;
     min-height: 320px; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
     text-align: center; 
     padding: 60px 20px; 
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: high-quality;
 }
 
 /* Header Content Typography - Matching cuisine page */
