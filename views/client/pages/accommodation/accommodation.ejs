@@ -107,11 +107,11 @@
                         <div class="card-header">
                             <h3 class="title dark"><%= title %></h3>
                         </div>
-                        <% if (desc) { %><p class="desc font-color"><%= desc.length > 120 ? desc.substring(0, 120) + '...' : desc %></p><% } %>
+                        <% if (price) { %>
+                        <span class="price price-inline">Giá từ: <%= Number(price).toLocaleString('vi-VN') %> VNĐ</span>
+                        <% } %>
+                        <% if (desc) { %><p class="desc font-color"><%= desc %></p><% } %>
                         <div class="meta">
-                            <% if (price) { %>
-                            <span class="price">Giá từ: <%= Number(price).toLocaleString('vi-VN') %> VNĐ</span>
-                            <% } %>
                             <% if (rating > 0) { %>
                             <div class="rating">
                                 <span class="rating-value"><%= rating.toFixed(1) %></span>
