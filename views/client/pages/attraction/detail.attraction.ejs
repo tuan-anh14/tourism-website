@@ -231,15 +231,15 @@
                 <section id="media-showcase" class="content-section media-showcase">
                     <% 
                         const images = (attraction && attraction.images) || []; 
-                        const heroImg = images[3] && images[3].url ? images[3].url : '/client/img/carousel-img3.jpg';
-                        const thumbs = images.slice(3); // Show all images from index 3 onwards
+                        const heroImg = images[2] && images[0].url ? images[2].url : '/client/img/carousel-img3.jpg';
+                        const thumbs = images; // Show all images
                     %>
                     <div class="media-hero-wrapper">
-                    <div class="media-hero" style="background-image: url('<%= heroImg %>');" data-images='[<%=(images && images.length ? images.map(i=>`"${i.url}"`).join(',') : '')%>]' data-index="3">
+                    <div class="media-hero" style="background-image: url('<%= heroImg %>');" data-images='[<%=(images && images.length ? images.map(i=>`"${i.url}"`).join(',') : '')%>]' data-index="0">
                         <div class="media-hero__overlay"></div>
                         <div class="media-hero__content">
                             <h2 class="media-hero__title">Hình ảnh</h2>
-                            <p class="media-hero__subtitle" style="color: white">Khám phá vẻ đẹp qua những bức ảnh nổi bật của địa điểm này</p>
+                            <p class="media-hero__subtitle" style="color: white"></p>
                         </div>
                         <button class="media-hero__nav prev" type="button" aria-label="Ảnh trước"><i class="fa fa-chevron-left"></i></button>
                         <button class="media-hero__nav next" type="button" aria-label="Ảnh sau"><i class="fa fa-chevron-right"></i></button>

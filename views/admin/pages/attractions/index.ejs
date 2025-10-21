@@ -95,7 +95,6 @@
                             <th>Tên</th>
                             <th style="width: 120px;">Danh mục</th>
                             <th style="width: 200px;">Địa chỉ</th>
-                            <th style="width: 100px;">Đánh giá</th>
                             <th style="width: 100px;">Trạng thái</th>
                             <th style="width: 150px;">Thao tác</th>
                         </tr>
@@ -138,17 +137,6 @@
                                         <%= attraction.address %>
                                     </div>
                                     <small class="text-muted"><%= attraction.district %></small>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-1"><%= attraction.averageRating %></span>
-                                        <div class="rating">
-                                            <% for (let i = 1; i <= 5; i++) { %>
-                                                <i class="fas fa-star <%= i <= attraction.averageRating ? 'text-warning' : 'text-muted' %>" style="font-size: 0.8em;"></i>
-                                            <% } %>
-                                        </div>
-                                        <small class="text-muted ms-1">(<%= attraction.reviews ? attraction.reviews.length : 0 %>)</small>
-                                    </div>
                                 </td>
                                 <td>
                                     <% if (attraction.isActive) { %>
