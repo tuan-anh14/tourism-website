@@ -42,6 +42,9 @@
         <span class="user-name">Xin chào, <%= user.fullName %></span>
         <div class="user-dropdown">
           <a href="/auth/info" class="dropdown-item">Thông tin tài khoản</a>
+          <% if (user.role === 'admin' || user.role === 'editor') { %>
+            <a href="/admin/dashboard" class="dropdown-item">Trang quản trị</a>
+          <% } %>
           <a href="/auth/logout" class="dropdown-item">Đăng xuất</a>
         </div>
       </div>

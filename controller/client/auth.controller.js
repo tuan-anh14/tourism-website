@@ -51,11 +51,12 @@ module.exports.login = (req, res) => {
 
 // [POST] /auth/login
 module.exports.loginPost = async (req, res) => {
-  const email = req.body.email;
+  const emailOrUsername = req.body.email;
   const password = req.body.password;
 
+  // Tìm user bằng email
   const user = await User.findOne({
-    email: email,
+    email: emailOrUsername,
     deleted: false,
   });
 
@@ -77,15 +78,18 @@ module.exports.loginPost = async (req, res) => {
     return;
   }
 
-  res.cookie("tokenUser", user.tokenUser);
-
+  // Cập nhật trạng thái online
   await User.updateOne(
     { _id: user.id },
     {
       statusOnline: "online",
+      lastLogin: new Date()
     }
   );
 
+  // Chỉ lưu cookie cho tất cả user
+  res.cookie("tokenUser", user.tokenUser);
+  
   req.flash("success", "Đăng nhập thành công!");
   res.redirect("/");
 };
@@ -101,6 +105,7 @@ module.exports.logout = async (req, res) => {
     );
   }
 
+  // Chỉ xóa cookie
   res.clearCookie("tokenUser");
 
   res.redirect("/");

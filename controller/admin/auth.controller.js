@@ -1,54 +1,18 @@
 const User = require('../../model/User');
 
-// [GET] /admin/login
+// [GET] /admin/login - redirect to unified login
 module.exports.showLogin = (req, res) => {
   if (req.session.userId) {
     return res.redirect('/admin/dashboard');
   }
-  res.render('admin/pages/auth/login', {
-    pageTitle: 'Đăng nhập Admin',
-    error: req.flash('error'),
-    success: req.flash('success')
-  });
+  // Redirect to unified login page
+  res.redirect('/auth/login');
 };
 
-// [POST] /admin/login
-module.exports.login = async (req, res) => {
-  try {
-    const { username, password } = req.body;
-
-    if (!username || !password) {
-      req.flash('error', 'Vui lòng nhập đầy đủ thông tin');
-      return res.redirect('/admin/login');
-    }
-
-    const user = await User.findOne({ 
-      $or: [{ username }, { email: username }],
-      isActive: true 
-    });
-
-    if (!user) {
-      req.flash('error', 'Tài khoản không tồn tại');
-      return res.redirect('/admin/login');
-    }
-
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch) {
-      req.flash('error', 'Mật khẩu không đúng');
-      return res.redirect('/admin/login');
-    }
-
-    req.session.userId = user._id;
-    user.lastLogin = new Date();
-    await user.save();
-
-    req.flash('success', 'Đăng nhập thành công');
-    res.redirect('/admin/dashboard');
-  } catch (error) {
-    console.error('Login error:', error);
-    req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại');
-    res.redirect('/admin/login');
-  }
+// [POST] /admin/login - redirect to unified login
+module.exports.login = (req, res) => {
+  // Redirect to unified login page
+  res.redirect('/auth/login');
 };
 
 // [GET] /admin/logout
@@ -57,7 +21,7 @@ module.exports.logout = (req, res) => {
     if (err) {
       console.error('Logout error:', err);
     }
-    res.redirect('/admin/login');
+    res.redirect('/');
   });
 };
 

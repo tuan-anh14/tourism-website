@@ -21,7 +21,7 @@ module.exports.optionalAuth = async (req, res, next) => {
 
 // Client authentication middleware - checks for tokenUser cookie
 module.exports.requireAuth = async (req, res, next) => {
-  // If this is an admin route, use session-based auth instead
+  // If this is an admin route, use admin auth instead
   if (req.originalUrl && req.originalUrl.startsWith('/admin')) {
     return module.exports.requireAdmin(req, res, next);
   }
@@ -40,40 +40,60 @@ module.exports.requireAuth = async (req, res, next) => {
     return;
   }
   
-  const user = await User.findOne({
-    tokenUser: req.cookies.tokenUser,
-    deleted: false,
-  });
+  try {
+    const user = await User.findOne({
+      tokenUser: req.cookies.tokenUser,
+      deleted: false,
+    });
 
-  if (!user) {
+    if (!user) {
+      if (isApiRequest) {
+        return res.status(401).json({
+          success: false,
+          message: 'Phiên đăng nhập không hợp lệ'
+        });
+      }
+      res.redirect(`/auth/login`);
+      return;
+    }
+    
+    res.locals.user = user;
+    next();
+  } catch (error) {
+    console.error('Auth error:', error);
     if (isApiRequest) {
-      return res.status(401).json({
+      return res.status(500).json({
         success: false,
-        message: 'Phiên đăng nhập không hợp lệ'
+        message: 'Có lỗi xảy ra, vui lòng thử lại'
       });
     }
     res.redirect(`/auth/login`);
-    return;
   }
-  
-  res.locals.user = user;
-  next();
 };
 
-// Admin authentication middleware - checks for session userId
+// Admin authentication middleware - checks for cookie and role
 module.exports.requireAdmin = async (req, res, next) => {
-  if (!req.session || !req.session.userId) {
+  // Chỉ kiểm tra cookie
+  if (!req.cookies || !req.cookies.tokenUser) {
     req.flash('error', 'Vui lòng đăng nhập để tiếp tục');
-    return res.redirect('/admin/login');
+    return res.redirect('/auth/login');
   }
 
   try {
-    const user = await User.findById(req.session.userId);
-    
+    const user = await User.findOne({
+      tokenUser: req.cookies.tokenUser,
+      deleted: false,
+    });
+
     if (!user) {
-      req.session.destroy();
       req.flash('error', 'Phiên đăng nhập không hợp lệ');
-      return res.redirect('/admin/login');
+      return res.redirect('/auth/login');
+    }
+
+    // Kiểm tra role admin hoặc editor
+    if (user.role !== 'admin' && user.role !== 'editor') {
+      req.flash('error', 'Bạn không có quyền truy cập trang quản trị');
+      return res.redirect('/auth/login');
     }
 
     // Store user in request for controllers to use
@@ -84,32 +104,34 @@ module.exports.requireAdmin = async (req, res, next) => {
   } catch (error) {
     console.error('Admin auth error:', error);
     req.flash('error', 'Có lỗi xảy ra, vui lòng đăng nhập lại');
-    return res.redirect('/admin/login');
+    return res.redirect('/auth/login');
   }
 };
 
-// Editor middleware - same as admin for now, can add role checks later
+// Editor middleware - checks for cookie and role
 module.exports.requireEditor = async (req, res, next) => {
-  // First check admin authentication
-  if (!req.session || !req.session.userId) {
+  // Chỉ kiểm tra cookie
+  if (!req.cookies || !req.cookies.tokenUser) {
     req.flash('error', 'Vui lòng đăng nhập để tiếp tục');
-    return res.redirect('/admin/login');
+    return res.redirect('/auth/login');
   }
 
   try {
-    const user = await User.findById(req.session.userId);
-    
+    const user = await User.findOne({
+      tokenUser: req.cookies.tokenUser,
+      deleted: false,
+    });
+
     if (!user) {
-      req.session.destroy();
       req.flash('error', 'Phiên đăng nhập không hợp lệ');
-      return res.redirect('/admin/login');
+      return res.redirect('/auth/login');
     }
 
-    // TODO: Add role check here when role system is implemented
-    // if (user.role !== 'editor' && user.role !== 'admin') {
-    //   req.flash('error', 'Bạn không có quyền truy cập');
-    //   return res.redirect('/admin/dashboard');
-    // }
+    // Kiểm tra role editor hoặc admin
+    if (user.role !== 'editor' && user.role !== 'admin') {
+      req.flash('error', 'Bạn không có quyền truy cập');
+      return res.redirect('/auth/login');
+    }
 
     req.user = user;
     res.locals.user = user;
@@ -118,6 +140,6 @@ module.exports.requireEditor = async (req, res, next) => {
   } catch (error) {
     console.error('Editor auth error:', error);
     req.flash('error', 'Có lỗi xảy ra, vui lòng đăng nhập lại');
-    return res.redirect('/admin/login');
+    return res.redirect('/auth/login');
   }
 };

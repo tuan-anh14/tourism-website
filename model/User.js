@@ -7,12 +7,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  username: {
-    type: String,
-    unique: true,
-    sparse: true, // Allows null values while maintaining uniqueness
-    trim: true
-  },
   email: {
     type: String,
     required: true,
@@ -44,10 +38,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'active',
     enum: ['active', 'inactive']
-  },
-  isActive: {
-    type: Boolean,
-    default: true
   },
   statusOnline: {
     type: String,
