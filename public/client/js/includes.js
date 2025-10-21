@@ -49,9 +49,30 @@
         widget.appendChild(btn); widget.appendChild(panel);
         root.appendChild(widget);
 
+        function formatText(text) {
+            // Xóa các ký tự markdown (*, **, __, etc.)
+            text = text.replace(/\*\*([^*]+)\*\*/g, '$1'); // **bold** -> bold
+            text = text.replace(/\*([^*]+)\*/g, '$1'); // *italic* -> italic
+            text = text.replace(/__([^_]+)__/g, '$1'); // __bold__ -> bold
+            text = text.replace(/_([^_]+)_/g, '$1'); // _italic_ -> italic
+            text = text.replace(/~~([^~]+)~~/g, '$1'); // ~~strikethrough~~ -> strikethrough
+            text = text.replace(/`([^`]+)`/g, '$1'); // `code` -> code
+            
+            // Xử lý xuống dòng và căn chỉnh
+            text = text.replace(/\n\n/g, '<br><br>'); // Double newlines -> paragraph breaks
+            text = text.replace(/\n/g, '<br>'); // Single newlines -> line breaks
+            
+            return text;
+        }
+
         function appendMsg(role, text){
             var row = createEl('div', 'hnv-chatbot__msg ' + (role === 'user' ? 'u' : 'a'));
-            row.textContent = text; body.appendChild(row); body.scrollTop = body.scrollHeight;
+            if (role === 'assistant') {
+                row.innerHTML = formatText(text);
+            } else {
+                row.textContent = text;
+            }
+            body.appendChild(row); body.scrollTop = body.scrollHeight;
         }
 
         var open = false;

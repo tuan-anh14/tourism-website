@@ -1,12 +1,12 @@
 /* Cuisine Detail - namespaced for consistency with site theme */
 
-/* CSS Variables for Typography - Matching Blog Section */
+/* CSS Variables for Typography - Updated to match main system */
 :root {
     --ff-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --ff-heading: "Playfair Display", Georgia, "Times New Roman", serif;
-    --fs-xl: 1.25rem; /* 20px */
-    --fs-paragraphs: clamp(0.875rem, 0.8rem + 0.35vw, 1.125rem);
-    --fs-headings: clamp(1.5rem, 1.2rem + 1.5vw, 3rem);
+    --ff-heading: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --fs-xl: 1.125rem; /* 18px */
+    --fs-paragraphs: clamp(0.8rem, 0.7rem + 0.3vw, 1rem);
+    --fs-headings: clamp(1.25rem, 1rem + 1.2vw, 2.25rem);
 }
 
 /* ===========================================
@@ -24,6 +24,11 @@
   line-height: 1.6;
   font-family: var(--ff-primary);
   font-size: var(--fs-paragraphs);
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .cuisine-detail-page .navbar .nav-links li a,

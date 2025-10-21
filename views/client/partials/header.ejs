@@ -33,10 +33,31 @@
     <li>
       <a href="/blog" id="sept" class="cir_border">Blog</a>
     </li>
+    
+    <!-- Auth Section trong mobile menu -->
+    <li class="auth-section-mobile">
+      <% if (typeof user !== 'undefined' && user) { %>
+        <div class="user-menu-mobile">
+          <span class="user-name-mobile">Xin chào, <%= user.fullName %></span>
+          <div class="user-dropdown-mobile">
+            <a href="/auth/info" class="dropdown-item-mobile">Thông tin tài khoản</a>
+            <% if (user.role === 'admin' || user.role === 'editor') { %>
+              <a href="/admin/dashboard" class="dropdown-item-mobile">Trang quản trị</a>
+            <% } %>
+            <a href="/auth/logout" class="dropdown-item-mobile">Đăng xuất</a>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="auth-buttons-mobile">
+          <a href="/auth/login" class="btn-login-mobile">Đăng nhập</a>
+          <a href="/auth/register" class="btn-register-mobile">Đăng ký</a>
+        </div>
+      <% } %>
+    </li>
   </ul>
   
-  <!-- Auth Section -->
-  <div class="auth-section">
+  <!-- Auth Section cho desktop -->
+  <div class="auth-section auth-section-desktop">
     <% if (typeof user !== 'undefined' && user) { %>
       <div class="user-menu">
         <span class="user-name">Xin chào, <%= user.fullName %></span>

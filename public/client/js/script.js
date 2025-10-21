@@ -203,6 +203,23 @@
       var newChatBtn = wrap.querySelector("#hnvNewChat");
       var historyBtn = wrap.querySelector("#hnvHistoryBtn");
       var closeBtn = wrap.querySelector("#hnvCloseBtn");
+      // Function để format text từ chatbot
+      function formatText(text) {
+        // Xóa các ký tự markdown (*, **, __, etc.)
+        text = text.replace(/\*\*([^*]+)\*\*/g, '$1'); // **bold** -> bold
+        text = text.replace(/\*([^*]+)\*/g, '$1'); // *italic* -> italic
+        text = text.replace(/__([^_]+)__/g, '$1'); // __bold__ -> bold
+        text = text.replace(/_([^_]+)_/g, '$1'); // _italic_ -> italic
+        text = text.replace(/~~([^~]+)~~/g, '$1'); // ~~strikethrough~~ -> strikethrough
+        text = text.replace(/`([^`]+)`/g, '$1'); // `code` -> code
+        
+        // Xử lý xuống dòng và căn chỉnh
+        text = text.replace(/\n\n/g, '<br><br>'); // Double newlines -> paragraph breaks
+        text = text.replace(/\n/g, '<br>'); // Single newlines -> line breaks
+        
+        return text;
+      }
+
       var history = [];
       var busy = false;
       var lastSent = 0;
@@ -230,7 +247,11 @@
               messages.forEach(function(msg) {
                 var msgDiv = document.createElement("div");
                 msgDiv.className = "hnv-msg hnv-msg--" + (msg.role === "user" ? "me" : "bot");
-                msgDiv.textContent = msg.content;
+                if (msg.role === "assistant") {
+                  msgDiv.innerHTML = formatText(msg.content);
+                } else {
+                  msgDiv.textContent = msg.content;
+                }
                 msgs.appendChild(msgDiv);
                 
                 // Thêm vào history
@@ -306,7 +327,7 @@
         setTimeout(function () {
           sendToApi(v).then(function (reply) {
             history.push({ role: "assistant", content: reply });
-            bot.textContent = reply;
+            bot.innerHTML = formatText(reply);
             msgs.scrollTop = msgs.scrollHeight;
           });
         }, wait);
@@ -607,7 +628,11 @@
               messages.forEach(function(msg) {
                 var msgDiv = document.createElement("div");
                 msgDiv.className = "hnv-msg hnv-msg--" + (msg.role === "user" ? "me" : "bot");
-                msgDiv.textContent = msg.content;
+                if (msg.role === "assistant") {
+                  msgDiv.innerHTML = formatText(msg.content);
+                } else {
+                  msgDiv.textContent = msg.content;
+                }
                 msgs.appendChild(msgDiv);
                 
                 // Thêm vào history

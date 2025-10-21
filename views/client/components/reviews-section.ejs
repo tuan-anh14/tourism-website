@@ -285,11 +285,11 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
 }
 
 .review-header {
-      display: flex;
+  display: flex;
   align-items: flex-start;
-      gap: 12px;
-  margin-bottom: 12px;
-    }
+  gap: 12px;
+  margin-bottom: 16px;
+}
   
     .reviewer-avatar {
   width: 40px;
@@ -314,17 +314,21 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
 }
 
 .reviewer-info {
-      flex: 1;
-    }
-  
-    .reviewer-name { 
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reviewer-name { 
   font-size: 0.875rem;
   font-weight: 600;
   color: #1a1a1a;
-  margin-bottom: 4px;
-      display: flex; 
-      align-items: center; 
-      gap: 6px;
+  margin: 0;
+  display: flex; 
+  align-items: center; 
+  gap: 6px;
+  font-family: var(--ff-primary);
 }
 
 .verified-badge {
@@ -339,14 +343,16 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
 .review-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   font-size: 0.75rem;
   color: #6b7280;
-    }
-  
-    .review-rating { 
+  flex-wrap: wrap;
+}
+
+.review-rating { 
   display: flex;
-  gap: 1px;
+  gap: 2px;
+  align-items: center;
 }
 
 .review-rating .star {
@@ -357,6 +363,7 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
 .review-date {
   color: #9ca3af;
   font-size: 0.75rem;
+  font-family: var(--ff-primary);
 }
 
 .review-title {
@@ -364,13 +371,20 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
   font-weight: 600;
   color: #1a1a1a;
   margin-bottom: 8px;
+  font-family: var(--ff-heading);
+}
+
+.review-content-wrapper {
+  margin-left: 52px; /* Align with content below avatar */
+  margin-top: 8px;
 }
 
 .review-content {
   font-size: 0.875rem;
-      line-height: 1.6; 
+  line-height: 1.6; 
   color: #4b5563;
   margin-bottom: 12px;
+  font-family: var(--ff-primary);
 }
 
 .review-images {
@@ -491,6 +505,22 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
   .reviews-title {
     font-size: 1.125rem;
   }
+
+  .review-content-wrapper {
+    margin-left: 44px; /* Smaller margin on mobile */
+  }
+
+  .review-meta {
+    gap: 8px;
+  }
+
+  .reviewer-name {
+    font-size: 0.8125rem;
+  }
+
+  .review-content {
+    font-size: 0.8125rem;
+  }
   
   .review-stats-card {
     padding: 16px;
@@ -531,6 +561,36 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
   .review-image {
     width: 100px;
     height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .review-content-wrapper {
+    margin-left: 0; /* No margin on very small screens */
+    margin-top: 12px;
+  }
+
+  .review-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .reviewer-info {
+    width: 100%;
+  }
+
+  .review-meta {
+    justify-content: flex-start;
+    gap: 6px;
+  }
+
+  .reviewer-name {
+    font-size: 0.75rem;
+  }
+
+  .review-content {
+    font-size: 0.75rem;
   }
 }
 </style>
@@ -711,9 +771,11 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
               </div>
             </div>
           </div>
-          ${review.title ? `<h4 class="review-title">${review.title}</h4>` : ''}
-          <div class="review-content">${review.content}</div>
-          ${imagesHtml}
+          <div class="review-content-wrapper">
+            ${review.title ? `<h4 class="review-title">${review.title}</h4>` : ''}
+            <div class="review-content">${review.content}</div>
+            ${imagesHtml}
+          </div>
         </div>
       `;
     }).join('');

@@ -9,8 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "node scripts/seed.js",
     "deploy": "bash scripts/deploy.sh",
-    "optimize-images": "node scripts/optimizeImages.js",
-    "vercel-build": "npm run optimize-images && echo 'Build completed'",
+    "vercel-build": "echo 'Build completed'",
     "vercel-dev": "vercel dev",
     "vercel-deploy": "vercel --prod"
   },
@@ -41,18 +40,12 @@
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "helmet": "^8.1.0",
-    "imagemin": "^8.0.1",
-    "imagemin-jpegtran": "^7.0.0",
-    "imagemin-mozjpeg": "^10.0.0",
-    "imagemin-pngquant": "^9.0.2",
-    "imagemin-webp": "^8.0.0",
     "md5": "^2.3.0",
     "method-override": "^3.0.0",
     "mongoose": "^8.18.0",
     "morgan": "^1.10.1",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^7.0.9",
-    "sharp": "^0.33.0"
+    "nodemailer": "^7.0.9"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

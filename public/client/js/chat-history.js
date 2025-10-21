@@ -267,6 +267,22 @@ class ChatHistoryManager {
         }
     }
 
+    formatText(text) {
+        // Xóa các ký tự markdown (*, **, __, etc.)
+        text = text.replace(/\*\*([^*]+)\*\*/g, '$1'); // **bold** -> bold
+        text = text.replace(/\*([^*]+)\*/g, '$1'); // *italic* -> italic
+        text = text.replace(/__([^_]+)__/g, '$1'); // __bold__ -> bold
+        text = text.replace(/_([^_]+)_/g, '$1'); // _italic_ -> italic
+        text = text.replace(/~~([^~]+)~~/g, '$1'); // ~~strikethrough~~ -> strikethrough
+        text = text.replace(/`([^`]+)`/g, '$1'); // `code` -> code
+        
+        // Xử lý xuống dòng và căn chỉnh
+        text = text.replace(/\n\n/g, '<br><br>'); // Double newlines -> paragraph breaks
+        text = text.replace(/\n/g, '<br>'); // Single newlines -> line breaks
+        
+        return text;
+    }
+
     displaySessionMessages(messages) {
         // Tìm chat container (giả sử có sẵn)
         const chatContainer = document.querySelector('.chat-messages') || document.querySelector('#chat-container');
@@ -283,8 +299,13 @@ class ChatHistoryManager {
         messages.forEach(message => {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${message.role}`;
+            
+            const content = message.role === 'assistant' ? 
+                this.formatText(message.content) : 
+                message.content;
+                
             messageDiv.innerHTML = `
-                <div class="message-content">${message.content}</div>
+                <div class="message-content">${content}</div>
                 <div class="message-time">${this.formatDate(message.timestamp)}</div>
             `;
             chatContainer.appendChild(messageDiv);
