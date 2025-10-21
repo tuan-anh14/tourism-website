@@ -35,13 +35,48 @@
 <!-- Global Chatbot mount -->
 <div id="hnv-chatbot-root"></div>
 
+<!-- Z-index Configuration for proper layering -->
+<style>
+    /* Z-index hierarchy: Lịch sử chat > Chatbot > GTranslate */
+    
+    /* Chatbot z-index (trung bình) */
+    #hnv-chatbot-root {
+        z-index: 11000 !important;
+    }
+    
+    /* Chatbot components */
+    #hnv-chatbot-root * {
+        z-index: inherit;
+    }
+    
+    /* Chat history z-index (cao nhất) */
+    .chat-history,
+    .chat-history-overlay,
+    .chat-history-modal {
+        z-index: 12000 !important;
+    }
+    
+    /* Ensure chatbot button doesn't interfere with chat history */
+    .chatbot-toggle,
+    .chatbot-button {
+        z-index: 11000 !important;
+    }
+    
+    /* Chat history components */
+    .chat-history *,
+    .chat-history-overlay *,
+    .chat-history-modal * {
+        z-index: inherit;
+    }
+</style>
+
 <!-- GTranslate Widget -->
 <style>
     .gtranslate_wrapper {
         position: fixed;
         top: 20px;
         right: 20px;
-        z-index: 10000; /* Cao hơn chatbot */
+        z-index: 10000; /* Thấp nhất: GTranslate */
         font-family: Arial, sans-serif;
     }
     
@@ -117,10 +152,10 @@
         }
     }
     
-    /* Đảm bảo GTranslate luôn hiển thị trên chatbot */
+    /* Đảm bảo thứ tự z-index: Lịch sử chat > Chatbot > GTranslate */
     @media (max-width: 1024px) {
         .gtranslate_wrapper {
-            z-index: 10000 !important;
+            z-index: 10000 !important; /* GTranslate thấp nhất */
         }
     }
     
@@ -233,7 +268,7 @@
         setTimeout(() => {
             var wrapper = document.querySelector('.gtranslate_wrapper');
             if (wrapper) {
-                // Ensure proper z-index
+                // Ensure proper z-index (GTranslate thấp nhất)
                 wrapper.style.zIndex = '10000';
                 
                 // Style the selector
@@ -311,6 +346,44 @@
             window.gtranslate.translate();
         }
     };
+    
+    // Function to ensure proper z-index hierarchy
+    function ensureZIndexHierarchy() {
+        // GTranslate (thấp nhất)
+        var gtranslateWrapper = document.querySelector('.gtranslate_wrapper');
+        if (gtranslateWrapper) {
+            gtranslateWrapper.style.zIndex = '10000';
+        }
+        
+        // Chatbot (trung bình)
+        var chatbotRoot = document.getElementById('hnv-chatbot-root');
+        if (chatbotRoot) {
+            chatbotRoot.style.zIndex = '11000';
+        }
+        
+        // Chat history (cao nhất)
+        var chatHistoryElements = document.querySelectorAll('.chat-history, .chat-history-overlay, .chat-history-modal');
+        chatHistoryElements.forEach(function(element) {
+            element.style.zIndex = '12000';
+        });
+    }
+    
+    // Apply z-index hierarchy on page load
+    document.addEventListener('DOMContentLoaded', ensureZIndexHierarchy);
+    
+    // Reapply when new elements are added
+    var zIndexObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList') {
+                setTimeout(ensureZIndexHierarchy, 100);
+            }
+        });
+    });
+    
+    // Start observing
+    document.addEventListener('DOMContentLoaded', function() {
+        zIndexObserver.observe(document.body, { childList: true, subtree: true });
+    });
 </script>
 <!-- Global Reading Progress (client-only) -->
 <link rel="stylesheet" href="/client/css/reading-progress.css" />
