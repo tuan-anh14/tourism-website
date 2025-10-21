@@ -54,16 +54,14 @@ const _user = user || null;
           placeholder="Chia sẻ trải nghiệm của bạn..."
           required
           minlength="10"
-          maxlength="2000"
         ></textarea>
         
-        <!-- Toolbar với emoji + upload bên trái -->
+        <!-- Toolbar với emoji + upload -->
         <div class="content-toolbar">
           <!-- Emoji picker -->
           <div class="emoji-toolbar">
             <button type="button" class="emoji-btn" data-emoji="😊" title="Mỉm cười">😊</button>
             <button type="button" class="emoji-btn" data-emoji="😍" title="Yêu">😍</button>
-            <button type="button" class="emoji-btn" data-emoji="🤩" title="Xuất sắc">🤩</button>
             <button type="button" class="emoji-btn" data-emoji="👍" title="Thích">👍</button>
             <button type="button" class="emoji-btn" data-emoji="❤️" title="Trái tim">❤️</button>
             <button type="button" class="emoji-btn" data-emoji="🔥" title="Tuyệt vời">🔥</button>
@@ -74,8 +72,10 @@ const _user = user || null;
             <button type="button" class="emoji-btn" data-emoji="💯" title="Hoàn hảo">💯</button>
             <button type="button" class="emoji-btn" data-emoji="👌" title="OK">👌</button>
           </div>
-          
-          <!-- Upload button -->
+        </div>
+        
+        <!-- Upload button below emoji -->
+        <div class="upload-section">
           <input 
             type="file" 
             id="reviewImages" 
@@ -85,7 +85,7 @@ const _user = user || null;
             class="file-input"
             style="display: none;"
           >
-          <label for="reviewImages" class="upload-btn-toolbar">
+          <label for="reviewImages" class="upload-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
               <circle cx="8.5" cy="8.5" r="1.5"></circle>
@@ -143,6 +143,18 @@ const _user = user || null;
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 24px;
+  width: 100% !important;
+  max-width: 600px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Override any parent container constraints */
+.review-form-container .review-form-wrapper {
+  width: 100% !important;
+  max-width: 600px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .review-form-header {
@@ -179,6 +191,8 @@ const _user = user || null;
   background: #ffffff;
   transition: all 0.2s;
   overflow: hidden;
+  width: 100% !important;
+  display: block !important;
 }
 
 .content-input-wrapper:focus-within {
@@ -187,7 +201,7 @@ const _user = user || null;
 }
 
 .form-control {
-  width: 100%;
+  width: 100% !important;
   padding: 12px 14px;
   border: none;
   border-radius: 0;
@@ -195,6 +209,8 @@ const _user = user || null;
   font-family: inherit;
   background: transparent;
   resize: vertical;
+  box-sizing: border-box !important;
+  display: block !important;
 }
 
 .form-control:focus {
@@ -258,28 +274,24 @@ const _user = user || null;
 }
 
 /* ==========================
-   CONTENT TOOLBAR - Emoji + Upload bên trái
+   CONTENT TOOLBAR - Emoji horizontal
    ========================== */
 .content-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
   padding: 10px 14px;
   background: #f9fafb;
   border-top: 1px solid #e5e7eb;
-  flex-wrap: wrap;
 }
 
 .emoji-toolbar {
   display: flex;
-  gap: 2px;
+  gap: 4px;
   flex-wrap: wrap;
-  flex: 1;
+  justify-content: center;
 }
 
 .emoji-btn {
-  font-size: 22px;
-  padding: 6px;
+  font-size: 18px;
+  padding: 4px 6px;
   background: transparent;
   border: none;
   border-radius: 6px;
@@ -289,21 +301,30 @@ const _user = user || null;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 32px;
+  height: 32px;
 }
 
 .emoji-btn:hover {
   background: #e5e7eb;
-  transform: scale(1.15);
+  transform: scale(1.1);
 }
 
 /* ==========================
-   IMAGE UPLOAD - In Toolbar
+   UPLOAD SECTION - Below emoji
    ========================== */
-.upload-btn-toolbar {
+.upload-section {
+  padding: 8px 14px 12px;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.upload-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
+  padding: 8px 16px;
   background: #ffffff;
   color: #6b7280;
   border: 1px solid #d1d5db;
@@ -313,16 +334,15 @@ const _user = user || null;
   font-weight: 500;
   transition: all 0.2s;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
-.upload-btn-toolbar:hover {
+.upload-btn:hover {
   background: #f3f4f6;
   color: #374151;
   border-color: #9ca3af;
 }
 
-.upload-btn-toolbar svg {
+.upload-btn svg {
   flex-shrink: 0;
 }
 
@@ -387,29 +407,52 @@ const _user = user || null;
 .form-actions {
   display: flex;
   gap: 10px;
-  justify-content: flex-end;
+  justify-content: center;
   margin-top: 16px;
 }
 
 .btn-submit {
-  padding: 10px 24px;
+  padding: 12px 32px;
   background: #3b82f6;
   color: #ffffff;
   border: none;
-  border-radius: 6px;
+  border-radius: 25px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-submit::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
 }
 
 .btn-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
   background: #2563eb;
+}
+
+.btn-submit:hover:not(:disabled)::before {
+  left: 100%;
 }
 
 .btn-submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
 .spinner-small {
@@ -469,6 +512,8 @@ const _user = user || null;
 @media (max-width: 768px) {
   .review-form-wrapper {
     padding: 20px 16px;
+    margin: 20px 16px;
+    max-width: none;
   }
 
   .form-title {
@@ -483,26 +528,27 @@ const _user = user || null;
     gap: 3px;
   }
   
-  .content-toolbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
   .emoji-toolbar {
-    width: 100%;
+    gap: 2px;
   }
   
-  .upload-btn-toolbar {
-    align-self: flex-start;
+  .emoji-btn {
+    font-size: 16px;
+    min-width: 28px;
+    height: 28px;
+  }
+  
+  .upload-section {
+    padding: 6px 14px 10px;
   }
 
   .form-actions {
-    flex-direction: column-reverse;
+    justify-content: center;
   }
 
-  .btn-cancel,
   .btn-submit {
     width: 100%;
+    max-width: 200px;
   }
 
   .image-preview-item {
@@ -539,7 +585,7 @@ const _user = user || null;
     2: 'Tệ 😐',
     3: 'Bình thường 🙂',
     4: 'Tốt 😊',
-    5: 'Xuất sắc 🤩'
+    5: 'Tuyệt vời 🌟'
   };
 
   // =================================================================

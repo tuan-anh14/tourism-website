@@ -19,6 +19,14 @@ const entertainmentSchema = new mongoose.Schema({
     minlength: 2,
     maxlength: 100
   },
+  slug: {
+    type: String,
+    unique: true,
+    sparse: true,
+    lowercase: true,
+    trim: true,
+    index: true
+  },
   type: {
     type: String,
     required: true,
@@ -124,11 +132,44 @@ const entertainmentSchema = new mongoose.Schema({
 entertainmentSchema.index({ zone: 1, type: 1 });
 entertainmentSchema.index({ isActive: 1, featured: 1 });
 entertainmentSchema.index({ name: 'text', address: 'text' });
+// slug index đã được định nghĩa trong field definition
 
 // Ensure virtual fields are serialized
 entertainmentSchema.set('toJSON', { virtuals: true });
 entertainmentSchema.set('toObject', { virtuals: true });
 
-// No pre-save hooks required at the moment
+// Pre-save middleware to generate slug (giống hệt Attraction.js)
+entertainmentSchema.pre('save', function(next) {
+  // Chỉ tạo slug nếu có name và chưa có slug
+  if (this.name && (!this.slug || this.isModified('name'))) {
+    let baseSlug = this.name
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Loại bỏ dấu
+      .replace(/[^a-z0-9\s-]/g, '') // Chỉ giữ chữ, số, khoảng trắng, dấu gạch
+      .replace(/\s+/g, '-') // Thay khoảng trắng bằng dấu gạch
+      .replace(/-+/g, '-') // Loại bỏ dấu gạch trùng lặp
+      .trim('-'); // Loại bỏ dấu gạch đầu/cuối
+    
+    this.slug = baseSlug;
+    
+    // Nếu slug trống, tạo slug từ timestamp
+    if (!this.slug) {
+      this.slug = 'entertainment-' + Date.now();
+    }
+  }
+  // Nếu không có name, không tạo slug (để tránh null)
+  next();
+});
+
+// Virtual: URL đầy đủ (giống Attraction.js)
+entertainmentSchema.virtual('url').get(function() {
+  return `/entertainment/${this.slug}`;
+});
+
+// Virtual: Hình ảnh chính (giống Attraction.js)
+entertainmentSchema.virtual('mainImage').get(function() {
+  return this.images?.[0] || null;
+});
 
 module.exports = mongoose.model('Entertainment', entertainmentSchema);

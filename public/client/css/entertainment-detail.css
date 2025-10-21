@@ -144,7 +144,7 @@
   margin: 6px 0; 
 }
 
-.highlight-box { background: #fff9fe; border-left: 4px solid var(--accent); padding: 16px; border-radius: 8px; }
+.highlight-box { border-left: 4px solid var(--accent); padding: 16px; border-radius: 8px; }
 .highlight-box h4 { 
   margin: 0 0 8px 0; 
   color: var(--accent); 
@@ -238,18 +238,37 @@
   line-height: 1.6; 
 }
 
-.cta-section { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%); color: #fff; padding: 28px; border-radius: 12px; text-align: center; margin: 20px auto 40px; width: min(100%, 900px); }
-.cta-section h2 { 
+.cta-section { 
+  background: linear-gradient(135deg, var(--accent) 0%); 
   color: #fff; 
+  padding: 28px; 
+  border-radius: 12px; 
+  text-align: center; 
+  margin: 20px auto 40px; 
+  width: min(100%, 900px); 
+}
+.cta-section h2 { 
+  color: #fff !important; 
   margin: 0 0 8px 0; 
   font-family: var(--ff-heading);
   font-size: var(--fs-headings);
   font-weight: 600;
+  text-align: center !important;
+}
+.cta-section h2.dark {
+  color: #fff !important;
+  text-align: center !important;
 }
 .cta-section p {
   font-family: var(--ff-primary);
   font-size: var(--fs-paragraphs);
   line-height: 1.5;
+  text-align: center !important;
+  color: #fff !important;
+}
+.cta-section p.font-color {
+  color: #fff !important;
+  text-align: center !important;
 }
 .btn { 
   display: inline-block; 

@@ -138,10 +138,32 @@ module.exports.entertainment = async (req, res) => {
 
 module.exports.detail = async (req, res) => {
     try {
-        const { id } = req.params;
+        const slugOrId = String(req.params.slug || '').toLowerCase();
+        const isSlugLike = /^[a-z0-9-]+$/.test(slugOrId);
+        const isObjectId = /^[a-f0-9]{24}$/.test(slugOrId);
         
-        const entertainmentDoc = await Entertainment.findById(id);
-        if (!entertainmentDoc || !entertainmentDoc.isActive) {
+        if (!isSlugLike) {
+            return res.status(404).render('errors/404', {
+                pageTitle: 'Slug không hợp lệ',
+                message: 'Vui lòng quay lại danh sách.'
+            });
+        }
+
+        // Tìm entertainment theo slug trước
+        let entertainmentDoc = await Entertainment.findOne({ 
+            slug: slugOrId, 
+            isActive: true 
+        }).lean();
+
+        // Nếu không tìm thấy bằng slug và là ObjectId, thử tìm bằng ID
+        if (!entertainmentDoc && isObjectId) {
+            entertainmentDoc = await Entertainment.findOne({
+                _id: slugOrId,
+                isActive: true
+            }).lean();
+        }
+
+        if (!entertainmentDoc) {
             return res.status(404).render('errors/404', {
                 pageTitle: 'Không tìm thấy',
                 message: 'Không tìm thấy địa điểm giải trí này'
@@ -153,7 +175,7 @@ module.exports.detail = async (req, res) => {
             ? entertainmentDoc.images.filter(Boolean).map(url => ({ url }))
             : [];
         const entertainment = {
-            ...entertainmentDoc.toObject(),
+            ...entertainmentDoc,
             images: normalizedImages,
             heroImage: entertainmentDoc.heroImage || (normalizedImages[0] ? normalizedImages[0].url : ''),
             hasReviewWidget: !!(entertainmentDoc.reviewWidgetScript && entertainmentDoc.reviewWidgetScript.trim()),
@@ -259,9 +281,8 @@ module.exports.detail = async (req, res) => {
         // CTA
         detail.cta = {
             title: "Sẵn sàng khám phá?",
-            subtitle: `Đặt vé để trải nghiệm ${entertainment.name}`,
+            subtitle: `Trải nghiệm ${entertainment.name}`,
             actions: [
-                { label: "Đặt vé", href: "#" },
                 { label: "Xem thêm", href: "#" }
             ]
         };
