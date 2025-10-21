@@ -6,8 +6,40 @@
     var navlinks = document.querySelector(".nav-links");
     if (menuBtn && navlinks) {
       menuBtn.addEventListener("click", function () {
-        navlinks.classList.toggle("mobile-menu");
+        navlinks.classList.toggle("active");
+        // Prevent body scroll when menu is open
+        if (navlinks.classList.contains("active")) {
+          document.body.style.overflow = "hidden";
+        } else {
+          document.body.style.overflow = "";
+        }
       });
+      
+      // Close menu when clicking outside
+      document.addEventListener("click", function(event) {
+        if (!navlinks.contains(event.target) && !menuBtn.contains(event.target)) {
+          navlinks.classList.remove("active");
+          document.body.style.overflow = "";
+        }
+      });
+      
+      // Close menu when clicking on nav links
+      var navLinks = navlinks.querySelectorAll("a");
+      navLinks.forEach(function(link) {
+        link.addEventListener("click", function() {
+          navlinks.classList.remove("active");
+          document.body.style.overflow = "";
+        });
+      });
+      
+      // Close menu when clicking close button
+      var closeBtn = navlinks.querySelector(".close-menu-btn");
+      if (closeBtn) {
+        closeBtn.addEventListener("click", function() {
+          navlinks.classList.remove("active");
+          document.body.style.overflow = "";
+        });
+      }
     }
   }
 
