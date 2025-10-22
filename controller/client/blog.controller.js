@@ -14,7 +14,7 @@ module.exports.articleOne = (req, res) => {
         "Top 10 địa điểm du lịch Hà Nội hấp dẫn nhất cho chuyến đi trọn vẹn.",
       keywords:
         "địa điểm du lịch Hà Nội, top 10, Hồ Hoàn Kiếm, Văn Miếu, phố cổ",
-      image: "/client/img/ho-tay.jpg",
+      image: "/client/img/hotay.jpg",
       author: "Admin",
       date: "15/01/2024",
       dateISO: "2024-01-15",

@@ -1,184 +1,173 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hà Nội đi lại bằng gì? Từ xe bus, taxi đến xe điện phố cổ | Hà Nội Vibes</title>
-    <meta name="description" content="Khám phá các phương tiện di chuyển phổ biến ở Hà Nội như xe bus, taxi, xe công nghệ và xe điện phố cổ. Hà Nội Vibes mách bạn cách đi lại dễ dàng, tiết kiệm và thú vị nhất.">
-    <meta name="keywords" content="Hà Nội đi lại, phương tiện Hà Nội, xe bus Hà Nội, taxi Hà Nội, xe công nghệ, xe điện phố cổ, Grab Hà Nội, du lịch Hà Nội">
-    <meta name="author" content="Hà Nội Vibes">
-    <meta property="og:title" content="Hà Nội đi lại bằng gì? Từ xe bus, taxi đến xe điện phố cổ">
-    <meta property="og:description" content="Khám phá các phương tiện di chuyển phổ biến ở Hà Nội như xe bus, taxi, xe công nghệ và xe điện phố cổ.">
-    <meta property="og:image" content="/client/img/banner-attraction.jpg">
-    <meta property="og:url" content="https://hanoivibes.com/blog/bai-9">
-    <meta property="og:type" content="article">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Hà Nội đi lại bằng gì? Từ xe bus, taxi đến xe điện phố cổ">
-    <meta name="twitter:description" content="Khám phá các phương tiện di chuyển phổ biến ở Hà Nội như xe bus, taxi, xe công nghệ và xe điện phố cổ.">
-    <meta name="twitter:image" content="/client/img/banner-attraction.jpg">
-    <link rel="canonical" href="https://hanoivibes.com/blog/bai-9">
-    <link rel="stylesheet" href="/client/css/style.css">
-    <link rel="stylesheet" href="/client/css/blog.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle || 'Hà Nội đi lại bằng gì? Từ xe bus, taxi đến xe điện phố cổ' %> - Hà Nội Vibes</title>
+    <meta name="description" content="<%= (meta && meta.description) || 'Khám phá các phương tiện di chuyển phổ biến ở Hà Nội như xe bus, taxi, xe công nghệ và xe điện phố cổ.' %>" />
+    <meta name="keywords" content="<%= (meta && meta.keywords) || 'Hà Nội đi lại, phương tiện Hà Nội, xe bus Hà Nội, taxi Hà Nội, xe công nghệ, xe điện phố cổ, Grab Hà Nội, du lịch Hà Nội' %>" />
+    <meta name="author" content="<%= (meta && meta.author) || 'Hà Nội Vibes' %>" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="/client/css/style.css" />
+    <link rel="stylesheet" href="/client/css/responsive.css" />
+    <link rel="stylesheet" href="/client/css/blog.css" />
+    <link rel="stylesheet" href="/client/css/blog-detail.css" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <script type="application/ld+json">
-    {
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Trang chủ", "item": <%- JSON.stringify((meta && meta.siteUrl) || 'https://example.com') %>},
+          {"@type": "ListItem", "position": 2, "name": "Blog", "item": <%- JSON.stringify(((meta && meta.siteUrl) || 'https://example.com') + '/blog') %>},
+          {"@type": "ListItem", "position": 3, "name": "Phương tiện di chuyển Hà Nội"}
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Hà Nội đi lại bằng gì? Từ xe bus, taxi đến xe điện phố cổ",
-        "description": "Khám phá các phương tiện di chuyển phổ biến ở Hà Nội như xe bus, taxi, xe công nghệ và xe điện phố cổ.",
-        "image": "/client/img/banner-attraction.jpg",
-        "author": {
-            "@type": "Organization",
-            "name": "Hà Nội Vibes"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "Hà Nội Vibes",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "/client/img/logo.png"
-            }
-        },
-        "datePublished": "2024-12-23",
-        "dateModified": "2024-12-23"
-    }
+        "author": {"@type": "Person", "name": <%- JSON.stringify((meta && meta.author) || 'Hà Nội Vibes') %>},
+        "datePublished": <%- JSON.stringify((meta && meta.dateISO) || '2024-12-23') %>,
+        "image": [<%- JSON.stringify((meta && meta.image) || '/client/img/Overview-2.jpg') %>],
+        "publisher": {"@type": "Organization", "name": "Hà Nội Vibes"},
+        "description": <%- JSON.stringify((meta && meta.description) || 'Khám phá các phương tiện di chuyển phổ biến ở Hà Nội như xe bus, taxi, xe công nghệ và xe điện phố cổ.') %>
+      }
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <%- include('../../partials/header') %>
 
-    <main class="blog-detail">
-        <div class="container">
-            <div class="blog-content">
-                <div class="blog-header">
-                    <div class="breadcrumb">
-                        <a href="/">Trang chủ</a> / 
-                        <a href="/blog">Blog</a> / 
-                        <span>Hà Nội đi lại bằng gì</span>
-                    </div>
-                    
-                    <h1 class="blog-title">Hà Nội đi lại bằng gì? Từ xe bus, taxi đến xe điện phố cổ</h1>
-                    
-                    <div class="blog-meta">
-                        <div class="meta-item">
-                            <i class="fas fa-calendar"></i>
-                            <span>23/12/2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-user"></i>
-                            <span>Hà Nội Vibes</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-tag"></i>
-                            <span>Du lịch</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-clock"></i>
-                            <span>6 phút đọc</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="featured-image">
-                    <img src="/client/img/banner-attraction.jpg" alt="Phương tiện di chuyển ở Hà Nội" loading="lazy">
-                </div>
-
-                <div class="blog-intro">
-                    <p><strong>Khám phá các phương tiện di chuyển phổ biến ở Hà Nội</strong> như xe bus, taxi, xe công nghệ và xe điện phố cổ. "Hà Nội Vibes" mách bạn cách đi lại dễ dàng, tiết kiệm và thú vị nhất khi du lịch thủ đô.</p>
-                    
-                    <p><strong>Hà Nội</strong> – thành phố ngàn năm văn hiến không chỉ hấp dẫn bởi những di tích lịch sử và nền ẩm thực phong phú, mà còn bởi mạng lưới giao thông đa dạng, thuận tiện cho cả người dân lẫn du khách.</p>
-                    
-                    <p>Nếu bạn đang lên kế hoạch khám phá thủ đô và băn khoăn <strong>"Hà Nội đi lại bằng gì?"</strong>, "Hà Nội Vibes" sẽ giúp bạn tìm ra phương tiện phù hợp nhất từ xe bus công cộng, taxi, xe công nghệ đến xe điện phố cổ đầy thú vị.</p>
-                </div>
-
-                <div class="table-of-contents">
-                    <h3>📋 Mục lục bài viết</h3>
-                    <ol>
-                        <li><a href="#ha-noi-di-lai-bang-gi">Hà Nội đi lại bằng gì?</a></li>
-                        <li><a href="#tai-sao-tim-hieu">Vì sao nên tìm hiểu phương tiện đi lại ở Hà Nội?</a></li>
-                        <li><a href="#xe-bus">Xe bus – Phương tiện công cộng giá rẻ và thân thiện</a></li>
-                        <li><a href="#taxi">Taxi – Lựa chọn thoải mái, linh hoạt</a></li>
-                        <li><a href="#xe-cong-nghe">Xe công nghệ – Tiện lợi, tiết kiệm và nhanh chóng</a></li>
-                        <li><a href="#xe-dien-pho-co">Xe điện phố cổ – Trải nghiệm đặc trưng chỉ có ở Hà Nội</a></li>
-                        <li><a href="#xe-dap-xe-may">Xe đạp & xe máy – Dành cho người thích khám phá tự do</a></li>
-                        <li><a href="#tong-ket">Tổng kết – Di chuyển dễ dàng, trải nghiệm trọn vẹn</a></li>
-                    </ol>
-                </div>
-
-                <section id="ha-noi-di-lai-bang-gi" class="content-section">
-                    <h2>1. Hà Nội đi lại bằng gì?</h2>
-                    <p>Hà Nội có hệ thống giao thông đa dạng với nhiều lựa chọn phương tiện di chuyển, từ phương tiện công cộng tiết kiệm đến các dịch vụ cao cấp, phù hợp với mọi nhu cầu và ngân sách của du khách.</p>
-                </section>
-
-                <section id="tai-sao-tim-hieu" class="content-section">
-                    <h2>2. Vì sao nên tìm hiểu phương tiện đi lại ở Hà Nội?</h2>
-                    <p>Hà Nội có hệ thống giao thông đa dạng, giúp bạn dễ dàng di chuyển giữa các điểm tham quan nổi tiếng như <strong>Hồ Hoàn Kiếm, Văn Miếu</strong> hay <strong>Phố Cổ</strong>. Việc lựa chọn đúng phương tiện không chỉ giúp tiết kiệm chi phí mà còn mang lại trải nghiệm gần gũi với nhịp sống địa phương.</p>
-                </section>
-
-                <section id="xe-bus" class="content-section">
-                    <h2>3. Xe bus – Phương tiện công cộng giá rẻ và thân thiện</h2>
-                    <p>Xe bus Hà Nội có hơn 100 tuyến phủ khắp nội – ngoại thành, là lựa chọn tiết kiệm và thân thiện với môi trường. Giá vé chỉ từ <strong>7.000–9.000 đồng/lượt</strong>, bạn có thể dễ dàng di chuyển tới các điểm nổi tiếng như Lăng Bác, Hồ Tây hay Bến xe Giáp Bát.</p>
-                    
-                    <div class="tips-section">
-                        <p><strong>Mẹo nhỏ:</strong> Bạn có thể tải ứng dụng <strong>BusMap</strong> hoặc <strong>My Hanoi Bus</strong> để tra cứu tuyến, thời gian và vị trí xe bus gần nhất – cực kỳ tiện lợi cho khách du lịch.</p>
-                    </div>
-                </section>
-
-                <section id="taxi" class="content-section">
-                    <h2>4. Taxi – Lựa chọn thoải mái, linh hoạt</h2>
-                    <p>Taxi là phương tiện phổ biến cho du khách yêu thích sự riêng tư và tiện nghi. Các hãng uy tín như: <strong>Mai Linh, G7, Vinasun</strong> hoạt động rộng khắp, có đồng hồ cước minh bạch và lái xe am hiểu địa điểm du lịch. Giá cước dao động khoảng <strong>12.000–15.000 đồng/km</strong>.</p>
-                    
-                    <p>Ngoài ra, bạn cũng có thể đặt taxi qua <strong>Grab</strong> hoặc <strong>Be</strong> để chủ động về giá và tuyến đường.</p>
-                </section>
-
-                <section id="xe-cong-nghe" class="content-section">
-                    <h2>5. Xe công nghệ – Tiện lợi, tiết kiệm và nhanh chóng</h2>
-                    <p>Các ứng dụng như <strong>Grab, Be, Xanh SM</strong> không chỉ có xe ôm công nghệ mà còn cung cấp xe hơi 4 – 7 chỗ, giao hàng và thuê xe theo giờ. Ưu điểm lớn là giá niêm yết, dễ đặt xe, không cần trả tiền mặt – phù hợp với cả khách du lịch quốc tế.</p>
-                </section>
-
-                <section id="xe-dien-pho-co" class="content-section">
-                    <h2>6. Xe điện phố cổ – Trải nghiệm đặc trưng chỉ có ở Hà Nội</h2>
-                    <p>Nếu muốn ngắm trọn <strong>36 phố phường</strong>, xe điện du lịch là lựa chọn không thể bỏ qua. Tuyến xe hoạt động quanh khu vực <strong>Hồ Hoàn Kiếm – Hàng Ngang – Hàng Đào – Đồng Xuân</strong>, đưa bạn khám phá phố cổ chỉ trong 30 phút.</p>
-                    
-                    <p>Giá vé khoảng <strong>15.000 – 25.000 đồng/lượt</strong>, rất thích hợp cho gia đình và du khách yêu thích chụp ảnh.</p>
-                </section>
-
-                <section id="xe-dap-xe-may" class="content-section">
-                    <h2>7. Xe đạp & xe máy – Dành cho người thích khám phá tự do</h2>
-                    <p>Yêu thích sự linh hoạt? Bạn có thể thuê xe máy <strong>(100.000–150.000đ/ngày)</strong> hoặc xe đạp <strong>(50.000đ/giờ)</strong> tại khu phố cổ. Tự lái xe sẽ giúp bạn khám phá Hà Nội một cách chủ động – từ hồ Tây lộng gió đến các con phố nhỏ yên bình.</p>
-                </section>
-
-                <section id="tong-ket" class="content-section">
-                    <h2>8. Tổng kết – Di chuyển dễ dàng, trải nghiệm trọn vẹn</h2>
-                    <p>Từ xe bus bình dân đến xe điện phố cổ độc đáo, Hà Nội mang đến vô vàn lựa chọn giúp du khách dễ dàng khám phá thành phố theo cách riêng. Đừng quên theo dõi <strong>"Hà Nội Vibes"</strong> để cập nhật thêm mẹo di chuyển, lịch trình tham quan và bí kíp khám phá thủ đô hiệu quả nhất.</p>
-                    
-                    <p><strong>"Hà Nội Vibes – Cùng bạn tận hưởng trọn vẹn hơi thở Hà Nội."</strong></p>
-                </section>
-
-                <div class="blog-tags">
-                    <span class="tag">Hà Nội đi lại</span>
-                    <span class="tag">Xe bus Hà Nội</span>
-                    <span class="tag">Taxi Hà Nội</span>
-                    <span class="tag">Xe công nghệ</span>
-                    <span class="tag">Xe điện phố cổ</span>
-                </div>
-
-                <div class="blog-navigation">
-                    <a href="/blog/bai-8" class="nav-btn prev">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Bài trước: Chợ đêm phố cổ Hà Nội</span>
-                    </a>
-                    <a href="/blog" class="nav-btn back">
-                        <i class="fas fa-list"></i>
-                        <span>Về danh sách</span>
-                    </a>
-                </div>
-            </div>
+    <!-- Hero Banner for Blog Detail -->
+    <header class="blog-detail-hero" data-bg="<%= (meta && meta.image) || '/client/img/Overview-2.jpg' %>">
+      <div class="overlay"></div>
+      <div class="hero-content container">
+        <div class="breadcrumb"><a href="/">Trang chủ</a> <span>/</span> <a href="/blog">Blog</a> <span>/</span> <span>Phương tiện di chuyển Hà Nội</span></div>
+        <h1 class="post-title">Hà Nội đi lại bằng gì? Từ xe bus, taxi đến xe điện phố cổ</h1>
+        <div class="post-meta">
+          <span><i class="fa fa-calendar"></i> <%= (meta && meta.date) || '23/12/2024' %></span>
+          <span><i class="fa fa-user"></i> <%= (meta && meta.author) || 'Admin' %></span>
+          <span class="chip">Du lịch</span>
         </div>
+      </div>
+    </header>
+
+    <!-- Article Content -->
+    <main class="blog-detail container">
+      <article class="article">
+        <div class="article-cover">
+          <img src="/client/img/ptdc.jpg" alt="Phương tiện di chuyển Hà Nội" />
+          <figcaption>Khám phá các phương tiện di chuyển đa dạng ở Hà Nội</figcaption>
+        </div>
+
+        <!-- Intro -->
+        <section class="article-section" id="gioi-thieu">
+          <h2>BÀI 9 – Hà Nội đi lại bằng gì? Từ xe bus, taxi đến xe điện phố cổ</h2>
+          <p>Hà Nội với hệ thống giao thông đa dạng và phong phú, từ phương tiện công cộng hiện đại đến những phương tiện truyền thống đậm chất văn hóa. Cùng "Hà Nội Vibes" khám phá các cách di chuyển thú vị nhất trong Thủ đô.</p>
+          <p>Việc lựa chọn phương tiện di chuyển phù hợp sẽ giúp bạn có những trải nghiệm du lịch Hà Nội trọn vẹn và đáng nhớ nhất. Từ xe bus công cộng tiết kiệm đến xe điện phố cổ lãng mạn, mỗi phương tiện đều mang đến những cảm nhận riêng biệt.</p>
+        </section>
+
+
+        <!-- Sections -->
+        <section class="article-section" id="xe-bus">
+          <h2>1. Xe bus công cộng - Tiết kiệm và tiện lợi</h2>
+          <p>Xe bus là phương tiện công cộng phổ biến nhất ở Hà Nội với mạng lưới rộng khắp thành phố. Giá vé rẻ (7.000-15.000 VNĐ), phù hợp cho du khách muốn tiết kiệm chi phí và trải nghiệm cuộc sống địa phương.</p>
+          <p><strong>Ưu điểm:</strong> Giá rẻ, mạng lưới rộng, có điều hòa, an toàn. <strong>Nhược điểm:</strong> Có thể đông đúc vào giờ cao điểm, thời gian chờ đợi.</p>
+        </section>
+
+        <section class="article-section" id="taxi">
+          <h2>2. Taxi và xe công nghệ - Linh hoạt và nhanh chóng</h2>
+          <p>Taxi truyền thống và các ứng dụng gọi xe như Grab, Be, Gojek rất phổ biến ở Hà Nội. Phù hợp cho những chuyến đi ngắn hoặc khi cần di chuyển nhanh chóng.</p>
+          <p><strong>Lưu ý:</strong> Nên sử dụng ứng dụng để tránh bị tính giá cao, kiểm tra giá trước khi đi.</p>
+        </section>
+
+        <section class="article-section" id="xe-dien">
+          <h2>3. Xe điện phố cổ - Trải nghiệm độc đáo</h2>
+          <p>Xe điện phố cổ là phương tiện đặc trưng của Hà Nội, đưa du khách tham quan các điểm nổi tiếng như Hồ Gươm, phố cổ, Văn Miếu. Đây là cách tuyệt vời để khám phá thành phố một cách lãng mạn.</p>
+          <p><strong>Đặc điểm:</strong> Tốc độ chậm, phù hợp tham quan, có hướng dẫn viên, giá cả hợp lý (khoảng 50.000-100.000 VNĐ/người).</p>
+        </section>
+
+        <section class="article-section" id="xe-dap">
+          <h2>4. Xe đạp và đi bộ - Khám phá từng góc phố</h2>
+          <p>Đi bộ hoặc thuê xe đạp là cách tuyệt vời để khám phá Hà Nội một cách chi tiết. Đặc biệt phù hợp cho việc tham quan phố cổ, Hồ Gươm và các khu vực trung tâm.</p>
+          <p><strong>Gợi ý:</strong> Thuê xe đạp tại các điểm du lịch, đi bộ quanh Hồ Gươm vào buổi sáng sớm hoặc chiều tối.</p>
+        </section>
+
+        <section class="article-section tips">
+          <h2>Mẹo di chuyển thông minh</h2>
+          <div class="tips-grid">
+            <div class="tip"><i class="fa fa-bus"></i> Xe bus: Kiểm tra tuyến đường trên Google Maps</div>
+            <div class="tip"><i class="fa fa-car"></i> Taxi: Sử dụng ứng dụng để tránh bị tính giá cao</div>
+            <div class="tip"><i class="fa fa-bicycle"></i> Xe đạp: Thuê tại các điểm du lịch chính</div>
+            <div class="tip"><i class="fa fa-walking"></i> Đi bộ: Tốt nhất cho khu vực phố cổ và Hồ Gươm</div>
+          </div>
+        </section>
+
+        <section class="article-section" id="ket-luan">
+          <h2>Kết luận</h2>
+          <p>Hà Nội với hệ thống giao thông đa dạng mang đến nhiều lựa chọn di chuyển thú vị cho du khách. Từ xe bus tiết kiệm đến xe điện phố cổ lãng mạn, mỗi phương tiện đều có những ưu điểm riêng.</p>
+          <p>Với "Hà Nội Vibes", bạn sẽ được hướng dẫn chi tiết về cách sử dụng các phương tiện di chuyển một cách hiệu quả và an toàn nhất. Hãy để chúng tôi đồng hành cùng bạn trong hành trình khám phá Hà Nội.</p>
+          <p><em>"Hà Nội Vibes – Cùng bạn tận hưởng trọn vẹn hơi thở Hà Nội."</em></p>
+        </section>
+
+        <div class="share">
+          <span>Chia sẻ:</span>
+          <a href="#" aria-label="Share Facebook"><i class="fa fa-facebook"></i></a>
+          <a href="#" aria-label="Share Twitter"><i class="fa fa-twitter"></i></a>
+          <a href="#" aria-label="Share Mail"><i class="fa fa-envelope"></i></a>
+        </div>
+      </article>
+
+      <aside class="sidebar">
+        <div class="widget related">
+          <h3>Bài viết liên quan</h3>
+          <ul>
+            <li><a href="/blog">Phố cổ Hà Nội - 36 phố phường</a></li>
+            <li><a href="/blog">Hồ Gươm - Trái tim Hà Nội</a></li>
+            <li><a href="/blog">Ẩm thực đường phố Hà Nội</a></li>
+          </ul>
+        </div>
+        <div class="widget subscribe">
+          <h3>Nhận bản tin</h3>
+          <form class="subscribe-form" onsubmit="return false;">
+            <input type="email" placeholder="Email của bạn" required />
+            <button type="submit" class="ctn">Đăng ký</button>
+          </form>
+        </div>
+      </aside>
     </main>
 
+    <!-- Contact Section -->
+    <%- include('../../components/contact-section', { sectionId: 'contact-blog-detail' }) %>
+
+    <i class="arrow" onclick="topFunction()" id="upbtn"></i>
     <%- include('../../partials/footer') %>
 
-    <script src="/client/js/main.js"></script>
-</body>
-</html>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="/client/js/includes.js"></script>
+    <script src="/client/js/script.js"></script>
+    <script src="/client/js/blog.js"></script>
+    <script>
+      (function() {
+        var hero = document.querySelector('.blog-detail-hero');
+        if (hero) {
+          var bg = hero.getAttribute('data-bg');
+          if (bg) {
+            hero.style.backgroundImage = 'url("' + bg + '")';
+          }
+        }
+      })();
+    </script>
+  </body>
+  </html>

@@ -41,7 +41,7 @@
         "headline": "Khám phá phố cổ Hà Nội – Linh hồn nghìn năm văn hiến",
         "author": {"@type": "Person", "name": <%- JSON.stringify((meta && meta.author) || 'Hà Nội Vibes') %>},
         "datePublished": <%- JSON.stringify((meta && meta.dateISO) || '2024-12-21') %>,
-        "image": [<%- JSON.stringify((meta && meta.image) || '/client/img/pho-co.jpg') %>],
+        "image": [<%- JSON.stringify((meta && meta.image) || '/client/img/old-quarter-hanoi.jpg') %>],
         "publisher": {"@type": "Organization", "name": "Hà Nội Vibes"},
         "description": <%- JSON.stringify((meta && meta.description) || 'Khám phá phố cổ Hà Nội với lịch sử nghìn năm, kiến trúc cổ kính và những trải nghiệm văn hóa đặc sắc.') %>
       }
@@ -51,7 +51,7 @@
     <%- include('../../partials/header') %>
 
     <!-- Hero Banner for Blog Detail -->
-    <header class="blog-detail-hero" data-bg="<%= (meta && meta.image) || '/client/img/pho-co.jpg' %>">
+    <header class="blog-detail-hero" data-bg="<%= (meta && meta.image) || '/client/img/old-quarter-hanoi.jpg' %>">
       <div class="overlay"></div>
       <div class="hero-content container">
         <div class="breadcrumb"><a href="/">Trang chủ</a> <span>/</span> <a href="/blog">Blog</a> <span>/</span> <span>Khám phá phố cổ Hà Nội</span></div>
@@ -68,7 +68,7 @@
     <main class="blog-detail container">
       <article class="article">
         <div class="article-cover">
-          <img src="/client/img/pho-co.jpg" alt="Khám phá phố cổ Hà Nội" />
+          <img src="/client/img/old-quarter-hanoi.jpg" alt="Khám phá phố cổ Hà Nội" />
           <figcaption>Phố cổ Hà Nội – linh hồn nghìn năm văn hiến</figcaption>
         </div>
 
@@ -80,27 +80,6 @@
           <p>Đến với phố cổ, bạn không chỉ đơn thuần là đi du lịch – mà là <strong>hành trình ngược dòng thời gian</strong>, lắng nghe tiếng bước chân xưa vọng lại trên từng con phố. Mỗi ngôi nhà, mỗi biển hiệu, mỗi gánh hàng rong đều mang trong mình câu chuyện về con người Hà Nội – thanh lịch, tinh tế và nặng nghĩa tình.</p>
         </section>
 
-        <!-- Table of Contents -->
-        <section class="article-section note" aria-labelledby="muc-luc-heading">
-          <h2 id="muc-luc-heading">Mục lục</h2>
-          <ol class="itinerary">
-            <li><a href="#lich-su">Lịch sử hình thành và vị trí khu phố cổ Hà Nội</a></li>
-            <li><a href="#kien-truc">Kiến trúc và nét đặc trưng của phố cổ Hà Nội</a></li>
-            <li>
-              <span>Những trải nghiệm không thể bỏ lỡ khi đến phố cổ Hà Nội</span>
-              <ol>
-                <li><a href="#o-quan-chuong">Tham quan Ô Quan Chưởng – Cổng thành xưa còn sót lại</a></li>
-                <li><a href="#nha-tho-lon">Tham quan Nhà thờ Lớn Hà Nội – Biểu tượng kiến trúc và tâm linh</a></li>
-                <li><a href="#cho-dong-xuan">Ghé chợ Đồng Xuân – trung tâm buôn bán lớn nhất phố cổ</a></li>
-                <li><a href="#phung-hung">Khám phá phố Phùng Hưng – Không gian nghệ thuật</a></li>
-                <li><a href="#pho-di-bo">Dạo quanh phố đi bộ Hồ Gươm</a></li>
-              </ol>
-            </li>
-            <li><a href="#bi-quyet">Bí quyết du lịch phố cổ Hà Nội trọn vẹn</a></li>
-            <li><a href="#gia-tri">Giá trị văn hoá và ý nghĩa lịch sử của phố cổ Hà Nội</a></li>
-            <li><a href="#ket-luan">Kết luận: Phố cổ Hà Nội – Linh hồn bất tử của Thủ đô</a></li>
-          </ol>
-        </section>
 
         <!-- Section 1: History -->
         <section class="article-section" id="lich-su">
@@ -170,33 +149,6 @@
           <p>Ngày nay, dù nhịp sống thay đổi, nhưng phố cổ vẫn là nơi giữ lại <em>linh hồn Hà Nội</em> – nơi con người tìm về sự hoài niệm, cảm nhận vẻ đẹp giản dị mà sâu lắng của mảnh đất kinh kỳ.</p>
         </section>
 
-        <section class="article-section highlights">
-          <h2>Điểm dừng nổi bật</h2>
-          <div class="cards">
-            <div class="card">
-              <img src="/client/img/pho-co.jpg" alt="Ô Quan Chưởng" />
-              <div class="card-body">
-                <h3>Ô Quan Chưởng</h3>
-                <p>Cổng thành duy nhất còn nguyên vẹn của kinh thành Thăng Long, nơi giao thoa giữa quá khứ và hiện tại.</p>
-              </div>
-            </div>
-            <div class="card">
-              <img src="/client/img/banner-home.jpg" alt="Nhà thờ Lớn Hà Nội" />
-              <div class="card-body">
-                <h3>Nhà thờ Lớn Hà Nội</h3>
-                <p>Biểu tượng kiến trúc Gothic giữa lòng phố cổ, địa điểm check-in nổi tiếng của Thủ đô.</p>
-              </div>
-            </div>
-            <div class="card">
-              <img src="/client/img/banner-attraction.jpg" alt="Chợ Đồng Xuân" />
-              <div class="card-body">
-                <h3>Chợ Đồng Xuân</h3>
-                <p>Trung tâm thương mại lâu đời với hàng trăm gian hàng truyền thống và ẩm thực đường phố.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section class="article-section" id="ket-luan">
           <h2>6. Kết luận: Phố cổ Hà Nội – Linh hồn bất tử của Thủ đô</h2>
           <p>Khám phá phố cổ Hà Nội không chỉ là hành trình tham quan, mà là <strong>chuyến du hành vào ký ức của một dân tộc</strong>. Giữa những tòa nhà cao tầng và ánh đèn đô thị, phố cổ vẫn vẹn nguyên nét trầm mặc, cổ kính – như một nhân chứng của lịch sử, lặng lẽ kể câu chuyện về con người và văn hoá Hà thành.</p>
@@ -240,6 +192,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="/client/js/includes.js"></script>
     <script src="/client/js/script.js"></script>
+    <script src="/client/js/blog.js"></script>
     <script>
       (function() {
         var hero = document.querySelector('.blog-detail-hero');

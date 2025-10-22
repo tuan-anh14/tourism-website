@@ -52,11 +52,28 @@
           <div class="line"></div>
         </div>
 
+        <!-- Enhanced Blog Search -->
+        <div class="blog-search-container">
+          <input type="text" id="blog-search" placeholder="Tìm kiếm bài viết..." />
+        </div>
+
+        <!-- Category Filters -->
+        <div class="blog-filters">
+          <button class="filter-btn active" data-category="all">Tất cả</button>
+          <button class="filter-btn" data-category="Du lịch">Du lịch</button>
+          <button class="filter-btn" data-category="Cafe">Cafe</button>
+          <button class="filter-btn" data-category="Check-in">Check-in</button>
+          <button class="filter-btn" data-category="Ẩm thực">Ẩm thực</button>
+          <button class="filter-btn" data-category="Văn hóa">Văn hóa</button>
+          <button class="filter-btn" data-category="Giải trí">Giải trí</button>
+          <button class="filter-btn" data-category="Lịch sử">Lịch sử</button>
+        </div>
+
         <div class="blog-grid">
           <!-- BÀI 1 -->
           <article class="blog-card">
             <div class="blog-image">
-              <img src="/client/img/ho-tay.jpg" alt="Top 10 địa điểm du lịch Hà Nội" />
+              <img src="/client/img/hotay.jpg" alt="Top 10 địa điểm du lịch Hà Nội" />
               <div class="blog-category">Du lịch</div>
             </div>
             <div class="blog-content">
@@ -79,7 +96,7 @@
           <!-- BÀI 2 -->
           <article class="blog-card">
             <div class="blog-image">
-              <img src="/client/img/banner-home.jpg" alt="Top 10 quán cafe view đẹp ở Hà Nội" />
+              <img src="/client/img/cafe-hanoi-banner.jpg" alt="Top 10 quán cafe view đẹp ở Hà Nội" />
               <div class="blog-category">Cafe</div>
             </div>
             <div class="blog-content">
@@ -102,7 +119,7 @@
           <!-- BÀI 3 -->
           <article class="blog-card">
             <div class="blog-image">
-              <img src="/client/img/banner-attraction.jpg" alt="Top 10 địa điểm sống ảo Hà Nội" />
+              <img src="/client/img/carousel-img4.jpg" alt="Top 10 địa điểm sống ảo Hà Nội" />
               <div class="blog-category">Check-in</div>
             </div>
             <div class="blog-content">
@@ -148,7 +165,7 @@
           <!-- BÀI 5 -->
           <article class="blog-card">
             <div class="blog-image">
-              <img src="/client/img/pho-co.jpg" alt="Khám phá phố cổ Hà Nội" />
+              <img src="/client/img/old-quarter-hanoi.jpg" alt="Khám phá phố cổ Hà Nội" />
               <div class="blog-category">Văn hóa</div>
             </div>
             <div class="blog-content">
@@ -171,7 +188,7 @@
           <!-- BÀI 6 -->
           <article class="blog-card">
             <div class="blog-image">
-              <img src="/client/img/banner-home.jpg" alt="Hanoi Nightlife" />
+              <img src="/client/img/hanoi-nightlife.jpg" alt="Hanoi Nightlife" />
               <div class="blog-category">Giải trí</div>
             </div>
             <div class="blog-content">
@@ -194,7 +211,7 @@
           <!-- BÀI 7 -->
           <article class="blog-card">
             <div class="blog-image">
-              <img src="/client/img/banner-attraction.jpg" alt="Khám phá Hà Nội ngày Tết" />
+              <img src="/client/img/tet.jpg" alt="Khám phá Hà Nội ngày Tết" />
               <div class="blog-category">Văn hóa</div>
             </div>
             <div class="blog-content">
@@ -217,7 +234,7 @@
           <!-- BÀI 8 -->
           <article class="blog-card">
             <div class="blog-image">
-              <img src="/client/img/banner-attraction.jpg" alt="Chợ đêm phố cổ Hà Nội" />
+              <img src="/client/img/chodem.png" alt="Chợ đêm phố cổ Hà Nội" />
               <div class="blog-category">Văn hóa</div>
             </div>
             <div class="blog-content">
@@ -240,7 +257,7 @@
           <!-- BÀI 9 -->
           <article class="blog-card">
             <div class="blog-image">
-              <img src="/client/img/banner-attraction.jpg" alt="Phương tiện di chuyển ở Hà Nội" />
+              <img src="/client/img/ptdc.jpg" alt="Phương tiện di chuyển ở Hà Nội" />
               <div class="blog-category">Du lịch</div>
             </div>
             <div class="blog-content">
@@ -263,7 +280,7 @@
           <!-- BÀI 10 -->
           <article class="blog-card">
             <div class="blog-image">
-              <img src="/client/img/banner-attraction.jpg" alt="Hồ Hoàn Kiếm Hà Nội" />
+              <img src="/client/img/banner-home.jpg" alt="Hồ Hoàn Kiếm Hà Nội" />
               <div class="blog-category">Du lịch</div>
             </div>
             <div class="blog-content">
@@ -286,7 +303,7 @@
           <!-- BÀI 11 -->
           <article class="blog-card">
             <div class="blog-image">
-              <img src="/client/img/banner-attraction.jpg" alt="Hoàng Thành Thăng Long Hà Nội" />
+              <img src="/client/img/hoang-thanh-thang-long.jpg" alt="Hoàng Thành Thăng Long Hà Nội" />
               <div class="blog-category">Lịch sử</div>
             </div>
             <div class="blog-content">
@@ -326,5 +343,34 @@
     <script src="/client/js/includes.js"></script>
     <script src="/client/js/script.js"></script>
     <script src="/client/js/blog.js"></script>
+    
+    <!-- Enhanced Blog Functionality -->
+    <script>
+      // Category filtering functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const blogCards = document.querySelectorAll('.blog-card');
+        
+        filterButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            const category = this.dataset.category;
+            
+            blogCards.forEach(card => {
+              if (category === 'all') {
+                card.style.display = 'block';
+              } else {
+                const cardCategory = card.querySelector('.blog-category').textContent;
+                card.style.display = cardCategory === category ? 'block' : 'none';
+              }
+            });
+          });
+        });
+      });
+    </script>
   </body>
 </html>

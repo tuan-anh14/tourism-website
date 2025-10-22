@@ -41,7 +41,7 @@
         "headline": "Hanoi Nightlife: Best Things to Do After Dark",
         "author": {"@type": "Person", "name": <%- JSON.stringify((meta && meta.author) || 'Hà Nội Vibes') %>},
         "datePublished": <%- JSON.stringify((meta && meta.dateISO) || '2024-12-22') %>,
-        "image": [<%- JSON.stringify((meta && meta.image) || '/client/img/banner-home.jpg') %>],
+        "image": [<%- JSON.stringify((meta && meta.image) || '/client/img/hanoi-nightlife.jpg') %>],
         "publisher": {"@type": "Organization", "name": "Hà Nội Vibes"},
         "description": <%- JSON.stringify((meta && meta.description) || 'Khám phá cuộc sống về đêm Hà Nội với những hoạt động thú vị từ bia hơi, rooftop bar đến chợ đêm và nhạc jazz.') %>
       }
@@ -51,7 +51,7 @@
     <%- include('../../partials/header') %>
 
     <!-- Hero Banner for Blog Detail -->
-    <header class="blog-detail-hero" data-bg="<%= (meta && meta.image) || '/client/img/banner-home.jpg' %>">
+    <header class="blog-detail-hero" data-bg="<%= (meta && meta.image) || '/client/img/hanoi-nightlife.jpg' %>">
       <div class="overlay"></div>
       <div class="hero-content container">
         <div class="breadcrumb"><a href="/">Trang chủ</a> <span>/</span> <a href="/blog">Blog</a> <span>/</span> <span>Hanoi Nightlife</span></div>
@@ -68,7 +68,7 @@
     <main class="blog-detail container">
       <article class="article">
         <div class="article-cover">
-          <img src="/client/img/banner-home.jpg" alt="Hanoi Nightlife" />
+          <img src="/client/img/hanoi-nightlife.jpg" alt="Hanoi Nightlife" />
           <figcaption>Hà Nội về đêm – thành phố lung linh ánh đèn và sôi động</figcaption>
         </div>
 
@@ -82,28 +82,6 @@
           <p>Hãy để <strong>"Hà Nội Vibes"</strong> dẫn đường cho bạn đến những trải nghiệm tuyệt vời nhất ở Hà Nội về đêm, với những gợi ý thực tế từ người dân địa phương và những trải nghiệm khó quên.</p>
         </section>
 
-        <!-- Table of Contents -->
-        <section class="article-section note" aria-labelledby="muc-luc-heading">
-          <h2 id="muc-luc-heading">Mục lục</h2>
-          <ol class="itinerary">
-            <li><a href="#tai-sao-yeu">Tại sao bạn sẽ yêu Hà Nội về đêm</a></li>
-            <li>
-              <span>Những hoạt động thú vị ở Hà Nội về đêm</span>
-              <ol>
-                <li><a href="#ho-hoan-kiem">Dạo quanh Hồ Hoàn Kiếm và phố đi bộ</a></li>
-                <li><a href="#ta-hien">Nhấm nháp bia địa phương tại phố Tạ Hiện</a></li>
-                <li><a href="#cho-dem">Khám phá chợ đêm Hà Nội</a></li>
-                <li><a href="#rooftop">Thưởng thức cocktail trên rooftop với view thành phố</a></li>
-                <li><a href="#mua-roi-nuoc">Xem múa rối nước – truyền thống Việt Nam</a></li>
-                <li><a href="#jazz">Khám phá các quán bar jazz và nhạc sống ẩn mình</a></li>
-                <li><a href="#street-food">Thưởng thức ẩm thực đường phố Hà Nội lúc nửa đêm</a></li>
-                <li><a href="#spa">Thư giãn với spa đêm hoặc massage chân</a></li>
-                <li><a href="#photography">Chụp ảnh ma thuật Hà Nội với tour nhiếp ảnh đêm</a></li>
-              </ol>
-            </li>
-            <li><a href="#ket-luan">Cảm nhận nhịp đập của Hà Nội về đêm</a></li>
-          </ol>
-        </section>
 
         <!-- Section 1: Why Love Hanoi at Night -->
         <section class="article-section" id="tai-sao-yeu">
@@ -286,33 +264,6 @@
           </div>
         </section>
 
-        <section class="article-section highlights">
-          <h2>Điểm dừng nổi bật</h2>
-          <div class="cards">
-            <div class="card">
-              <img src="/client/img/banner-home.jpg" alt="Phố Tạ Hiện" />
-              <div class="card-body">
-                <h3>Phố Tạ Hiện - "Phố Bia"</h3>
-                <p>Con phố sôi động nhất Hà Nội về đêm với bia hơi và không khí vui vẻ.</p>
-              </div>
-            </div>
-            <div class="card">
-              <img src="/client/img/ho-tay.jpg" alt="Hồ Hoàn Kiếm" />
-              <div class="card-body">
-                <h3>Hồ Hoàn Kiếm về đêm</h3>
-                <p>Trái tim của Hà Nội với phố đi bộ và các hoạt động văn hóa sôi động.</p>
-              </div>
-            </div>
-            <div class="card">
-              <img src="/client/img/banner-attraction.jpg" alt="Rooftop Bar" />
-              <div class="card-body">
-                <h3>Rooftop Bars</h3>
-                <p>Thưởng thức cocktail với view toàn cảnh thành phố lung linh.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section class="article-section" id="ket-luan">
           <h2>3. Cảm nhận nhịp đập của Hà Nội về đêm</h2>
           <p>Sức quyến rũ của Hà Nội không phai nhạt khi mặt trời lặn — nó tỏa sáng rực rỡ hơn.</p>
@@ -362,6 +313,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="/client/js/includes.js"></script>
     <script src="/client/js/script.js"></script>
+    <script src="/client/js/blog.js"></script>
     <script>
       (function() {
         var hero = document.querySelector('.blog-detail-hero');

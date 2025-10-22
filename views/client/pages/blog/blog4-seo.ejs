@@ -41,7 +41,7 @@
         "headline": "Khám phá ẩm thực sáng của Thủ đô - Hương sáng Hà Nội",
         "author": {"@type": "Person", "name": <%- JSON.stringify((meta && meta.author) || 'Hà Nội Vibes') %>},
         "datePublished": <%- JSON.stringify((meta && meta.dateISO) || '2024-12-20') %>,
-        "image": [<%- JSON.stringify((meta && meta.image) || '/client/img/pho-ha-noi-banner.jpg') %>],
+        "image": [<%- JSON.stringify((meta && meta.image) || '/client/img/hanoi-breakfast-food.jpg') %>],
         "publisher": {"@type": "Organization", "name": "Hà Nội Vibes"},
         "description": <%- JSON.stringify((meta && meta.description) || 'Khám phá ẩm thực sáng Hà Nội với 9 địa điểm ăn sáng nổi tiếng từ phở, bún chả đến cà phê trứng.') %>
       }
@@ -51,13 +51,13 @@
     <%- include('../../partials/header') %>
 
     <!-- Hero Banner for Blog Detail -->
-    <header class="blog-detail-hero" data-bg="<%= (meta && meta.image) || '/client/img/pho-ha-noi-banner.jpg' %>">
+    <header class="blog-detail-hero" data-bg="<%= (meta && meta.image) || '/client/img/hanoi-breakfast-food.jpg' %>">
       <div class="overlay"></div>
       <div class="hero-content container">
         <div class="breadcrumb"><a href="/">Trang chủ</a> <span>/</span> <a href="/blog">Blog</a> <span>/</span> <span>Khám phá ẩm thực sáng Hà Nội</span></div>
         <h1 class="post-title">Khám phá ẩm thực sáng của Thủ đô - Hương sáng Hà Nội</h1>
         <div class="post-meta">
-          <span><i class="fa fa-calendar"></i> <%= (meta && meta.date) || '20/12/2024' %></span>
+          <span><i class="fa fa-calendar"></i> <%= (meta && meta.date) || '19/10/2025' %></span>
           <span><i class="fa fa-user"></i> <%= (meta && meta.author) || 'Admin' %></span>
           <span class="chip">Ẩm thực</span>
         </div>
@@ -68,10 +68,6 @@
     <main class="blog-detail container">
       <article class="article">
         <div class="article-cover">
-          <img src="/client/img/pho-ha-noi-banner.jpg" alt="Khám phá ẩm thực sáng Hà Nội" />
-          <figcaption>Hà Nội – hương sáng đậm đà bản sắc Việt Nam</figcaption>
-        </div>
-
         <!-- Intro -->
         <section class="article-section" id="gioi-thieu">
           <h2>Khám phá ẩm thực sáng của Thủ đô - Hương sáng Hà Nội</h2>
@@ -81,28 +77,6 @@
           <p>Người Hà Nội coi bữa sáng không chỉ là bữa ăn khởi đầu ngày mới, mà là một phần của <strong>văn hoá sống</strong>, là cách họ cảm nhận trọn vẹn nhịp thở của thành phố qua từng món ăn dân dã. Từ phở, bún chả, bánh cuốn đến xôi xéo, cháo sườn – mỗi món đều mang một hương vị riêng, một câu chuyện riêng về con người và vùng đất nơi đây. Và chính vì thế, khám phá những địa điểm ăn sáng tại Hà Nội không chỉ là hành trình tìm kiếm ẩm thực, mà còn là hành trình chạm vào tâm hồn của Thủ đô – nơi quá khứ và hiện tại giao hòa trong từng hơi thở ấm nồng của buổi sớm mai.</p>
         </section>
 
-        <!-- Table of Contents -->
-        <section class="article-section note" aria-labelledby="muc-luc-heading">
-          <h2 id="muc-luc-heading">Mục lục</h2>
-          <ol class="itinerary">
-            <li><a href="#gioi-thieu">Giới thiệu: Ẩm thực sáng Hà Nội – Nét đẹp giản dị trong từng món ăn</a></li>
-            <li>
-              <span>Địa điểm ăn sáng ngon và nổi tiếng tại Hà Nội:</span>
-              <ol>
-                <li><a href="#pho-thin">Phở Thìn - Hương vị phở bò trứ danh Hà Thành</a></li>
-                <li><a href="#bun-cha">Bún Chả Hương Liên - Nổi tiếng từ "bữa ăn của Tổng thống Obama"</a></li>
-                <li><a href="#banh-cuon">Bánh cuốn Bà Hoành - Mộc mạc mà tinh tế</a></li>
-                <li><a href="#xoi-yen">Xôi Yến – Hương vị thân thuộc của người Hà Nội</a></li>
-                <li><a href="#bun-thang">Bún Thang Cầu Gỗ – Tinh hoa ẩm thực Hà thành</a></li>
-                <li><a href="#chao-suon">Cháo Sườn Sụn Hàng Bồ – Ấm lòng sáng sớm</a></li>
-                <li><a href="#mien-luon">Miến Lươn Đông Thịnh – Giòn tan, đậm đà khó quên</a></li>
-                <li><a href="#banh-da-cua">Bánh Đa Cua Dốc Hòe Nhai – Vị đậm miền Bắc giữa lòng Thủ đô</a></li>
-                <li><a href="#ca-phe-trung">Cà Phê Trứng Giảng – Kết thúc buổi sáng bằng hương vị ngọt ngào</a></li>
-              </ol>
-            </li>
-            <li><a href="#ket-luan">Kết luận: Hà Nội – Hành trình vị giác khởi đầu bằng bữa sáng</a></li>
-          </ol>
-        </section>
 
         <!-- Section 1: Introduction -->
         <section class="article-section" id="gioi-thieu-chi-tiet">
@@ -185,33 +159,6 @@
           </div>
         </section>
 
-        <section class="article-section highlights">
-          <h2>Điểm dừng nổi bật</h2>
-          <div class="cards">
-            <div class="card">
-              <img src="/client/img/pho.jpeg" alt="Phở Thìn Lò Đúc" />
-              <div class="card-body">
-                <h3>Phở Thìn Lò Đúc</h3>
-                <p>Hương vị phở bò trứ danh với nước dùng đậm đà, thịt tái lăn thơm ngậy.</p>
-              </div>
-            </div>
-            <div class="card">
-              <img src="/client/img/banner-home.jpg" alt="Bún Chả Hương Liên" />
-              <div class="card-body">
-                <h3>Bún Chả Hương Liên</h3>
-                <p>Nổi tiếng từ "bữa ăn của Tổng thống Obama", thịt nướng thơm phức.</p>
-              </div>
-            </div>
-            <div class="card">
-              <img src="/client/img/ho-tay.jpg" alt="Cà Phê Trứng Giảng" />
-              <div class="card-body">
-                <h3>Cà Phê Trứng Giảng</h3>
-                <p>Biểu tượng văn hoá cà phê Hà thành với lớp kem trứng béo ngậy.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section class="article-section" id="ket-luan">
           <h2>3. Kết luận: Hà Nội – Hành trình vị giác khởi đầu bằng bữa sáng</h2>
           <p>Ăn sáng ở Hà Nội không chỉ là thói quen, mà còn là <strong>trải nghiệm văn hoá</strong>. Mỗi món ăn, mỗi địa điểm đều chứa đựng câu chuyện của người làm bếp và tâm hồn của mảnh đất ngàn năm văn hiến. Dù là phở nóng nghi ngút, bún chả nướng thơm phức hay bát cháo sườn giản dị – tất cả đều gợi lên hình ảnh Hà Nội thân thương, mộc mạc nhưng sâu sắc.</p>
@@ -254,6 +201,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="/client/js/includes.js"></script>
     <script src="/client/js/script.js"></script>
+    <script src="/client/js/blog.js"></script>
     <script>
       (function() {
         var hero = document.querySelector('.blog-detail-hero');

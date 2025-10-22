@@ -1,194 +1,172 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hồ Hoàn Kiếm – Biểu tượng trái tim Thủ đô | Hà Nội Vibes</title>
-    <meta name="description" content="Khám phá Hồ Hoàn Kiếm – biểu tượng văn hóa, lịch sử và du lịch của Hà Nội. Cùng Hà Nội Vibes dạo quanh hồ, ngắm Tháp Rùa, cầu Thê Húc và cảm nhận vẻ đẹp thơ mộng giữa lòng Thủ đô.">
-    <meta name="keywords" content="Hồ Hoàn Kiếm, Tháp Rùa, cầu Thê Húc, đền Ngọc Sơn, phố đi bộ Hồ Gươm, du lịch Hà Nội, biểu tượng Hà Nội, Hà Nội Vibes">
-    <meta name="author" content="Hà Nội Vibes">
-    <meta property="og:title" content="Hồ Hoàn Kiếm – Biểu tượng trái tim Thủ đô">
-    <meta property="og:description" content="Khám phá Hồ Hoàn Kiếm – biểu tượng văn hóa, lịch sử và du lịch của Hà Nội. Cùng Hà Nội Vibes dạo quanh hồ, ngắm Tháp Rùa, cầu Thê Húc.">
-    <meta property="og:image" content="/client/img/banner-attraction.jpg">
-    <meta property="og:url" content="https://hanoivibes.com/blog/bai-10">
-    <meta property="og:type" content="article">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Hồ Hoàn Kiếm – Biểu tượng trái tim Thủ đô">
-    <meta name="twitter:description" content="Khám phá Hồ Hoàn Kiếm – biểu tượng văn hóa, lịch sử và du lịch của Hà Nội. Cùng Hà Nội Vibes dạo quanh hồ, ngắm Tháp Rùa, cầu Thê Húc.">
-    <meta name="twitter:image" content="/client/img/banner-attraction.jpg">
-    <link rel="canonical" href="https://hanoivibes.com/blog/bai-10">
-    <link rel="stylesheet" href="/client/css/style.css">
-    <link rel="stylesheet" href="/client/css/blog.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle || 'Hồ Hoàn Kiếm – Biểu tượng trái tim Thủ đô' %> - Hà Nội Vibes</title>
+    <meta name="description" content="<%= (meta && meta.description) || 'Khám phá Hồ Hoàn Kiếm – biểu tượng văn hóa, lịch sử và du lịch của Hà Nội. Cùng Hà Nội Vibes dạo quanh hồ, ngắm Tháp Rùa, cầu Thê Húc.' %>" />
+    <meta name="keywords" content="<%= (meta && meta.keywords) || 'Hồ Hoàn Kiếm, Tháp Rùa, cầu Thê Húc, đền Ngọc Sơn, Hà Nội, du lịch Hà Nội, Hà Nội Vibes' %>" />
+    <meta name="author" content="<%= (meta && meta.author) || 'Hà Nội Vibes' %>" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="/client/css/style.css" />
+    <link rel="stylesheet" href="/client/css/responsive.css" />
+    <link rel="stylesheet" href="/client/css/blog.css" />
+    <link rel="stylesheet" href="/client/css/blog-detail.css" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/client/img/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/client/img/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/client/img/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <script type="application/ld+json">
-    {
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Trang chủ", "item": <%- JSON.stringify((meta && meta.siteUrl) || 'https://example.com') %>},
+          {"@type": "ListItem", "position": 2, "name": "Blog", "item": <%- JSON.stringify(((meta && meta.siteUrl) || 'https://example.com') + '/blog') %>},
+          {"@type": "ListItem", "position": 3, "name": "Hồ Hoàn Kiếm"}
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Hồ Hoàn Kiếm – Biểu tượng trái tim Thủ đô",
-        "description": "Khám phá Hồ Hoàn Kiếm – biểu tượng văn hóa, lịch sử và du lịch của Hà Nội. Cùng Hà Nội Vibes dạo quanh hồ, ngắm Tháp Rùa, cầu Thê Húc.",
-        "image": "/client/img/banner-attraction.jpg",
-        "author": {
-            "@type": "Organization",
-            "name": "Hà Nội Vibes"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "Hà Nội Vibes",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "/client/img/logo.png"
-            }
-        },
-        "datePublished": "2024-12-23",
-        "dateModified": "2024-12-23"
-    }
+        "author": {"@type": "Person", "name": <%- JSON.stringify((meta && meta.author) || 'Hà Nội Vibes') %>},
+        "datePublished": <%- JSON.stringify((meta && meta.dateISO) || '2024-12-23') %>,
+        "image": [<%- JSON.stringify((meta && meta.image) || '/client/img/Overview-3.jpg') %>],
+        "publisher": {"@type": "Organization", "name": "Hà Nội Vibes"},
+        "description": <%- JSON.stringify((meta && meta.description) || 'Khám phá Hồ Hoàn Kiếm – biểu tượng văn hóa, lịch sử và du lịch của Hà Nội.') %>
+      }
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <%- include('../../partials/header') %>
 
-    <main class="blog-detail">
-        <div class="container">
-            <div class="blog-content">
-                <div class="blog-header">
-                    <div class="breadcrumb">
-                        <a href="/">Trang chủ</a> / 
-                        <a href="/blog">Blog</a> / 
-                        <span>Hồ Hoàn Kiếm</span>
-                    </div>
-                    
-                    <h1 class="blog-title">Hồ Hoàn Kiếm – Biểu tượng trái tim Thủ đô</h1>
-                    
-                    <div class="blog-meta">
-                        <div class="meta-item">
-                            <i class="fas fa-calendar"></i>
-                            <span>23/12/2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-user"></i>
-                            <span>Hà Nội Vibes</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-tag"></i>
-                            <span>Du lịch</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-clock"></i>
-                            <span>7 phút đọc</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="featured-image">
-                    <img src="/client/img/banner-attraction.jpg" alt="Hồ Hoàn Kiếm Hà Nội" loading="lazy">
-                </div>
-
-                <div class="blog-intro">
-                    <p><strong>Khám phá Hồ Hoàn Kiếm</strong> – biểu tượng văn hóa, lịch sử và du lịch của Hà Nội. Cùng "Hà Nội Vibes" dạo quanh hồ, ngắm Tháp Rùa, cầu Thê Húc và cảm nhận vẻ đẹp thơ mộng giữa lòng Thủ đô.</p>
-                    
-                    <p>Giữa nhịp sống hiện đại, <strong>Hồ Hoàn Kiếm</strong> vẫn giữ trong mình nét bình yên và thi vị – là biểu tượng bất diệt của Hà Nội. Không chỉ là điểm du lịch nổi tiếng, hồ còn mang trong mình giá trị lịch sử, văn hóa và tinh thần của người Tràng An xưa. Cùng "Hà Nội Vibes" khám phá vẻ đẹp của Hồ Hoàn Kiếm – nơi mỗi con sóng, nhành cây đều kể một câu chuyện về Thăng Long – Hà Nội ngàn năm.</p>
-                </div>
-
-                <div class="table-of-contents">
-                    <h3>📋 Mục lục bài viết</h3>
-                    <ol>
-                        <li><a href="#ho-hoan-kiem">Hồ Hoàn Kiếm – Biểu tượng trái tim Thủ đô</a></li>
-                        <li><a href="#truyen-thuyet">Truyền thuyết Hồ Gươm – Linh hồn của Thủ đô</a></li>
-                        <li><a href="#cau-the-huc">Cầu Thê Húc – Nét son rực rỡ trên mặt nước xanh</a></li>
-                        <li><a href="#thap-rua">Tháp Rùa – Biểu tượng ngàn đời</a></li>
-                        <li><a href="#pho-di-bo">Phố đi bộ Hồ Gươm – Không gian văn hóa sôi động</a></li>
-                        <li><a href="#kinh-nghiem">Kinh nghiệm tham quan Hồ Hoàn Kiếm</a></li>
-                        <li><a href="#tong-ket">Tổng kết – Hồ Hoàn Kiếm, nơi lưu giữ hồn Hà Nội</a></li>
-                    </ol>
-                </div>
-
-                <section id="ho-hoan-kiem" class="content-section">
-                    <h2>1. Hồ Hoàn Kiếm – Biểu tượng trái tim Thủ đô</h2>
-                    <p>Hồ Hoàn Kiếm không chỉ là một hồ nước thông thường mà còn là trái tim của Hà Nội, nơi hội tụ những giá trị văn hóa, lịch sử và tinh thần của người Việt Nam. Với diện tích khoảng 12 hecta, hồ nằm ở trung tâm thành phố, được bao quanh bởi những con phố cổ kính và các công trình kiến trúc đặc sắc.</p>
-                </section>
-
-                <section id="truyen-thuyet" class="content-section">
-                    <h2>2. Truyền thuyết Hồ Gươm – Linh hồn của Thủ đô</h2>
-                    <p>Tên gọi <strong>Hồ Hoàn Kiếm</strong> gắn liền với truyền thuyết vua Lê Lợi trả gươm cho Rùa Vàng sau khi đánh thắng giặc Minh. Nơi đây trở thành biểu tượng thiêng liêng của hòa bình và lòng yêu nước – "trái tim" trong lòng mỗi người Việt.</p>
-                    
-                    <p>Truyền thuyết kể rằng, khi Lê Lợi đang đi thuyền trên hồ, Rùa Vàng nổi lên đòi lại thanh gươm thần mà trước đó đã cho vua mượn để đánh giặc. Từ đó, hồ được gọi là Hồ Hoàn Kiếm (hồ trả gươm), còn được gọi thân thương là Hồ Gươm.</p>
-                </section>
-
-                <section id="cau-the-huc" class="content-section">
-                    <h2>3. Cầu Thê Húc – Nét son rực rỡ trên mặt nước xanh</h2>
-                    <p><strong>Cầu Thê Húc</strong> cong cong như vầng trăng đỏ, dẫn lối vào đền Ngọc Sơn – nơi thờ Trần Hưng Đạo. Vào buổi sáng hay hoàng hôn, ánh nắng chiếu lên cầu tạo nên khung cảnh thơ mộng, khiến nơi đây trở thành điểm check-in hàng đầu khi đến Hà Nội.</p>
-                    
-                    <p>Cầu được xây dựng từ thế kỷ 19, với kiến trúc cổ kính và màu sơn đỏ đặc trưng. Tên "Thê Húc" có nghĩa là "nơi ánh sáng mặt trời chiếu đến", tượng trưng cho sự may mắn và thịnh vượng.</p>
-                </section>
-
-                <section id="thap-rua" class="content-section">
-                    <h2>4. Tháp Rùa – Biểu tượng ngàn đời</h2>
-                    <p>Giữa lòng hồ, <strong>Tháp Rùa</strong> uy nghiêm nổi bật trên gò đảo nhỏ, tượng trưng cho sự trường tồn của Thủ đô. Ban đêm, ánh đèn phản chiếu xuống mặt hồ khiến khung cảnh thêm huyền ảo và yên bình.</p>
-                    
-                    <p>Tháp được xây dựng vào thế kỷ 19 với kiến trúc 3 tầng, mang phong cách kiến trúc Pháp cổ điển. Đây là biểu tượng không thể thiếu của Hà Nội, xuất hiện trên nhiều tác phẩm nghệ thuật và là điểm đến yêu thích của du khách.</p>
-                </section>
-
-                <section id="pho-di-bo" class="content-section">
-                    <h2>5. Phố đi bộ Hồ Gươm – Không gian văn hóa sôi động</h2>
-                    <p>Cuối tuần, khu vực quanh Hồ Hoàn Kiếm biến thành <strong>phố đi bộ</strong> – nơi diễn ra các hoạt động nghệ thuật, âm nhạc đường phố và trò chơi dân gian. Đừng quên thưởng thức kem Tràng Tiền, bánh rán mặn hay chè sen long nhãn – những món đặc sản Hà Nội nức tiếng.</p>
-                    
-                    <p>Phố đi bộ Hồ Gươm hoạt động từ 19h thứ Sáu đến 24h Chủ nhật, tạo nên không gian văn hóa sôi động với các hoạt động như múa dân gian, hát quan họ, biểu diễn nghệ thuật đường phố và các trò chơi truyền thống.</p>
-                </section>
-
-                <section id="kinh-nghiem" class="content-section">
-                    <h2>6. Kinh nghiệm tham quan Hồ Hoàn Kiếm</h2>
-                    <div class="tips-section">
-                        <h3>Thông tin tham quan:</h3>
-                        <ul>
-                            <li><strong>Thời gian lý tưởng:</strong> sáng sớm hoặc tối</li>
-                            <li><strong>Phương tiện:</strong> xe điện, xe đạp hoặc đi bộ</li>
-                            <li><strong>Điểm check-in:</strong> Tháp Rùa, cầu Thê Húc, đền Ngọc Sơn, tượng Lý Thái Tổ</li>
-                            <li><strong>Gợi ý lịch trình:</strong> kết hợp tham quan phố cổ, chợ Đồng Xuân, nhà hát Lớn Hà Nội</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="tips-section">
-                        <h3>Mẹo tham quan:</h3>
-                        <ul>
-                            <li>Nên đi vào sáng sớm (6h-8h) để tránh đông người và ngắm cảnh đẹp nhất</li>
-                            <li>Buổi tối (19h-21h) là thời điểm lý tưởng để chụp ảnh với ánh đèn</li>
-                            <li>Mang theo máy ảnh để lưu lại những khoảnh khắc đẹp</li>
-                            <li>Thưởng thức ẩm thực đường phố quanh hồ</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section id="tong-ket" class="content-section">
-                    <h2>7. Tổng kết – Hồ Hoàn Kiếm, nơi lưu giữ hồn Hà Nội</h2>
-                    <p><strong>Hồ Hoàn Kiếm</strong> không chỉ là thắng cảnh nổi tiếng mà còn là chứng nhân văn hóa và tinh thần của người Hà Nội. Đừng quên ghé thăm "Hà Nội Vibes" để cập nhật thêm cẩm nang du lịch, ẩm thực và hành trình khám phá Hồ Hoàn Kiếm trọn vẹn nhất.</p>
-                    
-                    <p><strong>"Hà Nội Vibes – Cùng bạn tận hưởng trọn vẹn hơi thở Hà Nội."</strong></p>
-                </section>
-
-                <div class="blog-tags">
-                    <span class="tag">Hồ Hoàn Kiếm</span>
-                    <span class="tag">Tháp Rùa</span>
-                    <span class="tag">Cầu Thê Húc</span>
-                    <span class="tag">Đền Ngọc Sơn</span>
-                    <span class="tag">Phố đi bộ Hồ Gươm</span>
-                </div>
-
-                <div class="blog-navigation">
-                    <a href="/blog/bai-9" class="nav-btn prev">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Bài trước: Hà Nội đi lại bằng gì</span>
-                    </a>
-                    <a href="/blog" class="nav-btn back">
-                        <i class="fas fa-list"></i>
-                        <span>Về danh sách</span>
-                    </a>
-                </div>
-            </div>
+    <!-- Hero Banner for Blog Detail -->
+    <header class="blog-detail-hero" data-bg="<%= (meta && meta.image) || '/client/img/Overview-3.jpg' %>">
+      <div class="overlay"></div>
+      <div class="hero-content container">
+        <div class="breadcrumb"><a href="/">Trang chủ</a> <span>/</span> <a href="/blog">Blog</a> <span>/</span> <span>Hồ Hoàn Kiếm</span></div>
+        <h1 class="post-title">Hồ Hoàn Kiếm – Biểu tượng trái tim Thủ đô</h1>
+        <div class="post-meta">
+          <span><i class="fa fa-calendar"></i> <%= (meta && meta.date) || '23/12/2024' %></span>
+          <span><i class="fa fa-user"></i> <%= (meta && meta.author) || 'Admin' %></span>
+          <span class="chip">Du lịch</span>
         </div>
+      </div>
+    </header>
+
+    <!-- Article Content -->
+    <main class="blog-detail container">
+      <article class="article">
+        <div class="article-cover">
+          <img src="/client/img/banner-home.jpg" alt="Hồ Hoàn Kiếm Hà Nội" />
+          <figcaption>Hồ Hoàn Kiếm - biểu tượng văn hóa và lịch sử của Hà Nội</figcaption>
+        </div>
+
+        <!-- Intro -->
+        <section class="article-section" id="gioi-thieu">
+          <h2>BÀI 10 – Hồ Hoàn Kiếm – Biểu tượng trái tim Thủ đô</h2>
+          <p>Hồ Hoàn Kiếm không chỉ là một hồ nước thông thường mà còn là biểu tượng văn hóa, lịch sử và du lịch của Hà Nội. Nơi đây lưu giữ những câu chuyện lịch sử hào hùng và là điểm đến không thể bỏ qua khi khám phá Thủ đô.</p>
+          <p>Với vị trí trung tâm thành phố, Hồ Hoàn Kiếm được ví như "trái tim" của Hà Nội, nơi hội tụ của văn hóa truyền thống và cuộc sống hiện đại. Cùng "Hà Nội Vibes" khám phá những điều thú vị về hồ nước nổi tiếng này.</p>
+        </section>
+
+
+        <!-- Sections -->
+        <section class="article-section" id="lich-su">
+          <h2>1. Lịch sử và truyền thuyết</h2>
+          <p>Hồ Hoàn Kiếm có lịch sử lâu đời, gắn liền với truyền thuyết vua Lê Lợi trả gươm thần cho rùa vàng. Tên gọi "Hoàn Kiếm" có nghĩa là "trả gươm", thể hiện tinh thần yêu hòa bình của dân tộc Việt Nam.</p>
+          <p>Hồ được tạo thành từ một phần của sông Hồng cũ, có diện tích khoảng 12 ha với chu vi khoảng 1,8 km. Đây là nơi lưu giữ nhiều giá trị lịch sử và văn hóa quan trọng của Thủ đô.</p>
+        </section>
+
+        <section class="article-section" id="thap-rua">
+          <h2>2. Tháp Rùa - Biểu tượng Hà Nội</h2>
+          <p>Tháp Rùa nằm trên một gò đất nhỏ giữa hồ, là biểu tượng nổi tiếng nhất của Hà Nội. Tháp được xây dựng vào thế kỷ 19 với kiến trúc cổ kính, tạo nên một khung cảnh thơ mộng và huyền bí.</p>
+          <p>Vào buổi chiều tà, khi ánh hoàng hôn chiếu xuống, Tháp Rùa trở nên lung linh và đẹp mắt, tạo nên một khung cảnh không thể quên cho du khách.</p>
+        </section>
+
+        <section class="article-section" id="cau-the-huc">
+          <h2>3. Cầu Thê Húc và đền Ngọc Sơn</h2>
+          <p>Cầu Thê Húc (cầu đón ánh sáng mặt trời) là cây cầu đỏ son cong cong dẫn vào đền Ngọc Sơn. Cầu được xây dựng theo kiến trúc truyền thống Việt Nam với màu đỏ đặc trưng.</p>
+          <p>Đền Ngọc Sơn nằm trên đảo Ngọc, là nơi thờ cúng các vị thần và anh hùng dân tộc. Đây là điểm đến tâm linh quan trọng và là nơi du khách có thể tìm hiểu về văn hóa tín ngưỡng của người Việt.</p>
+        </section>
+
+        <section class="article-section" id="hoat-dong">
+          <h2>4. Hoạt động và trải nghiệm</h2>
+          <p>Hồ Hoàn Kiếm là nơi diễn ra nhiều hoạt động văn hóa, thể thao và giải trí. Vào cuối tuần, khu vực quanh hồ trở thành phố đi bộ, thu hút đông đảo người dân và du khách.</p>
+          <p>Du khách có thể đi dạo quanh hồ, tham gia các hoạt động thể thao như chạy bộ, tập dưỡng sinh, hoặc đơn giản là ngồi nghỉ ngơi và ngắm cảnh hồ nước thơ mộng.</p>
+        </section>
+
+        <section class="article-section tips">
+          <h2>Lưu ý tham quan Hồ Hoàn Kiếm</h2>
+          <div class="tips-grid">
+            <div class="tip"><i class="fa fa-clock-o"></i> Thời gian tốt nhất: Sáng sớm (6h-8h) hoặc chiều tối (17h-19h)</div>
+            <div class="tip"><i class="fa fa-camera"></i> Chụp ảnh đẹp nhất: Hoàng hôn tại Tháp Rùa</div>
+            <div class="tip"><i class="fa fa-walking"></i> Đi bộ quanh hồ: Khoảng 30-45 phút</div>
+            <div class="tip"><i class="fa fa-info-circle"></i> Tham quan đền Ngọc Sơn: Miễn phí, mặc trang phục lịch sự</div>
+          </div>
+        </section>
+        <section class="article-section" id="ket-luan">
+          <h2>Kết luận</h2>
+          <p>Hồ Hoàn Kiếm không chỉ là một điểm du lịch mà còn là biểu tượng văn hóa, lịch sử của Hà Nội. Nơi đây lưu giữ những giá trị truyền thống và là cầu nối giữa quá khứ và hiện tại.</p>
+          <p>Với "Hà Nội Vibes", bạn sẽ có cơ hội khám phá Hồ Hoàn Kiếm một cách trọn vẹn nhất, từ những câu chuyện lịch sử đến những trải nghiệm văn hóa đặc sắc. Hãy để chúng tôi đồng hành cùng bạn trong hành trình khám phá trái tim của Thủ đô.</p>
+          <p><em>"Hà Nội Vibes – Cùng bạn tận hưởng trọn vẹn hơi thở Hà Nội."</em></p>
+        </section>
+
+        <div class="share">
+          <span>Chia sẻ:</span>
+          <a href="#" aria-label="Share Facebook"><i class="fa fa-facebook"></i></a>
+          <a href="#" aria-label="Share Twitter"><i class="fa fa-twitter"></i></a>
+          <a href="#" aria-label="Share Mail"><i class="fa fa-envelope"></i></a>
+        </div>
+      </article>
+
+      <aside class="sidebar">
+        <div class="widget related">
+          <h3>Bài viết liên quan</h3>
+          <ul>
+            <li><a href="/blog">Phố cổ Hà Nội - 36 phố phường</a></li>
+            <li><a href="/blog">Văn Miếu - Quốc Tử Giám</a></li>
+            <li><a href="/blog">Lăng Bác - Quảng trường Ba Đình</a></li>
+          </ul>
+        </div>
+        <div class="widget subscribe">
+          <h3>Nhận bản tin</h3>
+          <form class="subscribe-form" onsubmit="return false;">
+            <input type="email" placeholder="Email của bạn" required />
+            <button type="submit" class="ctn">Đăng ký</button>
+          </form>
+        </div>
+      </aside>
     </main>
 
+    <!-- Contact Section -->
+    <%- include('../../components/contact-section', { sectionId: 'contact-blog-detail' }) %>
+
+    <i class="arrow" onclick="topFunction()" id="upbtn"></i>
     <%- include('../../partials/footer') %>
 
-    <script src="/client/js/main.js"></script>
-</body>
-</html>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="/client/js/includes.js"></script>
+    <script src="/client/js/script.js"></script>
+    <script src="/client/js/blog.js"></script>
+    <script>
+      (function() {
+        var hero = document.querySelector('.blog-detail-hero');
+        if (hero) {
+          var bg = hero.getAttribute('data-bg');
+          if (bg) {
+            hero.style.backgroundImage = 'url("' + bg + '")';
+          }
+        }
+      })();
+    </script>
+  </body>
+  </html>
