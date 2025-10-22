@@ -31,8 +31,53 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Navbar links color - only for desktop */
 .cuisine-detail-page .navbar .nav-links li a,
-.restaurant-detail-page .navbar .nav-links li a { color: #fff; }
+.restaurant-detail-page .navbar .nav-links li a { 
+    color: #fff; 
+}
+
+/* Ensure mobile menu links are visible */
+@media screen and (max-width: 1130px) {
+    .cuisine-detail-page .navbar .nav-links li a,
+    .restaurant-detail-page .navbar .nav-links li a {
+        color: #fff !important;
+    }
+    
+    /* Ensure mobile menu is properly positioned and visible */
+    .cuisine-detail-page .navbar .nav-links,
+    .restaurant-detail-page .navbar .nav-links {
+        position: fixed !important;
+        top: 0 !important;
+        right: 0 !important;
+        width: 300px !important;
+        height: 100vh !important;
+        background: #1261A6 !important;
+        transform: translateX(100%) !important;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        z-index: 9999 !important;
+    }
+    
+    .cuisine-detail-page .navbar .nav-links.active,
+    .restaurant-detail-page .navbar .nav-links.active {
+        transform: translateX(0) !important;
+    }
+}
+
+/* Additional responsive fixes for smaller screens */
+@media screen and (max-width: 768px) {
+    .cuisine-detail-page .navbar .nav-links,
+    .restaurant-detail-page .navbar .nav-links {
+        width: 280px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .cuisine-detail-page .navbar .nav-links,
+    .restaurant-detail-page .navbar .nav-links {
+        width: 260px !important;
+    }
+}
 
 /* Cuisine Banner - Matching cuisine.ejs */
 .page-header.cuisine-banner { 

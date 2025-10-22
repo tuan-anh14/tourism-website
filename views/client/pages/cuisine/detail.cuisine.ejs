@@ -110,24 +110,42 @@
                         <div class="blog-grid">
                             <% restaurants.forEach(function(r, idx){ %>
                             <% var defaultImage = 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800'; %>
-                            <article class="blog-card" data-restaurant-index="<%= idx %>">
+                            <article class="blog-card" data-restaurant-index="<%= idx %>" 
+                                     data-restaurant-id="<%= r.id || idx %>"
+                                     data-restaurant-name="<%= r.name %>"
+                                     data-restaurant-address="<%= r.address || '' %>"
+                                     data-restaurant-lat="<%= r.lat || '' %>"
+                                     data-restaurant-lng="<%= r.lng || '' %>"
+                                     data-restaurant-mapurl="<%= r.mapUrl || '' %>">
                                 <div class="blog-image" data-images='<%= JSON.stringify(r.images || []) %>' data-restaurant-name="<%= r.name %>">
                                     <img src="<%= r.image || defaultImage %>" alt="<%= r.name %>" />
                                 </div>
                                 <div class="blog-content">
                                     <div class="blog-meta">
-                                        <div class="blog-rating">
-                                            <span class="blog-date"><i class="fa fa-star"></i> <%= r.rating || '4.5' %>/5</span>
-                                        </div>
                                         <div class="blog-address">
-                                            <span class="blog-author"><i class="fa fa-map-marker"></i> <%= r.distance || r.address || '' %></span>
+                                            <span class="blog-author"><i class="fa fa-map-marker"></i> <%= r.address || r.distance || '' %></span>
                                         </div>
+                                        <% if (r.price) { %>
+                                        <div class="blog-price">
+                                            <span class="blog-price-text"><i class="fa fa-money"></i> <%= r.price %></span>
+                                        </div>
+                                        <% } %>
+                                        <% if (r.time) { %>
+                                        <div class="blog-hours">
+                                            <span class="blog-hours-text"><i class="fa fa-clock-o"></i> <%= r.time %></span>
+                                        </div>
+                                        <% } %>
+                                        <% if (r.phone) { %>
+                                        <div class="blog-phone">
+                                            <span class="blog-phone-text"><i class="fa fa-phone"></i> <%= r.phone %></span>
+                                        </div>
+                                        <% } %>
                                     </div>
                                     <h3 class="blog-title"><%= r.name %></h3>
                                     <% if (r.description) { %>
                                     <p class="blog-excerpt"><%= r.description %></p>
                                     <% } %>
-                                    <a href="#" class="ctn" onclick="viewRestaurantDetail('<%= r.id || idx %>', '<%= r.name %>'); return false;">Xem chi tiết</a>
+                                    <a href="#" class="ctn view-map-btn">Xem bản đồ</a>
                                 </div>
                             </article>
                             <% }) %>
@@ -312,20 +330,26 @@
             }
         });
 
-        // Restaurant detail navigation
-        function viewRestaurantDetail(restaurantId, restaurantName) {
-            console.log('Viewing restaurant:', restaurantId, restaurantName);
+        // Restaurant map navigation
+        function viewRestaurantMap(restaurantId, restaurantName, address, lat, lng, mapUrl) {
+            console.log('Viewing restaurant map:', restaurantId, restaurantName, address, lat, lng, mapUrl);
             
-            // Get current cuisine slug from URL
-            const currentPath = window.location.pathname;
-            const pathParts = currentPath.split('/');
-            const cuisineSlug = pathParts[2]; // /cuisine/[cuisineSlug]
-            
-            // Create restaurant slug from name using utility function
-            const restaurantSlug = createSlug(restaurantName);
-            
-            // Navigate to restaurant detail page within cuisine
-            window.location.href = '/cuisine/' + cuisineSlug + '/' + restaurantSlug;
+            if (mapUrl) {
+                // Use the existing mapUrl from database (same as restaurant-detail.ejs)
+                window.open(mapUrl, '_blank');
+            } else if (lat && lng) {
+                // If coordinates are available, open in Google Maps
+                const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+                window.open(googleMapsUrl, '_blank');
+            } else if (address) {
+                // If no coordinates but have address, search by address
+                const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+                window.open(googleMapsUrl, '_blank');
+            } else {
+                // Fallback: search by restaurant name
+                const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(restaurantName)}`;
+                window.open(googleMapsUrl, '_blank');
+            }
         }
 
         // Add click animation to restaurant cards (blog layout)
@@ -342,9 +366,28 @@
                 });
             });
 
+            // Handle view map button clicks
+            const viewMapButtons = document.querySelectorAll('.view-map-btn');
+            viewMapButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const card = this.closest('.blog-card');
+                    const restaurantId = card.getAttribute('data-restaurant-id');
+                    const restaurantName = card.getAttribute('data-restaurant-name');
+                    const address = card.getAttribute('data-restaurant-address');
+                    const lat = card.getAttribute('data-restaurant-lat');
+                    const lng = card.getAttribute('data-restaurant-lng');
+                    const mapUrl = card.getAttribute('data-restaurant-mapurl');
+                    
+                    viewRestaurantMap(restaurantId, restaurantName, address, lat, lng, mapUrl);
+                });
+            });
+
             // Lightbox for cuisine image gallery
             var cuisineTitle = '<%= (food && food.title) || "Món ăn" %>';
-            var allFoodImages = <%- JSON.stringify((food && food.images) || []) %>; // Tất cả ảnh từ database
+            var allFoodImages = <%- JSON.stringify((food && food.images) || []) %>;
 
             const galleryNodeList = document.querySelectorAll('.image-gallery img');
             const galleryArray = Array.prototype.slice.call(galleryNodeList);

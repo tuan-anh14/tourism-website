@@ -135,6 +135,8 @@ module.exports.cuisineDetail = async (req, res) => {
             address: p.address || '',
             time: p.openingHours || '',
             price: p.priceRange || '',
+            phone: p.phone || '',
+            rating: p.rating || 4.5,
             mapUrl: p.mapLink || '',
             lat: (p.location && Array.isArray(p.location.coordinates)) ? p.location.coordinates[1] : undefined,
             lng: (p.location && Array.isArray(p.location.coordinates)) ? p.location.coordinates[0] : undefined,
