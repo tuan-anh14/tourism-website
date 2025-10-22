@@ -110,6 +110,12 @@
                         <div class="blog-grid">
                             <% restaurants.forEach(function(r, idx){ %>
                             <% var defaultImage = 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800'; %>
+                            <% var restaurantImage = defaultImage; %>
+                            <% if (r.images && r.images.length > 0) { %>
+                                <% restaurantImage = r.images[0]; %>
+                            <% } else if (r.image) { %>
+                                <% restaurantImage = r.image; %>
+                            <% } %>
                             <article class="blog-card" data-restaurant-index="<%= idx %>" 
                                      data-restaurant-id="<%= r.id || idx %>"
                                      data-restaurant-name="<%= r.name %>"
@@ -118,7 +124,7 @@
                                      data-restaurant-lng="<%= r.lng || '' %>"
                                      data-restaurant-mapurl="<%= r.mapUrl || '' %>">
                                 <div class="blog-image" data-images='<%= JSON.stringify(r.images || []) %>' data-restaurant-name="<%= r.name %>">
-                                    <img src="<%= r.image || defaultImage %>" alt="<%= r.name %>" />
+                                    <img src="<%= restaurantImage %>" alt="<%= r.name %>" />
                                 </div>
                                 <div class="blog-content">
                                     <div class="blog-meta">
