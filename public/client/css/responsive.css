@@ -38,7 +38,7 @@
     padding-top: 80px;
     padding-left: 20px;
     padding-right: 20px;
-    z-index: 9999;
+    z-index: 5000; /* nav-links cao nhất */
     overflow-y: auto;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);

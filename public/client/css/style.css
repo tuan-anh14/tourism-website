@@ -222,7 +222,7 @@ html {
   justify-content: space-between;
   align-items: center;
   padding: 12px 5px;
-  z-index: 1200; /* keep above page banners and modals triggers */
+  z-index: 1000; /* Desktop navbar thấp hơn chat history */
   color: whitesmoke;
 }
 
@@ -1141,11 +1141,16 @@ input[type="submit"]:hover {
   position: fixed;
   right: 18px;
   bottom: 18px;
-  z-index: 9999;
+  z-index: 2000; /* Chat panel */
   max-width: calc(100vw - 36px);
   max-height: calc(100vh - 36px);
   /* Đảm bảo chatbot luôn hiển thị */
   min-height: 58px;
+}
+
+/* Chat History Sidebar - Higher z-index than chat panel */
+#chat-history-sidebar {
+  z-index: 3000; /* Lịch sử chat cao hơn chat panel */
 }
 .hnv-chat {
   font-family: var(--ff-primary);

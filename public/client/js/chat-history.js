@@ -60,7 +60,7 @@ class ChatHistoryManager {
                 background: #f8f9fa;
                 border-right: 1px solid #dee2e6;
                 transition: left 0.3s ease;
-                z-index: 1000;
+                z-index: 3000; /* Lịch sử chat cao hơn chat panel */
                 overflow-y: auto;
             }
             

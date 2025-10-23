@@ -404,7 +404,7 @@
               background: #f8f9fa;
               border-left: 1px solid #dee2e6;
               transition: right 0.3s ease;
-              z-index: 10000;
+              z-index: 3000; /* Lịch sử chat cao hơn chat panel */
               overflow-y: auto;
               overflow-x: hidden;
               box-shadow: -5px 0 15px rgba(0,0,0,0.1);

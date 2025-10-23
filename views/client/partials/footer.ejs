@@ -37,36 +37,36 @@
 
 <!-- Z-index Configuration for proper layering -->
 <style>
-    /* Z-index hierarchy: Lịch sử chat > Chatbot > GTranslate */
+    /* Z-index hierarchy: nav-links.active (5000) > Lịch sử chat (3000) > Chat panel (2000) > Navbar (1000) > GTranslate (100) */
     
-    /* Chatbot z-index (trung bình) */
+    /* GTranslate (thấp nhất) - Force override widget's default z-index */
+    .gtranslate_wrapper {
+        z-index: 100 !important;
+    }
+    
+    /* Override any GTranslate widget internal z-index */
+    .gtranslate_wrapper * {
+        z-index: inherit !important;
+    }
+    
+    /* Desktop navbar (thấp hơn chat history) */
+    .navbar {
+        z-index: 1000;
+    }
+    
+    /* Chatbot z-index (chat panel) */
     #hnv-chatbot-root {
-        z-index: 11000 !important;
+        z-index: 2000;
     }
     
-    /* Chatbot components */
-    #hnv-chatbot-root * {
-        z-index: inherit;
+    /* Chat history z-index (cao hơn chat panel) */
+    #chat-history-sidebar {
+        z-index: 3000;
     }
     
-    /* Chat history z-index (cao nhất) */
-    .chat-history,
-    .chat-history-overlay,
-    .chat-history-modal {
-        z-index: 12000 !important;
-    }
-    
-    /* Ensure chatbot button doesn't interfere with chat history */
-    .chatbot-toggle,
-    .chatbot-button {
-        z-index: 11000 !important;
-    }
-    
-    /* Chat history components */
-    .chat-history *,
-    .chat-history-overlay *,
-    .chat-history-modal * {
-        z-index: inherit;
+    /* Mobile nav-links (cao nhất) */
+    .nav-links {
+        z-index: 5000;
     }
 </style>
 
@@ -76,7 +76,7 @@
         position: fixed;
         top: 20px;
         right: 20px;
-        z-index: 10000; /* Thấp nhất: GTranslate */
+        z-index: 100; /* Thấp nhất: GTranslate */
         font-family: Arial, sans-serif;
     }
     
@@ -128,7 +128,7 @@
         .gtranslate_wrapper {
             top: 15px;
             right: 15px;
-            z-index: 10000;
+            z-index: 100;
         }
         
         .gtranslate_wrapper .gt_selector {
@@ -152,10 +152,10 @@
         }
     }
     
-    /* Đảm bảo thứ tự z-index: Lịch sử chat > Chatbot > GTranslate */
+    /* Đảm bảo thứ tự z-index: nav-links.active > Lịch sử chat > Chat panel > GTranslate */
     @media (max-width: 1024px) {
         .gtranslate_wrapper {
-            z-index: 10000 !important; /* GTranslate thấp nhất */
+            z-index: 100; /* GTranslate thấp nhất */
         }
     }
     
@@ -291,8 +291,14 @@
         setTimeout(() => {
             var wrapper = document.querySelector('.gtranslate_wrapper');
             if (wrapper) {
-                // Ensure proper z-index (GTranslate thấp nhất)
-                wrapper.style.zIndex = '10000';
+                // Force override GTranslate z-index (thấp nhất)
+                wrapper.style.setProperty('z-index', '100', 'important');
+                
+                // Override any child elements z-index
+                var allElements = wrapper.querySelectorAll('*');
+                allElements.forEach(function(element) {
+                    element.style.setProperty('z-index', 'inherit', 'important');
+                });
                 
                 // Style the selector
                 var selector = wrapper.querySelector('.gt_selector');
@@ -342,11 +348,21 @@
         setTimeout(applyGTranslateStyles, 100);
     });
     
-    // Observer để theo dõi thay đổi DOM của GTranslate
+    // Observer để theo dõi thay đổi DOM của GTranslate và force override z-index
     var gtranslateObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (mutation.type === 'childList' && mutation.target.classList && mutation.target.classList.contains('gtranslate_wrapper')) {
                 setTimeout(applyGTranslateStyles, 50);
+                
+                // Force override z-index immediately
+                var wrapper = document.querySelector('.gtranslate_wrapper');
+                if (wrapper) {
+                    wrapper.style.setProperty('z-index', '100', 'important');
+                    var allElements = wrapper.querySelectorAll('*');
+                    allElements.forEach(function(element) {
+                        element.style.setProperty('z-index', 'inherit', 'important');
+                    });
+                }
             }
         });
     });
@@ -372,23 +388,37 @@
     
     // Function to ensure proper z-index hierarchy
     function ensureZIndexHierarchy() {
-        // GTranslate (thấp nhất)
+        // GTranslate (thấp nhất) - Force override
         var gtranslateWrapper = document.querySelector('.gtranslate_wrapper');
         if (gtranslateWrapper) {
-            gtranslateWrapper.style.zIndex = '10000';
+            gtranslateWrapper.style.setProperty('z-index', '100', 'important');
+            
+            // Override any child elements
+            var allElements = gtranslateWrapper.querySelectorAll('*');
+            allElements.forEach(function(element) {
+                element.style.setProperty('z-index', 'inherit', 'important');
+            });
         }
         
-        // Chatbot (trung bình)
+        // Desktop navbar (thấp hơn chat history)
+        var navbar = document.querySelector('.navbar');
+        if (navbar) navbar.style.zIndex = '1000';
+        
+        // Chatbot (chat panel)
         var chatbotRoot = document.getElementById('hnv-chatbot-root');
         if (chatbotRoot) {
-            chatbotRoot.style.zIndex = '11000';
+            chatbotRoot.style.zIndex = '2000';
         }
         
-        // Chat history (cao nhất)
-        var chatHistoryElements = document.querySelectorAll('.chat-history, .chat-history-overlay, .chat-history-modal');
+        // Chat history (cao hơn chat panel)
+        var chatHistoryElements = document.querySelectorAll('#chat-history-sidebar');
         chatHistoryElements.forEach(function(element) {
-            element.style.zIndex = '12000';
+            element.style.zIndex = '3000';
         });
+        
+        // Mobile nav-links (cao nhất)
+        var navLinks = document.querySelector('.nav-links');
+        if (navLinks) navLinks.style.zIndex = '5000';
     }
     
     // Apply z-index hierarchy on page load
