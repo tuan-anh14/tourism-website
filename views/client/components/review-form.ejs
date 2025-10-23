@@ -245,9 +245,7 @@ const _user = user || null;
   max-width: 900px !important;
   box-sizing: border-box !important;
   display: grid !important;
-  grid-template-columns: 1fr 180px !important;
   grid-template-rows: auto auto auto !important;
-  margin: 0 auto 16px !important;
   min-height: 200px !important;
 }
 
@@ -810,6 +808,16 @@ const _user = user || null;
 }
 
 /* ==========================
+   DESKTOP SPECIFIC
+   ========================== */
+@media (min-width: 769px) {
+  .review-form-wrapper .content-input-wrapper {
+    grid-template-columns: 1fr 180px !important;
+    margin: 0 auto 16px !important;
+  }
+}
+
+/* ==========================
    RESPONSIVE
    ========================== */
 @media (max-width: 768px) {
@@ -863,6 +871,7 @@ const _user = user || null;
     min-height: 150px !important;
     grid-template-columns: 1fr !important;
     grid-template-rows: auto auto auto auto !important;
+    margin: 0 !important;
   }
   
   .form-control {
