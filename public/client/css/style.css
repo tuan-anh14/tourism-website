@@ -1200,6 +1200,11 @@ body.dark .hnv-chat__panel {
   justify-content: space-between;
   align-items: center;
 }
+
+/* CSS riêng cho span trong .hnv-chat__header */
+.hnv-chat__header span {
+  padding: 0;
+}
 .hnv-chat__actions {
   display: flex;
   gap: 8px;
