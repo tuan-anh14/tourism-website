@@ -109,7 +109,7 @@
     font-weight: 500;
     border-radius: 8px;
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.1);
+    /* background: rgba(255, 255, 255, 0.1); */
     backdrop-filter: blur(10px);
   }
   
