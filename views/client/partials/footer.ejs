@@ -216,17 +216,22 @@
         switcher_border_color: "#e0e0e0",
         switcher_hover_color: "#f8f9fa"
     };
-    // Force Vietnamese as default language
+    // Set default language to Vietnamese if no preference is stored
     document.documentElement.setAttribute('lang', 'vi');
     
-    // Clear any stored language preference to always start with Vietnamese
-    try {
-        localStorage.removeItem('googtrans');
-        localStorage.removeItem('gtranslate_language');
-        // Clear cookies
-        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname + ';';
-    } catch(e) {}
+    // Hàm lấy cookie
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // Hàm set cookie
+    function setCookie(name, value, days = 30) {
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+    }
     
     // Lazy load GTranslate for better performance
     window.addEventListener('DOMContentLoaded', function(){
@@ -239,22 +244,40 @@
                 s.async=true;
                 document.body.appendChild(s);
                 
-                // After GTranslate loads, ensure Vietnamese is set
+                // After GTranslate loads, apply saved language or default to Vietnamese
                 s.onload = function() {
                     setTimeout(() => {
                         if (window.gtranslate) {
                             try {
-                                // Force set to Vietnamese if not already
-                                var currentLang = window.gtranslate.getCurrentLanguage ? 
-                                    window.gtranslate.getCurrentLanguage() : 'vi';
-                                if (currentLang !== 'vi') {
-                                    window.gtranslate.switchLanguage('vi');
+                                // Lấy ngôn ngữ đã lưu hoặc mặc định là tiếng Việt
+                                var savedLang = localStorage.getItem('selectedLanguage') || getCookie('googtrans') || 'vi';
+                                
+                                // Áp dụng ngôn ngữ đã lưu
+                                if (savedLang && savedLang !== 'auto') {
+                                    window.gtranslate.switchLanguage(savedLang);
                                 }
                                 
                                 // Apply custom styles after GTranslate loads
                                 applyGTranslateStyles();
+                                
+                                // Lắng nghe sự kiện thay đổi ngôn ngữ
+                                setTimeout(() => {
+                                    var selector = document.querySelector('.gt_selector');
+                                    if (selector) {
+                                        selector.addEventListener('change', function() {
+                                            var selectedLang = this.value;
+                                            
+                                            // Lưu vào localStorage và cookie
+                                            localStorage.setItem('selectedLanguage', selectedLang);
+                                            setCookie('googtrans', selectedLang);
+                                            
+                                            console.log('Language changed to:', selectedLang);
+                                        });
+                                    }
+                                }, 1000);
+                                
                             } catch(e) {
-                                console.log('GTranslate force language:', e);
+                                console.log('GTranslate language setup:', e);
                             }
                         }
                     }, 500);

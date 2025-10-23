@@ -1,1 +1,0 @@
-- Chỉnh sửa sao cho các data đc truyền vào đc xây dựng là động để sau này tôi có thể phát triển dễ hơn khi xây dựng backend, code clean, code base, logic, xây dựng responsive phân chia đánh dấu rõ ràng từng mục, không ảnh hưởng tới chức năng khác
