@@ -54,6 +54,79 @@
     </div>
 </div>
 
+<!-- Second Row - Additional Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-6 col-lg-3 col-md-6">
+        <div class="stats-card">
+            <div class="d-flex align-items-center">
+                <div class="stats-icon orange">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <div class="ms-3">
+                    <h6 class="text-muted mb-1">Ẩm thực</h6>
+                    <h4 class="mb-0"><%= stats.cuisines || '0' %></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3 col-md-6">
+        <div class="stats-card">
+            <div class="d-flex align-items-center">
+                <div class="stats-icon teal">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="ms-3">
+                    <h6 class="text-muted mb-1">Địa điểm ẩm thực</h6>
+                    <h4 class="mb-0"><%= stats.cuisinePlaces || '0' %></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3 col-md-6">
+        <div class="stats-card">
+            <div class="d-flex align-items-center">
+                <div class="stats-icon pink">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <div class="ms-3">
+                    <h6 class="text-muted mb-1">Giải trí</h6>
+                    <h4 class="mb-0"><%= stats.entertainments || '0' %></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3 col-md-6">
+        <div class="stats-card">
+            <div class="d-flex align-items-center">
+                <div class="stats-icon indigo">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="ms-3">
+                    <h6 class="text-muted mb-1">Liên hệ</h6>
+                    <h4 class="mb-0"><%= stats.contacts || '0' %></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Third Row - User Statistics -->
+<div class="row mb-4">
+    <div class="col-6 col-lg-3 col-md-6">
+        <div class="stats-card">
+            <div class="d-flex align-items-center">
+                <div class="stats-icon dark">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="ms-3">
+                    <h6 class="text-muted mb-1">Người dùng</h6>
+                    <h4 class="mb-0"><%= stats.users || '0' %></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Main Content Row -->
 <div class="row">
     <!-- Left Column - Charts -->

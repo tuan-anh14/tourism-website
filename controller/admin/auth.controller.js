@@ -35,6 +35,10 @@ module.exports.showDashboard = async (req, res) => {
     const Tour = require('../../model/Tour');
     const News = require('../../model/News');
     const Review = require('../../model/Review');
+    const Cuisine = require('../../model/Cuisine');
+    const CuisinePlace = require('../../model/CuisinePlace');
+    const Contact = require('../../model/Contact');
+    const User = require('../../model/User');
 
     const stats = {
       attractions: await Attraction.countDocuments(),
@@ -43,7 +47,11 @@ module.exports.showDashboard = async (req, res) => {
       entertainments: await Entertainment.countDocuments(),
       tours: await Tour.countDocuments(),
       news: await News.countDocuments(),
-      reviews: await Review.countDocuments()
+      reviews: await Review.countDocuments(),
+      cuisines: await Cuisine.countDocuments(),
+      cuisinePlaces: await CuisinePlace.countDocuments(),
+      contacts: await Contact.countDocuments(),
+      users: await User.countDocuments()
     };
 
     const recentReviews = await Review.find({ isActive: true })
