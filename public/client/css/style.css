@@ -865,13 +865,10 @@ p,
   font-family: var(--ff-primary);
 }
 
-/* CSS riêng cho form review */
 .review-form {
   width: 100%;
 }
-
-/* CSS chung cho các form khác (không phải review) */
-form:not(.review-form) {
+form {
   width: 50%;
 }
 
