@@ -77,9 +77,6 @@ module.exports.cuisine = async (req, res) => {
             .select('name slug')
             .sort({ name: 1 })
             .lean();
-        
-        console.log('🔍 All cuisines for search:', allCuisinesForSearch.length, 'items');
-        console.log('Sample:', allCuisinesForSearch.slice(0, 3));
 
         res.render('client/pages/cuisine/cuisine.ejs', {
             pageTitle: 'Ẩm thực',
