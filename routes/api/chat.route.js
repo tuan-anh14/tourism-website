@@ -14,6 +14,9 @@ router.get('/chat/sessions', chatController.getUserSessions);
 // DELETE /api/chat/session - Xóa session
 router.delete('/chat/session', chatController.deleteSession);
 
+// GET /api/chat/stats - Lấy thống kê hệ thống chatbot
+router.get('/chat/stats', chatController.getSystemStats);
+
 module.exports = router;
 
 

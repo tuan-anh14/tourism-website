@@ -211,7 +211,7 @@
       var wrap = document.createElement("div");
       wrap.className = "hnv-chat";
       wrap.innerHTML =
-        '\n                <button class="hnv-chat__toggle" aria-label="Chat"><i class="fa fa-comments"></i></button>\n                <div class="hnv-chat__panel" role="dialog" aria-label="Chatbot">\n                    <div class="hnv-chat__header">\n                        <span>ViA - Trợ lý du lịch</span>\n                        <div class="hnv-chat__actions">\n                            <button class="hnv-history-btn" id="hnvHistoryBtn" title="Lịch sử chat"><i class="fa fa-history"></i></button>\n                            <button class="hnv-new-chat" id="hnvNewChat" title="Cuộc trò chuyện mới"><i class="fa fa-plus"></i></button>\n                            <button class="hnv-close-btn" id="hnvCloseBtn" title="Đóng chat"><i class="fa fa-times"></i></button>\n                        </div>\n                    </div>\n                    <div class="hnv-chat__body">\n                        <div class="hnv-quick">\n                            <button class="hnv-chip" data-q="Gợi ý lịch trình 2 ngày?">Gợi ý lịch trình 2 ngày?</button>\n                            <button class="hnv-chip" data-q="Ăn gì ở Phố cổ?">Ăn gì ở Phố cổ?</button>\n                            <button class="hnv-chip" data-q="Phương tiện di chuyển?">Phương tiện di chuyển?</button>\n                            <button class="hnv-chip" data-q="Top điểm check-in">Top điểm check-in</button>\n                        </div>\n                        <div class="hnv-chat__messages" id="hnvMsgs">\n                            <div class="hnv-msg hnv-msg--bot">Xin chào! Bạn muốn đi đâu ở Hà Nội?</div>\n                        </div>\n                    </div>\n                    <div class="hnv-chat__footer">\n                        <input class="hnv-input" id="hnvInput" type="text" placeholder="Nhập câu hỏi của bạn..." />\n                        <button class="hnv-send" id="hnvSend" aria-label="Gửi"><i class="fa fa-paper-plane"></i></button>\n                    </div>\n                </div>';
+        '\n                <button class="hnv-chat__toggle" aria-label="Chat"><i class="fa fa-comments"></i></button>\n                <div class="hnv-chat__panel" role="dialog" aria-label="Chatbot">\n                    <div class="hnv-chat__header">\n                        <span>ViA - Trợ lý du lịch</span>\n                        <div class="hnv-chat__actions">\n                            <button class="hnv-history-btn" id="hnvHistoryBtn" title="Lịch sử chat"><i class="fa fa-history"></i></button>\n                            <button class="hnv-new-chat" id="hnvNewChat" title="Cuộc trò chuyện mới"><i class="fa fa-plus"></i></button>\n                            <button class="hnv-close-btn" id="hnvCloseBtn" title="Đóng chat"><i class="fa fa-times"></i></button>\n                        </div>\n                    </div>\n                    <div class="hnv-chat__body">\n                        <div class="hnv-quick">\n                            <button class="hnv-chip" data-q="Gợi ý lịch trình 2 ngày ở Hà Nội?">Gợi ý lịch trình 2 ngày?</button>\n                            <button class="hnv-chip" data-q="Ăn gì ngon ở Phố cổ Hà Nội?">Ăn gì ở Phố cổ?</button>\n                            <button class="hnv-chip" data-q="Phương tiện di chuyển nào tiện nhất ở Hà Nội?">Phương tiện di chuyển?</button>\n                            <button class="hnv-chip" data-q="Top điểm check-in đẹp nhất Hà Nội">Top điểm check-in</button>\n                            <button class="hnv-chip" data-q="Khách sạn nào tốt gần Hồ Gươm?">Khách sạn gần Hồ Gươm</button>\n                            <button class="hnv-chip" data-q="Lịch sử và văn hóa Hà Nội">Văn hóa Hà Nội</button>\n                        </div>\n                        <div class="hnv-chat__messages" id="hnvMsgs">\n                            <div class="hnv-msg hnv-msg--bot">Xin chào! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn muốn hỏi gì?</div>\n                        </div>\n                    </div>\n                    <div class="hnv-chat__footer">\n                        <input class="hnv-input" id="hnvInput" type="text" placeholder="Nhập câu hỏi của bạn..." />\n                        <button class="hnv-send" id="hnvSend" aria-label="Gửi"><i class="fa fa-paper-plane"></i></button>\n                    </div>\n                </div>';
       root.appendChild(wrap);
 
       var toggle = wrap.querySelector(".hnv-chat__toggle");
@@ -306,9 +306,10 @@
           });
       }
       
-      function sendToApi(text) {
+      function sendToApi(text, retryCount = 0) {
         busy = true;
         lastSent = Date.now();
+        
         return fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -320,15 +321,46 @@
         })
           .then(function (r) {
             if (r.status === 429) throw new Error("Too Many Requests");
+            if (r.status >= 500) throw new Error("Server Error");
             return r.json();
           })
           .then(function (data) {
-            return (data && data.content) || "Xin lỗi, có lỗi xảy ra.";
+            if (data && data.content) {
+              // Check if this is a template response (faster response)
+              if (data.meta && data.meta.type === 'template') {
+                console.log('Template response received');
+              }
+              return data.content;
+            }
+            throw new Error("Invalid response format");
           })
           .catch(function (e) {
-            return e && e.message === "Too Many Requests"
-              ? "Hệ thống đang bận, vui lòng thử lại sau vài giây."
-              : "Không thể kết nối máy chủ.";
+            console.error('API Error:', e);
+            
+            // Retry logic for certain errors
+            if (retryCount < 2 && (
+              e.message.includes("Server Error") || 
+              e.message.includes("network") ||
+              e.message.includes("timeout")
+            )) {
+              console.log(`Retrying... attempt ${retryCount + 1}`);
+              return new Promise(resolve => {
+                setTimeout(() => {
+                  sendToApi(text, retryCount + 1).then(resolve).catch(resolve);
+                }, 1000 * (retryCount + 1)); // Exponential backoff
+              });
+            }
+            
+            // Return appropriate error message
+            if (e.message === "Too Many Requests") {
+              return "Hệ thống đang bận, vui lòng thử lại sau vài giây.";
+            } else if (e.message.includes("Server Error")) {
+              return "Máy chủ đang gặp sự cố, vui lòng thử lại sau.";
+            } else if (e.message.includes("network") || e.message.includes("timeout")) {
+              return "Kết nối mạng không ổn định, vui lòng kiểm tra internet và thử lại.";
+            } else {
+              return "Xin lỗi, có lỗi xảy ra. Vui lòng thử lại.";
+            }
           })
           .finally(function () {
             busy = false;
@@ -339,27 +371,38 @@
         if (!input || !msgs) return;
         var v = (input.value || "").trim();
         if (!v) return;
+        
+        // Prevent duplicate messages
+        if (busy) {
+          console.log("Still processing previous message, please wait...");
+          return;
+        }
+        
         var me = document.createElement("div");
         me.className = "hnv-msg hnv-msg--me";
         me.textContent = v;
         msgs.appendChild(me);
         history.push({ role: "user", content: v });
         input.value = "";
+        
         var bot = document.createElement("div");
         bot.className = "hnv-msg hnv-msg--bot";
-        bot.textContent = "...";
+        bot.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
         msgs.appendChild(bot);
         msgs.scrollTop = msgs.scrollHeight;
-        if (busy) {
-          bot.textContent = "Vui lòng chờ giây lát...";
-          return;
-        }
+        
+        // Enhanced delay logic
         var now = Date.now();
-        var wait = Math.max(0, 1000 - (now - lastSent));
+        var wait = Math.max(0, 500 - (now - lastSent)); // Reduced from 1000ms to 500ms
+        
         setTimeout(function () {
           sendToApi(v).then(function (reply) {
             history.push({ role: "assistant", content: reply });
             bot.innerHTML = formatText(reply);
+            msgs.scrollTop = msgs.scrollHeight;
+          }).catch(function(error) {
+            console.error('Send message error:', error);
+            bot.innerHTML = 'Xin lỗi, có lỗi xảy ra khi gửi tin nhắn.';
             msgs.scrollTop = msgs.scrollHeight;
           });
         }, wait);
@@ -744,9 +787,29 @@
         quick.addEventListener("click", function (e) {
           var chip = e.target.closest(".hnv-chip");
           if (!chip) return;
+          
+          // Prevent multiple clicks while processing
+          if (busy) {
+            console.log("Still processing, please wait...");
+            return;
+          }
+          
           var q = chip.getAttribute("data-q") || chip.textContent || "";
+          if (!q.trim()) return;
+          
+          // Add visual feedback
+          chip.style.opacity = '0.7';
+          chip.style.transform = 'scale(0.95)';
+          
+          // Set input value and trigger echo
           input.value = q.trim();
           echo();
+          
+          // Reset chip appearance after a short delay
+          setTimeout(function() {
+            chip.style.opacity = '';
+            chip.style.transform = '';
+          }, 200);
         });
       }
     })();
