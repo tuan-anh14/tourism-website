@@ -172,14 +172,59 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
 
 .reviews-section .rating-stars {
   display: flex;
-  gap: 2px;
+  gap: 0;
   justify-content: center;
   margin-bottom: 6px;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+  flex-wrap: nowrap;
 }
   
 .reviews-section .rating-stars .star { 
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   color: #fbbf24;
+  display: inline-block;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  visibility: visible;
+  opacity: 1;
+  vertical-align: middle;
+}
+
+/* Force all stars in rating-stars to be visible */
+.reviews-section .rating-stars .star:nth-child(1),
+.reviews-section .rating-stars .star:nth-child(2),
+.reviews-section .rating-stars .star:nth-child(3),
+.reviews-section .rating-stars .star:nth-child(4),
+.reviews-section .rating-stars .star:nth-child(5) {
+  display: inline-block;
+  visibility: visible;
+  opacity: 1;
+  flex-shrink: 0;
+}
+
+/* Override any main page CSS conflicts */
+.reviews-section .rating-stars {
+  position: relative;
+  z-index: 1;
+}
+
+.reviews-section .rating-stars .star {
+  position: relative;
+  z-index: 2;
+}
+
+/* Force remove any inherited spacing */
+.reviews-section .rating-stars .star,
+.reviews-section .review-rating .star {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
 }
 
 .reviews-section .rating-count {
@@ -296,7 +341,7 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
   border-bottom: 1px solid #e5e7eb !important;
   border-left: none !important;
   border-radius: 0 !important;
-  padding: 28px 0 !important;
+  padding: 28px 24px !important;
   margin-bottom: 0 !important;
   display: block !important;
   grid-template-columns: initial !important;
@@ -379,22 +424,49 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
   gap: 8px !important;
   justify-content: flex-start !important;
   align-items: flex-start !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: visible !important;
 }
 
 .reviews-section .review-rating { 
-  display: flex !important;
-  gap: 4px !important;
-  align-items: center !important;
-  flex-wrap: nowrap !important;
-  flex-direction: row !important;
-  margin-bottom: 2px !important;
+  display: flex;
+  gap: 0;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  margin-bottom: 2px;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
 }
 
 .reviews-section .review-rating .star {
-  font-size: 1.125rem !important;
-  color: #fbbf24 !important;
-  flex-shrink: 0 !important;
-  line-height: 1 !important;
+  font-size: 1.125rem;
+  color: #fbbf24;
+  line-height: 1;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  visibility: visible;
+  opacity: 1;
+  vertical-align: middle;
+}
+
+/* Ensure all stars in review-rating are always visible */
+.reviews-section .review-rating {
+  position: relative;
+}
+
+.reviews-section .review-rating .star:nth-child(1),
+.reviews-section .review-rating .star:nth-child(2),
+.reviews-section .review-rating .star:nth-child(3),
+.reviews-section .review-rating .star:nth-child(4),
+.reviews-section .review-rating .star:nth-child(5) {
+  display: inline-block;
+  visibility: visible;
+  opacity: 1;
 }
 
 .reviews-section .review-date {
@@ -559,6 +631,34 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
     padding: 24px 0;
   }
 
+  .reviews-section .rating-stars {
+    gap: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    flex-wrap: nowrap;
+  }
+
+  .reviews-section .rating-stars .star {
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .reviews-section .review-rating {
+    gap: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    flex-wrap: nowrap;
+  }
+
+  .reviews-section .review-rating .star {
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+
   .reviews-section .review-header {
     gap: 12px;
     margin-bottom: 0;
@@ -586,11 +686,12 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
 
   .reviews-section .review-rating {
     margin-bottom: 1px;
+    gap: 1px;
   }
 
   .reviews-section .review-rating .star {
     font-size: 1rem;
-    gap: 3px;
+    min-width: 14px;
   }
 
   .reviews-section .review-date {
@@ -658,7 +759,7 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
   }
 
   .reviews-section .review-item {
-    padding: 20px 0;
+    padding: 20px 16px !important;
   }
 
   .reviews-section .review-header {
@@ -688,11 +789,47 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
 
   .reviews-section .review-rating {
     margin-bottom: 1px;
+    gap: 1px;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    flex-wrap: nowrap;
   }
 
   .reviews-section .review-rating .star {
     font-size: 0.9375rem;
-    gap: 2px;
+    display: inline-block;
+    flex-shrink: 0;
+    min-width: 14px;
+    text-align: center;
+  }
+
+  .reviews-section .rating-stars {
+    gap: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    flex-wrap: nowrap;
+  }
+
+  .reviews-section .rating-stars .star {
+    font-size: 0.875rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .reviews-section .review-rating {
+    gap: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    flex-wrap: nowrap;
+  }
+
+  .reviews-section .review-rating .star {
+    font-size: 0.875rem;
+    margin: 0;
+    padding: 0;
   }
 
   .reviews-section .review-date {
@@ -738,7 +875,35 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
   }
 
   .reviews-section .review-item {
-    padding: 16px 0 !important;
+    padding: 16px 12px !important;
+  }
+
+  .reviews-section .rating-stars {
+    gap: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    flex-wrap: nowrap;
+  }
+
+  .reviews-section .rating-stars .star {
+    font-size: 0.8125rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .reviews-section .review-rating {
+    gap: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    flex-wrap: nowrap;
+  }
+
+  .reviews-section .review-rating .star {
+    font-size: 0.8125rem;
+    margin: 0;
+    padding: 0;
   }
 
   .reviews-section .reviewer-name {
@@ -757,7 +922,35 @@ const _currentUser = typeof user !== 'undefined' ? user : null;
   }
 
   .reviews-section .review-item {
-    padding: 14px 0 !important;
+    padding: 14px 8px !important;
+  }
+
+  .reviews-section .rating-stars {
+    gap: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    flex-wrap: nowrap;
+  }
+
+  .reviews-section .rating-stars .star {
+    font-size: 0.75rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .reviews-section .review-rating {
+    gap: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    flex-wrap: nowrap;
+  }
+
+  .reviews-section .review-rating .star {
+    font-size: 0.75rem;
+    margin: 0;
+    padding: 0;
   }
 }
 

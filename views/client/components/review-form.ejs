@@ -383,10 +383,16 @@ const _user = user || null;
     line-height: 1 !important;
   }
 
-.review-form-wrapper .star-btn:hover .star-icon,
-.review-form-wrapper .star-btn.active .star-icon {
-  color: #fbbf24;
+/* Force star colors to display properly */
+.review-form-wrapper .star-btn.active .star-icon,
+.review-form-wrapper .star-btn:hover .star-icon {
+  color: #fbbf24 !important;
 }
+
+.review-form-wrapper .star-btn:not(.active):not(:hover) .star-icon {
+  color: #d1d5db !important;
+}
+
 
 .review-form-wrapper .rating-label {
   font-size: 0.875rem;
@@ -983,8 +989,10 @@ const _user = user || null;
       starButtons.forEach((b, idx) => {
         if (idx < selectedRating) {
           b.classList.add('active');
+          b.querySelector('.star-icon').style.color = '#fbbf24';
         } else {
           b.classList.remove('active');
+          b.querySelector('.star-icon').style.color = '#d1d5db';
         }
       });
     });
@@ -1003,8 +1011,10 @@ const _user = user || null;
     btn.addEventListener('mouseleave', function() {
       starButtons.forEach((b, idx) => {
         if (idx < selectedRating) {
+          b.classList.add('active');
           b.querySelector('.star-icon').style.color = '#fbbf24';
         } else {
+          b.classList.remove('active');
           b.querySelector('.star-icon').style.color = '#d1d5db';
         }
       });
