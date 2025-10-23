@@ -15,14 +15,6 @@ module.exports.index = async (req, res) => {
             filter.isActive = req.query.isActive === 'true';
         }
         
-        // Debug
-        console.log('=== Entertainment Pagination Debug ===');
-        console.log('Page:', page);
-        console.log('Limit:', limit);
-        console.log('Skip:', skip);
-        console.log('Query params:', req.query);
-        console.log('Filter:', filter);
-        
         const entertainments = await Entertainment.find(filter)
             .sort({ createdAt: -1 })
             .skip(skip)

@@ -1,4 +1,5 @@
 const Contact = require('../../model/Contact');
+const { sendMail } = require('../../utils/sendMail');
 
 // [GET] /admin/contacts - Danh sách liên hệ
 module.exports.index = async (req, res) => {
@@ -257,5 +258,103 @@ module.exports.markAsReplied = async (req, res) => {
       message: 'Lỗi server',
       error: error.message
     });
+  }
+};
+
+// [POST] /admin/contacts/:id/reply - Gửi email trả lời
+module.exports.reply = async (req, res) => {
+  try {
+    console.log('📧 Reply email request received:', {
+      method: req.method,
+      url: req.url,
+      params: req.params,
+      body: req.body
+    });
+    
+    const { subject, message } = req.body;
+    const contactId = req.params.id;
+    
+    // Validation
+    if (!subject || !message) {
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(400).json({
+          success: false,
+          message: 'Vui lòng điền đầy đủ tiêu đề và nội dung'
+        });
+      }
+      req.flash('error', 'Vui lòng điền đầy đủ tiêu đề và nội dung');
+      return res.redirect(`/admin/contacts/${contactId}`);
+    }
+    
+    // Tìm contact
+    const contact = await Contact.findById(contactId);
+    if (!contact) {
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(404).json({
+          success: false,
+          message: 'Không tìm thấy liên hệ'
+        });
+      }
+      req.flash('error', 'Không tìm thấy liên hệ');
+      return res.redirect('/admin/contacts');
+    }
+    
+    // Tạo nội dung email HTML
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+          <h2 style="color: #2c3e50; margin: 0 0 10px 0;">Hà Nội Vibes</h2>
+          <p style="color: #6c757d; margin: 0;">Cảm ơn bạn đã liên hệ với chúng tôi!</p>
+        </div>
+        
+        <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #007bff;">
+          <h3 style="color: #2c3e50; margin: 0 0 15px 0;">${subject}</h3>
+          <div style="color: #495057; line-height: 1.6; white-space: pre-wrap;">${message}</div>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 15px; background: #e9ecef; border-radius: 6px; font-size: 14px; color: #6c757d;">
+          <p style="margin: 0 0 10px 0;"><strong>Thông tin liên hệ gốc:</strong></p>
+          <p style="margin: 0 0 5px 0;"><strong>Tên:</strong> ${contact.name}</p>
+          <p style="margin: 0 0 5px 0;"><strong>Email:</strong> ${contact.email}</p>
+          <p style="margin: 0 0 5px 0;"><strong>Quốc gia:</strong> ${contact.country}</p>
+          <p style="margin: 0;"><strong>Ngày gửi:</strong> ${new Date(contact.createdAt).toLocaleString('vi-VN')}</p>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: center; color: #6c757d; font-size: 12px;">
+          <p>Email này được gửi từ hệ thống quản lý liên hệ của Hà Nội Vibes</p>
+          <p>Vui lòng không trả lời trực tiếp email này.</p>
+        </div>
+      </div>
+    `;
+    
+    // Gửi email
+    sendMail(contact.email, `Re: ${subject}`, emailHtml);
+    
+    // Đánh dấu đã trả lời
+    await contact.markAsReplied();
+    
+    if (req.headers.accept && req.headers.accept.includes('application/json')) {
+      return res.json({
+        success: true,
+        message: 'Email trả lời đã được gửi thành công'
+      });
+    }
+    
+    req.flash('success', 'Email trả lời đã được gửi thành công');
+    res.redirect(`/admin/contacts/${contactId}`);
+    
+  } catch (error) {
+    console.error('Reply email error:', error);
+    
+    if (req.headers.accept && req.headers.accept.includes('application/json')) {
+      return res.status(500).json({
+        success: false,
+        message: 'Lỗi server khi gửi email',
+        error: error.message
+      });
+    }
+    
+    req.flash('error', 'Có lỗi xảy ra khi gửi email trả lời');
+    res.redirect(`/admin/contacts/${req.params.id}`);
   }
 };

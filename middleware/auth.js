@@ -73,8 +73,17 @@ module.exports.requireAuth = async (req, res, next) => {
 
 // Admin authentication middleware - checks for cookie and role
 module.exports.requireAdmin = async (req, res, next) => {
+  // Check if this is an API request
+  const isApiRequest = req.headers.accept && req.headers.accept.includes('application/json');
+  
   // Chỉ kiểm tra cookie
   if (!req.cookies || !req.cookies.tokenUser) {
+    if (isApiRequest) {
+      return res.status(401).json({
+        success: false,
+        message: 'Vui lòng đăng nhập để tiếp tục'
+      });
+    }
     req.flash('error', 'Vui lòng đăng nhập để tiếp tục');
     return res.redirect('/auth/login');
   }
@@ -86,12 +95,24 @@ module.exports.requireAdmin = async (req, res, next) => {
     });
 
     if (!user) {
+      if (isApiRequest) {
+        return res.status(401).json({
+          success: false,
+          message: 'Phiên đăng nhập không hợp lệ'
+        });
+      }
       req.flash('error', 'Phiên đăng nhập không hợp lệ');
       return res.redirect('/auth/login');
     }
 
     // Kiểm tra role admin hoặc editor
     if (user.role !== 'admin' && user.role !== 'editor') {
+      if (isApiRequest) {
+        return res.status(403).json({
+          success: false,
+          message: 'Bạn không có quyền truy cập trang quản trị'
+        });
+      }
       req.flash('error', 'Bạn không có quyền truy cập trang quản trị');
       return res.redirect('/auth/login');
     }
@@ -103,6 +124,12 @@ module.exports.requireAdmin = async (req, res, next) => {
     next();
   } catch (error) {
     console.error('Admin auth error:', error);
+    if (isApiRequest) {
+      return res.status(500).json({
+        success: false,
+        message: 'Có lỗi xảy ra, vui lòng thử lại'
+      });
+    }
     req.flash('error', 'Có lỗi xảy ra, vui lòng đăng nhập lại');
     return res.redirect('/auth/login');
   }

@@ -123,10 +123,9 @@
                     </a>
                 <% } %>
                 
-                <a href="mailto:<%= contact.email %>?subject=Re: Liên hệ từ website&body=Chào <%= contact.name %>,%0D%0A%0D%0A" 
-                   class="btn btn-primary">
+                <button onclick="openReplyModal()" class="btn btn-primary">
                     <i class="fa fa-envelope"></i> Trả lời email
-                </a>
+                </button>
                 
                 <a href="/admin/contacts/<%= contact._id %>/delete" 
                    class="btn btn-danger"
@@ -137,6 +136,128 @@
         </div>
     </div>
 </div>
+
+<!-- Reply Email Modal -->
+<div id="replyModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fa fa-envelope"></i> Trả lời email</h3>
+            <button onclick="closeReplyModal()" class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="replyForm" onsubmit="submitReply(event)">
+                <div class="form-group">
+                    <label for="replySubject">Tiêu đề email:</label>
+                    <input type="text" id="replySubject" name="subject" class="form-control" 
+                           placeholder="Nhập tiêu đề email..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="replyMessage">Nội dung trả lời:</label>
+                    <textarea id="replyMessage" name="message" class="form-control" rows="8" 
+                              placeholder="Nhập nội dung trả lời..." required></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" onclick="closeReplyModal()" class="btn btn-secondary">
+                        <i class="fa fa-times"></i> Hủy
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-paper-plane"></i> Gửi email
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Modal functions
+function openReplyModal() {
+    document.getElementById('replyModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeReplyModal() {
+    document.getElementById('replyModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    // Clear form
+    document.getElementById('replyForm').reset();
+}
+
+// Submit reply form
+async function submitReply(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const subject = formData.get('subject');
+    const message = formData.get('message');
+    
+    if (!subject || !message) {
+        showNotification('Vui lòng điền đầy đủ thông tin', 'error');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/admin/contacts/<%= contact._id %>/reply`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ subject, message })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showNotification('Email trả lời đã được gửi thành công!', 'success');
+            closeReplyModal();
+            // Reload page to update status
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        } else {
+            showNotification('Có lỗi xảy ra: ' + result.message, 'error');
+        }
+    } catch (error) {
+        showNotification('Có lỗi xảy ra khi gửi email', 'error');
+    }
+}
+
+// Show notification function
+function showNotification(message, type) {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => notification.remove());
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fa fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('replyModal');
+    if (event.target === modal) {
+        closeReplyModal();
+    }
+}
+</script>
 
 <style>
 /* Contact Detail Styles */
@@ -397,6 +518,166 @@
     
     .btn {
         justify-content: center;
+    }
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+    background: #f8f9fa;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-control[type="text"] {
+    height: 45px;
+}
+
+.form-control[rows] {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Notification Styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    padding: 15px 20px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    animation: slideIn 0.3s ease-out;
+    max-width: 400px;
+}
+
+.notification-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.notification-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.notification-content i {
+    font-size: 18px;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
     }
 }
 

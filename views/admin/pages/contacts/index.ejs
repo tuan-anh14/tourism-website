@@ -156,6 +156,11 @@
                                                 <i class="fa fa-reply"></i>
                                             </button>
                                         <% } %>
+                                        <button onclick="openQuickReply('<%= contact._id %>', '<%= contact.name %>', '<%= contact.email %>')" 
+                                                class="btn btn-sm btn-primary" 
+                                                title="Trả lời email">
+                                            <i class="fa fa-envelope"></i>
+                                        </button>
                                         <a href="/admin/contacts/<%= contact._id %>/delete" 
                                            class="btn btn-sm btn-danger" 
                                            title="Xóa"
@@ -321,6 +326,107 @@ function showNotification(message, type) {
         notification.remove();
     }, 3000);
 }
+
+// Quick reply functions
+function openQuickReply(contactId, contactName, contactEmail) {
+    // Pre-fill subject with contact name
+    const subject = `Re: Liên hệ từ ${contactName}`;
+    
+    // Create modal HTML
+    const modalHtml = `
+        <div id="quickReplyModal" class="modal" style="display: flex;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fa fa-envelope"></i> Trả lời email nhanh</h3>
+                    <button onclick="closeQuickReply()" class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="contact-info" style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                        <p style="margin: 0 0 5px 0;"><strong>Gửi đến:</strong> ${contactName} (${contactEmail})</p>
+                    </div>
+                    <form id="quickReplyForm" onsubmit="submitQuickReply(event, '${contactId}')">
+                        <div class="form-group">
+                            <label for="quickSubject">Tiêu đề email:</label>
+                            <input type="text" id="quickSubject" name="subject" class="form-control" 
+                                   value="${subject}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="quickMessage">Nội dung trả lời:</label>
+                            <textarea id="quickMessage" name="message" class="form-control" rows="6" 
+                                      placeholder="Nhập nội dung trả lời..." required></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" onclick="closeQuickReply()" class="btn btn-secondary">
+                                <i class="fa fa-times"></i> Hủy
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-paper-plane"></i> Gửi email
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Add modal to page
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    document.body.style.overflow = 'hidden';
+}
+
+function closeQuickReply() {
+    const modal = document.getElementById('quickReplyModal');
+    if (modal) {
+        modal.remove();
+        document.body.style.overflow = 'auto';
+    }
+}
+
+async function submitQuickReply(event, contactId) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const subject = formData.get('subject');
+    const message = formData.get('message');
+    
+    if (!subject || !message) {
+        showNotification('Vui lòng điền đầy đủ thông tin', 'error');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/admin/contacts/${contactId}/reply`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ subject, message })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showNotification('Email trả lời đã được gửi thành công!', 'success');
+            closeQuickReply();
+            // Update status badge
+            updateContactStatus(contactId, 'replied');
+        } else {
+            showNotification('Có lỗi xảy ra: ' + result.message, 'error');
+        }
+    } catch (error) {
+        showNotification('Có lỗi xảy ra khi gửi email', 'error');
+    }
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('modal')) {
+        closeQuickReply();
+    }
+});
 </script>
 
 <!-- Notification Styles -->
@@ -625,7 +731,7 @@ function showNotification(message, type) {
 }
 
 .btn-danger {
-    background: ;
+    background: #dc3545;
     color: white;
 }
 
@@ -721,5 +827,118 @@ function showNotification(message, type) {
         gap: 15px;
         text-align: center;
     }
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+    background: #f8f9fa;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-control[type="text"] {
+    height: 45px;
+}
+
+.form-control[rows] {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
 }
 </style>
