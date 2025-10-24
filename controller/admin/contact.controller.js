@@ -327,8 +327,15 @@ module.exports.reply = async (req, res) => {
       </div>
     `;
     
-    // Gửi email
-    sendMail(contact.email, `Re: ${subject}`, emailHtml);
+    // Gửi email với error handling
+    try {
+      console.log('📧 Attempting to send reply email...');
+      sendMail(contact.email, `Re: ${subject}`, emailHtml);
+      console.log('✅ Email sent successfully');
+    } catch (emailError) {
+      console.error('❌ Failed to send email:', emailError);
+      throw new Error(`Không thể gửi email: ${emailError.message}`);
+    }
     
     // Đánh dấu đã trả lời
     await contact.markAsReplied();

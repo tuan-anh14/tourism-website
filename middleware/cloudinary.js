@@ -37,6 +37,20 @@ const storageAdmin = new CloudinaryStorage({
   }
 });
 
+// Cấu hình storage cho Cloudinary - User avatars
+const storageAvatar = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'tourism-website/avatars', // Thư mục lưu trữ avatars
+    allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+    transformation: [
+      { width: 300, height: 300, crop: 'fill', gravity: 'face', quality: 'auto' },
+      { fetch_format: 'auto' }
+    ],
+    resource_type: 'image'
+  }
+});
+
 // Cấu hình multer với Cloudinary storage - Reviews
 const uploadReviews = multer({
   storage: storageReviews,
@@ -71,6 +85,23 @@ const uploadAdmin = multer({
   }
 });
 
+// Cấu hình multer với Cloudinary storage - Avatar
+const uploadAvatar = multer({
+  storage: storageAvatar,
+  fileFilter: (req, file, cb) => {
+    // Chỉ cho phép upload ảnh
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Chỉ được upload file ảnh!'), false);
+    }
+  },
+  limits: {
+    fileSize: 5 * 1024 * 1024, // Giới hạn 5MB cho avatar
+    files: 1 // Chỉ 1 file cho avatar
+  }
+});
+
 // Middleware để upload nhiều ảnh - Reviews
 const uploadMultiple = uploadReviews.array('images', 5);
 
@@ -79,6 +110,9 @@ const uploadSingle = uploadReviews.single('image');
 
 // Middleware để upload với field names động - Admin
 const uploadDynamic = uploadAdmin.any();
+
+// Middleware để upload avatar - User
+const uploadAvatarSingle = uploadAvatar.single('avatar');
 
 // Debug middleware để log thông tin upload
 const debugUpload = (req, res, next) => {
@@ -126,6 +160,8 @@ module.exports = {
   uploadDynamic,
   uploadReviews,
   uploadAdmin,
+  uploadAvatar,
+  uploadAvatarSingle,
   deleteImage,
   deleteMultipleImages,
   getImageUrl,

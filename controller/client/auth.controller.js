@@ -241,8 +241,8 @@ module.exports.infoPost = async (req, res) => {
     }
 
     if (req.file) {
-      // multer saved file under public/uploads
-      updates.avatar = req.file.secure_url || req.file.path;
+      // Cloudinary upload - file is already uploaded to Cloudinary
+      updates.avatar = req.file.secure_url;
     }
 
     if (Object.keys(updates).length === 0) {
