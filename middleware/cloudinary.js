@@ -47,7 +47,13 @@ const storageAvatar = new CloudinaryStorage({
       { width: 300, height: 300, crop: 'fill', gravity: 'face', quality: 'auto' },
       { fetch_format: 'auto' }
     ],
-    resource_type: 'image'
+    resource_type: 'image',
+    public_id: (req, file) => {
+      // Tạo unique public_id cho avatar
+      const timestamp = Date.now();
+      const random = Math.random().toString(36).substring(2, 15);
+      return `avatar_${timestamp}_${random}`;
+    }
   }
 });
 
@@ -89,10 +95,12 @@ const uploadAdmin = multer({
 const uploadAvatar = multer({
   storage: storageAvatar,
   fileFilter: (req, file, cb) => {
+    console.log('🔍 Avatar file filter:', file.originalname, file.mimetype);
     // Chỉ cho phép upload ảnh
     if (file.mimetype.startsWith('image/')) {
       cb(null, true);
     } else {
+      console.log('❌ Invalid file type:', file.mimetype);
       cb(new Error('Chỉ được upload file ảnh!'), false);
     }
   },

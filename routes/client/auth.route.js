@@ -33,8 +33,36 @@ route.get('/info', authMiddleware.requireAuth, controller.info)
 // Cập nhật thông tin cơ bản: avatar + fullName (email, phone chỉ đọc)
 route.post('/info', 
   authMiddleware.requireAuth, 
+  (req, res, next) => {
+    console.log('🔍 Before upload middleware:');
+    console.log('  Content-Type:', req.headers['content-type']);
+    console.log('  Method:', req.method);
+    console.log('  Files before:', req.files);
+    next();
+  },
   uploadAvatarSingle, 
-  controller.infoPost
+  (req, res, next) => {
+    console.log('🔍 After upload middleware:');
+    console.log('  req.file:', req.file);
+    console.log('  req.body:', req.body);
+    next();
+  },
+  controller.infoPost,
+  // Error handling cho multer
+  (err, req, res, next) => {
+    if (err) {
+      console.error('❌ Upload error:', err);
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        req.flash('error', 'File quá lớn! Kích thước tối đa 5MB');
+      } else if (err.message.includes('Chỉ được upload file ảnh')) {
+        req.flash('error', 'Chỉ được upload file ảnh!');
+      } else {
+        req.flash('error', 'Lỗi upload file: ' + err.message);
+      }
+      return res.redirect('/auth/info');
+    }
+    next();
+  }
 )
 
 module.exports = route;

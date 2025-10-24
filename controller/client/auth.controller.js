@@ -234,6 +234,10 @@ module.exports.infoPost = async (req, res) => {
       return res.redirect('/auth/login');
     }
 
+    console.log('🔍 Avatar upload debug:');
+    console.log('  req.file:', req.file);
+    console.log('  req.body:', req.body);
+
     const updates = {};
 
     if (req.body.fullName && String(req.body.fullName).trim()) {
@@ -241,8 +245,8 @@ module.exports.infoPost = async (req, res) => {
     }
 
     if (req.file) {
-      // Cloudinary upload - file is already uploaded to Cloudinary
-      updates.avatar = req.file.secure_url;
+      // Sử dụng secure_url từ Cloudinary
+      updates.avatar = req.file.secure_url || req.file.path;
     }
 
     if (Object.keys(updates).length === 0) {
@@ -250,6 +254,7 @@ module.exports.infoPost = async (req, res) => {
       return res.redirect('/auth/info');
     }
 
+    console.log('💾 Updating user with:', updates);
     await User.updateOne({ _id: user._id }, updates);
 
     // update in response locals for immediate render
@@ -258,7 +263,7 @@ module.exports.infoPost = async (req, res) => {
     req.flash('success', 'Cập nhật thông tin thành công');
     res.redirect('/auth/info');
   } catch (err) {
-    console.error('Update user info error:', err);
+    console.error('❌ Update user info error:', err);
     req.flash('error', 'Không thể cập nhật thông tin lúc này');
     res.redirect('/auth/info');
   }
