@@ -219,6 +219,42 @@ const TEMPLATE_RESPONSES = {
 • **Thêu** - Làng thêu Quất Động`
 };
 
+// Add variations for better matching
+const TEMPLATE_VARIATIONS = {
+  // Lịch trình 2 ngày
+  "Gợi ý lịch trình 2 ngày ở Hà Nội": TEMPLATE_RESPONSES["Gợi ý lịch trình 2 ngày ở Hà Nội?"],
+  "Lịch trình 2 ngày ở Hà Nội": TEMPLATE_RESPONSES["Gợi ý lịch trình 2 ngày ở Hà Nội?"],
+  "2 ngày ở Hà Nội": TEMPLATE_RESPONSES["Gợi ý lịch trình 2 ngày ở Hà Nội?"],
+  
+  // Ẩm thực Phố cổ
+  "Ăn gì ngon ở Phố cổ Hà Nội": TEMPLATE_RESPONSES["Ăn gì ngon ở Phố cổ Hà Nội?"],
+  "Ăn gì ở Phố cổ": TEMPLATE_RESPONSES["Ăn gì ngon ở Phố cổ Hà Nội?"],
+  "Món ngon Phố cổ": TEMPLATE_RESPONSES["Ăn gì ngon ở Phố cổ Hà Nội?"],
+  
+  // Phương tiện di chuyển
+  "Phương tiện di chuyển nào tiện nhất ở Hà Nội": TEMPLATE_RESPONSES["Phương tiện di chuyển nào tiện nhất ở Hà Nội?"],
+  "Phương tiện di chuyển Hà Nội": TEMPLATE_RESPONSES["Phương tiện di chuyển nào tiện nhất ở Hà Nội?"],
+  "Đi lại ở Hà Nội": TEMPLATE_RESPONSES["Phương tiện di chuyển nào tiện nhất ở Hà Nội?"],
+  
+  // Điểm check-in
+  "Top điểm check-in đẹp nhất Hà Nội": TEMPLATE_RESPONSES["Top điểm check-in đẹp nhất Hà Nội"],
+  "Điểm check-in Hà Nội": TEMPLATE_RESPONSES["Top điểm check-in đẹp nhất Hà Nội"],
+  "Chụp ảnh đẹp Hà Nội": TEMPLATE_RESPONSES["Top điểm check-in đẹp nhất Hà Nội"],
+  
+  // Khách sạn
+  "Khách sạn nào tốt gần Hồ Gươm": TEMPLATE_RESPONSES["Khách sạn nào tốt gần Hồ Gươm?"],
+  "Khách sạn gần Hồ Gươm": TEMPLATE_RESPONSES["Khách sạn nào tốt gần Hồ Gươm?"],
+  "Nơi ở gần Hồ Gươm": TEMPLATE_RESPONSES["Khách sạn nào tốt gần Hồ Gươm?"],
+  
+  // Văn hóa
+  "Lịch sử và văn hóa Hà Nội": TEMPLATE_RESPONSES["Lịch sử và văn hóa Hà Nội"],
+  "Văn hóa Hà Nội": TEMPLATE_RESPONSES["Lịch sử và văn hóa Hà Nội"],
+  "Lịch sử Hà Nội": TEMPLATE_RESPONSES["Lịch sử và văn hóa Hà Nội"]
+};
+
+// Merge original templates with variations
+Object.assign(TEMPLATE_RESPONSES, TEMPLATE_VARIATIONS);
+
 function normalizeMessages(messages) {
   if (!Array.isArray(messages)) return [];
   return messages
@@ -350,17 +386,60 @@ exports.handleChatCompletion = async (req, res) => {
     const lastUserMessage = history.findLast ? history.findLast(m => m.role === 'user') : [...history].reverse().find(m => m.role === 'user');
     
     // Check if this is a template question first
-    if (lastUserMessage && TEMPLATE_RESPONSES[lastUserMessage.content]) {
-      const templateResponse = TEMPLATE_RESPONSES[lastUserMessage.content];
-      const responseData = { role: 'assistant', content: templateResponse };
+    if (lastUserMessage) {
+      const userMessage = lastUserMessage.content.trim();
+      console.log('🔍 Checking template for:', userMessage);
       
-      // Save chat history asynchronously
-      if (user_id && session_id) {
-        setImmediate(() => saveChatHistory(user_id, session_id, history, responseData));
+      // Try exact match first
+      if (TEMPLATE_RESPONSES[userMessage]) {
+        console.log('🎯 Exact template match found');
+        const templateResponse = TEMPLATE_RESPONSES[userMessage];
+        const responseData = { role: 'assistant', content: templateResponse };
+        
+        // Save chat history asynchronously
+        if (user_id && session_id) {
+          setImmediate(() => saveChatHistory(user_id, session_id, history, responseData));
+        }
+        
+        releaseRateLimit(clientIP);
+        return res.json(responseData);
       }
       
-      releaseRateLimit(clientIP);
-      return res.json(responseData);
+      // Try fuzzy matching for common variations
+      const templateKeys = Object.keys(TEMPLATE_RESPONSES);
+      const matchedKey = templateKeys.find(key => {
+        // Normalize both strings: remove extra spaces, convert to lowercase, remove punctuation
+        const normalize = (str) => str.toLowerCase()
+          .replace(/\s+/g, ' ')
+          .replace(/[.,!?;:]/g, '')
+          .trim();
+        
+        const normalizedKey = normalize(key);
+        const normalizedMessage = normalize(userMessage);
+        
+        console.log('Comparing:', normalizedKey, 'vs', normalizedMessage);
+        
+        return normalizedKey === normalizedMessage || 
+               normalizedMessage.includes(normalizedKey) ||
+               normalizedKey.includes(normalizedMessage);
+      });
+      
+      if (matchedKey) {
+        console.log('🎯 Fuzzy template match found for:', matchedKey);
+        const templateResponse = TEMPLATE_RESPONSES[matchedKey];
+        const responseData = { role: 'assistant', content: templateResponse };
+        
+        // Save chat history asynchronously
+        if (user_id && session_id) {
+          setImmediate(() => saveChatHistory(user_id, session_id, history, responseData));
+        }
+        
+        releaseRateLimit(clientIP);
+        return res.json(responseData);
+      }
+      
+      console.log('❌ No template match found');
+      console.log('Available templates:', templateKeys);
     }
     
     const systemPreamble = lastUserMessage ? selectSystemPrompt(lastUserMessage.content) : SYSTEM_PROMPTS.default;
@@ -641,11 +720,75 @@ exports.getSystemStats = async (req, res) => {
         uptime: process.uptime(),
         timestamp: new Date().toISOString(),
         geminiModel: GEMINI_MODEL,
-        hasApiKey: !!(GEMINI_API_KEY && GEMINI_API_KEY !== 'YOUR_KEY_HERE')
+        hasApiKey: !!(GEMINI_API_KEY && GEMINI_API_KEY !== 'YOUR_KEY_HERE'),
+        templateCount: Object.keys(TEMPLATE_RESPONSES).length,
+        availableTemplates: Object.keys(TEMPLATE_RESPONSES)
       }
     });
   } catch (error) {
     console.error('Error getting system stats:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// Function để test template matching
+exports.testTemplateMatching = async (req, res) => {
+  try {
+    const { message } = req.body;
+    
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+    
+    const userMessage = message.trim();
+    console.log('🧪 Testing template matching for:', userMessage);
+    
+    // Try exact match
+    const exactMatch = TEMPLATE_RESPONSES[userMessage];
+    if (exactMatch) {
+      return res.json({
+        success: true,
+        matchType: 'exact',
+        template: userMessage,
+        response: exactMatch
+      });
+    }
+    
+    // Try fuzzy matching
+    const templateKeys = Object.keys(TEMPLATE_RESPONSES);
+    const matchedKey = templateKeys.find(key => {
+      // Normalize both strings: remove extra spaces, convert to lowercase, remove punctuation
+      const normalize = (str) => str.toLowerCase()
+        .replace(/\s+/g, ' ')
+        .replace(/[.,!?;:]/g, '')
+        .trim();
+      
+      const normalizedKey = normalize(key);
+      const normalizedMessage = normalize(userMessage);
+      
+      return normalizedKey === normalizedMessage || 
+             normalizedMessage.includes(normalizedKey) ||
+             normalizedKey.includes(normalizedMessage);
+    });
+    
+    if (matchedKey) {
+      return res.json({
+        success: true,
+        matchType: 'fuzzy',
+        template: matchedKey,
+        response: TEMPLATE_RESPONSES[matchedKey]
+      });
+    }
+    
+    return res.json({
+      success: false,
+      matchType: 'none',
+      message: 'No template match found',
+      availableTemplates: templateKeys
+    });
+    
+  } catch (error) {
+    console.error('Error testing template matching:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };

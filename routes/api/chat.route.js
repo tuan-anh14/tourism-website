@@ -17,6 +17,9 @@ router.delete('/chat/session', chatController.deleteSession);
 // GET /api/chat/stats - Lấy thống kê hệ thống chatbot
 router.get('/chat/stats', chatController.getSystemStats);
 
+// POST /api/chat/test-template - Test template matching
+router.post('/chat/test-template', chatController.testTemplateMatching);
+
 module.exports = router;
 
 
