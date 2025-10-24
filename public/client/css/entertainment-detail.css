@@ -1,6 +1,21 @@
 /* Entertainment Detail - scoped and aligned with project palette */
 
 /* ===========================================
+   NAVBAR HOVER EFFECTS
+   =========================================== */
+.entertainment-detail-page .navbar .nav-links li a {
+  color: #fff !important;
+}
+.entertainment-detail-page .navbar .nav-links li a.active,
+.entertainment-detail-page .navbar .nav-links li a:hover {
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-1px) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* ===========================================
    TEXT JUSTIFICATION FOR ALL CONTENT
    =========================================== */
 .entertainment-detail-page p,

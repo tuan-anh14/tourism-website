@@ -34,7 +34,19 @@
 /* Navbar links color - only for desktop */
 .cuisine-detail-page .navbar .nav-links li a,
 .restaurant-detail-page .navbar .nav-links li a { 
-    color: #fff; 
+    color: #fff !important; 
+}
+
+/* Hover and active states for cuisine detail pages */
+.cuisine-detail-page .navbar .nav-links li a.active,
+.cuisine-detail-page .navbar .nav-links li a:hover,
+.restaurant-detail-page .navbar .nav-links li a.active,
+.restaurant-detail-page .navbar .nav-links li a:hover {
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-1px) !important;
+    transition: all 0.3s ease !important;
 }
 
 /* Ensure mobile menu links are visible */

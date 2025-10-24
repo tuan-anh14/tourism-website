@@ -16,10 +16,16 @@
 }
 
 .cuisine .navbar.glass { background: rgba(0, 0, 0, 0.6) !important; box-shadow: none !important; }
-.cuisine .navbar .nav-links li a { color: #fff; }
-body.dark .cuisine .navbar .nav-links li a { color: #fff; }
+.cuisine .navbar .nav-links li a { color: #fff !important; }
+body.dark .cuisine .navbar .nav-links li a { color: #fff !important; }
 .cuisine .navbar .nav-links li a.active,
-.cuisine .navbar .nav-links li a:hover { border-color: rgba(255,255,255,0.85) !important; }
+.cuisine .navbar .nav-links li a:hover { 
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-1px) !important;
+  transition: all 0.3s ease !important;
+}
 
 /* Banner */
 .cuisine-banner.page-header { 

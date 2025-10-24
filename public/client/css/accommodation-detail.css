@@ -55,14 +55,18 @@
   box-shadow: none !important;
 }
 .accommodation-detail-page .navbar .nav-links li a {
-  color: #fff;
+  color: #fff !important;
 }
 body.dark .accommodation-detail-page .navbar .nav-links li a {
-  color: #fff;
+  color: #fff !important;
 }
 .accommodation-detail-page .navbar .nav-links li a.active,
 .accommodation-detail-page .navbar .nav-links li a:hover {
-  border-color: rgba(255, 255, 255, 0.8) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-1px) !important;
+  transition: all 0.3s ease !important;
 }
 
 /* ===========================================

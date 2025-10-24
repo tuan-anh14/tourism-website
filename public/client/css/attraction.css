@@ -1,6 +1,21 @@
 /* Attractions Page Styles (namespaced to avoid conflicts) */
 
 /* ===========================================
+   NAVBAR HOVER EFFECTS
+   =========================================== */
+.attraction .navbar .nav-links li a {
+  color: #fff !important;
+}
+.attraction .navbar .nav-links li a.active,
+.attraction .navbar .nav-links li a:hover {
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-1px) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* ===========================================
    TEXT JUSTIFICATION FOR ALL CONTENT
    =========================================== */
 .attraction-page p,

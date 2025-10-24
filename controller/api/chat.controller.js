@@ -425,7 +425,6 @@ exports.handleChatCompletion = async (req, res) => {
       });
       
       if (matchedKey) {
-        console.log('🎯 Fuzzy template match found for:', matchedKey);
         const templateResponse = TEMPLATE_RESPONSES[matchedKey];
         const responseData = { role: 'assistant', content: templateResponse };
         
@@ -437,9 +436,6 @@ exports.handleChatCompletion = async (req, res) => {
         releaseRateLimit(clientIP);
         return res.json(responseData);
       }
-      
-      console.log('❌ No template match found');
-      console.log('Available templates:', templateKeys);
     }
     
     const systemPreamble = lastUserMessage ? selectSystemPrompt(lastUserMessage.content) : SYSTEM_PROMPTS.default;

@@ -56,9 +56,31 @@
         a.style.border = "none";
         try {
           var href = a.getAttribute("href") || "";
+          // Home page
           if (href === "/" && (path === "/" || path.endsWith("index.html"))) {
             a.classList.add("active");
-          } else if (href.length > 1 && path.endsWith(href)) {
+          } 
+          // Exact match for other pages
+          else if (href.length > 1 && path.endsWith(href)) {
+            a.classList.add("active");
+          }
+          // Handle detail pages (accommodation, cuisine, attraction, entertainment)
+          else if (href === "/accommodation" && path.includes("/accommodation")) {
+            a.classList.add("active");
+          }
+          else if (href === "/cuisine" && path.includes("/cuisine")) {
+            a.classList.add("active");
+          }
+          else if (href === "/attraction" && path.includes("/attraction")) {
+            a.classList.add("active");
+          }
+          else if (href === "/entertainment" && path.includes("/entertainment")) {
+            a.classList.add("active");
+          }
+          else if (href === "/transportation" && path.includes("/transportation")) {
+            a.classList.add("active");
+          }
+          else if (href === "/blog" && path.includes("/blog")) {
             a.classList.add("active");
           }
         } catch (e) {}
