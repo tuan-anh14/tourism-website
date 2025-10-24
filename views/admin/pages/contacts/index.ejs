@@ -410,11 +410,11 @@ async function submitQuickReply(event, contactId) {
     try {
         console.log('📧 [FRONTEND] Sending request to server:', {
             contactId,
-            url: `/admin/contacts/${contactId}/reply`,
+            url: `/admin/contacts/reply/${contactId}`,
             timestamp: new Date().toISOString()
         });
         
-        const response = await fetch(`/admin/contacts/${contactId}/reply`, {
+        const response = await fetch(`/admin/contacts/reply/${contactId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

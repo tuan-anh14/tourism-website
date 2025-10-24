@@ -105,7 +105,7 @@ router.post('/entertainments/delete/:id', requireAdmin, requireEditor, entertain
 
 // Contact routes (read and delete only)
 router.get('/contacts', requireAdmin, contactController.index);
-router.post('/contacts/:id/reply', requireAdmin, contactController.reply);
+router.post('/contacts/reply/:id', requireAdmin, contactController.reply);
 router.get('/contacts/:id', requireAdmin, contactController.show);
 router.delete('/contacts/:id', requireAdmin, contactController.delete);
 router.post('/contacts/delete/:id', requireAdmin, contactController.delete);

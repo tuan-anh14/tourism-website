@@ -199,7 +199,7 @@ async function submitReply(event) {
     }
     
     try {
-        const response = await fetch(`/admin/contacts/<%= contact._id %>/reply`, {
+        const response = await fetch(`/admin/contacts/reply/<%= contact._id %>`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -487,7 +487,7 @@ window.onclick = function(event) {
 }
 
 .btn-danger {
-    background: ;
+    background: #dc3545;
     color: white;
 }
 

@@ -96,6 +96,19 @@ module.exports.index = async (req, res) => {
 // [GET] /admin/contacts/:id - Chi tiết liên hệ
 module.exports.show = async (req, res) => {
   try {
+    // Validate ObjectId format
+    if (!req.params.id || !/^[0-9a-fA-F]{24}$/.test(req.params.id)) {
+      console.log('❌ [CONTACT SHOW] Invalid ObjectId format:', { id: req.params.id });
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(400).json({
+          success: false,
+          message: 'ID liên hệ không hợp lệ'
+        });
+      }
+      req.flash('error', 'ID liên hệ không hợp lệ');
+      return res.redirect('/admin/contacts');
+    }
+    
     const contact = await Contact.findById(req.params.id);
     
     if (!contact) {
@@ -150,6 +163,19 @@ module.exports.show = async (req, res) => {
 // [DELETE] /admin/contacts/:id - Xóa liên hệ
 module.exports.delete = async (req, res) => {
   try {
+    // Validate ObjectId format
+    if (!req.params.id || !/^[0-9a-fA-F]{24}$/.test(req.params.id)) {
+      console.log('❌ [CONTACT DELETE] Invalid ObjectId format:', { id: req.params.id });
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(400).json({
+          success: false,
+          message: 'ID liên hệ không hợp lệ'
+        });
+      }
+      req.flash('error', 'ID liên hệ không hợp lệ');
+      return res.redirect('/admin/contacts');
+    }
+    
     const contact = await Contact.findById(req.params.id);
     
     if (!contact) {
@@ -194,6 +220,19 @@ module.exports.delete = async (req, res) => {
 // [PATCH] /admin/contacts/:id/mark-read - Đánh dấu đã đọc
 module.exports.markAsRead = async (req, res) => {
   try {
+    // Validate ObjectId format
+    if (!req.params.id || !/^[0-9a-fA-F]{24}$/.test(req.params.id)) {
+      console.log('❌ [CONTACT MARK READ] Invalid ObjectId format:', { id: req.params.id });
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(400).json({
+          success: false,
+          message: 'ID liên hệ không hợp lệ'
+        });
+      }
+      req.flash('error', 'ID liên hệ không hợp lệ');
+      return res.redirect('/admin/contacts');
+    }
+    
     const contact = await Contact.findById(req.params.id);
     
     if (!contact) {
@@ -229,6 +268,19 @@ module.exports.markAsRead = async (req, res) => {
 // [PATCH] /admin/contacts/:id/mark-replied - Đánh dấu đã trả lời
 module.exports.markAsReplied = async (req, res) => {
   try {
+    // Validate ObjectId format
+    if (!req.params.id || !/^[0-9a-fA-F]{24}$/.test(req.params.id)) {
+      console.log('❌ [CONTACT MARK REPLIED] Invalid ObjectId format:', { id: req.params.id });
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(400).json({
+          success: false,
+          message: 'ID liên hệ không hợp lệ'
+        });
+      }
+      req.flash('error', 'ID liên hệ không hợp lệ');
+      return res.redirect('/admin/contacts');
+    }
+    
     const contact = await Contact.findById(req.params.id);
     
     if (!contact) {
@@ -261,7 +313,7 @@ module.exports.markAsReplied = async (req, res) => {
   }
 };
 
-// [POST] /admin/contacts/:id/reply - Gửi email trả lời
+// [POST] /admin/contacts/reply/:id - Gửi email trả lời
 module.exports.reply = async (req, res) => {
   try {
     console.log('📧 [EMAIL REPLY] Request received:', {
@@ -276,6 +328,19 @@ module.exports.reply = async (req, res) => {
     
     const { subject, message } = req.body;
     const contactId = req.params.id;
+    
+    // Validate ObjectId format
+    if (!contactId || !/^[0-9a-fA-F]{24}$/.test(contactId)) {
+      console.log('❌ [EMAIL REPLY] Invalid ObjectId format:', { contactId });
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(400).json({
+          success: false,
+          message: 'ID liên hệ không hợp lệ'
+        });
+      }
+      req.flash('error', 'ID liên hệ không hợp lệ');
+      return res.redirect('/admin/contacts');
+    }
     
     console.log('📧 [EMAIL REPLY] Processing request:', {
       contactId,
