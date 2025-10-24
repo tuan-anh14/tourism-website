@@ -264,18 +264,36 @@ module.exports.markAsReplied = async (req, res) => {
 // [POST] /admin/contacts/:id/reply - Gửi email trả lời
 module.exports.reply = async (req, res) => {
   try {
-    console.log('📧 Reply email request received:', {
+    console.log('📧 [EMAIL REPLY] Request received:', {
+      timestamp: new Date().toISOString(),
       method: req.method,
       url: req.url,
       params: req.params,
-      body: req.body
+      body: req.body,
+      userAgent: req.get('User-Agent'),
+      ip: req.ip
     });
     
     const { subject, message } = req.body;
     const contactId = req.params.id;
     
+    console.log('📧 [EMAIL REPLY] Processing request:', {
+      contactId,
+      subject: subject ? subject.substring(0, 50) + '...' : 'null',
+      messageLength: message ? message.length : 0,
+      hasSubject: !!subject,
+      hasMessage: !!message
+    });
+    
     // Validation
     if (!subject || !message) {
+      console.log('❌ [EMAIL REPLY] Validation failed:', {
+        hasSubject: !!subject,
+        hasMessage: !!message,
+        subjectValue: subject,
+        messageValue: message
+      });
+      
       if (req.headers.accept && req.headers.accept.includes('application/json')) {
         return res.status(400).json({
           success: false,
@@ -287,8 +305,10 @@ module.exports.reply = async (req, res) => {
     }
     
     // Tìm contact
+    console.log('📧 [EMAIL REPLY] Looking for contact:', { contactId });
     const contact = await Contact.findById(contactId);
     if (!contact) {
+      console.log('❌ [EMAIL REPLY] Contact not found:', { contactId });
       if (req.headers.accept && req.headers.accept.includes('application/json')) {
         return res.status(404).json({
           success: false,
@@ -298,6 +318,14 @@ module.exports.reply = async (req, res) => {
       req.flash('error', 'Không tìm thấy liên hệ');
       return res.redirect('/admin/contacts');
     }
+    
+    console.log('✅ [EMAIL REPLY] Contact found:', {
+      contactId: contact._id,
+      name: contact.name,
+      email: contact.email,
+      status: contact.status,
+      createdAt: contact.createdAt
+    });
     
     // Tạo nội dung email HTML
     const emailHtml = `
@@ -329,16 +357,42 @@ module.exports.reply = async (req, res) => {
     
     // Gửi email với error handling
     try {
-      console.log('📧 Attempting to send reply email...');
+      console.log('📧 [EMAIL REPLY] Attempting to send email:', {
+        to: contact.email,
+        subject: `Re: ${subject}`,
+        emailLength: emailHtml.length,
+        timestamp: new Date().toISOString()
+      });
+      
       sendMail(contact.email, `Re: ${subject}`, emailHtml);
-      console.log('✅ Email sent successfully');
+      
+      console.log('✅ [EMAIL REPLY] Email sent successfully:', {
+        to: contact.email,
+        subject: `Re: ${subject}`,
+        timestamp: new Date().toISOString()
+      });
     } catch (emailError) {
-      console.error('❌ Failed to send email:', emailError);
+      console.error('❌ [EMAIL REPLY] Failed to send email:', {
+        error: emailError.message,
+        stack: emailError.stack,
+        to: contact.email,
+        subject: `Re: ${subject}`,
+        timestamp: new Date().toISOString()
+      });
       throw new Error(`Không thể gửi email: ${emailError.message}`);
     }
     
     // Đánh dấu đã trả lời
+    console.log('📧 [EMAIL REPLY] Marking contact as replied:', { contactId });
     await contact.markAsReplied();
+    console.log('✅ [EMAIL REPLY] Contact marked as replied successfully');
+    
+    console.log('✅ [EMAIL REPLY] Reply process completed successfully:', {
+      contactId,
+      to: contact.email,
+      subject: `Re: ${subject}`,
+      timestamp: new Date().toISOString()
+    });
     
     if (req.headers.accept && req.headers.accept.includes('application/json')) {
       return res.json({
@@ -351,7 +405,13 @@ module.exports.reply = async (req, res) => {
     res.redirect(`/admin/contacts/${contactId}`);
     
   } catch (error) {
-    console.error('Reply email error:', error);
+    console.error('❌ [EMAIL REPLY] Error occurred:', {
+      error: error.message,
+      stack: error.stack,
+      contactId: req.params.id,
+      timestamp: new Date().toISOString(),
+      requestBody: req.body
+    });
     
     if (req.headers.accept && req.headers.accept.includes('application/json')) {
       return res.status(500).json({

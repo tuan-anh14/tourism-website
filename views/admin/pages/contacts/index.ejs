@@ -391,12 +391,29 @@ async function submitQuickReply(event, contactId) {
     const subject = formData.get('subject');
     const message = formData.get('message');
     
+    console.log('📧 [FRONTEND] Starting quick reply:', {
+        contactId,
+        subject: subject ? subject.substring(0, 50) + '...' : 'null',
+        messageLength: message ? message.length : 0,
+        timestamp: new Date().toISOString()
+    });
+    
     if (!subject || !message) {
+        console.log('❌ [FRONTEND] Validation failed:', {
+            hasSubject: !!subject,
+            hasMessage: !!message
+        });
         showNotification('Vui lòng điền đầy đủ thông tin', 'error');
         return;
     }
     
     try {
+        console.log('📧 [FRONTEND] Sending request to server:', {
+            contactId,
+            url: `/admin/contacts/${contactId}/reply`,
+            timestamp: new Date().toISOString()
+        });
+        
         const response = await fetch(`/admin/contacts/${contactId}/reply`, {
             method: 'POST',
             headers: {
@@ -406,17 +423,38 @@ async function submitQuickReply(event, contactId) {
             body: JSON.stringify({ subject, message })
         });
         
+        console.log('📧 [FRONTEND] Response received:', {
+            status: response.status,
+            statusText: response.statusText,
+            ok: response.ok,
+            timestamp: new Date().toISOString()
+        });
+        
         const result = await response.json();
         
+        console.log('📧 [FRONTEND] Response data:', {
+            success: result.success,
+            message: result.message,
+            timestamp: new Date().toISOString()
+        });
+        
         if (result.success) {
+            console.log('✅ [FRONTEND] Email sent successfully');
             showNotification('Email trả lời đã được gửi thành công!', 'success');
             closeQuickReply();
             // Update status badge
             updateContactStatus(contactId, 'replied');
         } else {
+            console.log('❌ [FRONTEND] Email send failed:', result.message);
             showNotification('Có lỗi xảy ra: ' + result.message, 'error');
         }
     } catch (error) {
+        console.error('❌ [FRONTEND] Network error:', {
+            error: error.message,
+            stack: error.stack,
+            contactId,
+            timestamp: new Date().toISOString()
+        });
         showNotification('Có lỗi xảy ra khi gửi email', 'error');
     }
 }

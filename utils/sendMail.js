@@ -1,21 +1,13 @@
 const nodemailer = require("nodemailer");
 
 module.exports.sendMail = (email, subject, html) => {
-  // Hỗ trợ cả 2 cấu hình: EMAIL_USER/EMAIL_PASSWORD và SMTP_USER/SMTP_PASS
-  const emailUser = process.env.EMAIL_USER || process.env.SMTP_USER;
-  const emailPassword = process.env.EMAIL_PASSWORD || process.env.SMTP_PASS;
-  const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
-  const smtpPort = process.env.SMTP_PORT || 587;
+  // Cấu hình email trực tiếp
+  const emailUser = "thieutuananh14092k4@gmail.com";
+  const emailPassword = "tbnx euer npmr eqfq";
+  const smtpHost = "smtp.gmail.com";
+  const smtpPort = 587;
 
-  // Kiểm tra cấu hình email
-  if (!emailUser || !emailPassword) {
-    console.error('❌ Email configuration missing:');
-    console.error('EMAIL_USER/SMTP_USER:', emailUser ? '✅ Set' : '❌ Missing');
-    console.error('EMAIL_PASSWORD/SMTP_PASS:', emailPassword ? '✅ Set' : '❌ Missing');
-    throw new Error('Email configuration is missing. Please check EMAIL_USER/EMAIL_PASSWORD or SMTP_USER/SMTP_PASS environment variables.');
-  }
-
-  console.log('📧 Email configuration:');
+  console.log('📧 Email configuration (hardcoded):');
   console.log('User:', emailUser);
   console.log('Host:', smtpHost);
   console.log('Port:', smtpPort);
