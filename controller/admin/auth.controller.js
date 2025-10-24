@@ -68,11 +68,12 @@ module.exports.showDashboard = async (req, res) => {
     });
   } catch (error) {
     console.error('Dashboard error:', error);
-    res.render('admin/pages/dashboard', {
+    res.render('admin/layout', {
       pageTitle: 'Dashboard',
       user: req.user,
       stats: {},
-      recentReviews: []
+      recentReviews: [],
+      page: 'dashboard'
     });
   }
 };
