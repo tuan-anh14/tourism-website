@@ -102,7 +102,8 @@
             e.preventDefault();
             var text = (input.value || '').trim(); if (!text) return;
             appendMsg('user', text); history.push({ role: 'user', content: text }); input.value = '';
-            send.disabled = true; send.innerText = '...';
+            send.disabled = true; 
+            send.innerText = '...';
             fetch('/api/chat', { 
                 method: 'POST', 
                 headers: { 'Content-Type': 'application/json' }, 

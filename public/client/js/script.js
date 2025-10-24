@@ -387,7 +387,7 @@
         
         var bot = document.createElement("div");
         bot.className = "hnv-msg hnv-msg--bot";
-        bot.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+        bot.textContent = '...';
         msgs.appendChild(bot);
         msgs.scrollTop = msgs.scrollHeight;
         
