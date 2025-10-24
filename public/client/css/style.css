@@ -1181,7 +1181,7 @@ input[type="submit"]:hover {
   bottom: 70px;
   width: min(380px, calc(100vw - 36px));
   max-width: 380px;
-  max-height: min(600px, calc(100vh - 120px)); /* Dùng min để đảm bảo không bị ẩn */
+  max-height: min(700px, calc(100vh - 80px)); /* Tăng chiều cao từ 600px lên 700px */
   background: #fff;
   color: #111;
   border-radius: 16px;
@@ -1189,10 +1189,17 @@ input[type="submit"]:hover {
   overflow: hidden;
   display: none;
   border: 1px solid rgba(0, 0, 0, 0.06);
+  /* Đảm bảo layout flex để footer luôn ở dưới */
+  flex-direction: column;
 }
 body.dark .hnv-chat__panel {
   background: #111;
   color: #fff;
+}
+
+/* Khi panel mở, hiển thị flex layout */
+.hnv-chat__panel.show {
+  display: flex;
 }
 .hnv-chat__header {
   padding: 12px 14px;
@@ -1393,12 +1400,15 @@ body.dark .hnv-chat__panel {
   gap: 8px;
 }
 .hnv-chat__messages {
-  padding: 8px 0;
+  padding: 8px 0 60px 0; /* Thêm padding-bottom để không bị che bởi footer */
   overflow-y: auto;
   max-height: 300px; /* Fix cứng max-height cho messages desktop */
   display: flex;
   flex-direction: column;
   gap: 8px;
+  /* Đảm bảo messages có thể scroll và không che footer */
+  flex: 1;
+  min-height: 0; /* Quan trọng: cho phép flex item shrink */
 }
 .hnv-msg {
   max-width: 80%;
@@ -1422,6 +1432,12 @@ body.dark .hnv-chat__panel {
   gap: 8px;
   padding: 10px 12px 12px 12px;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
+  /* Đảm bảo footer luôn ở dưới cùng */
+  flex-shrink: 0;
+  background: #fff;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
 }
 .hnv-input {
   flex: 1;
@@ -1435,6 +1451,25 @@ body.dark .hnv-input {
   background: #1a1a1a;
   color: #fff;
   border-color: rgba(255, 255, 255, 0.12);
+}
+
+body.dark .hnv-chat__footer {
+  background: #111;
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Dark mode cho footer trên tablet */
+@media (max-width: 768px) {
+  body.dark .hnv-chat__footer {
+    background: #111;
+  }
+}
+
+/* Dark mode cho footer trên mobile */
+@media (max-width: 480px) {
+  body.dark .hnv-chat__footer {
+    background: #111;
+  }
 }
 .hnv-send {
   width: 40px;
@@ -1450,12 +1485,15 @@ body.dark .hnv-input {
 }
 .hnv-chip {
   display: inline-block;
-  padding: 8px 12px;
-  border-radius: 16px;
+  padding: 6px 10px; /* Giảm padding để nhỏ hơn */
+  border-radius: 14px; /* Giảm border-radius */
   background: #f1f0f5;
   color: #333;
   border: 1px solid rgba(0, 0, 0, 0.06);
   cursor: pointer;
+  font-size: 0.8rem; /* Giảm font size */
+  line-height: 1.2; /* Giảm line height */
+  margin: 2px; /* Thêm margin nhỏ */
 }
 body.dark .hnv-chip {
   background: #1f1f1f;
@@ -1487,7 +1525,7 @@ body.dark .hnv-chip {
   .hnv-chat__panel {
     width: calc(100vw - 20px);
     max-width: calc(100vw - 20px);
-    max-height: 400px; /* Fix cứng max-height cho mobile */
+    max-height: 500px; /* Tăng chiều cao từ 400px lên 500px */
     bottom: 60px;
     right: 0;
     border-radius: 12px;
@@ -1521,7 +1559,10 @@ body.dark .hnv-chip {
   
   .hnv-chat__messages {
     max-height: 250px; /* Fix cứng max-height cho messages */
-    padding: 6px 0;
+    padding: 6px 0 50px 0; /* Thêm padding-bottom cho tablet */
+    /* Đảm bảo scroll trên tablet */
+    flex: 1;
+    min-height: 0;
   }
   
   .hnv-msg {
@@ -1532,6 +1573,12 @@ body.dark .hnv-chip {
   
   .hnv-chat__footer {
     padding: 8px 10px 10px 10px;
+    /* Đảm bảo footer không bị che trên tablet */
+    flex-shrink: 0;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    z-index: 10;
   }
   
   .hnv-input {
@@ -1546,9 +1593,10 @@ body.dark .hnv-chip {
   }
   
   .hnv-chip {
-    padding: 6px 10px;
-    font-size: 0.75rem;
-    margin: 2px;
+    padding: 4px 8px; /* Giảm padding cho mobile */
+    font-size: 0.7rem; /* Giảm font size cho mobile */
+    margin: 1px; /* Giảm margin cho mobile */
+    line-height: 1.1; /* Giảm line height cho mobile */
   }
 }
 
@@ -1561,7 +1609,7 @@ body.dark .hnv-chip {
   .hnv-chat__panel {
     width: calc(100vw - 10px);
     max-width: calc(100vw - 10px);
-    max-height: 350px; /* Fix cứng max-height cho mobile nhỏ */
+    max-height: 450px; /* Tăng chiều cao từ 350px lên 450px */
     bottom: 50px;
     border-radius: 10px;
   }
@@ -1594,7 +1642,10 @@ body.dark .hnv-chip {
   
   .hnv-chat__messages {
     max-height: 200px; /* Fix cứng max-height cho messages mobile */
-    padding: 4px 0;
+    padding: 4px 0 45px 0; /* Thêm padding-bottom cho mobile */
+    /* Đảm bảo scroll trên mobile */
+    flex: 1;
+    min-height: 0;
   }
   
   .hnv-msg {
@@ -1605,6 +1656,12 @@ body.dark .hnv-chip {
   
   .hnv-chat__footer {
     padding: 6px 8px 8px 8px;
+    /* Đảm bảo footer không bị che trên mobile */
+    flex-shrink: 0;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    z-index: 10;
   }
   
   .hnv-input {
@@ -1619,9 +1676,10 @@ body.dark .hnv-chip {
   }
   
   .hnv-chip {
-    padding: 4px 8px;
-    font-size: 0.6875rem;
+    padding: 3px 6px; /* Giảm padding cho mobile nhỏ */
+    font-size: 0.65rem; /* Giảm font size cho mobile nhỏ */
     margin: 1px;
+    line-height: 1.0; /* Giảm line height cho mobile nhỏ */
   }
 }
 
@@ -1633,6 +1691,7 @@ body.dark .hnv-chip {
   
   .hnv-chat__messages {
     max-height: calc(100vh - 160px);
+    padding-bottom: 50px; /* Thêm padding-bottom cho landscape */
   }
 }
 
@@ -1681,6 +1740,7 @@ body.dark .hnv-chip {
   
   .hnv-chat__messages {
     max-height: 200px; /* Fix cứng cho màn hình nhỏ */
+    padding-bottom: 45px; /* Thêm padding-bottom cho màn hình nhỏ */
   }
 }
 

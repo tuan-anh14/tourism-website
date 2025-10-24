@@ -12,13 +12,13 @@ const responseCache = new Map();
 const RATE_LIMIT = new Map();
 const REQUEST_QUEUE = new Map(); // Queue for handling concurrent requests
 const GLOBAL_QUEUE = []; // Global request queue for load balancing
-const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes (increased)
-const RATE_LIMIT_DURATION = 500; // 500ms (reduced from 1s)
-const MAX_CONCURRENT_REQUESTS = 5; // Max concurrent requests per IP
-const MAX_GLOBAL_CONCURRENT = 20; // Max global concurrent requests
-const MAX_RETRIES = 3; // Max retry attempts
-const RETRY_DELAY = 1000; // 1 second between retries
-const QUEUE_PROCESSING_INTERVAL = 100; // Process queue every 100ms
+const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes (increased for better cache hit)
+const RATE_LIMIT_DURATION = 200; // 200ms (reduced for faster response)
+const MAX_CONCURRENT_REQUESTS = 8; // Increased concurrent requests per IP
+const MAX_GLOBAL_CONCURRENT = 50; // Increased global concurrent requests
+const MAX_RETRIES = 2; // Reduced retry attempts for faster failure
+const RETRY_DELAY = 500; // 500ms between retries (reduced)
+const QUEUE_PROCESSING_INTERVAL = 50; // Process queue every 50ms (faster)
 
 // Global request counter for load balancing
 let globalRequestCount = 0;
@@ -26,197 +26,162 @@ let isProcessingQueue = false;
 
 // Enhanced system prompts for better responses
 const SYSTEM_PROMPTS = {
-  default: `Bạn là ViA - trợ lý du lịch thông minh của website Hà Nội Vibes. 
-Bạn chuyên về:
-- Tư vấn du lịch Hà Nội (địa điểm, ẩm thực, văn hóa)
-- Gợi ý lịch trình du lịch
-- Thông tin về phương tiện di chuyển
-- Địa điểm check-in nổi tiếng
-- Lịch sử và văn hóa Hà Nội
-
-Hãy trả lời ngắn gọn, thân thiện, chính xác và hữu ích. Sử dụng tiếng Việt tự nhiên.`,
+  default: `ViA - Trợ lý du lịch Hà Nội. QUAN TRỌNG: Trả lời tối đa 3-4 câu, ngắn gọn, có địa chỉ và giá. KHÔNG viết dài, KHÔNG giải thích chi tiết. Chỉ đưa thông tin cần thiết.`,
   
-  travel: `Bạn là chuyên gia du lịch Hà Nội với 10 năm kinh nghiệm. 
-Tập trung vào:
-- Địa điểm du lịch nổi tiếng (Hồ Gươm, Văn Miếu, Phố cổ...)
-- Ẩm thực đặc sản (Phở, Bún chả, Chả cá...)
-- Lịch trình tối ưu theo thời gian
-- Mẹo du lịch tiết kiệm và an toàn`,
+  travel: `Chuyên gia du lịch Hà Nội. Trả lời tối đa 3 câu, có địa chỉ và giá. KHÔNG viết dài. Chỉ đưa thông tin thực tế.`,
   
-  food: `Bạn là food blogger chuyên về ẩm thực Hà Nội.
-Chuyên môn:
-- Quán ăn ngon, giá hợp lý
-- Món ăn đặc sản từng khu vực
-- Thời gian mở cửa và địa chỉ chính xác
-- Mẹo thưởng thức món ăn đúng cách`
+  food: `Food blogger Hà Nội. Trả lời tối đa 3 câu, có địa chỉ và giá. KHÔNG viết dài. Chỉ đưa thông tin cần thiết.`
 };
 
 // Pre-defined template responses for quick questions
 const TEMPLATE_RESPONSES = {
-  "Gợi ý lịch trình 2 ngày ở Hà Nội?": `🗓️ **Lịch trình 2 ngày ở Hà Nội:**
+  // Chào hỏi và giới thiệu
+  "Xin chào ViA": "ViA: Xin chào! Tôi rất vui được hỗ trợ du lịch Hà Nội cho bạn.",
+  "Chào bạn ViA": "ViA: Chào bạn! Bạn muốn khám phá điểm đến nào ở Hà Nội hôm nay?",
+  "Hi trợ lý": "ViA: Chào bạn! Tôi là trợ lý du lịch ViA của Hà Nội Vibes, bạn cần gì?",
+  "Chào bạn": "ViA: Xin chào! Mình có thể giúp gì cho hành trình của bạn?",
+  "Hello ViA": "ViA: Hello! Tôi có thể giúp bạn lên kế hoạch du lịch Hà Nội.",
+  "ViA ơi": "ViA: Vâng, tôi đây! Bạn cần tư vấn điểm đến hay lưu ý gì khi đi Hà Nội?",
+  "Chào chatbot": "ViA: Xin chào! Tôi là chatbot ViA - trợ lý du lịch Hà Nội. Bạn muốn hỏi gì?",
+  "Bạn là ai?": "ViA: Tôi là ViA, trợ lý du lịch thông minh cho website Hà Nội Vibes.",
+  "Tôi cần giúp đỡ": "ViA: Rất vui được giúp bạn! Bạn muốn biết thông tin gì về Hà Nội?",
+  "Mình muốn hỏi": "ViA: Xin vui lòng nói rõ câu hỏi để tôi hỗ trợ nhé!",
+  "Chào buổi tối": "ViA: Chào bạn buổi tối! Tôi có thể giới thiệu gì cho bạn về Hà Nội?",
+  "Chúc bạn một ngày tốt lành": "ViA: Cảm ơn bạn! Tôi cũng chúc bạn có kỳ nghỉ tuyệt vời tại Hà Nội!",
+  "Tôi muốn tìm địa điểm ăn uống": "ViA: Tốt quá! Bạn muốn món ăn đặc sản hay quán ăn gia đình?",
+  "Tôi muốn hỏi về khách sạn": "ViA: Được rồi! Bạn cần gợi ý khách sạn giá rẻ hay cao cấp?",
+  "Bạn có thể giúp tôi không?": "ViA: Tất nhiên rồi! Hãy cho tôi biết bạn muốn biết điều gì nhé.",
+  
+  // Thông tin cơ bản về Hà Nội
+  "Hà Nội có gì đặc biệt": "ViA: Hà Nội có 1000 năm lịch sử, phố cổ 36 phố phường, hồ Gươm, Văn Miếu, ẩm thực đặc sản như phở, bún chả, chả cá.",
+  "Hà Nội nổi tiếng gì": "ViA: Hà Nội nổi tiếng với phố cổ, hồ Gươm, Văn Miếu, ẩm thực phở/bún chả/chả cá, văn hóa ca trù, múa rối nước.",
+  "Đặc sản Hà Nội": "ViA: Phở bò, bún chả, chả cá Lã Vọng, bún thang, cà phê trứng, kem Tràng Tiền, chè bà cốt.",
+  
+  // Địa điểm du lịch
+  "Đi đâu ở Hà Nội": "ViA: Hồ Gươm, Văn Miếu, Phố cổ, Lăng Bác, Chùa Một Cột, Hồ Tây, Cầu Long Biên.",
+  "Địa điểm nổi tiếng Hà Nội": "ViA: Hồ Gươm, Văn Miếu, Phố cổ, Lăng Bác, Chùa Một Cột, Hồ Tây, Cầu Long Biên.",
+  "Tham quan Hà Nội": "ViA: Hồ Gươm, Văn Miếu, Phố cổ, Lăng Bác, Chùa Một Cột, Hồ Tây, Cầu Long Biên.",
+  "Hồ Gươm": "ViA: Hồ Gươm là trái tim Hà Nội, có cầu Thê Húc, đền Ngọc Sơn, tháp Rùa. Miễn phí tham quan, mở 24/7.",
+  "Văn Miếu": "ViA: Văn Miếu - Quốc Tử Giám (1070), trường đại học đầu tiên. Vé 30k, mở 8h-17h.",
+  "Phố cổ Hà Nội": "ViA: 36 phố phường, mỗi phố bán một mặt hàng. Hàng Bạc, Hàng Thiếc, Hàng Mã, Hàng Tre. Miễn phí tham quan.",
+  "Lăng Bác": "ViA: Lăng Chủ tịch Hồ Chí Minh, Quảng trường Ba Đình. Miễn phí, mở 7h30-10h30 (thứ 3,5,7,CN).",
+  "Chùa Một Cột": "ViA: Chùa Một Cột (1049), biểu tượng Hà Nội. Miễn phí, mở 8h-17h.",
+  "Hồ Tây": "ViA: Hồ Tây rộng lớn, nơi ngắm hoàng hôn đẹp. Có cà phê ven hồ, đạp xe quanh hồ.",
+  "Cầu Long Biên": "ViA: Cầu Long Biên bắc qua sông Hồng, nơi ngắm hoàng hôn đẹp. Miễn phí, mở 24/7.",
+  
+  // Ẩm thực
+  "Ăn gì ở Hà Nội": "ViA: Phở bò, bún chả, chả cá, bún thang, cà phê trứng, kem Tràng Tiền, chè bà cốt.",
+  "Món ngon Hà Nội": "ViA: Phở bò, bún chả, chả cá, bún thang, cà phê trứng, kem Tràng Tiền, chè bà cốt.",
+  "Phở Hà Nội": "ViA: Phở Gia Truyền Bát Đàn (35-45k) - 49 Bát Đàn, Phở Lý Quốc Sư (30-40k) - 10 Lý Quốc Sư.",
+  "Bún chả": "ViA: Bún chả Hàng Mành (40-50k) - 1 Hàng Mành, Bún chả Obama (50-60k) - 24 Lê Văn Hưu.",
+  "Chả cá": "ViA: Chả cá Lã Vọng (150-200k) - 14 Chả Cá, Chả cá Thăng Long (120-150k) - 21 Đường Thành.",
+  "Cà phê Hà Nội": "ViA: Cà phê trứng Giảng (25-35k) - 39 Nguyễn Hữu Huân, Cà phê Dinh (20-30k) - 13 Đinh Tiên Hoàng.",
+  "Kem Tràng Tiền": "ViA: Kem Tràng Tiền (15-25k) - 35 Tràng Tiền, kem truyền thống Hà Nội, mở 8h-22h.",
+  
+  // Lịch trình
+  "Lịch trình 1 ngày": "ViA: Sáng: Hồ Gươm → Trưa: Phở Bát Đàn → Chiều: Văn Miếu → Tối: Phố cổ, bún chả Hàng Mành.",
+  "Lịch trình 3 ngày": "ViA: Ngày 1: Hồ Gươm, Phố cổ → Ngày 2: Văn Miếu, Lăng Bác → Ngày 3: Hồ Tây, Cầu Long Biên.",
+  "Du lịch Hà Nội": "ViA: Hồ Gươm, Văn Miếu, Phố cổ, Lăng Bác, Chùa Một Cột, Hồ Tây, ẩm thực phở/bún chả/chả cá.",
+  
+  // Phương tiện
+  "Đi lại Hà Nội": "ViA: Xe máy (100-150k/ngày), Grab (15-25k/km), xe buýt (7-9k/lượt), xe đạp (30-50k/ngày).",
+  "Thuê xe Hà Nội": "ViA: Xe máy 100-150k/ngày, xe đạp 30-50k/ngày. Cần bằng lái xe máy, đội mũ bảo hiểm.",
+  "Grab Hà Nội": "ViA: Grab 15-25k/km, rẻ và an toàn. App Grab, không cần bằng lái.",
+  "Xe buýt Hà Nội": "ViA: Xe buýt 7-9k/lượt, 100+ tuyến. App BusMap, NextBus để tra cứu.",
+  
+  // Khách sạn
+  "Khách sạn Hà Nội": "ViA: Sofitel Legend (2.5-4M/đêm), Hanoi La Siesta (1.5-2.5M/đêm), Hanoi Central (300k-500k/đêm).",
+  "Nơi ở Hà Nội": "ViA: Sofitel Legend (2.5-4M/đêm), Hanoi La Siesta (1.5-2.5M/đêm), Hanoi Central (300k-500k/đêm).",
+  "Homestay Hà Nội": "ViA: Hanoi Old Quarter Homestay (200k-350k/đêm) - 50 Hang Be, Little Hanoi Diamond (180k-300k/đêm) - 32 Hang Be.",
+  
+  // Thời gian và mùa
+  "Mùa nào đẹp Hà Nội": "ViA: Mùa thu (9-11) đẹp nhất, mùa xuân (3-4) có hoa, mùa hè (5-8) nóng, mùa đông (12-2) lạnh.",
+  "Thời tiết Hà Nội": "ViA: Mùa thu se lạnh đẹp nhất, mùa xuân ấm áp, mùa hè nóng ẩm, mùa đông lạnh khô.",
+  "Mùa thu Hà Nội": "ViA: Mùa thu (9-11) đẹp nhất, se lạnh, nắng vàng, hoa sữa thơm, cốm mới Làng Vòng.",
+  
+  // Văn hóa và lịch sử
+  "Lịch sử Hà Nội": "ViA: 1010 Lý Thái Tổ dời đô về Thăng Long, 1802 đổi tên Hà Nội, 1954 giải phóng, 1976 thủ đô.",
+  "Văn hóa Hà Nội": "ViA: Ca trù, hát xẩm, múa rối nước, lễ hội Gióng, chùa Hương, tranh Đông Hồ, gốm Bát Tràng.",
+  "Truyền thống Hà Nội": "ViA: Ca trù, hát xẩm, múa rối nước, lễ hội Gióng, chùa Hương, tranh Đông Hồ, gốm Bát Tràng.",
+  
+  // Mua sắm
+  "Mua sắm Hà Nội": "ViA: Chợ Đồng Xuân, phố cổ, Lotte Center, Vincom, Big C, Aeon Mall.",
+  "Chợ Hà Nội": "ViA: Chợ Đồng Xuân (phố cổ), chợ Hàng Da, chợ Hàng Bè, chợ Hàng Đường.",
+  "Quà Hà Nội": "ViA: Cốm Làng Vòng, bánh cốm, tranh Đông Hồ, gốm Bát Tràng, lụa Hà Đông.",
+  
+  // Giải trí
+  "Giải trí Hà Nội": "ViA: Phố đi bộ Hồ Gươm (cuối tuần), Sky Bar, cà phê ven hồ Tây, múa rối nước Thăng Long.",
+  "Đêm Hà Nội": "ViA: Phố đi bộ Hồ Gươm (cuối tuần), Sky Bar, cà phê ven hồ Tây, quán bar phố cổ.",
+  "Múa rối nước": "ViA: Nhà hát múa rối nước Thăng Long - 57B Đinh Tiên Hoàng, vé 100-200k, diễn 15h-20h.",
+  
+  // Tips du lịch
+  "Mẹo du lịch Hà Nội": "ViA: Mua vé trước, mang nước, kem chống nắng, học vài câu tiếng Việt, đổi tiền, cẩn thận giao thông.",
+  "Lưu ý Hà Nội": "ViA: Cẩn thận giao thông, không ăn quán không rõ nguồn gốc, mang nước, kem chống nắng, học vài câu tiếng Việt.",
+  "An toàn Hà Nội": "ViA: Cẩn thận giao thông, không ăn quán không rõ nguồn gốc, mang nước, kem chống nắng, học vài câu tiếng Việt.",
+  
+  // Câu hỏi gốc
+  "Gợi ý lịch trình 2 ngày ở Hà Nội?": `🗓️ **Lịch trình 2 ngày Hà Nội:**
 
-**Ngày 1: Khám phá trung tâm**
-• **Sáng**: Tham quan Hồ Gươm, Đền Ngọc Sơn, Cầu Thê Húc
-• **Trưa**: Ăn phở tại Phở Gia Truyền Bát Đàn
-• **Chiều**: Dạo phố cổ, mua sắm tại chợ Đồng Xuân
-• **Tối**: Thưởng thức bún chả tại Bún chả Hàng Mành
+**Ngày 1:** Hồ Gươm → Phở Bát Đàn (35-45k) → Phố cổ → Bún chả Hàng Mành (40-50k)
 
-**Ngày 2: Văn hóa & Lịch sử**
-• **Sáng**: Tham quan Văn Miếu - Quốc Tử Giám
-• **Trưa**: Ăn chả cá Lã Vọng
-• **Chiều**: Tham quan Lăng Chủ tịch Hồ Chí Minh, Chùa Một Cột
-• **Tối**: Dạo phố đi bộ Hồ Gươm, thưởng thức kem Tràng Tiền
+**Ngày 2:** Văn Miếu → Chả cá Lã Vọng (150-200k) → Lăng Bác → Phố đi bộ Hồ Gươm
 
-💡 **Mẹo**: Mua vé tham quan trước, mang theo nước uống và kem chống nắng!`,
+💡 Mẹo: Mua vé trước, mang nước!`,
 
-  "Ăn gì ngon ở Phố cổ Hà Nội?": `🍜 **Ẩm thực Phố cổ Hà Nội - Top món ngon:**
+  "Ăn gì ngon ở Phố cổ Hà Nội?": `🍜 **Ẩm thực Phố cổ:**
 
-**Món chính:**
-• **Phở Bát Đàn** - Phở bò truyền thống (35-45k)
-• **Bún chả Hàng Mành** - Bún chả Obama (40-50k)
-• **Chả cá Lã Vọng** - Đặc sản nổi tiếng (150-200k)
-• **Bún ốc** - Bún ốc Hàng Điếu (25-35k)
+• Phở Bát Đàn (35-45k) - 49 Bát Đàn
+• Bún chả Hàng Mành (40-50k) - 1 Hàng Mành  
+• Chả cá Lã Vọng (150-200k) - 14 Chả Cá
+• Cà phê trứng Giảng (25-35k)
+• Kem Tràng Tiền (15-25k)
 
-**Đồ uống & Tráng miệng:**
-• **Cà phê trứng** - Cà phê Giảng (25-35k)
-• **Kem Tràng Tiền** - Kem truyền thống (15-25k)
-• **Chè** - Chè bà cốt (10-20k)
+⏰ Mở: 6h-22h`,
 
-**Quán ăn nổi tiếng:**
-📍 Phở Gia Truyền Bát Đàn (49 Bát Đàn)
-📍 Bún chả Hàng Mành (1 Hàng Mành)
-📍 Chả cá Lã Vọng (14 Chả Cá)
+  "Phương tiện di chuyển nào tiện nhất ở Hà Nội?": `🚗 **Phương tiện Hà Nội:**
 
-⏰ **Thời gian**: Hầu hết quán mở 6h-22h, một số mở 24/7`,
+• **Xe máy** (100-150k/ngày) - Linh hoạt nhất
+• **Grab** (15-25k/km) - Rẻ, an toàn
+• **Xe buýt** (7-9k/lượt) - 100+ tuyến
+• **Xe đạp** (30-50k/ngày) - Dạo phố cổ, hồ Tây
+• **Xe ôm** (20-30k/điểm gần) - Đi ngắn
 
-  "Phương tiện di chuyển nào tiện nhất ở Hà Nội?": `🚗 **Phương tiện di chuyển Hà Nội:**
+💡 Kết hợp nhiều phương tiện!`,
 
-**1. Xe máy (Khuyến nghị)**
-• **Thuê xe**: 100-150k/ngày
-• **Ưu điểm**: Linh hoạt, tiết kiệm thời gian
-• **Lưu ý**: Cần bằng lái, đội mũ bảo hiểm
+  "Top điểm check-in đẹp nhất Hà Nội": `📸 **Check-in Hà Nội:**
 
-**2. Grab/Taxi**
-• **Grab**: 15-25k/km (rẻ nhất)
-• **Taxi**: 12-15k/km + phí mở cửa
-• **Ưu điểm**: An toàn, không cần bằng lái
-
-**3. Xe buýt**
-• **Giá**: 7-9k/lượt
-• **Tuyến**: 100+ tuyến khắp thành phố
-• **App**: BusMap, NextBus để tra cứu
-
-**4. Xe đạp**
-• **Thuê**: 30-50k/ngày
-• **Tuyệt vời**: Dạo phố cổ, hồ Tây
-• **Lưu ý**: Cẩn thận giao thông
-
-**5. Xe ôm**
-• **Giá**: 20-30k/điểm gần
-• **Phù hợp**: Đi ngắn, không biết đường
-
-💡 **Gợi ý**: Kết hợp nhiều phương tiện tùy khoảng cách!`,
-
-  "Top điểm check-in đẹp nhất Hà Nội": `📸 **Top điểm check-in Hà Nội:**
-
-**🏛️ Địa điểm lịch sử:**
 • **Hồ Gươm** - Cầu Thê Húc, Đền Ngọc Sơn
-• **Văn Miếu** - Kiến trúc cổ kính, vườn hoa
+• **Văn Miếu** - Kiến trúc cổ kính
 • **Lăng Bác** - Quảng trường Ba Đình
-• **Chùa Một Cột** - Biểu tượng Hà Nội
-
-**🏙️ Phố cổ & Hiện đại:**
-• **Phố cổ Hà Nội** - 36 phố phường
-• **Phố đi bộ Hồ Gươm** - Cuối tuần
-• **Sky Bar** - Tầng thượng khách sạn
+• **Phố cổ** - 36 phố phường
+• **Hồ Tây** - Sunset, cà phê ven hồ
 • **Cầu Long Biên** - Hoàng hôn đẹp
 
-**🌿 Thiên nhiên:**
-• **Hồ Tây** - Sunset, cà phê ven hồ
-• **Công viên Thủ Lệ** - Vườn thú
-• **Phố sách Đinh Lễ** - Không gian văn hóa
+📱 **Tips:** 6-8h sáng, 5-7h chiều | #HanoiVibes`,
 
-**🍜 Ẩm thực check-in:**
-• **Cà phê trứng** - Cà phê Giảng
-• **Phở bò** - Phở Gia Truyền
-• **Bún chả** - Bún chả Obama
+  "Khách sạn nào tốt gần Hồ Gươm?": `🏨 **Khách sạn gần Hồ Gươm:**
 
-**📱 Tips chụp ảnh:**
-• **Thời gian**: 6-8h sáng, 5-7h chiều
-• **Góc chụp**: Tầm thấp, góc xiên
-• **Hashtag**: #HanoiVibes #HanoiTravel`,
+• **Sofitel Legend** - 15 Ngo Quyen (2.5-4M/đêm)
+• **Hanoi La Siesta** - 94 Ma May (1.5-2.5M/đêm)
+• **Hanoi Elegance** - 85 Ma May (800k-1.2M/đêm)
+• **Hanoi Central** - 42 Hang Be (300k-500k/đêm)
+• **Hanoi Backpackers** - 48 Ngo Huyen (150k-300k/đêm)
 
-  "Khách sạn nào tốt gần Hồ Gươm?": `🏨 **Khách sạn tốt gần Hồ Gươm:**
-
-**⭐ 5 sao (Luxury):**
-• **Sofitel Legend Metropole** - 15 Ngo Quyen (2.5-4 triệu/đêm)
-• **Hanoi La Siesta Hotel** - 94 Ma May (1.5-2.5 triệu/đêm)
-• **The Oriental Jade Hotel** - 92 Hang Trong (1.2-2 triệu/đêm)
-
-**⭐ 4 sao (Boutique):**
-• **Hanoi Elegance Hotel** - 85 Ma May (800k-1.2 triệu/đêm)
-• **Golden Silk Boutique** - 95 Hang Bong (600k-900k/đêm)
-• **Hanoi Old Quarter Hotel** - 50 Hang Be (500k-800k/đêm)
-
-**⭐ 3 sao (Budget-friendly):**
-• **Hanoi Central Hotel** - 42 Hang Be (300k-500k/đêm)
-• **Little Hanoi Hotel** - 48 Hang Be (250k-400k/đêm)
-• **Hanoi Backpackers Hostel** - 48 Ngo Huyen (150k-300k/đêm)
-
-**🏠 Homestay:**
-• **Hanoi Old Quarter Homestay** - 50 Hang Be (200k-350k/đêm)
-• **Little Hanoi Diamond** - 32 Hang Be (180k-300k/đêm)
-
-**📍 Vị trí tốt nhất:**
-• **Hang Be, Ma May** - Gần Hồ Gươm nhất
-• **Hang Trong, Hang Bong** - Yên tĩnh, dễ di chuyển
-• **Ngo Quyen** - Đường lớn, nhiều tiện ích
-
-**💡 Mẹo đặt phòng:**
-• Đặt trước 1-2 tuần để có giá tốt
-• Kiểm tra đánh giá trên Booking.com
-• Ưu tiên khách sạn có ban công nhìn ra Hồ Gươm`,
+📍 **Vị trí tốt:** Hang Be, Ma May, Hang Trong
+💡 **Mẹo:** Đặt trước 1-2 tuần`,
 
   "Lịch sử và văn hóa Hà Nội": `🏛️ **Lịch sử & Văn hóa Hà Nội:**
 
-**📚 Lịch sử 1000 năm:**
-• **1010**: Lý Thái Tổ dời đô từ Hoa Lư về Thăng Long
-• **1802**: Nguyễn Ánh đổi tên thành Hà Nội
-• **1954**: Giải phóng Thủ đô khỏi thực dân Pháp
-• **1976**: Trở thành Thủ đô nước CHXHCN Việt Nam
-
-**🏛️ Di tích lịch sử:**
+• **1010:** Lý Thái Tổ dời đô về Thăng Long
 • **Văn Miếu** (1070) - Trường đại học đầu tiên
 • **Chùa Một Cột** (1049) - Biểu tượng Hà Nội
-• **Lăng Chủ tịch Hồ Chí Minh** - Nơi an nghỉ của Bác
-• **Nhà tù Hỏa Lò** - Di tích lịch sử
-
-**🎭 Văn hóa truyền thống:**
-• **Ca trù** - Nghệ thuật ca hát cổ
-• **Hát xẩm** - Nghệ thuật đường phố
-• **Múa rối nước** - Đặc sản văn hóa
-• **Lễ hội** - Lễ hội Gióng, Lễ hội Chùa Hương
-
-**🍜 Ẩm thực văn hóa:**
-• **Phở** - Món ăn quốc hồn quốc túy
-• **Bún chả** - Đặc sản phố cổ
-• **Chả cá** - Món ăn cung đình
-• **Cà phê trứng** - Sáng tạo độc đáo
-
-**🏘️ Kiến trúc:**
+• **Lăng Bác** - Nơi an nghỉ của Bác
 • **Phố cổ** - 36 phố phường
-• **Kiến trúc Pháp** - Nhà hát Lớn, Bưu điện
-• **Kiến trúc hiện đại** - Landmark 72, Keangnam
+• **Phở, Bún chả, Chả cá** - Ẩm thực đặc sản
+• **Ca trù, Múa rối nước** - Nghệ thuật truyền thống
+• **Tranh Đông Hồ, Gốm Bát Tràng** - Nghề thủ công
 
-**📖 Văn học:**
-• **Thơ Hồ Xuân Hương** - Nữ sĩ tài hoa
-• **Truyện Kiều** - Nguyễn Du
-• **Văn học hiện đại** - Nam Cao, Vũ Trọng Phụng
-
-**🎨 Nghệ thuật:**
-• **Tranh dân gian** - Đông Hồ, Hàng Trống
-• **Gốm sứ** - Làng gốm Bát Tràng
-• **Thêu** - Làng thêu Quất Động`
+📚 **Văn học:** Hồ Xuân Hương, Truyện Kiều, Nam Cao`
 };
 
 // Add variations for better matching
@@ -291,6 +256,25 @@ function checkRateLimit(clientIP) {
   return true;
 }
 
+// Enhanced queue processing for better concurrency
+function processQueue() {
+  if (isProcessingQueue || GLOBAL_QUEUE.length === 0) return;
+  
+  isProcessingQueue = true;
+  
+  // Process up to 5 requests at once
+  const batchSize = Math.min(5, GLOBAL_QUEUE.length);
+  const batch = GLOBAL_QUEUE.splice(0, batchSize);
+  
+  batch.forEach(request => {
+    if (request && typeof request === 'function') {
+      setImmediate(request);
+    }
+  });
+  
+  isProcessingQueue = false;
+}
+
 // Release rate limit with global counter
 function releaseRateLimit(clientIP) {
   const currentRequests = REQUEST_QUEUE.get(clientIP) || 0;
@@ -359,7 +343,7 @@ exports.handleChatCompletion = async (req, res) => {
     if (!checkRateLimit(clientIP)) {
       return res.json({ 
         role: 'assistant', 
-        content: 'Hệ thống đang bận, vui lòng thử lại sau vài giây.',
+        content: 'ViA: Hệ thống đang bận, vui lòng thử lại sau vài giây.',
         meta: { type: 'rate_limit' }
       });
     }
@@ -368,7 +352,7 @@ exports.handleChatCompletion = async (req, res) => {
     
     // Enhanced cache check with better key generation
     const cacheKey = JSON.stringify({ 
-      messages: history.slice(-5), // Only cache last 5 messages for better hit rate
+      messages: history.slice(-3), // Only cache last 3 messages for better hit rate
       user_id: user_id || 'anonymous'
     });
     
@@ -389,6 +373,28 @@ exports.handleChatCompletion = async (req, res) => {
     if (lastUserMessage) {
       const userMessage = lastUserMessage.content.trim();
       console.log('🔍 Checking template for:', userMessage);
+      
+      // Check for off-topic questions first
+      const offTopicKeywords = ['thời tiết', 'tin tức', 'chính trị', 'kinh tế', 'thể thao', 'giáo dục', 'công nghệ', 'y tế', 'pháp luật', 'tôn giáo', 'bitcoin', 'crypto', 'chứng khoán', 'bất động sản', 'nghề nghiệp', 'học tập', 'thi cử', 'việc làm', 'lương', 'thuế', 'bảo hiểm', 'ngân hàng', 'tài chính', 'đầu tư', 'kinh doanh', 'marketing', 'quảng cáo', 'bán hàng', 'khách hàng', 'sản phẩm', 'dịch vụ', 'hợp đồng', 'pháp lý', 'luật', 'quy định', 'chính sách', 'chính phủ', 'nhà nước', 'đảng', 'bầu cử', 'bỏ phiếu', 'dân chủ', 'tự do', 'quyền', 'nghĩa vụ', 'trách nhiệm', 'đạo đức', 'tâm linh', 'tôn giáo', 'phật giáo', 'công giáo', 'tin lành', 'hồi giáo', 'do thái', 'ấn độ giáo', 'phật', 'chúa', 'allah', 'thần', 'ma', 'quỷ', 'linh hồn', 'kiếp', 'nghiệp', 'duyên', 'phúc', 'tội', 'thiện', 'ác', 'tốt', 'xấu', 'đúng', 'sai', 'công bằng', 'bất công', 'giàu', 'nghèo', 'thành công', 'thất bại', 'hạnh phúc', 'đau khổ', 'yêu', 'ghét', 'giận', 'vui', 'buồn', 'lo', 'sợ', 'hy vọng', 'thất vọng', 'tích cực', 'tiêu cực', 'lạc quan', 'bi quan', 'tự tin', 'tự ti', 'kiêu ngạo', 'khiêm tốn', 'thành thật', 'dối trá', 'tốt bụng', 'độc ác', 'nhân từ', 'tàn nhẫn', 'bao dung', 'hẹp hòi', 'rộng lượng', 'ích kỷ', 'vị tha', 'cá nhân', 'tập thể', 'cộng đồng', 'xã hội', 'gia đình', 'bạn bè', 'đồng nghiệp', 'hàng xóm', 'người lạ', 'người quen', 'người thân', 'người yêu', 'vợ chồng', 'con cái', 'cha mẹ', 'ông bà', 'anh chị', 'em', 'chú', 'bác', 'cô', 'dì', 'cậu', 'mợ', 'ông', 'bà', 'cụ', 'cố', 'tổ tiên', 'dòng họ', 'gia phả', 'truyền thống', 'văn hóa', 'lịch sử', 'địa lý', 'thiên nhiên', 'môi trường', 'khí hậu', 'thời tiết', 'nhiệt độ', 'mưa', 'nắng', 'gió', 'bão', 'lũ', 'hạn hán', 'động đất', 'sóng thần', 'thiên tai', 'thảm họa', 'tai nạn', 'bệnh tật', 'dịch bệnh', 'virus', 'vi khuẩn', 'ký sinh trùng', 'nấm', 'độc tố', 'chất độc', 'thuốc', 'dược phẩm', 'y học', 'bác sĩ', 'y tá', 'bệnh viện', 'phòng khám', 'phẫu thuật', 'điều trị', 'chữa bệnh', 'phòng ngừa', 'tiêm chủng', 'vaccine', 'kháng thể', 'miễn dịch', 'sức khỏe', 'thể dục', 'thể thao', 'vận động', 'chạy bộ', 'bơi lội', 'đạp xe', 'gym', 'yoga', 'thiền', 'thở', 'hít thở', 'thư giãn', 'nghỉ ngơi', 'ngủ', 'mơ', 'mộng', 'thức', 'tỉnh', 'sống', 'chết', 'sinh', 'tử', 'bắt đầu', 'kết thúc', 'bắt đầu', 'kết thúc', 'bắt đầu', 'kết thúc'];
+      
+      const isOffTopic = offTopicKeywords.some(keyword => 
+        userMessage.toLowerCase().includes(keyword.toLowerCase())
+      );
+      
+      if (isOffTopic) {
+        console.log('🚫 Off-topic question detected');
+        const responseData = { 
+          role: 'assistant', 
+          content: 'ViA: Tôi chỉ tư vấn du lịch Hà Nội. Bạn muốn hỏi gì về du lịch Hà Nội?' 
+        };
+        
+        if (user_id && session_id) {
+          setImmediate(() => saveChatHistory(user_id, session_id, history, responseData));
+        }
+        
+        releaseRateLimit(clientIP);
+        return res.json(responseData);
+      }
       
       // Try exact match first
       if (TEMPLATE_RESPONSES[userMessage]) {
@@ -455,7 +461,7 @@ exports.handleChatCompletion = async (req, res) => {
         temperature: 0.7,
         topK: 40,
         topP: 0.95,
-        maxOutputTokens: 1024, // Increased token limit
+        maxOutputTokens: 300, // Reduced to 300 tokens for shorter responses
         candidateCount: 1
       }
     };
@@ -464,8 +470,8 @@ exports.handleChatCompletion = async (req, res) => {
     if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_KEY_HERE') {
       releaseRateLimit(clientIP);
       const fallback = lastUserMessage && lastUserMessage.content
-        ? `(Chế độ demo) Bạn hỏi: "${lastUserMessage.content}". Hiện chưa cấu hình khóa AI, vui lòng liên hệ quản trị viên.`
-        : '(Chế độ demo) Xin chào! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn muốn hỏi gì?';
+        ? `ViA: (Chế độ demo) Bạn hỏi: "${lastUserMessage.content}". Hiện chưa cấu hình khóa AI, vui lòng liên hệ quản trị viên.`
+        : 'ViA: (Chế độ demo) Xin chào! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn muốn hỏi gì?';
       return res.json({ role: 'assistant', content: fallback });
     }
     
@@ -497,13 +503,15 @@ exports.handleChatCompletion = async (req, res) => {
       releaseRateLimit(clientIP);
       console.error('Gemini API failed after retries:', result.error);
       
-      // Fallback responses based on error type
-      let fallbackMessage = 'Xin lỗi, tôi đang gặp sự cố kỹ thuật. Vui lòng thử lại sau.';
+      // Enhanced fallback responses based on error type
+      let fallbackMessage = 'ViA: Xin lỗi, tôi đang gặp sự cố kỹ thuật. Vui lòng thử lại sau.';
       
-      if (result.error.includes('quota') || result.error.includes('limit')) {
-        fallbackMessage = 'Hệ thống đang quá tải, vui lòng thử lại sau ít phút.';
-      } else if (result.error.includes('network') || result.error.includes('timeout')) {
-        fallbackMessage = 'Kết nối mạng không ổn định, vui lòng thử lại.';
+      if (result.error.includes('quota') || result.error.includes('limit') || result.error.includes('overloaded')) {
+        fallbackMessage = 'ViA: Hệ thống đang quá tải, vui lòng thử lại sau ít phút. Trong khi chờ, bạn có thể hỏi về: địa điểm Hà Nội, ẩm thực, lịch trình du lịch.';
+      } else if (result.error.includes('network') || result.error.includes('timeout') || result.error.includes('503')) {
+        fallbackMessage = 'ViA: Kết nối mạng không ổn định, vui lòng thử lại. Bạn có thể hỏi về: Hồ Gươm, Văn Miếu, Phố cổ, ẩm thực Hà Nội.';
+      } else if (result.error.includes('unavailable') || result.error.includes('503')) {
+        fallbackMessage = 'ViA: Dịch vụ tạm thời không khả dụng. Bạn có thể hỏi về: lịch trình du lịch, địa điểm nổi tiếng, món ăn ngon Hà Nội.';
       }
       
       return res.json({ 
@@ -520,7 +528,7 @@ exports.handleChatCompletion = async (req, res) => {
     // Always return 200 to avoid client errors
     res.json({ 
       role: 'assistant', 
-      content: 'Xin lỗi, đã xảy ra lỗi hệ thống. Vui lòng thử lại sau.',
+      content: 'ViA: Xin lỗi, đã xảy ra lỗi hệ thống. Vui lòng thử lại sau.',
       meta: { type: 'system_error', error: err.message }
     });
   }
@@ -550,8 +558,9 @@ function cleanOldCache() {
   }
 }
 
-// Periodic cache cleanup
+// Periodic cache cleanup and queue processing
 setInterval(cleanOldCache, 5 * 60 * 1000); // Every 5 minutes
+setInterval(processQueue, QUEUE_PROCESSING_INTERVAL); // Process queue every 50ms
 
 // Memory usage monitoring
 function getCacheStats() {

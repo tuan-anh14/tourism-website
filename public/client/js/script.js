@@ -240,8 +240,12 @@
       var panel = wrap.querySelector(".hnv-chat__panel");
       if (toggle && panel) {
         toggle.addEventListener("click", function () {
-          var isOpen = panel.style.display === "block";
-          panel.style.display = isOpen ? "none" : "block";
+          var isOpen = panel.classList.contains("show");
+          if (isOpen) {
+            panel.classList.remove("show");
+          } else {
+            panel.classList.add("show");
+          }
           
           // Load lịch sử chat khi mở chatbot
           if (!isOpen) {
@@ -793,7 +797,7 @@
       if (closeBtn)
         closeBtn.addEventListener("click", function (e) {
           e.preventDefault();
-          panel.style.display = "none";
+          panel.classList.remove("show");
         });
       if (input)
         input.addEventListener("keydown", function (e) {
