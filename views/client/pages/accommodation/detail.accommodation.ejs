@@ -30,13 +30,13 @@
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="/client/img/logo.png"
+      href="/client/img/logo.jpg"
     />
     <link
       rel="icon"
       type="image/png"
       sizes="16x16"
-      href="/client/img/logo.png"
+      href="/client/img/logo.jpg"
     />
     <link rel="manifest" href="/client/img/site.webmanifest" />
   </head>
@@ -68,7 +68,7 @@
                      =========================================== -->
         <section class="image-gallery" id="gallery">
           <% var imgs = (acc && acc.images && acc.images.length) ? acc.images :
-          ['/client/img/carousel-img2.jpg','/client/img/carousel-img3.jpg','/client/img/img1.jfif','/client/img/img2.jfif','/client/img/img3.png'];
+          ['/client/img/hotay.jpg','/client/img/carousel-img3.jpg','/client/img/img1.jfif','/client/img/img2.jfif','/client/img/img3.png'];
           var hasImages = imgs && imgs.length > 0; %> <% if (hasImages) { %> <%
           imgs.slice(0, 5).forEach(function(img, idx){ %>
           <div
@@ -93,7 +93,7 @@
             aria-label="Xem ảnh"
           >
             <img
-              src="/client/img/carousel-img2.jpg"
+              src="/client/img/hotay.jpg"
               alt="<%= (acc && acc.name) || 'Hình ảnh lưu trú' %>"
               loading="lazy"
             />
