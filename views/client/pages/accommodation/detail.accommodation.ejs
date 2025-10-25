@@ -54,7 +54,7 @@
     >
       <div class="header-content">
         <h1><%= (acc && acc.name) || 'Lưu trú' %></h1>
-        <p class="font-color">Hà Nội Vibes – Trải nghiệm nghỉ dưỡng tuyệt vời tại Hà Nội</p>
+        <p class="font-color" style="text-align: center !important;">Hà Nội Vibes – Trải nghiệm nghỉ dưỡng tuyệt vời tại Hà Nội</p>
       </div>
     </header>
 
@@ -263,6 +263,23 @@
     <script src="/client/js/script.js"></script>
     <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
     <script src="/client/js/accommodation-detail.js"></script>
+
+    <!-- Fix scroll to top on page load -->
+    <script>
+      // Force scroll to top when page loads
+      window.addEventListener('load', function() {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      });
+      
+      // Also scroll to top on DOM ready
+      document.addEventListener('DOMContentLoaded', function() {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      });
+    </script>
 
   </body>
 </html>

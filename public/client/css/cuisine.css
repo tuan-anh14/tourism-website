@@ -44,14 +44,14 @@ body.dark .cuisine .navbar .nav-links li a { color: #fff !important; }
 }
 .cuisine-banner .header-content h1 { 
   color: #fff;
-  font-family: var(--ff-heading); /* Playfair Display */
+  font-family: var(--ff-heading); /* Roboto */
   font-size: var(--fs-headings); /* Responsive heading size */
   font-weight: 600; /* Semi-bold */
   letter-spacing: normal; /* Normal spacing như blog section */
 }
 
 .cuisine-banner .header-content h2 {
-  font-family: var(--ff-heading); /* Playfair Display */
+  font-family: var(--ff-heading); /* Roboto */
   font-size: 3vmin; /* Giữ nguyên responsive size */
   font-weight: 500; /* Medium weight */
   letter-spacing: normal; /* Normal spacing */
@@ -194,7 +194,7 @@ body.dark .cuisine-card { background: rgba(20,20,22,0.92); box-shadow: 0 10px 30
 }
 .cuisine-card .title { 
   font-size: var(--fs-xl); /* 1.25rem (20px) */
-  font-family: var(--ff-heading); /* Playfair Display */
+  font-family: var(--ff-heading); /* Roboto */
   font-weight: 600; /* Semi-bold như blog section */
   letter-spacing: normal;
   text-align: left;

@@ -52,14 +52,14 @@ body.dark .accommodation .navbar .nav-links li a {
 }
 .accommodation-banner .header-content h1 {
   color: #fff;
-  font-family: var(--ff-heading); /* Playfair Display */
+  font-family: var(--ff-heading); /* Roboto */
   font-size: var(--fs-headings); /* Responsive heading size */
   font-weight: 600; /* Semi-bold */
   letter-spacing: normal; /* Normal spacing như blog section */
 }
 
 .accommodation-banner .header-content h2 {
-  font-family: var(--ff-heading); /* Playfair Display */
+  font-family: var(--ff-heading); /* Roboto */
   font-size: 3vmin; /* Giữ nguyên responsive size */
   font-weight: 500; /* Medium weight */
   letter-spacing: normal; /* Normal spacing */
@@ -366,7 +366,7 @@ body.dark .accommodation-card {
 }
 .accommodation-card .title {
   font-size: var(--fs-lg); /* 1.125rem (18px) */
-  font-family: var(--ff-heading); /* Playfair Display */
+  font-family: var(--ff-heading); /* Roboto */
   font-weight: 600; /* Semi-bold như blog section */
   margin: 0;
   letter-spacing: normal;
@@ -481,7 +481,7 @@ body.dark .accommodation-card .amenities .tag {
 .no-results h3 {
   margin: 0 0 8px;
   font-size: var(--fs-xl); /* 1.25rem (20px) */
-  font-family: var(--ff-heading); /* Playfair Display */
+  font-family: var(--ff-heading); /* Roboto */
   font-weight: 600;
 }
 .no-results p {
