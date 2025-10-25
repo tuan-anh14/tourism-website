@@ -1945,7 +1945,7 @@ img:hover {
 
 .active {
   border-radius: 20px;
-  color: var(--primary-color) !important;
+  /* color: var(--primary-color) !important; */
   background: rgba(255, 255, 255, 0.15);
   border-color: var(--primary-color);
   cursor: pointer;
