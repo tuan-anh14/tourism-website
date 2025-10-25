@@ -97,7 +97,7 @@
 .pagination-page.active {
     background: var(--primary-color);
     border-color: var(--primary-color);
-    color: #fff;
+    color: white !important;
 }
 
 .pagination-page.active::before {
@@ -291,7 +291,7 @@ body.dark .pagination-page:hover {
 body.dark .pagination-page.active {
     background: var(--primary-color);
     border-color: var(--primary-color);
-    color: #fff;
+    color: white !important;
 }
 
 body.dark .pagination-ellipsis {

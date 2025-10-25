@@ -154,7 +154,7 @@ span {
 
 .pagination-page.active {
   background: #007bff;
-  color: white;
+  color: white !important;
   border-color: #007bff;
 }
 
