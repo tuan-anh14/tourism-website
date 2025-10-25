@@ -1907,6 +1907,13 @@ img:hover {
   font-weight: 600;
 }
 
+/* Override for blog filter buttons to ensure white text when active */
+.filter-btn.active {
+  color: white !important;
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
 .ctn:hover {
   background: whitesmoke;
   color: var(--primary-color);
