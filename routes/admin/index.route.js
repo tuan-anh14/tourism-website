@@ -6,7 +6,7 @@ const authController = require('../../controller/admin/auth.controller');
 const attractionController = require('../../controller/admin/attraction.controller');
 const accommodationController = require('../../controller/admin/accommodation.controller');
 const cuisineController = require('../../controller/admin/cuisine.controller');
-const cuisinePlaceController = require('../../controller/admin/cuisine-place.controller');
+const cuisinePlaceController = require('../../controller/admin/cuisine.place.controller');
 const entertainmentController = require('../../controller/admin/entertainment.controller');
 const contactController = require('../../controller/admin/contact.controller');
 const userController = require('../../controller/admin/user.controller');
@@ -78,15 +78,15 @@ router.delete('/cuisines/delete/:id', requireAdmin, requireEditor, cuisineContro
 router.post('/cuisines/delete/:id', requireAdmin, requireEditor, cuisineController.destroy);
 
 // Cuisine Places routes
-router.get('/cuisine-places', requireAdmin, cuisinePlaceController.index);
-router.get('/cuisine-places/create', requireAdmin, requireEditor, cuisinePlaceController.create);
-router.post('/cuisine-places', requireAdmin, requireEditor, uploadDynamic, cuisinePlaceController.store);
-router.get('/cuisine-places/:id', requireAdmin, cuisinePlaceController.show);
-router.get('/cuisine-places/edit/:id', requireAdmin, requireEditor, cuisinePlaceController.edit);
-router.patch('/cuisine-places/edit/:id', requireAdmin, requireEditor, uploadDynamic, cuisinePlaceController.editPatch);
-router.put('/cuisine-places/:id', requireAdmin, requireEditor, uploadDynamic, cuisinePlaceController.update);
-router.delete('/cuisine-places/delete/:id', requireAdmin, requireEditor, cuisinePlaceController.destroy);
-router.post('/cuisine-places/delete/:id', requireAdmin, requireEditor, cuisinePlaceController.destroy);
+router.get('/cuisine/places', requireAdmin, cuisinePlaceController.index);
+router.get('/cuisine/places/create', requireAdmin, requireEditor, cuisinePlaceController.create);
+router.post('/cuisine/places', requireAdmin, requireEditor, uploadDynamic, cuisinePlaceController.store);
+router.get('/cuisine/places/:id', requireAdmin, cuisinePlaceController.show);
+router.get('/cuisine/places/edit/:id', requireAdmin, requireEditor, cuisinePlaceController.edit);
+router.patch('/cuisine/places/edit/:id', requireAdmin, requireEditor, uploadDynamic, cuisinePlaceController.editPatch);
+router.put('/cuisine/places/:id', requireAdmin, requireEditor, uploadDynamic, cuisinePlaceController.update);
+router.delete('/cuisine/places/delete/:id', requireAdmin, requireEditor, cuisinePlaceController.destroy);
+router.post('/cuisine/places/delete/:id', requireAdmin, requireEditor, cuisinePlaceController.destroy);
 
 // Entertainment routes
 router.get('/entertainments', requireAdmin, entertainmentController.index);

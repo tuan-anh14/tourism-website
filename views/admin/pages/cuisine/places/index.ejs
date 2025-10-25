@@ -2,7 +2,7 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2"><%= pageTitle %></h1>
   <div class="btn-toolbar mb-2 mb-md-0">
-    <a href="/admin/cuisine-places/create" class="btn btn-primary">
+    <a href="/admin/cuisine/places/create" class="btn btn-primary">
       <i class="fas fa-plus me-2"></i>
       Thêm địa điểm
     </a>
@@ -58,7 +58,7 @@
       </div>
       <div class="col-md-2 d-flex align-items-end">
         <button type="submit" class="btn btn-outline-primary me-2">Lọc</button>
-        <a href="/admin/cuisine-places" class="btn btn-outline-secondary">Xóa</a>
+        <a href="/admin/cuisine/places" class="btn btn-outline-secondary">Xóa</a>
       </div>
     </form>
   </div>
@@ -75,7 +75,7 @@
         <i class="fas fa-map-marker-alt fa-3x text-muted mb-3"></i>
         <h5 class="text-muted">Chưa có địa điểm nào</h5>
         <p class="text-muted">Hãy thêm địa điểm đầu tiên để bắt đầu quản lý</p>
-        <a href="/admin/cuisine-places/create" class="btn btn-primary">
+        <a href="/admin/cuisine/places/create" class="btn btn-primary">
           <i class="fas fa-plus me-2"></i>Thêm địa điểm
         </a>
       </div>
@@ -159,10 +159,10 @@
               </td>
               <td>
                 <div class="btn-group" role="group">
-                  <a href="/admin/cuisine-places/<%= place._id %>" class="btn btn-sm btn-outline-info" title="Xem chi tiết">
+                  <a href="/admin/cuisine/places/<%= place._id %>" class="btn btn-sm btn-outline-info" title="Xem chi tiết">
                     <i class="fas fa-eye"></i>
                   </a>
-                  <a href="/admin/cuisine-places/edit/<%= place._id %>" class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                  <a href="/admin/cuisine/places/edit/<%= place._id %>" class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
                     <i class="fas fa-edit"></i>
                   </a>
                   <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('<%= place._id %>', '<%= place.name %>')" title="Xóa">
@@ -229,7 +229,7 @@
 <script>
 function confirmDelete(id, name) {
   document.getElementById('deletePlaceName').textContent = name;
-  document.getElementById('deleteForm').action = '/admin/cuisine-places/delete/' + id;
+  document.getElementById('deleteForm').action = '/admin/cuisine/places/delete/' + id;
   new bootstrap.Modal(document.getElementById('deleteModal')).show();
 }
 </script>

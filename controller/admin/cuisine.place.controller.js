@@ -64,7 +64,7 @@ module.exports.index = async (req, res) => {
       status,
       selectedCuisine: cuisineId,
       req: req,
-      body: 'admin/pages/cuisine-places/index'
+      body: 'admin/pages/cuisine/places/index'
     });
   } catch (error) {
     console.error('Cuisine places index error:', error);
@@ -80,12 +80,12 @@ module.exports.index = async (req, res) => {
       status: '',
       selectedCuisine: '',
       req: req,
-      body: 'admin/pages/cuisine-places/index'
+      body: 'admin/pages/cuisine/places/index'
     });
   }
 };
 
-// [GET] /admin/cuisine-places/create
+// [GET] /admin/cuisine/places/create
 module.exports.create = async (req, res) => {
   try {
     const cuisines = await Cuisine.find({ isActive: true }).select('name slug').sort({ name: 1 });
@@ -93,14 +93,14 @@ module.exports.create = async (req, res) => {
     res.render('admin/layout', {
       pageTitle: 'Thêm Địa điểm Ẩm thực',
       page: 'cuisine-places',
-      body: 'admin/pages/cuisine-places/create',
+      body: 'admin/pages/cuisine/places/create',
       user: req.user,
       cuisines
     });
   } catch (error) {
     console.error('Create cuisine place error:', error);
     req.flash('error', 'Có lỗi xảy ra');
-    res.redirect('/admin/cuisine-places');
+    res.redirect('/admin/cuisine/places');
   }
 };
 
@@ -137,7 +137,7 @@ module.exports.store = async (req, res) => {
         return res.status(400).json({ success: false, message: 'Dữ liệu không hợp lệ', errors: validationErrors });
       }
       req.flash('error', validationErrors.join(', '));
-      return res.redirect('/admin/cuisine-places/create');
+      return res.redirect('/admin/cuisine/places/create');
     }
 
     // Handle images uploads
@@ -194,7 +194,7 @@ module.exports.store = async (req, res) => {
       return res.status(201).json({ success: true, message: 'Thêm địa điểm thành công', data: place });
     }
     req.flash('success', 'Thêm địa điểm thành công');
-    res.redirect('/admin/cuisine-places');
+    res.redirect('/admin/cuisine/places');
   } catch (error) {
     console.error('Store cuisine place error:', error);
     if (error.name === 'ValidationError') {
@@ -210,7 +210,7 @@ module.exports.store = async (req, res) => {
       req.flash('error', 'Có lỗi xảy ra khi thêm địa điểm: ' + error.message);
     }
     if (!(req.headers.accept && req.headers.accept.includes('application/json'))) {
-      return res.redirect('/admin/cuisine-places/create');
+      return res.redirect('/admin/cuisine/places/create');
     }
   }
 };
@@ -224,7 +224,7 @@ module.exports.show = async (req, res) => {
         return res.status(404).json({ success: false, message: 'Không tìm thấy địa điểm' });
       }
       req.flash('error', 'Không tìm thấy địa điểm');
-      return res.redirect('/admin/cuisine-places');
+      return res.redirect('/admin/cuisine/places');
     }
 
     if (req.headers.accept && req.headers.accept.includes('application/json')) {
@@ -234,7 +234,7 @@ module.exports.show = async (req, res) => {
     res.render('admin/layout', {
       pageTitle: `Chi tiết: ${place.name}`,
       page: 'cuisine-places',
-      body: 'admin/pages/cuisine-places/show',
+      body: 'admin/pages/cuisine/places/show',
       user: req.user,
       place
     });
@@ -244,7 +244,7 @@ module.exports.show = async (req, res) => {
       return res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
     }
     req.flash('error', 'Có lỗi xảy ra');
-    res.redirect('/admin/cuisine-places');
+    res.redirect('/admin/cuisine/places');
   }
 };
 
@@ -255,7 +255,7 @@ module.exports.edit = async (req, res) => {
     const place = await CuisinePlace.findById(id).populate('cuisine', 'name slug');
     if (!place) {
       req.flash('error', 'Không tìm thấy địa điểm');
-      return res.redirect('/admin/cuisine-places');
+      return res.redirect('/admin/cuisine/places');
     }
 
     const cuisines = await Cuisine.find({ isActive: true }).select('name slug').sort({ name: 1 });
@@ -263,7 +263,7 @@ module.exports.edit = async (req, res) => {
     res.render('admin/layout', {
       pageTitle: `Chỉnh sửa: ${place.name}`,
       page: 'cuisine-places',
-      body: 'admin/pages/cuisine-places/edit',
+      body: 'admin/pages/cuisine/places/edit',
       user: req.user,
       place,
       cuisines
@@ -271,7 +271,7 @@ module.exports.edit = async (req, res) => {
   } catch (error) {
     console.error('Edit cuisine place error:', error);
     req.flash('error', 'Có lỗi xảy ra');
-    res.redirect('/admin/cuisine-places');
+    res.redirect('/admin/cuisine/places');
   }
 };
 
@@ -283,7 +283,7 @@ module.exports.editPatch = async (req, res) => {
     const place = await CuisinePlace.findById(id);
     if (!place) {
       req.flash('error', 'Không tìm thấy địa điểm');
-      return res.redirect(req.get('Referrer') || '/admin/cuisine-places');
+      return res.redirect(req.get('Referrer') || '/admin/cuisine/places');
     }
 
     // Handle image removals
@@ -358,7 +358,7 @@ module.exports.update = async (req, res) => {
         return res.status(404).json({ success: false, message: 'Không tìm thấy địa điểm' });
       }
       req.flash('error', 'Không tìm thấy địa điểm');
-      return res.redirect('/admin/cuisine-places');
+      return res.redirect('/admin/cuisine/places');
     }
 
     const wantsJson = !!(req.headers.accept && req.headers.accept.includes('application/json'));
@@ -366,7 +366,7 @@ module.exports.update = async (req, res) => {
       const validationErrors = validateCuisinePlace(data);
       if (validationErrors.length > 0) {
         req.flash('error', validationErrors.join(', '));
-        return res.redirect(`/admin/cuisine-places/${req.params.id}/edit`);
+        return res.redirect(`/admin/cuisine/places/edit/${req.params.id}`);
       }
     }
 
@@ -426,7 +426,7 @@ module.exports.update = async (req, res) => {
       return res.json({ success: true, message: 'Cập nhật địa điểm thành công', data: updated });
     }
     req.flash('success', 'Cập nhật địa điểm thành công');
-    return res.redirect(req.get('Referrer') || '/admin/cuisine-places');
+    return res.redirect(req.get('Referrer') || '/admin/cuisine/places');
   } catch (error) {
     console.error('Update cuisine place error:', error);
     if (error.name === 'ValidationError') {
@@ -442,7 +442,7 @@ module.exports.update = async (req, res) => {
       req.flash('error', 'Có lỗi xảy ra khi cập nhật địa điểm: ' + error.message);
     }
     if (!(req.headers.accept && req.headers.accept.includes('application/json'))){
-      return res.redirect(`/admin/cuisine-places/${req.params.id}/edit`);
+      return res.redirect(`/admin/cuisine/places/edit/${req.params.id}`);
     }
   }
 };
@@ -453,7 +453,7 @@ module.exports.destroy = async (req, res) => {
     const place = await CuisinePlace.findById(req.params.id);
     if (!place) {
       req.flash('error', 'Không tìm thấy địa điểm');
-      return res.redirect('/admin/cuisine-places');
+      return res.redirect('/admin/cuisine/places');
     }
 
     // Remove from cuisine
@@ -466,13 +466,13 @@ module.exports.destroy = async (req, res) => {
       return res.json({ success: true, message: 'Xóa địa điểm thành công', data: { id: req.params.id } });
     }
     req.flash('success', 'Xóa địa điểm thành công');
-    res.redirect('/admin/cuisine-places');
+    res.redirect('/admin/cuisine/places');
   } catch (error) {
     console.error('Delete cuisine place error:', error);
     if (req.headers.accept && req.headers.accept.includes('application/json')) {
       return res.status(500).json({ success: false, message: 'Có lỗi xảy ra khi xóa địa điểm', error: error.message });
     }
     req.flash('error', 'Có lỗi xảy ra khi xóa địa điểm: ' + error.message);
-    res.redirect('/admin/cuisine-places');
+    res.redirect('/admin/cuisine/places');
   }
 };
