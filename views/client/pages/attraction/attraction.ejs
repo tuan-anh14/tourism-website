@@ -106,20 +106,6 @@
                                 <p class="desc font-color">
                                     <%= attraction.shortDescription || attraction.description || 'Khám phá điểm tham quan thú vị tại Hà Nội' %>
                                 </p>
-                                <div class="attraction-meta">
-                                    <div class="rating">
-                                        <div class="stars">
-                                            <% for (let i = 1; i <= 5; i++) { %>
-                                                <i class="fa fa-star <%= i <= Math.round(attraction.rating?.average || 0) ? 'active' : '' %>"></i>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                    <div class="category-badge">
-                                        <%= 
-                                            attraction.category === 'tu-nhien' ? 'Điểm tham quan tự nhiên' :
-        										attraction.category === 'nhan-van' ? 'Điểm tham quan nhân văn' : attraction.category %>
-                                    </div>
-                                </div>
                                 <div class="actions">
                                     <a class="ctn" href="/attraction/<%= attraction.slug %>">Xem chi tiết</a>
                                 </div>
