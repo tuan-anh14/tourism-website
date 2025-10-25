@@ -1,5 +1,5 @@
-/* Google fonts - Unified Font System */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap");
+/* Google fonts - Unified Font System với Roboto cho heading */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;600;700&display=swap&subset=latin,vietnamese");
 
 /* Root element (aka html) */
 :root {
@@ -10,7 +10,7 @@
   /* Primary Fonts */
   --ff-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
-  --ff-heading: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --ff-heading: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 
   /* Brand Colors */
   --primary-color: #1261A6; /* Global primary brand color */
@@ -48,6 +48,51 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Roboto font cho tất cả headings - Ổn định và đẹp */
+h1, h2, h3, h4, h5, h6,
+.heading, .title, .banner-title, .page-title, .section-title,
+.card-title, .news-title, .blog-title, .attraction-title,
+.accommodation-title, .cuisine-title, .restaurant-title,
+.entertainment-title, [class*="heading"], [class*="title"] {
+  font-family: var(--ff-heading);
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.01em;
+}
+
+/* Font weights cụ thể cho từng heading level */
+h1 { font-weight: 600; }
+h2 { font-weight: 500; }
+h3 { font-weight: 500; }
+h4 { font-weight: 400; }
+h5 { font-weight: 400; }
+h6 { font-weight: 400; }
+
+/* Roboto cho tất cả banner elements */
+.entertainment-banner h1,
+.entertainment-banner .banner-title,
+.cuisine-banner h1,
+.cuisine-banner .banner-title,
+.attraction-banner h1,
+.attraction-banner .banner-title,
+.accommodation-banner h1,
+.accommodation-banner .banner-title,
+.restaurant-banner h1,
+.restaurant-banner .banner-title,
+.blog-banner h1,
+.blog-banner .banner-title,
+.news-banner h1,
+.news-banner .banner-title {
+  font-family: var(--ff-heading);
+  font-weight: 600;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.01em;
 }
 
 img {
