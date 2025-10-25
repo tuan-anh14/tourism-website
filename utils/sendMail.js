@@ -2,8 +2,8 @@ const nodemailer = require("nodemailer");
 
 module.exports.sendMail = (email, subject, html) => {
   // Cấu hình email trực tiếp
-  const emailUser = "thieutuananh14092k4@gmail.com";
-  const emailPassword = "tbnx euer npmr eqfq";
+  const emailUser = "hanoivibess@gmail.com";
+  const emailPassword = "ixhx ebhl ypdr novd";
   const smtpHost = "smtp.gmail.com";
   const smtpPort = 587;
 
