@@ -35,32 +35,32 @@
                 <div class="filter-row">
                     <div class="box" role="search">
                         <i class="fa fa-search" aria-hidden="true" style="margin-right:8px"></i>
-                        <input id="acc-search" type="text" placeholder="Tìm theo tên cơ sở lưu trú..." aria-label="Tìm theo tên" />
+                        <input id="acc-search" type="text" placeholder="Tìm theo tên cơ sở lưu trú..." aria-label="Tìm theo tên" value="<%= filters.search || '' %>" />
                     </div>
                     <div class="box">
                         <select id="acc-price" aria-label="Chọn mức giá">
-                            <option value="all">Tất cả mức giá</option>
-                            <option value="lt1m">Dưới 1.000.000đ</option>
-                            <option value="1to2m">1.000.000đ - 2.000.000đ</option>
-                            <option value="2to3m">2.000.000đ - 3.000.000đ</option>
-                            <option value="gt3m">Trên 3.000.000đ</option>
+                            <option value="all" <%= filters.price === 'all' || !filters.price ? 'selected' : '' %>>Tất cả mức giá</option>
+                            <option value="lt1m" <%= filters.price === 'lt1m' ? 'selected' : '' %>>Dưới 1.000.000đ</option>
+                            <option value="1to2m" <%= filters.price === '1to2m' ? 'selected' : '' %>>1.000.000đ - 2.000.000đ</option>
+                            <option value="2to3m" <%= filters.price === '2to3m' ? 'selected' : '' %>>2.000.000đ - 3.000.000đ</option>
+                            <option value="gt3m" <%= filters.price === 'gt3m' ? 'selected' : '' %>>Trên 3.000.000đ</option>
                         </select>
                     </div>
                     <div class="box">
                         <select id="acc-area" aria-label="Chọn khu vực">
-                            <option value="all">Tất cả khu vực</option>
-                            <option value="Hoàn Kiếm">Hoàn Kiếm</option>
-                            <option value="Ba Đình">Ba Đình</option>
-                            <option value="Tây Hồ">Tây Hồ</option>
-                            <option value="Long Biên">Long Biên</option>
-                            <option value="Cầu Giấy">Cầu Giấy</option>
-                            <option value="Đống Đa">Đống Đa</option>
-                            <option value="Hai Bà Trưng">Hai Bà Trưng</option>
-                            <option value="Hoàng Mai">Hoàng Mai</option>
-                            <option value="Thanh Xuân">Thanh Xuân</option>
-                            <option value="Hà Đông">Hà Đông</option>
-                            <option value="Nam Từ Liêm">Nam Từ Liêm</option>
-                            <option value="Bắc Từ Liêm">Bắc Từ Liêm</option>
+                            <option value="all" <%= filters.area === 'all' || !filters.area ? 'selected' : '' %>>Tất cả khu vực</option>
+                            <option value="Hoàn Kiếm" <%= filters.area === 'Hoàn Kiếm' ? 'selected' : '' %>>Hoàn Kiếm</option>
+                            <option value="Ba Đình" <%= filters.area === 'Ba Đình' ? 'selected' : '' %>>Ba Đình</option>
+                            <option value="Tây Hồ" <%= filters.area === 'Tây Hồ' ? 'selected' : '' %>>Tây Hồ</option>
+                            <option value="Long Biên" <%= filters.area === 'Long Biên' ? 'selected' : '' %>>Long Biên</option>
+                            <option value="Cầu Giấy" <%= filters.area === 'Cầu Giấy' ? 'selected' : '' %>>Cầu Giấy</option>
+                            <option value="Đống Đa" <%= filters.area === 'Đống Đa' ? 'selected' : '' %>>Đống Đa</option>
+                            <option value="Hai Bà Trưng" <%= filters.area === 'Hai Bà Trưng' ? 'selected' : '' %>>Hai Bà Trưng</option>
+                            <option value="Hoàng Mai" <%= filters.area === 'Hoàng Mai' ? 'selected' : '' %>>Hoàng Mai</option>
+                            <option value="Thanh Xuân" <%= filters.area === 'Thanh Xuân' ? 'selected' : '' %>>Thanh Xuân</option>
+                            <option value="Hà Đông" <%= filters.area === 'Hà Đông' ? 'selected' : '' %>>Hà Đông</option>
+                            <option value="Nam Từ Liêm" <%= filters.area === 'Nam Từ Liêm' ? 'selected' : '' %>>Nam Từ Liêm</option>
+                            <option value="Bắc Từ Liêm" <%= filters.area === 'Bắc Từ Liêm' ? 'selected' : '' %>>Bắc Từ Liêm</option>
                         </select>
                     </div>
                 </div>

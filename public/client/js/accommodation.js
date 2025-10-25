@@ -27,59 +27,62 @@
         };
     }
 
-    function applyFilters() {
-        var q = normalize(searchInput ? searchInput.value : '');
-        var selectedType = typeSelect ? typeSelect.value : 'all';
-        var priceBucket = parsePriceBucket(priceSelect ? priceSelect.value : 'all');
-        var area = areaSelect ? areaSelect.value : 'all';
-        var activePill = pillContainer ? pillContainer.querySelector('.pill.active') : null;
-        var pillType = activePill ? activePill.getAttribute('data-type') : 'all';
-        var type = selectedType !== 'all' ? selectedType : pillType;
+    // Client-side filtering removed - now using server-side filtering
 
-        cards.forEach(function (card) {
-            var d = getCardData(card);
-            var matchesText = q ? normalize(d.title).includes(q) : true;
-            var matchesType = type === 'all' ? true : d.type === type;
-            var matchesArea = area === 'all' ? true : d.area === area;
-            var matchesP = matchesPrice(priceBucket, d.price);
-            var visible = matchesText && matchesType && matchesArea && matchesP;
-            if (visible) {
-                if (card.classList.contains('is-hidden')) {
-                    card.classList.remove('is-hidden');
-                    requestAnimationFrame(function(){ card.classList.remove('is-hiding'); });
-                } else {
-                    card.classList.remove('is-hiding');
-                }
-            } else {
-                if (!card.classList.contains('is-hidden')) {
-                    card.classList.add('is-hiding');
-                    setTimeout(function(){ card.classList.add('is-hidden'); }, 160);
-                }
-            }
-        });
-    }
-
-    function onPillClick(e) {
-        var pill = e.target.closest('.pill'); if (!pill) return;
-        pillContainer.querySelectorAll('.pill').forEach(function (p) { p.classList.remove('active'); });
-        pill.classList.add('active');
-        if (typeSelect) typeSelect.value = 'all';
-        applyFilters();
-    }
+    // Pills functionality not implemented for accommodations
 
     function init() {
         searchInput = document.getElementById('acc-search');
-        typeSelect = document.getElementById('acc-type');
         priceSelect = document.getElementById('acc-price');
         areaSelect = document.getElementById('acc-area');
-        pillContainer = document.querySelector('.accommodation-pills');
-        cards = Array.prototype.slice.call(document.querySelectorAll('.accommodation-card'));
 
-        if (searchInput) searchInput.addEventListener('input', applyFilters);
-        if (typeSelect) typeSelect.addEventListener('change', function(){ if (pillContainer) pillContainer.querySelectorAll('.pill').forEach(function (p) { p.classList.remove('active'); }); applyFilters(); });
-        if (priceSelect) priceSelect.addEventListener('change', applyFilters);
-        if (areaSelect) areaSelect.addEventListener('change', applyFilters);
-        if (pillContainer) pillContainer.addEventListener('click', onPillClick);
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                // Debounce search to avoid too many requests
+                clearTimeout(this.searchTimeout);
+                this.searchTimeout = setTimeout(function() {
+                    var searchValue = searchInput.value.trim();
+                    var url = new URL(window.location.href);
+                    if (searchValue) {
+                        url.searchParams.set('search', searchValue);
+                    } else {
+                        url.searchParams.delete('search');
+                    }
+                    url.searchParams.set('page', '1'); // Reset to page 1
+                    window.location.href = url.toString();
+                }, 500); // 500ms delay
+            });
+        }
+        // Type filter not implemented for accommodations
+        if (priceSelect) {
+            priceSelect.addEventListener('change', function() {
+                // Reload page with selected price filter
+                var selectedPrice = this.value;
+                var url = new URL(window.location.href);
+                if (selectedPrice && selectedPrice !== 'all') {
+                    url.searchParams.set('price', selectedPrice);
+                } else {
+                    url.searchParams.delete('price');
+                }
+                url.searchParams.set('page', '1'); // Reset to page 1
+                window.location.href = url.toString();
+            });
+        }
+        if (areaSelect) {
+            areaSelect.addEventListener('change', function() {
+                // Reload page with selected area filter
+                var selectedArea = this.value;
+                var url = new URL(window.location.href);
+                if (selectedArea && selectedArea !== 'all') {
+                    url.searchParams.set('area', selectedArea);
+                } else {
+                    url.searchParams.delete('area');
+                }
+                url.searchParams.set('page', '1'); // Reset to page 1
+                window.location.href = url.toString();
+            });
+        }
+        // Pills functionality not implemented for accommodations
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

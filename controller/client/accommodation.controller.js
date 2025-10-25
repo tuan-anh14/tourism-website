@@ -13,6 +13,8 @@ module.exports.accommodation = async (req, res) => {
             isActive: true 
         };
         
+        // Type filter not implemented for accommodations
+        
         if (area && area !== 'all') {
             filter.district = area;
         }
