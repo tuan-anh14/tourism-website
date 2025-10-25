@@ -36,46 +36,46 @@ const SYSTEM_PROMPTS = {
 // Pre-defined template responses for quick questions
 const TEMPLATE_RESPONSES = {
   // Chào hỏi và giới thiệu
-  "Xin chào ViA": "ViA: Xin chào! Tôi rất vui được hỗ trợ du lịch Hà Nội cho bạn.",
-  "Chào bạn ViA": "ViA: Chào bạn! Bạn muốn khám phá điểm đến nào ở Hà Nội hôm nay?",
-  "Hi trợ lý": "ViA: Chào bạn! Tôi là trợ lý du lịch ViA của Hà Nội Vibes, bạn cần gì?",
-  "Chào bạn": "ViA: Xin chào! Mình có thể giúp gì cho hành trình của bạn?",
-  "Hello ViA": "ViA: Hello! Tôi có thể giúp bạn lên kế hoạch du lịch Hà Nội.",
-  "ViA ơi": "ViA: Vâng, tôi đây! Bạn cần tư vấn điểm đến hay lưu ý gì khi đi Hà Nội?",
-  "Chào chatbot": "ViA: Xin chào! Tôi là chatbot ViA - trợ lý du lịch Hà Nội. Bạn muốn hỏi gì?",
-  "Bạn là ai?": "ViA: Tôi là ViA, trợ lý du lịch thông minh cho website Hà Nội Vibes.",
-  "Tôi cần giúp đỡ": "ViA: Rất vui được giúp bạn! Bạn muốn biết thông tin gì về Hà Nội?",
+  "Xin chào ViA": "ViA: Xin chào! Tôi rất vui được hỗ trợ bạn. Bạn muốn hỏi gì?",
+  "Chào bạn ViA": "ViA: Chào bạn! Tôi có thể giúp bạn với nhiều chủ đề khác nhau. Bạn cần gì?",
+  "Hi trợ lý": "ViA: Chào bạn! Tôi là trợ lý AI ViA, bạn cần gì?",
+  "Chào bạn": "ViA: Xin chào! Mình có thể giúp gì cho bạn?",
+  "Hello ViA": "ViA: Hello! Tôi có thể giúp bạn với nhiều câu hỏi khác nhau.",
+  "ViA ơi": "ViA: Vâng, tôi đây! Bạn cần hỏi gì?",
+  "Chào chatbot": "ViA: Xin chào! Tôi là chatbot ViA - trợ lý AI. Bạn muốn hỏi gì?",
+  "Bạn là ai?": "ViA: Tôi là ViA, trợ lý AI thông minh. Tôi có thể giúp bạn với nhiều câu hỏi khác nhau.",
+  "Tôi cần giúp đỡ": "ViA: Rất vui được giúp bạn! Bạn muốn biết thông tin gì?",
   "Mình muốn hỏi": "ViA: Xin vui lòng nói rõ câu hỏi để tôi hỗ trợ nhé!",
-  "Chào buổi tối": "ViA: Chào bạn buổi tối! Tôi có thể giới thiệu gì cho bạn về Hà Nội?",
-  "Chúc bạn một ngày tốt lành": "ViA: Cảm ơn bạn! Tôi cũng chúc bạn có kỳ nghỉ tuyệt vời tại Hà Nội!",
-  "Tôi muốn tìm địa điểm ăn uống": "ViA: Tốt quá! Bạn muốn món ăn đặc sản hay quán ăn gia đình?",
-  "Tôi muốn hỏi về khách sạn": "ViA: Được rồi! Bạn cần gợi ý khách sạn giá rẻ hay cao cấp?",
+  "Chào buổi tối": "ViA: Chào bạn buổi tối! Tôi có thể giúp gì cho bạn?",
+  "Chúc bạn một ngày tốt lành": "ViA: Cảm ơn bạn! Tôi cũng chúc bạn một ngày tốt lành!",
+  "Tôi muốn tìm địa điểm ăn uống": "ViA: Tốt quá! Bạn muốn tìm địa điểm ăn uống ở đâu?",
+  "Tôi muốn hỏi về khách sạn": "ViA: Được rồi! Bạn cần gợi ý khách sạn ở đâu?",
   "Bạn có thể giúp tôi không?": "ViA: Tất nhiên rồi! Hãy cho tôi biết bạn muốn biết điều gì nhé.",
   
   // Thêm nhiều kiểu chào hỏi khác nhau
-  "Hi": "ViA: Hi! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn cần tư vấn gì?",
-  "Hey": "ViA: Hey! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn muốn hỏi gì?",
-  "Chào": "ViA: Chào bạn! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn cần tư vấn gì?",
-  "Xin chào": "ViA: Xin chào! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn muốn hỏi gì?",
-  "Hello": "ViA: Hello! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn cần tư vấn gì?",
-  "Chào buổi sáng": "ViA: Chào buổi sáng! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn muốn hỏi gì?",
-  "Chào buổi chiều": "ViA: Chào buổi chiều! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn cần tư vấn gì?",
-  "Good morning": "ViA: Good morning! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn cần tư vấn gì?",
-  "Good afternoon": "ViA: Good afternoon! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn muốn hỏi gì?",
-  "Good evening": "ViA: Good evening! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn cần tư vấn gì?",
-  "Bạn khỏe không": "ViA: Cảm ơn bạn! Tôi khỏe và sẵn sàng tư vấn du lịch Hà Nội cho bạn. Bạn muốn hỏi gì?",
-  "Bạn thế nào": "ViA: Tôi rất tốt! Sẵn sàng tư vấn du lịch Hà Nội cho bạn. Bạn cần hỏi gì?",
-  "Tôi cần tư vấn": "ViA: Tôi sẵn sàng tư vấn! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn muốn hỏi gì?",
-  "Có thể giúp tôi không": "ViA: Tất nhiên! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn cần hỏi gì về du lịch Hà Nội?",
-  "Tôi muốn hỏi": "ViA: Tôi sẵn sàng trả lời! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn muốn hỏi gì?",
-  "Tôi có câu hỏi": "ViA: Tôi sẵn sàng trả lời! Tôi là ViA - trợ lý du lịch Hà Nội. Bạn có câu hỏi gì?",
-  "Cảm ơn": "ViA: Không có gì! Tôi luôn sẵn sàng tư vấn du lịch Hà Nội cho bạn. Bạn còn câu hỏi gì khác không?",
-  "Thanks": "ViA: You're welcome! Tôi luôn sẵn sàng tư vấn du lịch Hà Nội cho bạn. Bạn còn câu hỏi gì khác không?",
-  "Thank you": "ViA: You're welcome! Tôi luôn sẵn sàng tư vấn du lịch Hà Nội cho bạn. Bạn còn câu hỏi gì khác không?",
-  "Tạm biệt": "ViA: Tạm biệt! Chúc bạn có chuyến du lịch Hà Nội vui vẻ! Hẹn gặp lại bạn!",
-  "Bye": "ViA: Bye! Chúc bạn có chuyến du lịch Hà Nội vui vẻ! Hẹn gặp lại bạn!",
-  "Goodbye": "ViA: Goodbye! Chúc bạn có chuyến du lịch Hà Nội vui vẻ! Hẹn gặp lại bạn!",
-  "Hẹn gặp lại": "ViA: Hẹn gặp lại! Chúc bạn có chuyến du lịch Hà Nội vui vẻ!",
+  "Hi": "ViA: Hi! Tôi là ViA - trợ lý AI. Bạn cần hỏi gì?",
+  "Hey": "ViA: Hey! Tôi là ViA - trợ lý AI. Bạn muốn hỏi gì?",
+  "Chào": "ViA: Chào bạn! Tôi là ViA - trợ lý AI. Bạn cần hỏi gì?",
+  "Xin chào": "ViA: Xin chào! Tôi là ViA - trợ lý AI. Bạn muốn hỏi gì?",
+  "Hello": "ViA: Hello! Tôi là ViA - trợ lý AI. Bạn cần hỏi gì?",
+  "Chào buổi sáng": "ViA: Chào buổi sáng! Tôi là ViA - trợ lý AI. Bạn muốn hỏi gì?",
+  "Chào buổi chiều": "ViA: Chào buổi chiều! Tôi là ViA - trợ lý AI. Bạn cần hỏi gì?",
+  "Good morning": "ViA: Good morning! Tôi là ViA - trợ lý AI. Bạn cần hỏi gì?",
+  "Good afternoon": "ViA: Good afternoon! Tôi là ViA - trợ lý AI. Bạn muốn hỏi gì?",
+  "Good evening": "ViA: Good evening! Tôi là ViA - trợ lý AI. Bạn cần hỏi gì?",
+  "Bạn khỏe không": "ViA: Cảm ơn bạn! Tôi khỏe và sẵn sàng giúp bạn. Bạn muốn hỏi gì?",
+  "Bạn thế nào": "ViA: Tôi rất tốt! Sẵn sàng giúp bạn. Bạn cần hỏi gì?",
+  "Tôi cần tư vấn": "ViA: Tôi sẵn sàng tư vấn! Tôi là ViA - trợ lý AI. Bạn muốn hỏi gì?",
+  "Có thể giúp tôi không": "ViA: Tất nhiên! Tôi là ViA - trợ lý AI. Bạn cần hỏi gì?",
+  "Tôi muốn hỏi": "ViA: Tôi sẵn sàng trả lời! Tôi là ViA - trợ lý AI. Bạn muốn hỏi gì?",
+  "Tôi có câu hỏi": "ViA: Tôi sẵn sàng trả lời! Tôi là ViA - trợ lý AI. Bạn có câu hỏi gì?",
+  "Cảm ơn": "ViA: Không có gì! Tôi luôn sẵn sàng giúp bạn. Bạn còn câu hỏi gì khác không?",
+  "Thanks": "ViA: You're welcome! Tôi luôn sẵn sàng giúp bạn. Bạn còn câu hỏi gì khác không?",
+  "Thank you": "ViA: You're welcome! Tôi luôn sẵn sàng giúp bạn. Bạn còn câu hỏi gì khác không?",
+  "Tạm biệt": "ViA: Tạm biệt! Chúc bạn một ngày tốt lành! Hẹn gặp lại bạn!",
+  "Bye": "ViA: Bye! Chúc bạn một ngày tốt lành! Hẹn gặp lại bạn!",
+  "Goodbye": "ViA: Goodbye! Chúc bạn một ngày tốt lành! Hẹn gặp lại bạn!",
+  "Hẹn gặp lại": "ViA: Hẹn gặp lại! Chúc bạn một ngày tốt lành!",
   
   // Thông tin cơ bản về Hà Nội
   "Hà Nội có gì đặc biệt": "ViA: Hà Nội có 1000 năm lịch sử, phố cổ 36 phố phường, hồ Gươm, Văn Miếu, ẩm thực đặc sản như phở, bún chả, chả cá.",
@@ -399,27 +399,7 @@ exports.handleChatCompletion = async (req, res) => {
       const userMessage = lastUserMessage.content.trim();
       console.log('🔍 Checking template for:', userMessage);
       
-      // Check for off-topic questions first
-      const offTopicKeywords = ['thời tiết', 'tin tức', 'chính trị', 'kinh tế', 'thể thao', 'giáo dục', 'công nghệ', 'y tế', 'pháp luật', 'tôn giáo', 'bitcoin', 'crypto', 'chứng khoán', 'bất động sản', 'nghề nghiệp', 'học tập', 'thi cử', 'việc làm', 'lương', 'thuế', 'bảo hiểm', 'ngân hàng', 'tài chính', 'đầu tư', 'kinh doanh', 'marketing', 'quảng cáo', 'bán hàng', 'khách hàng', 'sản phẩm', 'dịch vụ', 'hợp đồng', 'pháp lý', 'luật', 'quy định', 'chính sách', 'chính phủ', 'nhà nước', 'đảng', 'bầu cử', 'bỏ phiếu', 'dân chủ', 'tự do', 'quyền', 'nghĩa vụ', 'trách nhiệm', 'đạo đức', 'tâm linh', 'tôn giáo', 'phật giáo', 'công giáo', 'tin lành', 'hồi giáo', 'do thái', 'ấn độ giáo', 'phật', 'chúa', 'allah', 'thần', 'ma', 'quỷ', 'linh hồn', 'kiếp', 'nghiệp', 'duyên', 'phúc', 'tội', 'thiện', 'ác', 'tốt', 'xấu', 'đúng', 'sai', 'công bằng', 'bất công', 'giàu', 'nghèo', 'thành công', 'thất bại', 'hạnh phúc', 'đau khổ', 'yêu', 'ghét', 'giận', 'vui', 'buồn', 'lo', 'sợ', 'hy vọng', 'thất vọng', 'tích cực', 'tiêu cực', 'lạc quan', 'bi quan', 'tự tin', 'tự ti', 'kiêu ngạo', 'khiêm tốn', 'thành thật', 'dối trá', 'tốt bụng', 'độc ác', 'nhân từ', 'tàn nhẫn', 'bao dung', 'hẹp hòi', 'rộng lượng', 'ích kỷ', 'vị tha', 'cá nhân', 'tập thể', 'cộng đồng', 'xã hội', 'gia đình', 'bạn bè', 'đồng nghiệp', 'hàng xóm', 'người lạ', 'người quen', 'người thân', 'người yêu', 'vợ chồng', 'con cái', 'cha mẹ', 'ông bà', 'anh chị', 'em', 'chú', 'bác', 'cô', 'dì', 'cậu', 'mợ', 'ông', 'bà', 'cụ', 'cố', 'tổ tiên', 'dòng họ', 'gia phả', 'truyền thống', 'văn hóa', 'lịch sử', 'địa lý', 'thiên nhiên', 'môi trường', 'khí hậu', 'thời tiết', 'nhiệt độ', 'mưa', 'nắng', 'gió', 'bão', 'lũ', 'hạn hán', 'động đất', 'sóng thần', 'thiên tai', 'thảm họa', 'tai nạn', 'bệnh tật', 'dịch bệnh', 'virus', 'vi khuẩn', 'ký sinh trùng', 'nấm', 'độc tố', 'chất độc', 'thuốc', 'dược phẩm', 'y học', 'bác sĩ', 'y tá', 'bệnh viện', 'phòng khám', 'phẫu thuật', 'điều trị', 'chữa bệnh', 'phòng ngừa', 'tiêm chủng', 'vaccine', 'kháng thể', 'miễn dịch', 'sức khỏe', 'thể dục', 'thể thao', 'vận động', 'chạy bộ', 'bơi lội', 'đạp xe', 'gym', 'yoga', 'thiền', 'thở', 'hít thở', 'thư giãn', 'nghỉ ngơi', 'ngủ', 'mơ', 'mộng', 'thức', 'tỉnh', 'sống', 'chết', 'sinh', 'tử', 'bắt đầu', 'kết thúc', 'bắt đầu', 'kết thúc', 'bắt đầu', 'kết thúc'];
-      
-      const isOffTopic = offTopicKeywords.some(keyword => 
-        userMessage.toLowerCase().includes(keyword.toLowerCase())
-      );
-      
-      if (isOffTopic) {
-        console.log('🚫 Off-topic question detected');
-        const responseData = { 
-          role: 'assistant', 
-          content: 'ViA: Tôi chỉ tư vấn du lịch Hà Nội. Bạn muốn hỏi gì về du lịch Hà Nội?' 
-        };
-        
-        if (user_id && session_id) {
-          setImmediate(() => saveChatHistory(user_id, session_id, history, responseData));
-        }
-        
-        releaseRateLimit(clientIP);
-        return res.json(responseData);
-      }
+      // Off-topic filtering removed - chatbot can now answer any question
       
       // Try exact match first
       if (TEMPLATE_RESPONSES[userMessage]) {
