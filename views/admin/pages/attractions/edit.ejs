@@ -260,13 +260,13 @@
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="map[lat]" class="form-label">Vĩ độ (Latitude)</label>
-                                <input type="number" step="any" class="form-control" id="map[lat]" name="map[lat]" value="<%= attraction.map?.lat || '' %>">
+                                <input type="number" step="any" class="form-control" id="map[lat]" name="map[lat]" value="<%= attraction.map?.coordinates ? attraction.map.coordinates[1] : (attraction.map?.lat || '') %>">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="map[lng]" class="form-label">Kinh độ (Longitude)</label>
-                                <input type="number" step="any" class="form-control" id="map[lng]" name="map[lng]" value="<%= attraction.map?.lng || '' %>">
+                                <input type="number" step="any" class="form-control" id="map[lng]" name="map[lng]" value="<%= attraction.map?.coordinates ? attraction.map.coordinates[0] : (attraction.map?.lng || '') %>">
                             </div>
                         </div>
                         <div class="col-md-4">

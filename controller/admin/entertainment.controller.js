@@ -120,11 +120,11 @@ module.exports.store = async (req, res) => {
     try {
         // Basic validation (support bracket notation map[lat]/map[lng]/map[embedUrl])
         const { zone, name, type, address, openHours, ticket } = req.body;
-        const mapBodyCreate = (req.body && req.body.map) || {};
-        const lat = req.body.lat || mapBodyCreate.lat;
-        const lng = req.body.lng || mapBodyCreate.lng;
-        const embedUrl = req.body.embedUrl || mapBodyCreate.embedUrl;
-        if (!zone || !name || !type || !address || !openHours || !ticket || !lat || !lng || !embedUrl) {
+        const mapData = req.body.map || {};
+        const lat = mapData.lat;
+        const lng = mapData.lng;
+        const embedUrl = mapData.embedUrl || '';
+        if (!zone || !name || !type || !address || !openHours || !ticket || !lat || !lng) {
             const zones = [
                 'Khu văn hóa - nghệ thuật',
                 'Công viên ngoài trời', 
@@ -233,9 +233,9 @@ module.exports.store = async (req, res) => {
             images: imagesArray,
             reviews: reviewsArray,
             map: {
-                lat: parseFloat(lat),
-                lng: parseFloat(lng),
-                embedUrl
+                type: 'Point',
+                coordinates: [parseFloat(lng), parseFloat(lat)], // GeoJSON uses [longitude, latitude]
+                embedUrl: embedUrl
             }
         };
 
@@ -326,13 +326,17 @@ module.exports.edit = async (req, res) => {
 // Update entertainment
 module.exports.update = async (req, res) => {
     try {
+        console.log('=== ENTERTAINMENT UPDATE DEBUG ===');
+        console.log('Body:', req.body);
+        console.log('Map data:', req.body.map);
+        
         // Basic validation (support bracket notation map[lat]/map[lng]/map[embedUrl])
         const { zone, name, type, address, openHours, ticket } = req.body;
-        const mapBodyUpdate = (req.body && req.body.map) || {};
-        const lat = req.body.lat || mapBodyUpdate.lat;
-        const lng = req.body.lng || mapBodyUpdate.lng;
-        const embedUrl = req.body.embedUrl || mapBodyUpdate.embedUrl;
-        if (!zone || !name || !type || !address || !openHours || !ticket || !lat || !lng || !embedUrl) {
+        const mapData = req.body.map || {};
+        const lat = mapData.lat;
+        const lng = mapData.lng;
+        const embedUrl = mapData.embedUrl || '';
+        if (!zone || !name || !type || !address || !openHours || !ticket || !lat || !lng) {
             const entertainment = await Entertainment.findById(req.params.id);
             const zones = [
                 'Khu văn hóa - nghệ thuật',
@@ -467,9 +471,9 @@ module.exports.update = async (req, res) => {
             images: imagesArray,
             reviews: reviewsArray,
             map: {
-                lat: parseFloat(lat),
-                lng: parseFloat(lng),
-                embedUrl
+                type: 'Point',
+                coordinates: [parseFloat(lng), parseFloat(lat)], // GeoJSON uses [longitude, latitude]
+                embedUrl: embedUrl
             },
             isActive: isActive === 'on',
             featured: featured === 'on',

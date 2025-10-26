@@ -247,14 +247,14 @@
                             <div class="mb-3">
                                 <label for="map[lat]" class="form-label">Vĩ độ (Latitude)</label>
                                 <input type="number" step="any" class="form-control" id="map[lat]" name="map[lat]" 
-                                       value="<%= entertainment && entertainment.map ? entertainment.map.lat : '' %>">
+                                       value="<%= entertainment && entertainment.map ? (entertainment.map.coordinates ? entertainment.map.coordinates[1] : entertainment.map.lat) : '' %>">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="map[lng]" class="form-label">Kinh độ (Longitude)</label>
                                 <input type="number" step="any" class="form-control" id="map[lng]" name="map[lng]" 
-                                       value="<%= entertainment && entertainment.map ? entertainment.map.lng : '' %>">
+                                       value="<%= entertainment && entertainment.map ? (entertainment.map.coordinates ? entertainment.map.coordinates[0] : entertainment.map.lng) : '' %>">
                             </div>
                         </div>
                         <div class="col-md-4">

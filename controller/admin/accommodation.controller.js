@@ -224,9 +224,13 @@ module.exports.store = async (req, res) => {
       data.star = parseInt(data.star);
     }
 
-    // Xử lý map coordinates
+    // Xử lý map coordinates - ensure GeoJSON format
     if (data.map && data.map.coordinates && data.map.coordinates.length === 2) {
       data.map.coordinates = data.map.coordinates.map(coord => parseFloat(coord));
+      // Ensure type field is present for GeoJSON
+      if (!data.map.type) {
+        data.map.type = 'Point';
+      }
     }
 
     // Generate slug from name if not provided
@@ -461,9 +465,13 @@ module.exports.editPatch = async (req, res) => {
       data.star = parseInt(data.star);
     }
 
-    // Normalize map coordinates
+    // Normalize map coordinates - ensure GeoJSON format
     if (data.map && data.map.coordinates && data.map.coordinates.length === 2) {
       data.map.coordinates = data.map.coordinates.map(coord => parseFloat(coord));
+      // Ensure type field is present for GeoJSON
+      if (!data.map.type) {
+        data.map.type = 'Point';
+      }
     }
 
     // Remove method-override helper
@@ -607,9 +615,13 @@ module.exports.update = async (req, res) => {
       data.star = parseInt(data.star);
     }
 
-    // Xử lý map coordinates
+    // Xử lý map coordinates - ensure GeoJSON format
     if (data.map && data.map.coordinates && data.map.coordinates.length === 2) {
       data.map.coordinates = data.map.coordinates.map(coord => parseFloat(coord));
+      // Ensure type field is present for GeoJSON
+      if (!data.map.type) {
+        data.map.type = 'Point';
+      }
     }
 
     // Cập nhật images vào data

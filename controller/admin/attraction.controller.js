@@ -245,10 +245,30 @@ module.exports.store = async (req, res) => {
       data.ticket_info = data.ticket_info.trim();
     }
 
-    // Xử lý map coordinates
-    if (data.map && data.map.lat && data.map.lng) {
-      data.map.lat = parseFloat(data.map.lat);
-      data.map.lng = parseFloat(data.map.lng);
+    // Normalize map coordinates - convert from {lat, lng, link} to GeoJSON format
+    if (data.map) {
+      const lat = data.map.lat;
+      const lng = data.map.lng;
+      const link = data.map.link || '';
+      
+      // Check if we have valid coordinates
+      const latNum = lat ? parseFloat(lat) : null;
+      const lngNum = lng ? parseFloat(lng) : null;
+      
+      if (latNum !== null && lngNum !== null && 
+          !Number.isNaN(latNum) && !Number.isNaN(lngNum) &&
+          latNum >= -90 && latNum <= 90 && 
+          lngNum >= -180 && lngNum <= 180) {
+        // Convert to GeoJSON format
+        data.map = {
+          type: 'Point',
+          coordinates: [lngNum, latNum], // GeoJSON uses [longitude, latitude]
+          link: link
+        };
+      } else {
+        // Invalid coordinates, set to null to avoid MongoDB errors
+        data.map = null;
+      }
     }
 
     const attraction = new Attraction(data);
@@ -464,12 +484,30 @@ module.exports.editPatch = async (req, res) => {
       data.ticket_info = data.ticket_info.trim();
     }
 
-    // Normalize map coordinates
-    if (data.map && data.map.lat && data.map.lng) {
-      const latNum = parseFloat(data.map.lat);
-      const lngNum = parseFloat(data.map.lng);
-      if (!Number.isNaN(latNum)) data.map.lat = latNum;
-      if (!Number.isNaN(lngNum)) data.map.lng = lngNum;
+    // Normalize map coordinates - convert from {lat, lng, link} to GeoJSON format
+    if (data.map) {
+      const lat = data.map.lat;
+      const lng = data.map.lng;
+      const link = data.map.link || '';
+      
+      // Check if we have valid coordinates
+      const latNum = lat ? parseFloat(lat) : null;
+      const lngNum = lng ? parseFloat(lng) : null;
+      
+      if (latNum !== null && lngNum !== null && 
+          !Number.isNaN(latNum) && !Number.isNaN(lngNum) &&
+          latNum >= -90 && latNum <= 90 && 
+          lngNum >= -180 && lngNum <= 180) {
+        // Convert to GeoJSON format
+        data.map = {
+          type: 'Point',
+          coordinates: [lngNum, latNum], // GeoJSON uses [longitude, latitude]
+          link: link
+        };
+      } else {
+        // Invalid coordinates, set to null to avoid MongoDB errors
+        data.map = null;
+      }
     }
 
     // Remove method-override helper
@@ -606,10 +644,30 @@ module.exports.update = async (req, res) => {
       data.ticket_info = data.ticket_info.trim();
     }
 
-    // Xử lý map coordinates
-    if (data.map && data.map.lat && data.map.lng) {
-      data.map.lat = parseFloat(data.map.lat);
-      data.map.lng = parseFloat(data.map.lng);
+    // Normalize map coordinates - convert from {lat, lng, link} to GeoJSON format
+    if (data.map) {
+      const lat = data.map.lat;
+      const lng = data.map.lng;
+      const link = data.map.link || '';
+      
+      // Check if we have valid coordinates
+      const latNum = lat ? parseFloat(lat) : null;
+      const lngNum = lng ? parseFloat(lng) : null;
+      
+      if (latNum !== null && lngNum !== null && 
+          !Number.isNaN(latNum) && !Number.isNaN(lngNum) &&
+          latNum >= -90 && latNum <= 90 && 
+          lngNum >= -180 && lngNum <= 180) {
+        // Convert to GeoJSON format
+        data.map = {
+          type: 'Point',
+          coordinates: [lngNum, latNum], // GeoJSON uses [longitude, latitude]
+          link: link
+        };
+      } else {
+        // Invalid coordinates, set to null to avoid MongoDB errors
+        data.map = null;
+      }
     }
 
     // Thêm ảnh mới nếu upload từ form và giữ ảnh cũ
