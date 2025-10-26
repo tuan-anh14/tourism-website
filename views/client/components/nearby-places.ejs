@@ -8,7 +8,11 @@
             Địa điểm gần đây
         </h2>
         <p class="section-subtitle">
-            Khám phá các địa điểm thú vị trong bán kính <span class="radius-info">5km</span> xung quanh khu vực này
+            Khám phá các địa điểm thú vị trong bán kính <span class="radius-info">5km</span> xung quanh khu vực này (khoảng cách tương đối - tham khảo)
+        </p>
+        <p class="section-subtitle click-to-reload">
+            <i class="fa fa-refresh"></i>
+            Click để tải lại dữ liệu ...
         </p>
         
         <!-- Tabs Navigation -->
@@ -113,6 +117,7 @@
 .nearby-places-section {
     padding: 60px 0;
     background: #f8f9fa;
+    border-radius: 20px;
 }
 
 .nearby-places-section .section-title {
@@ -131,13 +136,41 @@
 }
 
 .radius-info {
-    background: linear-gradient(135deg, #007bff, #0056b3);
+    background: linear-gradient(135deg, #1261A6, #1261A6);
     color: white;
     padding: 2px 8px;
     border-radius: 12px;
     font-weight: 600;
     font-size: 0.95rem;
     box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+
+.click-to-reload {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 10px 20px;
+    border-radius: 25px;
+    background: rgba(18, 97, 166, 0.1);
+    border: 2px solid transparent;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.click-to-reload:hover {
+    background: rgba(18, 97, 166, 0.2);
+    border-color: #1261A6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(18, 97, 166, 0.2);
+}
+
+.click-to-reload i {
+    margin-right: 8px;
+    color: #1261A6;
+    transition: transform 0.3s ease;
+}
+
+.click-to-reload:hover i {
+    transform: rotate(180deg);
 }
 
 /* Tabs */
@@ -164,15 +197,15 @@
 }
 
 .tab-btn:hover {
-    border-color: #007bff;
-    color: #007bff;
+    border-color: #1261A6;
+    color: #1261A6;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
 }
 
 .tab-btn.active {
-    background: #007bff;
-    border-color: #007bff;
+    background: #1261A6;
+    border-color: #1261A6;
     color: white;
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
@@ -262,7 +295,7 @@
 }
 
 .view-btn {
-    background: #007bff;
+    background: #1261A6;
     color: white;
     border: none;
     padding: 12px 24px;
@@ -276,7 +309,7 @@
 }
 
 .view-btn:hover {
-    background: #0056b3;
+    background: #1261A6;
     transform: scale(1.05);
 }
 
@@ -353,7 +386,7 @@
 .loading-placeholder i {
     font-size: 2rem;
     margin-bottom: 15px;
-    color: #007bff;
+    color: #1261A6;
 }
 
 /* No Results */
@@ -424,6 +457,7 @@ class NearbyPlaces {
     
     init() {
         this.bindTabEvents();
+        this.bindReloadEvent();
         // Load appropriate tab based on current type
         this.loadAppropriateTab();
     }
@@ -438,7 +472,12 @@ class NearbyPlaces {
         };
         
         const tabs = tabOrder[this.currentType] || ['cuisine', 'accommodation', 'attraction', 'entertainment'];
-        this.loadTab(tabs[0]); // Load first tab (same type)
+        
+        // Set the appropriate tab as active first
+        this.switchTab(tabs[0]);
+        
+        // Then load the data
+        this.loadTab(tabs[0]);
     }
     
     bindTabEvents() {
@@ -446,8 +485,21 @@ class NearbyPlaces {
             btn.addEventListener('click', (e) => {
                 const tabName = e.currentTarget.dataset.tab;
                 this.switchTab(tabName);
+                // Load tab data if not already loaded
+                if (!this.loadedTabs.has(tabName)) {
+                    this.loadTab(tabName);
+                }
             });
         });
+    }
+    
+    bindReloadEvent() {
+        const reloadElement = document.querySelector('.click-to-reload');
+        if (reloadElement) {
+            reloadElement.addEventListener('click', () => {
+                this.reloadAllData();
+            });
+        }
     }
     
     switchTab(tabName) {
@@ -462,10 +514,59 @@ class NearbyPlaces {
             content.classList.remove('active');
         });
         document.getElementById(`${tabName}-tab`).classList.add('active');
+    }
+    
+    reloadAllData() {
+        // Clear loaded tabs to force reload
+        this.loadedTabs.clear();
         
-        // Load tab data if not already loaded
-        if (!this.loadedTabs.has(tabName)) {
+        // Reset all tab counts
+        document.querySelectorAll('.count').forEach(count => {
+            count.textContent = '0';
+        });
+        
+        // Show loading state for all tabs
+        document.querySelectorAll('.places-grid').forEach(grid => {
+            grid.innerHTML = `
+                <div class="loading-placeholder">
+                    <i class="fa fa-spinner fa-spin"></i>
+                    <p>Đang tải lại dữ liệu...</p>
+                </div>
+            `;
+        });
+        
+        // Hide no results message
+        const noResults = document.getElementById('no-results');
+        if (noResults) {
+            noResults.style.display = 'none';
+        }
+        
+        // Reload current active tab
+        const activeTab = document.querySelector('.tab-btn.active');
+        if (activeTab) {
+            const tabName = activeTab.dataset.tab;
             this.loadTab(tabName);
+        }
+        
+        // Show reload feedback
+        this.showReloadFeedback();
+    }
+    
+    showReloadFeedback() {
+        const reloadElement = document.querySelector('.click-to-reload');
+        if (reloadElement) {
+            const originalText = reloadElement.innerHTML;
+            reloadElement.innerHTML = '<i class="fa fa-check"></i> Đã tải lại dữ liệu!';
+            reloadElement.style.background = 'rgba(40, 167, 69, 0.1)';
+            reloadElement.style.borderColor = '#28a745';
+            reloadElement.style.color = '#28a745';
+            
+            setTimeout(() => {
+                reloadElement.innerHTML = originalText;
+                reloadElement.style.background = 'rgba(18, 97, 166, 0.1)';
+                reloadElement.style.borderColor = 'transparent';
+                reloadElement.style.color = '#7f8c8d';
+            }, 2000);
         }
     }
     
@@ -592,7 +693,15 @@ class NearbyPlaces {
         
         // Set click handler
         const viewBtn = card.querySelector('.view-btn');
-        viewBtn.onclick = () => this.viewPlace(place, type);
+        if (type === 'cuisine' && place.mapLink) {
+            // For cuisine places, show "Xem bản đồ" and link to mapLink
+            viewBtn.innerHTML = '<i class="fa fa-map"></i> Xem bản đồ';
+            viewBtn.onclick = () => window.open(place.mapLink, '_blank');
+        } else {
+            // For other types, show "Xem chi tiết" and link to detail page
+            viewBtn.innerHTML = '<i class="fa fa-eye"></i> Xem chi tiết';
+            viewBtn.onclick = () => this.viewPlace(place, type);
+        }
         
         return card;
     }
