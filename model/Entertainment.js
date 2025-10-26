@@ -98,16 +98,33 @@ const entertainmentSchema = new mongoose.Schema({
     type: String,
     trim: true
   }],
+  // Map Information - GeoJSON Point format for optimal geo queries
   map: {
+    type: { 
+      type: String, 
+      enum: ['Point'], 
+      default: 'Point' 
+    },
+    coordinates: { 
+      type: [Number], 
+      default: [0, 0],
+      validate: {
+        validator: function(coords) {
+          return coords.length === 2 && 
+                 coords[0] >= -180 && coords[0] <= 180 && // longitude
+                 coords[1] >= -90 && coords[1] <= 90;     // latitude
+        },
+        message: 'Coordinates must be [longitude, latitude] with valid ranges'
+      }
+    },
+    // Legacy fields for backward compatibility
     lat: {
       type: Number,
-      required: true,
       min: -90,
       max: 90
     },
     lng: {
       type: Number,
-      required: true,
       min: -180,
       max: 180
     },
@@ -131,6 +148,8 @@ const entertainmentSchema = new mongoose.Schema({
 // Add indexes for better performance
 entertainmentSchema.index({ zone: 1, type: 1 });
 entertainmentSchema.index({ isActive: 1, featured: 1 });
+// Critical: 2dsphere index for geo queries - MUST be created for performance
+entertainmentSchema.index({ map: '2dsphere' }, { sparse: true });
 entertainmentSchema.index({ name: 'text', address: 'text' });
 // slug index đã được định nghĩa trong field definition
 
@@ -185,38 +204,64 @@ entertainmentSchema.statics.calculateDistance = function(lat1, lng1, lat2, lng2)
   return R * c;
 };
 
-// Tìm quán ăn gần đây
-entertainmentSchema.statics.findNearbyCuisinePlaces = function(entertainmentId, radius = 5, limit = 10) {
-  return this.findById(entertainmentId).then(entertainment => {
-    if (!entertainment || !entertainment.map.lat || !entertainment.map.lng) {
+// Tìm quán ăn gần đây - OPTIMIZED with MongoDB $near
+entertainmentSchema.statics.findNearbyCuisinePlaces = async function(entertainmentId, radius = 5, limit = 10) {
+  const startTime = Date.now();
+  
+  try {
+    const entertainment = await this.findById(entertainmentId).lean();
+    if (!entertainment) {
+      console.log(`[GEO] Entertainment ${entertainmentId} not found`);
+      return [];
+    }
+    
+    // Get coordinates from new or legacy format
+    let lng, lat;
+    if (entertainment.map.coordinates && entertainment.map.coordinates.length >= 2) {
+      [lng, lat] = entertainment.map.coordinates;
+    } else if (entertainment.map.lat && entertainment.map.lng) {
+      lng = entertainment.map.lng;
+      lat = entertainment.map.lat;
+    } else {
+      console.log(`[GEO] No valid coordinates for entertainment ${entertainmentId}`);
       return [];
     }
     
     const CuisinePlace = require('./CuisinePlace');
-    return CuisinePlace.find({ 
+    
+    // Use MongoDB $near for optimal performance with 2dsphere index
+    const places = await CuisinePlace.find({
       isActive: true,
       status: 'published',
-      location: { $exists: true },
-      'location.coordinates': { $exists: true, $ne: null }
-    }).then(places => {
-      return places.filter(place => {
-        if (!place.location.coordinates || place.location.coordinates.length < 2) return false;
-        const [lng, lat] = place.location.coordinates;
-        const distance = this.calculateDistance(
-          entertainment.map.lat, 
-          entertainment.map.lng, 
-          lat, 
-          lng
-        );
-        place.distance = distance;
-        return distance <= radius;
-      })
-      .sort((a, b) => {
-        return a.distance - b.distance;
-      })
-      .slice(0, limit);
+      location: {
+        $near: {
+          $geometry: { 
+            type: 'Point', 
+            coordinates: [lng, lat] 
+          },
+          $maxDistance: radius * 1000 // Convert km to meters
+        }
+      }
+    })
+    .limit(limit)
+    .lean();
+    
+    // Add distance calculation for display
+    places.forEach(place => {
+      if (place.location.coordinates && place.location.coordinates.length >= 2) {
+        const [placeLng, placeLat] = place.location.coordinates;
+        place.distance = this.calculateDistance(lat, lng, placeLat, placeLng);
+      }
     });
-  });
+    
+    const queryTime = Date.now() - startTime;
+    console.log(`[GEO] Found ${places.length} nearby cuisine places in ${queryTime}ms`);
+    
+    return places;
+  } catch (error) {
+    console.error(`[GEO] Error finding nearby cuisine places:`, error);
+    return [];
+  }
 };
 
 // Tìm khách sạn gần đây

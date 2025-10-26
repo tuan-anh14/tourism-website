@@ -25,9 +25,13 @@ function getModelByType(type) {
 
 // GET /api/nearby-places/:currentType/:currentId/cuisine
 router.get('/:currentType/:currentId/cuisine', async (req, res) => {
+  const startTime = Date.now();
+  
   try {
     const { currentType, currentId } = req.params;
     const { radius = 5, limit = 6 } = req.query;
+    
+    console.log(`[API] Finding nearby cuisine places for ${currentType}:${currentId} (radius: ${radius}km, limit: ${limit})`);
     
     const currentModel = getModelByType(currentType);
     const nearbyPlaces = await currentModel.findNearbyCuisinePlaces(
@@ -36,18 +40,26 @@ router.get('/:currentType/:currentId/cuisine', async (req, res) => {
       parseInt(limit)
     );
     
+    const responseTime = Date.now() - startTime;
+    console.log(`[API] Found ${nearbyPlaces.length} nearby cuisine places in ${responseTime}ms`);
+    
     res.json(nearbyPlaces);
   } catch (error) {
-    console.error('Error fetching nearby cuisine places:', error);
+    const responseTime = Date.now() - startTime;
+    console.error(`[API] Error fetching nearby cuisine places after ${responseTime}ms:`, error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
 // GET /api/nearby-places/:currentType/:currentId/accommodation
 router.get('/:currentType/:currentId/accommodation', async (req, res) => {
+  const startTime = Date.now();
+  
   try {
     const { currentType, currentId } = req.params;
     const { radius = 5, limit = 6 } = req.query;
+    
+    console.log(`[API] Finding nearby accommodations for ${currentType}:${currentId} (radius: ${radius}km, limit: ${limit})`);
     
     const currentModel = getModelByType(currentType);
     const nearbyPlaces = await currentModel.findNearbyAccommodations(
@@ -56,18 +68,26 @@ router.get('/:currentType/:currentId/accommodation', async (req, res) => {
       parseInt(limit)
     );
     
+    const responseTime = Date.now() - startTime;
+    console.log(`[API] Found ${nearbyPlaces.length} nearby accommodations in ${responseTime}ms`);
+    
     res.json(nearbyPlaces);
   } catch (error) {
-    console.error('Error fetching nearby accommodations:', error);
+    const responseTime = Date.now() - startTime;
+    console.error(`[API] Error fetching nearby accommodations after ${responseTime}ms:`, error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
 // GET /api/nearby-places/:currentType/:currentId/attraction
 router.get('/:currentType/:currentId/attraction', async (req, res) => {
+  const startTime = Date.now();
+  
   try {
     const { currentType, currentId } = req.params;
     const { radius = 5, limit = 6 } = req.query;
+    
+    console.log(`[API] Finding nearby attractions for ${currentType}:${currentId} (radius: ${radius}km, limit: ${limit})`);
     
     const currentModel = getModelByType(currentType);
     const nearbyPlaces = await currentModel.findNearbyAttractions(
@@ -76,18 +96,26 @@ router.get('/:currentType/:currentId/attraction', async (req, res) => {
       parseInt(limit)
     );
     
+    const responseTime = Date.now() - startTime;
+    console.log(`[API] Found ${nearbyPlaces.length} nearby attractions in ${responseTime}ms`);
+    
     res.json(nearbyPlaces);
   } catch (error) {
-    console.error('Error fetching nearby attractions:', error);
+    const responseTime = Date.now() - startTime;
+    console.error(`[API] Error fetching nearby attractions after ${responseTime}ms:`, error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
 // GET /api/nearby-places/:currentType/:currentId/entertainment
 router.get('/:currentType/:currentId/entertainment', async (req, res) => {
+  const startTime = Date.now();
+  
   try {
     const { currentType, currentId } = req.params;
     const { radius = 5, limit = 6 } = req.query;
+    
+    console.log(`[API] Finding nearby entertainments for ${currentType}:${currentId} (radius: ${radius}km, limit: ${limit})`);
     
     const currentModel = getModelByType(currentType);
     const nearbyPlaces = await currentModel.findNearbyEntertainments(
@@ -96,9 +124,13 @@ router.get('/:currentType/:currentId/entertainment', async (req, res) => {
       parseInt(limit)
     );
     
+    const responseTime = Date.now() - startTime;
+    console.log(`[API] Found ${nearbyPlaces.length} nearby entertainments in ${responseTime}ms`);
+    
     res.json(nearbyPlaces);
   } catch (error) {
-    console.error('Error fetching nearby entertainments:', error);
+    const responseTime = Date.now() - startTime;
+    console.error(`[API] Error fetching nearby entertainments after ${responseTime}ms:`, error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

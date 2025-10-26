@@ -62,7 +62,7 @@ const accommodationSchema = new mongoose.Schema({
     source: { type: String, default: 'google', trim: true }
   }],
   
-  // Map Information
+  // Map Information - GeoJSON Point format for optimal geo queries
   map: {
     type: { 
       type: String, 
@@ -71,7 +71,15 @@ const accommodationSchema = new mongoose.Schema({
     },
     coordinates: { 
       type: [Number], 
-      default: [0, 0] 
+      default: [0, 0],
+      validate: {
+        validator: function(coords) {
+          return coords.length === 2 && 
+                 coords[0] >= -180 && coords[0] <= 180 && // longitude
+                 coords[1] >= -90 && coords[1] <= 90;     // latitude
+        },
+        message: 'Coordinates must be [longitude, latitude] with valid ranges'
+      }
     },
     mapEmbed: {
       type: String,
@@ -189,125 +197,212 @@ accommodationSchema.statics.calculateDistance = function(lat1, lng1, lat2, lng2)
   return R * c;
 };
 
-// Tìm quán ăn gần đây
-accommodationSchema.statics.findNearbyCuisinePlaces = function(accommodationId, radius = 5, limit = 10) {
-  return this.findById(accommodationId).then(accommodation => {
+// Tìm quán ăn gần đây - OPTIMIZED with MongoDB $near
+accommodationSchema.statics.findNearbyCuisinePlaces = async function(accommodationId, radius = 5, limit = 10) {
+  const startTime = Date.now();
+  
+  try {
+    const accommodation = await this.findById(accommodationId).lean();
     if (!accommodation || !accommodation.map.coordinates || accommodation.map.coordinates.length < 2) {
+      console.log(`[GEO] No valid coordinates for accommodation ${accommodationId}`);
       return [];
     }
     
     const [lng, lat] = accommodation.map.coordinates;
     const CuisinePlace = require('./CuisinePlace');
-    return CuisinePlace.find({ 
+    
+    // Use MongoDB $near for optimal performance with 2dsphere index
+    const places = await CuisinePlace.find({
       isActive: true,
       status: 'published',
-      location: { $exists: true },
-      'location.coordinates': { $exists: true, $ne: null }
-    }).then(places => {
-      return places.filter(place => {
-        if (!place.location.coordinates || place.location.coordinates.length < 2) return false;
+      location: {
+        $near: {
+          $geometry: { 
+            type: 'Point', 
+            coordinates: [lng, lat] 
+          },
+          $maxDistance: radius * 1000 // Convert km to meters
+        }
+      }
+    })
+    .limit(limit)
+    .lean();
+    
+    // Add distance calculation for display (MongoDB $near already sorts by distance)
+    places.forEach(place => {
+      if (place.location.coordinates && place.location.coordinates.length >= 2) {
         const [placeLng, placeLat] = place.location.coordinates;
-        const distance = this.calculateDistance(lat, lng, placeLat, placeLng);
-        place.distance = distance;
-        return distance <= radius;
-      })
-      .sort((a, b) => {
-        return a.distance - b.distance;
-      })
-      .slice(0, limit);
+        place.distance = this.calculateDistance(lat, lng, placeLat, placeLng);
+      }
     });
-  });
+    
+    const queryTime = Date.now() - startTime;
+    console.log(`[GEO] Found ${places.length} nearby cuisine places in ${queryTime}ms`);
+    
+    return places;
+  } catch (error) {
+    console.error(`[GEO] Error finding nearby cuisine places:`, error);
+    return [];
+  }
 };
 
-// Tìm điểm tham quan gần đây
-accommodationSchema.statics.findNearbyAttractions = function(accommodationId, radius = 5, limit = 10) {
-  return this.findById(accommodationId).then(accommodation => {
+// Tìm điểm tham quan gần đây - OPTIMIZED with MongoDB $near
+accommodationSchema.statics.findNearbyAttractions = async function(accommodationId, radius = 5, limit = 10) {
+  const startTime = Date.now();
+  
+  try {
+    const accommodation = await this.findById(accommodationId).lean();
     if (!accommodation || !accommodation.map.coordinates || accommodation.map.coordinates.length < 2) {
+      console.log(`[GEO] No valid coordinates for accommodation ${accommodationId}`);
       return [];
     }
     
     const [lng, lat] = accommodation.map.coordinates;
     const Attraction = require('./Attraction');
-    return Attraction.find({ 
+    
+    // Use MongoDB $near for optimal performance with 2dsphere index
+    const attractions = await Attraction.find({
       isActive: true,
-      'map.lat': { $exists: true },
-      'map.lng': { $exists: true }
-    }).then(attractions => {
-      return attractions.filter(attraction => {
-        if (!attraction.map.lat || !attraction.map.lng) return false;
-        const distance = this.calculateDistance(lat, lng, attraction.map.lat, attraction.map.lng);
-        attraction.distance = distance;
-        return distance <= radius;
-      })
-      .sort((a, b) => {
-        return a.distance - b.distance;
-      })
-      .slice(0, limit);
+      map: {
+        $near: {
+          $geometry: { 
+            type: 'Point', 
+            coordinates: [lng, lat] 
+          },
+          $maxDistance: radius * 1000 // Convert km to meters
+        }
+      }
+    })
+    .limit(limit)
+    .lean();
+    
+    // Add distance calculation for display
+    attractions.forEach(attraction => {
+      if (attraction.map.coordinates && attraction.map.coordinates.length >= 2) {
+        const [attrLng, attrLat] = attraction.map.coordinates;
+        attraction.distance = this.calculateDistance(lat, lng, attrLat, attrLng);
+      } else if (attraction.map.lat && attraction.map.lng) {
+        // Fallback for legacy lat/lng format
+        attraction.distance = this.calculateDistance(lat, lng, attraction.map.lat, attraction.map.lng);
+      }
     });
-  });
+    
+    const queryTime = Date.now() - startTime;
+    console.log(`[GEO] Found ${attractions.length} nearby attractions in ${queryTime}ms`);
+    
+    return attractions;
+  } catch (error) {
+    console.error(`[GEO] Error finding nearby attractions:`, error);
+    return [];
+  }
 };
 
-// Tìm địa điểm giải trí gần đây
-accommodationSchema.statics.findNearbyEntertainments = function(accommodationId, radius = 5, limit = 10) {
-  return this.findById(accommodationId).then(accommodation => {
+// Tìm địa điểm giải trí gần đây - OPTIMIZED with MongoDB $near
+accommodationSchema.statics.findNearbyEntertainments = async function(accommodationId, radius = 5, limit = 10) {
+  const startTime = Date.now();
+  
+  try {
+    const accommodation = await this.findById(accommodationId).lean();
     if (!accommodation || !accommodation.map.coordinates || accommodation.map.coordinates.length < 2) {
+      console.log(`[GEO] No valid coordinates for accommodation ${accommodationId}`);
       return [];
     }
     
     const [lng, lat] = accommodation.map.coordinates;
     const Entertainment = require('./Entertainment');
-    return Entertainment.find({ 
+    
+    // Use MongoDB $near for optimal performance with 2dsphere index
+    const entertainments = await Entertainment.find({
       isActive: true,
-      'map.lat': { $exists: true },
-      'map.lng': { $exists: true }
-    }).then(entertainments => {
-      return entertainments.filter(entertainment => {
-        if (!entertainment.map.lat || !entertainment.map.lng) return false;
-        const distance = this.calculateDistance(lat, lng, entertainment.map.lat, entertainment.map.lng);
-        entertainment.distance = distance;
-        return distance <= radius;
-      })
-      .sort((a, b) => {
-        return a.distance - b.distance;
-      })
-      .slice(0, limit);
+      map: {
+        $near: {
+          $geometry: { 
+            type: 'Point', 
+            coordinates: [lng, lat] 
+          },
+          $maxDistance: radius * 1000 // Convert km to meters
+        }
+      }
+    })
+    .limit(limit)
+    .lean();
+    
+    // Add distance calculation for display
+    entertainments.forEach(entertainment => {
+      if (entertainment.map.coordinates && entertainment.map.coordinates.length >= 2) {
+        const [entLng, entLat] = entertainment.map.coordinates;
+        entertainment.distance = this.calculateDistance(lat, lng, entLat, entLng);
+      } else if (entertainment.map.lat && entertainment.map.lng) {
+        // Fallback for legacy lat/lng format
+        entertainment.distance = this.calculateDistance(lat, lng, entertainment.map.lat, entertainment.map.lng);
+      }
     });
-  });
+    
+    const queryTime = Date.now() - startTime;
+    console.log(`[GEO] Found ${entertainments.length} nearby entertainments in ${queryTime}ms`);
+    
+    return entertainments;
+  } catch (error) {
+    console.error(`[GEO] Error finding nearby entertainments:`, error);
+    return [];
+  }
 };
 
-// Tìm khách sạn gần đây (loại trừ chính nó)
-accommodationSchema.statics.findNearbyAccommodations = function(accommodationId, radius = 5, limit = 10) {
-  return this.findById(accommodationId).then(accommodation => {
+// Tìm khách sạn gần đây (loại trừ chính nó) - OPTIMIZED with MongoDB $near
+accommodationSchema.statics.findNearbyAccommodations = async function(accommodationId, radius = 5, limit = 10) {
+  const startTime = Date.now();
+  
+  try {
+    const accommodation = await this.findById(accommodationId).lean();
     if (!accommodation || !accommodation.map.coordinates || accommodation.map.coordinates.length < 2) {
+      console.log(`[GEO] No valid coordinates for accommodation ${accommodationId}`);
       return [];
     }
     
     const [lng, lat] = accommodation.map.coordinates;
-    const Accommodation = require('./Accommodation');
-    return Accommodation.find({ 
+    
+    // Use MongoDB $near for optimal performance with 2dsphere index
+    const accommodations = await this.find({
       isActive: true,
       status: 'public',
-      _id: { $ne: accommodationId }, // Loại trừ chính nó
-      'map.coordinates': { $exists: true, $ne: [0, 0] }
-    }).then(accommodations => {
-      return accommodations.filter(acc => {
-        if (!acc.map.coordinates || acc.map.coordinates.length < 2) return false;
+      _id: { $ne: accommodationId }, // Exclude self
+      map: {
+        $near: {
+          $geometry: { 
+            type: 'Point', 
+            coordinates: [lng, lat] 
+          },
+          $maxDistance: radius * 1000 // Convert km to meters
+        }
+      }
+    })
+    .limit(limit)
+    .lean();
+    
+    // Add distance calculation for display
+    accommodations.forEach(acc => {
+      if (acc.map.coordinates && acc.map.coordinates.length >= 2) {
         const [accLng, accLat] = acc.map.coordinates;
-        const distance = this.calculateDistance(lat, lng, accLat, accLng);
-        acc.distance = distance;
-        return distance <= radius;
-      })
-      .sort((a, b) => {
-        return a.distance - b.distance;
-      })
-      .slice(0, limit);
+        acc.distance = this.calculateDistance(lat, lng, accLat, accLng);
+      }
     });
-  });
+    
+    const queryTime = Date.now() - startTime;
+    console.log(`[GEO] Found ${accommodations.length} nearby accommodations in ${queryTime}ms`);
+    
+    return accommodations;
+  } catch (error) {
+    console.error(`[GEO] Error finding nearby accommodations:`, error);
+    return [];
+  }
 };
 
 // === INDEXES ===
 accommodationSchema.index({ name: 'text', description: 'text' });
 accommodationSchema.index({ address: 1 });
+accommodationSchema.index({ status: 1, isActive: 1 });
+// Critical: 2dsphere index for geo queries - MUST be created for performance
+accommodationSchema.index({ map: '2dsphere' }, { sparse: true });
 accommodationSchema.index({ district: 1 });
 accommodationSchema.index({ priceFrom: 1 });
 accommodationSchema.index({ status: 1 });
