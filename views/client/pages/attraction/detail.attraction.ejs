@@ -309,6 +309,16 @@
                 </script>
 
                 <!-- ===========================================
+                     NEARBY PLACES SECTION
+                     =========================================== -->
+                <% if (attraction && attraction._id) { %>
+                  <%- include('../../components/nearby-places', { 
+                      currentType: 'attraction',
+                      currentId: attraction._id
+                  }) %>
+                <% } %>
+
+                <!-- ===========================================
                      MAP SECTION (Full Width)
                      =========================================== -->
                 <section class="map-container">

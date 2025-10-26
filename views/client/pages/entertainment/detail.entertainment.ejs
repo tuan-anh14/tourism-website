@@ -188,6 +188,16 @@
         </div>
 
         <!-- ===========================================
+             NEARBY PLACES SECTION
+             =========================================== -->
+        <% if (entertainment && entertainment._id) { %>
+          <%- include('../../components/nearby-places', { 
+              currentType: 'entertainment',
+              currentId: entertainment._id
+          }) %>
+        <% } %>
+
+        <!-- ===========================================
              MAP SECTION (Full Width)
              =========================================== -->
         <section class="map-container">

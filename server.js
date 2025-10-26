@@ -11,6 +11,7 @@ const database = require("./config/database");
 const route = require("./routes/client/index.route");
 const routeAdmin = require("./routes/admin/index.route");
 const apiChatRouter = require('./routes/api/chat.route');
+const apiNearbyPlacesRouter = require('./routes/api/nearby-places.route');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -95,6 +96,7 @@ database.connect();
 route(app);
 app.use('/admin', routeAdmin);
 app.use('/api', apiChatRouter);
+app.use('/api/nearby-places', apiNearbyPlacesRouter);
 
 // 404 - không khớp route nào
 app.use((req, res) => {

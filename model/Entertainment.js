@@ -172,4 +172,149 @@ entertainmentSchema.virtual('mainImage').get(function() {
   return this.images?.[0] || null;
 });
 
+// === STATIC METHODS FOR NEARBY PLACES ===
+// Hàm tính khoảng cách giữa 2 điểm địa lý (Haversine formula)
+entertainmentSchema.statics.calculateDistance = function(lat1, lng1, lat2, lng2) {
+  const R = 6371; // Bán kính Trái Đất (km)
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng/2) * Math.sin(dLng/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+};
+
+// Tìm quán ăn gần đây
+entertainmentSchema.statics.findNearbyCuisinePlaces = function(entertainmentId, radius = 5, limit = 10) {
+  return this.findById(entertainmentId).then(entertainment => {
+    if (!entertainment || !entertainment.map.lat || !entertainment.map.lng) {
+      return [];
+    }
+    
+    const CuisinePlace = require('./CuisinePlace');
+    return CuisinePlace.find({ 
+      isActive: true,
+      status: 'published',
+      location: { $exists: true },
+      'location.coordinates': { $exists: true, $ne: null }
+    }).then(places => {
+      return places.filter(place => {
+        if (!place.location.coordinates || place.location.coordinates.length < 2) return false;
+        const [lng, lat] = place.location.coordinates;
+        const distance = this.calculateDistance(
+          entertainment.map.lat, 
+          entertainment.map.lng, 
+          lat, 
+          lng
+        );
+        place.distance = distance;
+        return distance <= radius;
+      })
+      .sort((a, b) => {
+        return a.distance - b.distance;
+      })
+      .slice(0, limit);
+    });
+  });
+};
+
+// Tìm khách sạn gần đây
+entertainmentSchema.statics.findNearbyAccommodations = function(entertainmentId, radius = 5, limit = 10) {
+  return this.findById(entertainmentId).then(entertainment => {
+    if (!entertainment || !entertainment.map.lat || !entertainment.map.lng) {
+      return [];
+    }
+    
+    const Accommodation = require('./Accommodation');
+    return Accommodation.find({ 
+      isActive: true,
+      status: 'public',
+      'map.coordinates': { $exists: true, $ne: [0, 0] }
+    }).then(accommodations => {
+      return accommodations.filter(accommodation => {
+        if (!accommodation.map.coordinates || accommodation.map.coordinates.length < 2) return false;
+        const [lng, lat] = accommodation.map.coordinates;
+        const distance = this.calculateDistance(
+          entertainment.map.lat, 
+          entertainment.map.lng, 
+          lat, 
+          lng
+        );
+        accommodation.distance = distance;
+        return distance <= radius;
+      })
+      .sort((a, b) => {
+        return a.distance - b.distance;
+      })
+      .slice(0, limit);
+    });
+  });
+};
+
+// Tìm điểm tham quan gần đây
+entertainmentSchema.statics.findNearbyAttractions = function(entertainmentId, radius = 5, limit = 10) {
+  return this.findById(entertainmentId).then(entertainment => {
+    if (!entertainment || !entertainment.map.lat || !entertainment.map.lng) {
+      return [];
+    }
+    
+    const Attraction = require('./Attraction');
+    return Attraction.find({ 
+      isActive: true,
+      'map.lat': { $exists: true },
+      'map.lng': { $exists: true }
+    }).then(attractions => {
+      return attractions.filter(attraction => {
+        if (!attraction.map.lat || !attraction.map.lng) return false;
+        const distance = this.calculateDistance(
+          entertainment.map.lat, 
+          entertainment.map.lng, 
+          attraction.map.lat, 
+          attraction.map.lng
+        );
+        attraction.distance = distance;
+        return distance <= radius;
+      })
+      .sort((a, b) => {
+        return a.distance - b.distance;
+      })
+      .slice(0, limit);
+    });
+  });
+};
+
+// Tìm địa điểm giải trí gần đây (loại trừ chính nó)
+entertainmentSchema.statics.findNearbyEntertainments = function(entertainmentId, radius = 5, limit = 10) {
+  return this.findById(entertainmentId).then(entertainment => {
+    if (!entertainment || !entertainment.map.lat || !entertainment.map.lng) {
+      return [];
+    }
+    
+    const Entertainment = require('./Entertainment');
+    return Entertainment.find({ 
+      isActive: true,
+      _id: { $ne: entertainmentId }, // Loại trừ chính nó
+      'map.lat': { $exists: true },
+      'map.lng': { $exists: true }
+    }).then(entertainments => {
+      return entertainments.filter(ent => {
+        if (!ent.map.lat || !ent.map.lng) return false;
+        const distance = this.calculateDistance(
+          entertainment.map.lat, 
+          entertainment.map.lng, 
+          ent.map.lat, 
+          ent.map.lng
+        );
+        ent.distance = distance;
+        return distance <= radius;
+      })
+      .sort((a, b) => {
+        return a.distance - b.distance;
+      })
+      .slice(0, limit);
+    });
+  });
+};
+
 module.exports = mongoose.model('Entertainment', entertainmentSchema);

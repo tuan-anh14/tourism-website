@@ -185,6 +185,16 @@
         </div>
 
         <!-- ===========================================
+                     NEARBY PLACES SECTION
+                     =========================================== -->
+        <% if (acc && acc._id) { %>
+          <%- include('../../components/nearby-places', { 
+              currentType: 'accommodation',
+              currentId: acc._id
+          }) %>
+        <% } %>
+
+        <!-- ===========================================
                      MAP SECTION (Full Width)
                      =========================================== -->
         <section class="map-container">
