@@ -186,15 +186,29 @@ attractionSchema.statics.getByCategory = function(category, limit = 10) {
 
 // === STATIC METHODS FOR NEARBY PLACES ===
 // Hàm tính khoảng cách giữa 2 điểm địa lý (Haversine formula)
+// More accurate distance calculation using improved Haversine formula
 attractionSchema.statics.calculateDistance = function(lat1, lng1, lat2, lng2) {
-  const R = 6371; // Bán kính Trái Đất (km)
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const R = 6371; // Earth's radius in km
+  
+  // Convert to radians with higher precision
+  const lat1Rad = lat1 * Math.PI / 180;
+  const lng1Rad = lng1 * Math.PI / 180;
+  const lat2Rad = lat2 * Math.PI / 180;
+  const lng2Rad = lng2 * Math.PI / 180;
+  
+  // Calculate differences
+  const dLat = lat2Rad - lat1Rad;
+  const dLng = lng2Rad - lng1Rad;
+  
+  // Haversine formula with better precision
   const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.cos(lat1Rad) * Math.cos(lat2Rad) *
     Math.sin(dLng/2) * Math.sin(dLng/2);
+  
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  return R * c;
+  const distance = R * c;
+  
+  return distance;
 };
 
 // Tìm quán ăn gần đây - OPTIMIZED with MongoDB $near

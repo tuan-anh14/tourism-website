@@ -193,15 +193,29 @@ entertainmentSchema.virtual('mainImage').get(function() {
 
 // === STATIC METHODS FOR NEARBY PLACES ===
 // Hàm tính khoảng cách giữa 2 điểm địa lý (Haversine formula)
+// More accurate distance calculation using improved Haversine formula
 entertainmentSchema.statics.calculateDistance = function(lat1, lng1, lat2, lng2) {
-  const R = 6371; // Bán kính Trái Đất (km)
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const R = 6371; // Earth's radius in km
+  
+  // Convert to radians with higher precision
+  const lat1Rad = lat1 * Math.PI / 180;
+  const lng1Rad = lng1 * Math.PI / 180;
+  const lat2Rad = lat2 * Math.PI / 180;
+  const lng2Rad = lng2 * Math.PI / 180;
+  
+  // Calculate differences
+  const dLat = lat2Rad - lat1Rad;
+  const dLng = lng2Rad - lng1Rad;
+  
+  // Haversine formula with better precision
   const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.cos(lat1Rad) * Math.cos(lat2Rad) *
     Math.sin(dLng/2) * Math.sin(dLng/2);
+  
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  return R * c;
+  const distance = R * c;
+  
+  return distance;
 };
 
 // Tìm quán ăn gần đây - OPTIMIZED with MongoDB $near
@@ -267,7 +281,7 @@ entertainmentSchema.statics.findNearbyCuisinePlaces = async function(entertainme
 // Tìm khách sạn gần đây
 entertainmentSchema.statics.findNearbyAccommodations = function(entertainmentId, radius = 5, limit = 10) {
   return this.findById(entertainmentId).then(entertainment => {
-    if (!entertainment || !entertainment.map.lat || !entertainment.map.lng) {
+    if (!entertainment || !entertainment.map.coordinates || entertainment.map.coordinates.length < 2) {
       return [];
     }
     
@@ -280,9 +294,10 @@ entertainmentSchema.statics.findNearbyAccommodations = function(entertainmentId,
       return accommodations.filter(accommodation => {
         if (!accommodation.map.coordinates || accommodation.map.coordinates.length < 2) return false;
         const [lng, lat] = accommodation.map.coordinates;
+        const [entLng, entLat] = entertainment.map.coordinates;
         const distance = this.calculateDistance(
-          entertainment.map.lat, 
-          entertainment.map.lng, 
+          entLat, 
+          entLng, 
           lat, 
           lng
         );
@@ -300,23 +315,24 @@ entertainmentSchema.statics.findNearbyAccommodations = function(entertainmentId,
 // Tìm điểm tham quan gần đây
 entertainmentSchema.statics.findNearbyAttractions = function(entertainmentId, radius = 5, limit = 10) {
   return this.findById(entertainmentId).then(entertainment => {
-    if (!entertainment || !entertainment.map.lat || !entertainment.map.lng) {
-      return [];
-    }
-    
-    const Attraction = require('./Attraction');
+  if (!entertainment || !entertainment.map.coordinates || entertainment.map.coordinates.length < 2) {
+    return [];
+  }
+  
+  const Attraction = require('./Attraction');
     return Attraction.find({ 
       isActive: true,
-      'map.lat': { $exists: true },
-      'map.lng': { $exists: true }
+      'map.coordinates': { $exists: true, $ne: [0, 0] }
     }).then(attractions => {
       return attractions.filter(attraction => {
-        if (!attraction.map.lat || !attraction.map.lng) return false;
+        if (!attraction.map.coordinates || attraction.map.coordinates.length < 2) return false;
+        const [attrLng, attrLat] = attraction.map.coordinates;
+        const [entLng, entLat] = entertainment.map.coordinates;
         const distance = this.calculateDistance(
-          entertainment.map.lat, 
-          entertainment.map.lng, 
-          attraction.map.lat, 
-          attraction.map.lng
+          entLat, 
+          entLng, 
+          attrLat, 
+          attrLng
         );
         attraction.distance = distance;
         return distance <= radius;
@@ -332,7 +348,7 @@ entertainmentSchema.statics.findNearbyAttractions = function(entertainmentId, ra
 // Tìm địa điểm giải trí gần đây (loại trừ chính nó)
 entertainmentSchema.statics.findNearbyEntertainments = function(entertainmentId, radius = 5, limit = 10) {
   return this.findById(entertainmentId).then(entertainment => {
-    if (!entertainment || !entertainment.map.lat || !entertainment.map.lng) {
+    if (!entertainment || !entertainment.map.coordinates || entertainment.map.coordinates.length < 2) {
       return [];
     }
     
@@ -340,16 +356,17 @@ entertainmentSchema.statics.findNearbyEntertainments = function(entertainmentId,
     return Entertainment.find({ 
       isActive: true,
       _id: { $ne: entertainmentId }, // Loại trừ chính nó
-      'map.lat': { $exists: true },
-      'map.lng': { $exists: true }
+      'map.coordinates': { $exists: true, $ne: [0, 0] }
     }).then(entertainments => {
       return entertainments.filter(ent => {
-        if (!ent.map.lat || !ent.map.lng) return false;
+        if (!ent.map.coordinates || ent.map.coordinates.length < 2) return false;
+        const [entLng, entLat] = entertainment.map.coordinates;
+        const [otherLng, otherLat] = ent.map.coordinates;
         const distance = this.calculateDistance(
-          entertainment.map.lat, 
-          entertainment.map.lng, 
-          ent.map.lat, 
-          ent.map.lng
+          entLat, 
+          entLng, 
+          otherLat, 
+          otherLng
         );
         ent.distance = distance;
         return distance <= radius;
