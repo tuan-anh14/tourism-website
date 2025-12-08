@@ -52,7 +52,7 @@
         <section class="page-section" id="entertainments">
             <!-- Removed page title per request -->
             
-            <!-- Filters (aligned like attractions) -->
+            <!-- Filters -->
             <div class="entertainment-filters" aria-label="Bộ lọc giải trí">
                 <div class="filter-row">
                     <div class="box" role="search">
@@ -60,11 +60,21 @@
                         <input id="ent-search" type="text" placeholder="Tìm theo tên địa điểm..." aria-label="Tìm theo tên" value="<%= currentSearch %>" />
                     </div>
                     <div class="filter-buttons">
-                        <button class="filter-btn <%= currentZone === 'all' ? 'active' : '' %>" data-zone="all">Tất cả</button>
-                        <button class="filter-btn <%= currentZone === 'Khu văn hoá – nghệ thuật' ? 'active' : '' %>" data-zone="Khu văn hoá – nghệ thuật">Khu văn hoá – nghệ thuật</button>
-                        <button class="filter-btn <%= currentZone === 'Địa điểm ngoài trời – công viên' ? 'active' : '' %>" data-zone="Địa điểm ngoài trời – công viên">Địa điểm ngoài trời – công viên</button>
-                        <button class="filter-btn <%= currentZone === 'Trung tâm thương mại – Khu vui chơi trong nhà' ? 'active' : '' %>" data-zone="Trung tâm thương mại – Khu vui chơi trong nhà">Trung tâm thương mại – Khu vui chơi trong nhà</button>
-                        <button class="filter-btn <%= currentZone === 'Khu vui chơi giải trí quy mô lớn' ? 'active' : '' %>" data-zone="Khu vui chơi giải trí quy mô lớn">Khu vui chơi giải trí quy mô lớn</button>
+                        <button class="filter-btn <%= currentZone === 'all' ? 'active' : '' %>" data-zone="all">
+                            Tất cả
+                        </button>
+                        <button class="filter-btn <%= currentZone === 'Khu văn hoá – nghệ thuật' ? 'active' : '' %>" data-zone="Khu văn hoá – nghệ thuật">
+                            Khu văn hoá – nghệ thuật
+                        </button>
+                        <button class="filter-btn <%= currentZone === 'Địa điểm ngoài trời – công viên' ? 'active' : '' %>" data-zone="Địa điểm ngoài trời – công viên">
+                            Địa điểm ngoài trời – công viên
+                        </button>
+                        <button class="filter-btn <%= currentZone === 'Trung tâm thương mại – Khu vui chơi trong nhà' ? 'active' : '' %>" data-zone="Trung tâm thương mại – Khu vui chơi trong nhà">
+                            Trung tâm thương mại – Khu vui chơi trong nhà
+                        </button>
+                        <button class="filter-btn <%= currentZone === 'Khu vui chơi giải trí quy mô lớn' ? 'active' : '' %>" data-zone="Khu vui chơi giải trí quy mô lớn">
+                            Khu vui chơi giải trí quy mô lớn
+                        </button>
                     </div>
                 </div>
             </div>
